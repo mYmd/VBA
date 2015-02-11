@@ -1,5 +1,5 @@
 # VBA
-tools for vba
+mapM
 
 VBA用のなんちゃってHaskellモジュール(32bit Office Only)
 
