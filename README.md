@@ -1,9 +1,9 @@
 # VBA
-mapM
+mapM  
 
-VBA用のなんちゃってHaskellモジュール(32bit Office Only)
+VBA用のなんちゃってHaskellモジュール(32bit Office Only)  
 
-mapM.cpp をdllでコンパイル＆ビルドし、以下の関数をdefファイル等でエクスポート  
+mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファイル等でエクスポート  
 	Dimension = Dimension  
 	mapM = mapM  
 	zipWith = zipWith  
@@ -23,7 +23,7 @@ mapM.cpp をdllでコンパイル＆ビルドし、以下の関数をdefファ�
   mapM.txt  
   vector.txt  
   showM.txt  
-Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせて適宜書き換える。
+Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせる。  
 
 '========= 実行例（VBEイミディエイトから）======================  
 showM mapM(p_log, Array(1,2,3,4,5,6,7))  
