@@ -1,0 +1,218 @@
+Option Explicit
+
+'関数合成
+'この関数をfoldlで繋げることで関数合成ができる（foldrに渡してはいけない）
+'foldl(p_compositionL, Array(p_fun_1, p_fun_2, ..., p_fun_n), init)
+'例 N=100 : showM foldl(p_compositionL, repeat(p_fibonacci, N), Array(0, 1))
+Function compositionL(ByRef fun1Result As Variant, ByRef fun2 As Variant) As Variant
+    Dim ret As Variant
+    ret = mapM(fun2, Array(fun1Result))
+    compositionL = ret(0)
+End Function
+Function p_compoL() As Long
+    p_compoL = VBA.CLng(AddressOf compositionL)
+End Function
+
+'関数合成
+'この関数をfoldrで繋げることで関数合成ができる（foldlに渡してはいけない）
+'foldr(p_compositionR, Array(p_fun_1, p_fun_2, ..., p_fun_n), init)
+'例 N=100 : showM foldr(p_compositionR, repeat(p_fibonacci, N), Array(0, 1))
+Function compositionR(ByRef fun2 As Variant, ByRef fun1Result As Variant) As Variant
+    Dim ret As Variant
+    ret = mapM(fun2, Array(fun1Result))
+    compositionR = ret(0)
+End Function
+Function p_compoR() As Long
+    p_compoR = VBA.CLng(AddressOf compositionR)
+End Function
+
+'関数適用
+'使用例・・・showM mapM(p_applyMap, Array(p_exp, p_log), 2)
+Function applyMap(ByRef func As Variant, ByRef param As Variant) As Variant
+    applyMap = mapM(func, param)
+End Function
+Function p_applyMap() As Long
+    p_applyMap = VBA.CLng(AddressOf applyMap)
+End Function
+
+'関数適用
+'使用例・・・showM mapM(p_applyMap2, Array(p_add, p_mult, p_max), Array(2,4))
+'            showM zipWith(p_applyMap2, Array(p_add, p_mult), Array(Array(3, 4), Array(2.5, 3.5)))
+Function applyMap2(ByRef func As Variant, ByRef param As Variant) As Variant
+    applyMap2 = mapM(func, param(LBound(param)), param(UBound(param)))
+End Function
+Function p_applyMap2() As Long
+    p_applyMap2 = VBA.CLng(AddressOf applyMap2)
+End Function
+
+'関数適用
+'使用例・・・
+Function applyZip(ByRef func As Variant, ByRef param As Variant) As Variant
+    applyZip = zipWith(func, param(LBound(param)), param(UBound(param)))
+End Function
+Function p_applyZip() As Long
+    p_applyZip = VBA.CLng(AddressOf applyZip)
+End Function
+
+
+'============================================================================
+'============================================================================
+
+'指数関数
+Function expN(ByRef elem As Variant, ByRef dummy As Variant) As Variant
+    expN = Exp(elem)
+End Function
+Function p_exp() As Long
+    p_exp = VBA.CLng(AddressOf expN)
+End Function
+
+'対数関数
+Function logN(ByRef elem As Variant, Optional ByRef check As Variant = vbFalse) As Variant
+    If IsMissing(check) Then
+        logN = Log(elem)
+    ElseIf check <> vbFalse Then
+        If IsNumeric(elem) Then
+            If 0 < elem Then
+                logN = Log(elem)
+            Else
+                logN = 0
+            End If
+        Else
+            logN = 0
+        End If
+    Else
+        logN = Log(elem)
+    End If
+End Function
+Function p_log() As Long
+    p_log = VBA.CLng(AddressOf logN)
+End Function
+
+'加算
+Function add(ByRef elem As Variant, ByRef a As Variant) As Variant
+    If IsNumeric(elem) And IsNumeric(a) Then
+        add = elem + a
+    End If
+End Function
+Function p_add() As Long
+    p_add = VBA.CLng(AddressOf add)
+End Function
+
+'減算
+Function minus(ByRef elem As Variant, ByRef a As Variant) As Variant
+    If IsNumeric(elem) And IsNumeric(a) Then
+        minus = elem - a
+    End If
+End Function
+Function p_minus() As Long
+    p_minus = VBA.CLng(AddressOf minus)
+End Function
+
+'乗算
+Function mult(ByRef elem As Variant, ByRef a As Variant) As Variant
+    If IsNumeric(elem) And IsNumeric(a) Then
+        mult = elem * a
+    End If
+End Function
+Function p_mult() As Long
+    p_mult = VBA.CLng(AddressOf mult)
+End Function
+
+'除算
+Function divide(ByRef elem As Variant, ByRef a As Variant) As Variant
+    If IsNumeric(elem) And IsNumeric(a) Then
+        divide = elem / a
+    End If
+End Function
+Function p_divide() As Long
+    p_divide = VBA.CLng(AddressOf divide)
+End Function
+
+'多項式　（係数は高次->低次）
+Function poly(ByRef elem As Variant, ByRef coef As Variant) As Variant
+    Dim z As Variant
+    poly = 0
+    For Each z In coef:    poly = poly * elem + z:      Next z
+End Function
+Function p_poly() As Long
+    p_poly = VBA.CLng(AddressOf poly)
+End Function
+
+'2点間の距離
+Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
+    Dim i As Long
+    
+    distance = 0#
+    If IsMissing(y) Then
+        For i = 0 To sizeof(x) - 1 Step 1
+            distance = distance + x(i + LBound(x)) ^ 2
+        Next i
+    Else
+        For i = 0 To sizeof(x) - 1 Step 1
+            distance = distance + (x(i + LBound(x)) - y(i + LBound(y))) ^ 2
+        Next i
+    End If
+    distance = distance ^ 0.5
+End Function
+Function p_distance() As Long
+    p_distance = VBA.CLng(AddressOf distance)
+End Function
+
+'乱数
+Function vbRand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
+    vbRand = (to_ - from_) * Rnd() + from_
+End Function
+Function p_rnd() As Long
+    p_rnd = VBA.CLng(AddressOf vbRand)
+End Function
+
+'min
+Function min(ByRef a As Variant, ByRef b As Variant) As Variant
+    min = IIf(a < b, a, b)
+End Function
+Function p_min() As Long
+    p_min = VBA.CLng(AddressOf min)
+End Function
+
+'max
+Function max(ByRef a As Variant, ByRef b As Variant) As Variant
+    max = IIf(a < b, b, a)
+End Function
+Function p_max() As Long
+    p_max = VBA.CLng(AddressOf max)
+End Function
+
+'フィボナッチ関数   (1, 1)->(1, 2)->(2, 3)->(3, 5)->(5, 8)-> ...
+' showM foldl(p_compositionL, repeat(p_fibonacci, N), Array(0, 1))
+Function fibonacci(ByRef a As Variant, ByRef dummy As Variant) As Variant
+    fibonacci = Array(a(1 + LBound(a)), a(LBound(a)) + a(1 + LBound(a)))
+End Function
+Function p_fibonacci() As Long
+    p_fibonacci = VBA.CLng(AddressOf fibonacci)
+End Function
+
+'ロジスティック写像   (Xn, r)->(Xn+1, r)
+Function Logistic(ByRef x As Variant, ByRef dummy As Variant) As Variant
+    'Xn+1 = a * Xn * (1-Xn)
+    Logistic = Array(x(1) * x(0) * (1 - x(0)), x(1))
+End Function
+Function p_Logistic() As Long
+    p_Logistic = VBA.CLng(AddressOf Logistic)
+End Function
+
+'述語 less
+Function less(ByRef a As Variant, ByRef b As Variant) As Variant
+    less = IIf(a < b, 1&, 0&)
+End Function
+Function p_less() As Long
+    p_less = VBA.CLng(AddressOf less)
+End Function
+
+'述語 great
+Function great(ByRef a As Variant, ByRef b As Variant) As Variant
+    great = IIf(a > b, 1&, 0&)
+End Function
+Function p_great() As Long
+    p_great = VBA.CLng(AddressOf great)
+End Function
+
