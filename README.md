@@ -25,7 +25,7 @@ mapM.cpp をdllでコンパイル＆ビルドし、以下の関数をdefファ�
   showM.txt  
 Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせて適宜書き換える。
 
-実行例（VBEイミディエイトから）  
+'========= 実行例（VBEイミディエイトから）======================  
 showM mapM(p_log, Array(1,2,3,4,5,6,7))  
 showM zipWith(p_add, Array(1,2,3,4,5), Array(10, 100, 1000, 100, 10))  
 ?foldl(p_minus, 0, iota(1, 100))     ' = (...(((0-1)-2)-3)-...-100  
