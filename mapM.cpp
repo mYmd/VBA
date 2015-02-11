@@ -401,7 +401,6 @@ namespace   {
         if ( axis < 1 || static_cast<__int32>(dim) < axis )             return;
         axis -= 1;
         SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-        if ( init )     bounds[axis].cElements += 1;
         safeArrayBounds(pArray, dim, bounds);
         // SAFEARRAY作成
         const LONG i = (axis == 0)? 1 : 0;
@@ -409,6 +408,7 @@ namespace   {
         SAFEARRAYBOUND resultBounds[3] = {  { bounds[0].cElements, 0},
                                             { bounds[1].cElements, 0},
                                             { bounds[2].cElements, 0}   };
+        if ( init )     resultBounds[axis].cElements += 1;
         SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds);
         LONG index[3];
         for ( index[i] = 0; index[i] < static_cast<LONG>(bounds[i].cElements); ++index[i] )
