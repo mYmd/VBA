@@ -1,0 +1,79 @@
+Option Explicit
+
+'======================================================
+'          API宣言
+'======================================================
+
+' VBA配列の次元取得
+Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
+
+' 配列matrixの各要素にCallback関数を適用する
+Declare Function mapM Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix As Variant, _
+        Optional ByRef additionalPrameter As Variant) As Variant
+
+'配列matrix1とmatrix2の各要素に2変数のCallback関数を適用する
+Declare Function zipWith Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix1 As Variant, _
+        ByRef matrix2 As Variant) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
+Declare Function foldl Lib "mapM.dll" ( _
+                    ByVal pCallback As Long, _
+                ByRef init As Variant, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
+Declare Function foldr Lib "mapM.dll" ( _
+                    ByVal pCallback As Long, _
+                ByRef init As Variant, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
+Declare Function foldl1 Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
+Declare Function foldr1 Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った左scan（初期値指定あり）
+Declare Function scanl Lib "mapM.dll" ( _
+                    ByVal pCallback As Long, _
+                ByRef init As Variant, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った右scan（初期値指定あり）
+Declare Function scanr Lib "mapM.dll" ( _
+                    ByVal pCallback As Long, _
+                ByRef init As Variant, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
+Declare Function scanl1 Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' 3次元までのVBA配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
+Declare Function scanr1 Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix As Variant, _
+        Optional ByVal axis As Long = 1) As Variant
+
+' VBA配列matrixの各要素でCallbackによる評価結果がゼロでないものの数
+Declare Function count_if Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef matrix As Variant, _
+        Optional ByRef additionalPrameter As Variant) As Long
+
