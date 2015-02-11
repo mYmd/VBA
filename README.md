@@ -38,6 +38,6 @@ points = zip(mapM(p_rnd, repeat(0, N), 1), mapM(p_rnd, repeat(0, N), 1))
 
 'ロジスティック漸化式  
 N = 100  
-init_r = Array(0.11, 3.58644)  
+init_r = Array(0.1, 3.7)  
 m = unzip(scanl(p_compoL, init_r, repeat(p_Logistic, N)))(0)  
 showM m  
