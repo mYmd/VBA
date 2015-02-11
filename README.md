@@ -1,7 +1,7 @@
 # VBA
 tools for vba
 
-VBA用のなんちゃってHaskellモジュール
+VBA用のなんちゃってHaskellモジュール(32bit Office Only)
 
 mapM.cpp をdllでコンパイル＆ビルドし、以下の関数をdefファイル等でエクスポート
 	Dimension = Dimension  
