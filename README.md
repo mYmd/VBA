@@ -18,7 +18,7 @@ mapM.cpp をdllでコンパイル＆ビルドし、以下の関数をdefファ�
 	count_if = count_if  
 
 以下のテキストファイルはVBAソースコード。
-標準モジュールにそのままコピーすればOK。
+標準モジュールにそのままコピーすればOK。  
   Declare.txt  
   mapM.txt  
   vector.txt  
