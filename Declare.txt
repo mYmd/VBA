@@ -7,11 +7,23 @@ Option Explicit
 ' VBA配列の次元取得
 Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
-' 配列matrixの各要素にCallback関数を適用する
-Declare Function mapM Lib "mapM.dll" ( _
+' 2引数にCallback関数を適用する
+Declare Function simple_invoke Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            Optional ByRef param1 As Variant, _
+        Optional ByRef param12 As Variant) As Variant
+
+' 配列matrixの各要素elemとparamにCallback(elem, param)を適用する
+Declare Function mapL Lib "mapM.dll" ( _
                 ByVal pCallback As Long, _
             ByRef matrix As Variant, _
-        Optional ByRef additionalPrameter As Variant) As Variant
+        Optional ByRef param As Variant) As Variant
+
+' paramと配列matrixの各要素elemにCallback(param, elem)を適用する
+Declare Function mapR Lib "mapM.dll" ( _
+                ByVal pCallback As Long, _
+            ByRef param As Variant, _
+        ByRef matrix As Variant) As Variant
 
 '配列matrix1とmatrix2の各要素に2変数のCallback関数を適用する
 Declare Function zipWith Lib "mapM.dll" ( _
