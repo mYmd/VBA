@@ -1,12 +1,12 @@
 Option Explicit
 
 '================================================================================
-    ' Sub showSize                  デバッグウィンドウに配列のサイズを表示する
+    ' Sub showSz                    デバッグウィンドウに配列のサイズを表示する
     ' Sub showM                     デバッグウィンドウに２次元配列を表示する
 '================================================================================
 
 'デバッグウィンドウに配列のサイズを表示する
-Sub showSize(ByRef M As Variant)
+Sub showSz(ByRef M As Variant)
 Dim mes$, i%, total&
     If VarType(M) = 0 Then Debug.Print " vbEmpty:": Exit Sub
     If Dimension(M) = 0 Then Debug.Print " Scalar": Exit Sub
@@ -112,4 +112,3 @@ End Sub
 Private Function LenW(ByRef s As String) As Long
     LenW = LenB(StrConv(s, vbFromUnicode))
 End Function
-
