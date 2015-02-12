@@ -12,6 +12,14 @@ __int32 __stdcall Dimension(const tagVARIANT* pv)
 		return (pv->pparray)? ::SafeArrayGetDim(*pv->pparray): 0;
 }
 
+//使用する唯一のVBAコールバック関数型  VBCallbackFunc  の宣言
+//VBAにおけるシグネチャは
+// Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
+// もしくは
+// Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
+typedef tagVARIANT (__stdcall *VBCallbackFunc)(tagVARIANT*, tagVARIANT*);
+
+
 namespace   {
     //基本型のみ想定したmin
     template <typename T>  T minV(T a, T b) { return (a < b)? a: b; }
@@ -28,12 +36,11 @@ namespace   {
         }
     }
 
-    //使用する唯一のVBAコールバック関数型  VBCallbackFunc  の宣言
-    //VBAにおけるシグネチャは
-    // Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
-    // もしくは
-    // Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
-    typedef tagVARIANT (__stdcall *VBCallbackFunc)(tagVARIANT*, tagVARIANT*);
+    //mapLとmapRの共通処理
+    tagVARIANT  mapLR(  __int32         pCallback   ,
+                        tagVARIANT*     matrix      ,
+                        tagVARIANT*     param       ,
+                        bool            left        );  //left==true, right == false
 
     //foldl と foldr と foldl1 と foldr1 の共通処理
     void   fold_imple( VBCallbackFunc   func    ,
@@ -55,46 +62,32 @@ namespace   {
 
 ////************************************************************************************
 
-//配列matrixの各要素にCallback（VBCallbackFunc型のVBA関数）を適用する
+//2引数にCallback（VBCallbackFunc型のVBA関数）を適用する
 tagVARIANT  __stdcall
-mapM(__int32 pCallback, tagVARIANT* matrix, tagVARIANT* additionalParameter)
+simple_invoke(__int32 pCallback, tagVARIANT* param1, tagVARIANT* param2)
 {
-    tagVARIANT      ret;
-    ::VariantInit(&ret);
     VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    //----------------------------
-    if ( !matrix || !func )                                     return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                       return (*func)(matrix, additionalParameter);
-    //----------------------------
-    SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
-    UINT dim = ::SafeArrayGetDim(pArray);
-    if ( 0 == dim || 3 < dim )                                  return ret;
-    SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-    safeArrayBounds(pArray, dim, bounds);
-    // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, bounds);
-    for ( ULONG i = 0; i < bounds[0].cElements; ++i )
+    if ( !func )
     {
-        for ( ULONG j = 0; j < bounds[1].cElements; ++j )
-        {
-            for ( ULONG k = 0; k < bounds[2].cElements; ++k )
-            {
-                LONG index[3] = { static_cast<LONG>(i)+bounds[0].lLbound,
-                                  static_cast<LONG>(j)+bounds[1].lLbound,
-                                  static_cast<LONG>(k)+bounds[2].lLbound    };
-                tagVARIANT elem;
-                ::VariantInit(&elem);
-                ::SafeArrayGetElement(pArray, index, &elem);
-                tagVARIANT result = (*func)(&elem, additionalParameter);
-                ::SafeArrayPutElement(retArray, index, &result);
-                ::VariantClear(&elem);
-                ::VariantClear(&result);
-            }
-        }
+        tagVARIANT      ret;
+        ::VariantInit(&ret);
+        return ret;
     }
-    ret.vt = VT_ARRAY | VT_VARIANT;
-    ret.parray = retArray;
-    return      ret;
+    return (*func)(param1, param2);
+}
+
+//配列matrixの各要素elemとparamにCallback(elem, param)（VBCallbackFunc型のVBA関数）を適用する
+tagVARIANT  __stdcall
+mapL(__int32 pCallback, tagVARIANT* matrix, tagVARIANT* param)
+{
+    return mapLR(pCallback, matrix, param, true);
+}
+
+//paramと配列matrixの各要素elemにCallback(param, elem)（VBCallbackFunc型のVBA関数）を適用する
+tagVARIANT  __stdcall
+mapR(__int32 pCallback, tagVARIANT* param, tagVARIANT* matrix)
+{
+    return mapLR(pCallback, matrix, param, false);
 }
 
 //**************************************************************************
@@ -308,6 +301,53 @@ count_if(__int32 pCallback, tagVARIANT* matrix, tagVARIANT* additionalParameter)
 //*****************************************************************
 
 namespace   {
+
+    //mapLとmapRの共通処理
+    tagVARIANT  
+    mapLR(  __int32         pCallback   ,
+            tagVARIANT*     matrix      ,
+            tagVARIANT*     param       ,
+            bool            left        )   //left==true, right == false
+    {
+        tagVARIANT      ret;
+        ::VariantInit(&ret);
+        VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+        //----------------------------
+        if ( !matrix || !func )                                     return ret;
+        if (  0 == (VT_ARRAY & matrix->vt ) )
+            return left? (*func)(matrix, param) : (*func)(param, matrix);
+        //----------------------------
+        SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
+        UINT dim = ::SafeArrayGetDim(pArray);
+        if ( 0 == dim || 3 < dim )                                  return ret;
+        SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
+        safeArrayBounds(pArray, dim, bounds);
+        // SAFEARRAY作成
+        SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, bounds);
+        for ( ULONG i = 0; i < bounds[0].cElements; ++i )
+        {
+            for ( ULONG j = 0; j < bounds[1].cElements; ++j )
+            {
+                for ( ULONG k = 0; k < bounds[2].cElements; ++k )
+                {
+                    LONG index[3] = { static_cast<LONG>(i)+bounds[0].lLbound,
+                                      static_cast<LONG>(j)+bounds[1].lLbound,
+                                      static_cast<LONG>(k)+bounds[2].lLbound    };
+                    tagVARIANT elem;
+                    ::VariantInit(&elem);
+                    ::SafeArrayGetElement(pArray, index, &elem);
+                    tagVARIANT result = left?   (*func)(&elem, param):
+                                                (*func)(param, &elem);
+                    ::SafeArrayPutElement(retArray, index, &result);
+                    ::VariantClear(&elem);
+                    ::VariantClear(&result);
+                }
+            }
+        }
+        ret.vt = VT_ARRAY | VT_VARIANT;
+        ret.parray = retArray;
+        return      ret;
+    }
 
     //foldl と foldr と foldl1 と foldr1 の共通処理
     void   fold_imple(  VBCallbackFunc  func    ,
