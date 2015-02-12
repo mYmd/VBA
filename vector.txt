@@ -174,7 +174,7 @@ Public Function reverse(ByRef data As Variant) As Variant
 End Function
 
 '特定行の取得
-Public Function selectRow(data As Variant, ByVal i As Long) As Variant
+Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
     Dim j     As Long
     Dim ret   As Variant
 
@@ -188,9 +188,12 @@ Public Function selectRow(data As Variant, ByVal i As Long) As Variant
         selectRow = ret
     End If
 End Function
+Public Function p_selectRow() As Long
+    p_selectRow = VBA.CLng(AddressOf selectRow)
+End Function
 
 '特定列の取得
-Public Function selectCol(data As Variant, ByVal j As Long) As Variant
+Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
     Dim i     As Long
     Dim ret   As Variant
 
@@ -203,6 +206,9 @@ Public Function selectCol(data As Variant, ByVal j As Long) As Variant
         Next i
         selectCol = ret
     End If
+End Function
+Public Function p_selectCol() As Long
+    p_selectCol = VBA.CLng(AddressOf selectCol)
 End Function
 
 '配列の作成      makeM(6, 3) => 6行(0,1,2,3,4,5) x 3列(0,1,2)
@@ -581,9 +587,10 @@ Public Function product_set(ByVal pCallback As Long, ByRef a As Variant, ByRef b
         ret = makeM(sizeof(a), sizeof(b))
         i = 0
         For Each z In b
-            Call fillCol(ret, i, mapM(pCallback, a, z))
+            Call fillCol(ret, i, mapL(pCallback, a, z))
             i = i + 1
         Next z
    End If
    product_set = ret
 End Function
+
