@@ -72,7 +72,7 @@ Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
         For i = SR To ER Step 1
             TMP(i, j) = m(i, j)
             If IsError(m(i, j)) = True Then TMP(i, j) = "Error!"
-            If IsArray(m(i, j)) = True Then TMP(i, j) = "[nest]"
+            If IsArray(m(i, j)) = True Then TMP(i, j) = "[" & i & "," & j & "]"
             If MaxL(j) < LenW(Trim(TMP(i, j))) Then MaxL(j) = LenW(Trim(TMP(i, j)))
         Next i
     Next j
@@ -108,7 +108,7 @@ Private Sub printV(v As Variant, Optional r As Variant)
         If IsError(v(i)) = True Then
             Debug.Print Spc(2); "Error!"
         ElseIf IsArray(v(i)) = True Then
-            Debug.Print "  [nest]";
+            Debug.Print "  [" & i & "]";
         Else
             Debug.Print Spc(2); Trim(v(i));
         End If
@@ -116,7 +116,7 @@ Private Sub printV(v As Variant, Optional r As Variant)
     If IsError(v(ER)) = True Then
         Debug.Print Spc(2); "Error!"
     ElseIf IsArray(v(ER)) = True Then
-        Debug.Print "  [nest]"
+        Debug.Print "  [" & ER & "]"
     Else
         Debug.Print Spc(2); Trim(v(ER))
     End If
