@@ -1,6 +1,6 @@
 Option Explicit
 
-'関数適用関数 applyFun  引数を左に書く
+'ひとつの引数を与える関数適用関数  引数に対して関数を適用する
 ' applyFun(x, f)   ->   f(x)
 Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
     applyFun = simple_invoke(func, param)
@@ -10,15 +10,17 @@ End Function
         p_applyFun = VBA.CLng(AddressOf applyFun)
     End Function
 
+'第1引数を与える関数適用関数 : 第2引数は関数にキャプチャさせている
 ' applyAs1st(x, [f, b])   ->    f(x, b)
 Function applyAs1st(ByRef param As Variant, ByRef func As Variant) As Variant
     applyAs1st = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
 End Function
-
+    
     Function p_applyAs1st() As Long
         p_applyAs1st = VBA.CLng(AddressOf applyAs1st)
     End Function
 
+'第2引数を与える関数適用関数 : 第1引数は関数にキャプチャさせている
 ' applyAs2nd(x, [f, a])   ->    f(a, x)
 Function applyAs2nd(ByRef param As Variant, ByRef func As Variant) As Variant
     applyAs2nd = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
@@ -28,33 +30,7 @@ End Function
         p_applyAs2nd = VBA.CLng(AddressOf applyAs2nd)
     End Function
 
-' setParam(f, x)     ->    f(x)
-Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
-    setParam = simple_invoke(func, param)
-End Function
-
-    Function p_setParam() As Long
-        p_setParam = VBA.CLng(AddressOf setParam)
-    End Function
-
-' set1stParam([f, a], x)     ->    f(x, a)
-Function set1stParam(ByRef func As Variant, ByRef param As Variant) As Variant
-    set1stParam = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
-End Function
-
-    Function p_set1stParam() As Long
-        p_set1stParam = VBA.CLng(AddressOf set1stParam)
-    End Function
-
-' set2ndParam([f, a], x)     ->    f(a, x)
-Function set2ndParam(ByRef func As Variant, ByRef param As Variant) As Variant
-    set2ndParam = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
-End Function
-
-    Function p_set2ndParam() As Long
-        p_set2ndParam = VBA.CLng(AddressOf set2ndParam)
-    End Function
-
+'ふたつの引数を与える関数適用関数 : 配列にパックした引数を展開する
 ' applyTogether([x, y], f)     ->    f(x, y)
 Function applyTogether(ByRef params As Variant, ByRef func As Variant) As Variant
     applyTogether = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
@@ -64,6 +40,37 @@ End Function
         p_applyTogether = VBA.CLng(AddressOf applyTogether)
     End Function
 
+'関数に引数を代入する関数
+' setParam(f, x)     ->    f(x)
+Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
+    setParam = simple_invoke(func, param)
+End Function
+
+    Function p_setParam() As Long
+        p_setParam = VBA.CLng(AddressOf setParam)
+    End Function
+
+'関数に第1引数を代入する関数 : 第2引数は関数にキャプチャさせている
+' set1stParam([f, a], x)     ->    f(x, a)
+Function set1stParam(ByRef func As Variant, ByRef param As Variant) As Variant
+    set1stParam = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
+End Function
+
+    Function p_set1stParam() As Long
+        p_set1stParam = VBA.CLng(AddressOf set1stParam)
+    End Function
+
+'関数に第2引数を代入する関数 : 第1引数は関数にキャプチャさせている
+' set2ndParam([f, a], x)     ->    f(a, x)
+Function set2ndParam(ByRef func As Variant, ByRef param As Variant) As Variant
+    set2ndParam = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
+End Function
+
+    Function p_set2ndParam() As Long
+        p_set2ndParam = VBA.CLng(AddressOf set2ndParam)
+    End Function
+
+'関数にふたつの引数を代入する関数 : 配列にパックした引数を展開する
 ' setBothParams(f, [x, y])     ->    f(x, y)
 Function setBothParams(ByRef func As Variant, ByRef params As Variant) As Variant
     setBothParams = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
@@ -72,6 +79,9 @@ End Function
     Function p_setBothParams() As Long
         p_setBothParams = VBA.CLng(AddressOf setBothParams)
     End Function
+
+
+'============================================================================
 '============================================================================
 
 '指数関数
@@ -208,25 +218,6 @@ End Function
     Function p_max() As Long
         p_max = VBA.CLng(AddressOf max)
     End Function
-
-'フィボナッチ関数   (1, 1)->(1, 2)->(2, 3)->(3, 5)->(5, 8)-> ...
-Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
-    fibonacci = Array(b, a + b)
-End Function
-    
-    Function p_fibonacci() As Long
-        p_fibonacci = VBA.CLng(AddressOf fibonacci)
-    End Function
-
-'ロジスティック写像   (Xn, r)->(Xn+1, r)
-Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
-    'Xn+1 = r * Xn * (1-Xn)
-    Logistic = r * x * (1 - x) 'Array(x(1) * x(0) * (1 - x(0)), x(1))
-End Function
-    
-    Function p_Logistic() As Long
-        p_Logistic = VBA.CLng(AddressOf Logistic)
-    End Function
     
 '述語 less
 Function less(ByRef a As Variant, ByRef b As Variant) As Variant
@@ -246,3 +237,21 @@ End Function
         p_great = VBA.CLng(AddressOf great)
     End Function
 
+'=======================================================================
+'フィボナッチ関数   (0,1)->(1,1)->(1,2)->(2,3)->(3,5)->(5,8)-> ...
+Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
+    fibonacci = Array(b, a + b)
+End Function
+    
+    Function p_fibonacci() As Long
+        p_fibonacci = VBA.CLng(AddressOf fibonacci)
+    End Function
+
+'ロジスティック写像   (Xn, r)->Xn+1
+Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
+    Logistic = r * x * (1 - x)
+End Function
+    
+    Function p_Logistic() As Long
+        p_Logistic = VBA.CLng(AddressOf Logistic)
+    End Function
