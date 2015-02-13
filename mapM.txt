@@ -1,26 +1,87 @@
 Option Explicit
 
 '関数適用関数 applyFun  引数を左に書く
-'showM mapR(p_applyFun, 3, Array(p_exp, p_log))
-'showM zipWith(p_applyFun, Array(3, 5), Array(p_exp, p_log))
-'この関数をfoldl scanlで繋げることで関数合成ができる（foldrやscanrに渡してはいけない）
-'showM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, 10)), 2)
+' applyFun(x, f)   ->   f(x)
 Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
     applyFun = simple_invoke(func, param)
 End Function
-Function p_applyFun() As Long
-    p_applyFun = VBA.CLng(AddressOf applyFun)
+    
+    Function p_applyFun() As Long
+        p_applyFun = VBA.CLng(AddressOf applyFun)
+    End Function
+
+' applyAs1st(x, [f, b])   ->    f(x, b)
+Function applyAs1st(ByRef param As Variant, ByRef func As Variant) As Variant
+    applyAs1st = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
 End Function
 
+    Function p_applyAs1st() As Long
+        p_applyAs1st = VBA.CLng(AddressOf applyAs1st)
+    End Function
+
+' applyAs2nd(x, [f, a])   ->    f(a, x)
+Function applyAs2nd(ByRef param As Variant, ByRef func As Variant) As Variant
+    applyAs2nd = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
+End Function
+
+    Function p_applyAs2nd() As Long
+        p_applyAs2nd = VBA.CLng(AddressOf applyAs2nd)
+    End Function
+
+' setParam(f, x)     ->    f(x)
+Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
+    setParam = simple_invoke(func, param)
+End Function
+
+    Function p_setParam() As Long
+        p_setParam = VBA.CLng(AddressOf setParam)
+    End Function
+
+' set1stParam([f, a], x)     ->    f(x, a)
+Function set1stParam(ByRef func As Variant, ByRef param As Variant) As Variant
+    set1stParam = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
+End Function
+
+    Function p_set1stParam() As Long
+        p_set1stParam = VBA.CLng(AddressOf set1stParam)
+    End Function
+
+' set2ndParam([f, a], x)     ->    f(a, x)
+Function set2ndParam(ByRef func As Variant, ByRef param As Variant) As Variant
+    set2ndParam = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
+End Function
+
+    Function p_set2ndParam() As Long
+        p_set2ndParam = VBA.CLng(AddressOf set2ndParam)
+    End Function
+
+' applyTogether([x, y], f)     ->    f(x, y)
+Function applyTogether(ByRef params As Variant, ByRef func As Variant) As Variant
+    applyTogether = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
+End Function
+
+    Function p_applyTogether() As Long
+        p_applyTogether = VBA.CLng(AddressOf applyTogether)
+    End Function
+
+' setBothParams(f, [x, y])     ->    f(x, y)
+Function setBothParams(ByRef func As Variant, ByRef params As Variant) As Variant
+    setBothParams = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
+End Function
+
+    Function p_setBothParams() As Long
+        p_setBothParams = VBA.CLng(AddressOf setBothParams)
+    End Function
 '============================================================================
 
 '指数関数
 Function expN(ByRef elem As Variant, ByRef dummy As Variant) As Variant
     expN = Exp(elem)
 End Function
-Function p_exp() As Long
-    p_exp = VBA.CLng(AddressOf expN)
-End Function
+    
+    Function p_exp() As Long
+        p_exp = VBA.CLng(AddressOf expN)
+    End Function
 
 '対数関数
 Function logN(ByRef elem As Variant, Optional ByRef check As Variant = vbFalse) As Variant
@@ -40,19 +101,21 @@ Function logN(ByRef elem As Variant, Optional ByRef check As Variant = vbFalse) 
         logN = Log(elem)
     End If
 End Function
-Function p_log() As Long
-    p_log = VBA.CLng(AddressOf logN)
-End Function
+    
+    Function p_log() As Long
+        p_log = VBA.CLng(AddressOf logN)
+    End Function
 
 '加算
-Function add(ByRef elem As Variant, ByRef a As Variant) As Variant
+Function plus(ByRef elem As Variant, ByRef a As Variant) As Variant
     If IsNumeric(elem) And IsNumeric(a) Then
-        add = elem + a
+        plus = elem + a
     End If
 End Function
-Function p_add() As Long
-    p_add = VBA.CLng(AddressOf add)
-End Function
+    
+    Function p_plus() As Long
+        p_plus = VBA.CLng(AddressOf plus)
+    End Function
 
 '減算
 Function minus(ByRef elem As Variant, ByRef a As Variant) As Variant
@@ -60,9 +123,10 @@ Function minus(ByRef elem As Variant, ByRef a As Variant) As Variant
         minus = elem - a
     End If
 End Function
-Function p_minus() As Long
-    p_minus = VBA.CLng(AddressOf minus)
-End Function
+    
+    Function p_minus() As Long
+        p_minus = VBA.CLng(AddressOf minus)
+    End Function
 
 '乗算
 Function mult(ByRef elem As Variant, ByRef a As Variant) As Variant
@@ -70,9 +134,10 @@ Function mult(ByRef elem As Variant, ByRef a As Variant) As Variant
         mult = elem * a
     End If
 End Function
-Function p_mult() As Long
-    p_mult = VBA.CLng(AddressOf mult)
-End Function
+    
+    Function p_mult() As Long
+        p_mult = VBA.CLng(AddressOf mult)
+    End Function
 
 '除算
 Function divide(ByRef elem As Variant, ByRef a As Variant) As Variant
@@ -80,9 +145,10 @@ Function divide(ByRef elem As Variant, ByRef a As Variant) As Variant
         divide = elem / a
     End If
 End Function
-Function p_divide() As Long
-    p_divide = VBA.CLng(AddressOf divide)
-End Function
+    
+    Function p_divide() As Long
+        p_divide = VBA.CLng(AddressOf divide)
+    End Function
 
 '多項式　（係数は高次->低次）
 Function poly(ByRef elem As Variant, ByRef coef As Variant) As Variant
@@ -90,9 +156,10 @@ Function poly(ByRef elem As Variant, ByRef coef As Variant) As Variant
     poly = 0
     For Each z In coef:    poly = poly * elem + z:      Next z
 End Function
-Function p_poly() As Long
-    p_poly = VBA.CLng(AddressOf poly)
-End Function
+    
+    Function p_poly() As Long
+        p_poly = VBA.CLng(AddressOf poly)
+    End Function
 
 '2点間の距離
 Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
@@ -110,64 +177,72 @@ Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
     End If
     distance = distance ^ 0.5
 End Function
-Function p_distance() As Long
-    p_distance = VBA.CLng(AddressOf distance)
-End Function
+    
+    Function p_distance() As Long
+        p_distance = VBA.CLng(AddressOf distance)
+    End Function
 
 '乱数
 Function vbRand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
     vbRand = (to_ - from_) * Rnd() + from_
 End Function
-Function p_rnd() As Long
-    p_rnd = VBA.CLng(AddressOf vbRand)
-End Function
+    
+    Function p_rnd() As Long
+        p_rnd = VBA.CLng(AddressOf vbRand)
+    End Function
 
 'min
 Function min(ByRef a As Variant, ByRef b As Variant) As Variant
     min = IIf(a < b, a, b)
 End Function
-Function p_min() As Long
-    p_min = VBA.CLng(AddressOf min)
-End Function
+    
+    Function p_min() As Long
+        p_min = VBA.CLng(AddressOf min)
+    End Function
 
 'max
 Function max(ByRef a As Variant, ByRef b As Variant) As Variant
     max = IIf(a < b, b, a)
 End Function
-Function p_max() As Long
-    p_max = VBA.CLng(AddressOf max)
-End Function
+    
+    Function p_max() As Long
+        p_max = VBA.CLng(AddressOf max)
+    End Function
 
 'フィボナッチ関数   (1, 1)->(1, 2)->(2, 3)->(3, 5)->(5, 8)-> ...
-' showM foldl(p_compoL, repeat(p_fibonacci, N), Array(0, 1))
-Function fibonacci(ByRef a As Variant, ByRef dummy As Variant) As Variant
-    fibonacci = Array(a(1 + LBound(a)), a(LBound(a)) + a(1 + LBound(a)))
+Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
+    fibonacci = Array(b, a + b)
 End Function
-Function p_fibonacci() As Long
-    p_fibonacci = VBA.CLng(AddressOf fibonacci)
-End Function
+    
+    Function p_fibonacci() As Long
+        p_fibonacci = VBA.CLng(AddressOf fibonacci)
+    End Function
 
 'ロジスティック写像   (Xn, r)->(Xn+1, r)
-Function Logistic(ByRef x As Variant, ByRef dummy As Variant) As Variant
-    'Xn+1 = a * Xn * (1-Xn)
-    Logistic = Array(x(1) * x(0) * (1 - x(0)), x(1))
+Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
+    'Xn+1 = r * Xn * (1-Xn)
+    Logistic = r * x * (1 - x) 'Array(x(1) * x(0) * (1 - x(0)), x(1))
 End Function
-Function p_Logistic() As Long
-    p_Logistic = VBA.CLng(AddressOf Logistic)
-End Function
-
+    
+    Function p_Logistic() As Long
+        p_Logistic = VBA.CLng(AddressOf Logistic)
+    End Function
+    
 '述語 less
 Function less(ByRef a As Variant, ByRef b As Variant) As Variant
     less = IIf(a < b, 1&, 0&)
 End Function
-Function p_less() As Long
-    p_less = VBA.CLng(AddressOf less)
-End Function
+    
+    Function p_less() As Long
+        p_less = VBA.CLng(AddressOf less)
+    End Function
 
 '述語 great
 Function great(ByRef a As Variant, ByRef b As Variant) As Variant
     great = IIf(a > b, 1&, 0&)
 End Function
-Function p_great() As Long
-    p_great = VBA.CLng(AddressOf great)
-End Function
+    
+    Function p_great() As Long
+        p_great = VBA.CLng(AddressOf great)
+    End Function
+
