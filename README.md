@@ -24,7 +24,7 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
   Declare.txt  
   mapM.txt  
   vector.txt  
-  showM.txt  
+  printM.txt  
 Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせる。  
 
 '========= 実行例（VBEイミディエイトから）======================  
