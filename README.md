@@ -29,14 +29,14 @@ Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フ
 
 '========= 実行例（VBEイミディエイトから）======================  
 printM mapL(p_log, Array(1,2,3,4,5,6,7))  
-printM zipWith(p_add, Array(1,2,3,4,5), Array(10, 100, 1000, 100, 10))  
-?foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100  
-?foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)  
+printM zipWith(p_plus, Array(1,2,3,4,5), Array(10, 100, 1000, 100, 10))  
+? foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100  
+? foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)  
 
 '円周率  
 N=10000  
 points = zip(mapL(p_rnd, repeat(0, N), 1), mapL(p_rnd, repeat(0, N), 1))  
-?4 * count_if(p_less, mapL(p_distance, points, Array(0, 0)), 1.0) / N  
+? 4 * count_if(p_less, mapL(p_distance, points, Array(0, 0)), 1.0) / N  
 
 'ロジスティック漸化式  
 N = 50  
