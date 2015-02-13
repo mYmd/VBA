@@ -6,61 +6,61 @@ Option Explicit
 '================================================================================
 
 'デバッグウィンドウに配列のサイズを表示する
-Sub printS(ByRef M As Variant)
+Sub printS(ByRef m As Variant)
 Dim mes$, i%, total&
-    If VarType(M) = 0 Then Debug.Print " vbEmpty:": Exit Sub
-    If Dimension(M) = 0 Then Debug.Print " Scalar": Exit Sub
+    If VarType(m) = 0 Then Debug.Print " vbEmpty:": Exit Sub
+    If Dimension(m) = 0 Then Debug.Print " Scalar": Exit Sub
     mes = "": total = 1
-    For i = 1 To Dimension(M) Step 1
-        mes = mes & "[Dim" & i & "]: " & LBound(M, i) & " -> " & UBound(M, i) & "  "
-        total = total * (1 + UBound(M, i) - LBound(M, i))
+    For i = 1 To Dimension(m) Step 1
+        mes = mes & "[Dim" & i & "]: " & LBound(m, i) & " -> " & UBound(m, i) & "  "
+        total = total * (1 + UBound(m, i) - LBound(m, i))
     Next i
     mes = mes & ": Total Size = " & total
     Debug.Print mes
 End Sub
 
 'デバッグウィンドウに２次元配列を表示する
-Sub printM(ByRef M As Variant, Optional r As Variant, Optional c As Variant)
+Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
     Dim SR&, ER&, Sc&, EC&, i&, j&, MaxL%(), TMP() As Variant, Msg$
     
-    If Dimension(M) = 0 Then Debug.Print M: Exit Sub
-    If LBound(M) > UBound(M) Then Debug.Print "#Empty Matrix#": Exit Sub
-    If Dimension(M) = 1 Then showV M, r: Exit Sub
-    If Dimension(M) > 2 Then Stop: Exit Sub
+    If Dimension(m) = 0 Then Debug.Print m: Exit Sub
+    If LBound(m) > UBound(m) Then Debug.Print "#Empty Matrix#": Exit Sub
+    If Dimension(m) = 1 Then printV m, r: Exit Sub
+    If Dimension(m) > 2 Then Stop: Exit Sub
     If IsMissing(r) = True Then
-        SR = LBound(M, 1): ER = UBound(M, 1)
+        SR = LBound(m, 1): ER = UBound(m, 1)
     Else
         If r = 0 Then
             Debug.Print "#Empty Matrix#"
             Exit Sub
         End If
         If r > 0 Then
-            SR = LBound(M, 1)
+            SR = LBound(m, 1)
             ER = SR + r - 1
         Else
-            SR = UBound(M, 1) + r + 1
-            ER = UBound(M, 1)
+            SR = UBound(m, 1) + r + 1
+            ER = UBound(m, 1)
         End If
     End If
     If IsMissing(c) = True Then
-        Sc = LBound(M, 2): EC = UBound(M, 2)
+        Sc = LBound(m, 2): EC = UBound(m, 2)
     Else
         If c = 0 Then
             Debug.Print "#Empty Matrix#"
             Exit Sub
         End If
         If c > 0 Then
-            Sc = LBound(M, 2)
+            Sc = LBound(m, 2)
             EC = Sc + c - 1
         Else
-            Sc = UBound(M, 2) + c + 1
-            EC = UBound(M, 2)
+            Sc = UBound(m, 2) + c + 1
+            EC = UBound(m, 2)
         End If
     End If
-    If SR < LBound(M, 1) Then SR = LBound(M, 1)
-    If ER > UBound(M, 1) Then ER = UBound(M, 1)
-    If Sc < LBound(M, 2) Then Sc = LBound(M, 2)
-    If EC > UBound(M, 2) Then EC = UBound(M, 2)
+    If SR < LBound(m, 1) Then SR = LBound(m, 1)
+    If ER > UBound(m, 1) Then ER = UBound(m, 1)
+    If Sc < LBound(m, 2) Then Sc = LBound(m, 2)
+    If EC > UBound(m, 2) Then EC = UBound(m, 2)
     If (100000 < (ER - SR + 1) * (EC - Sc + 1)) Then
         Msg = "サイズ超過。縦*横 <=100000以内"
         i = MsgBox(Msg, vbOKOnly, "サイズ超過")
@@ -70,8 +70,9 @@ Sub printM(ByRef M As Variant, Optional r As Variant, Optional c As Variant)
     ReDim TMP(SR To ER, Sc To EC)
     For j = Sc To EC Step 1
         For i = SR To ER Step 1
-            TMP(i, j) = M(i, j)
-            If IsError(M(i, j)) = True Then TMP(i, j) = "Error!"
+            TMP(i, j) = m(i, j)
+            If IsError(m(i, j)) = True Then TMP(i, j) = "Error!"
+            If IsArray(m(i, j)) = True Then TMP(i, j) = "[nest]"
             If MaxL(j) < LenW(Trim(TMP(i, j))) Then MaxL(j) = LenW(Trim(TMP(i, j)))
         Next i
     Next j
@@ -84,7 +85,7 @@ Sub printM(ByRef M As Variant, Optional r As Variant, Optional c As Variant)
 End Sub
     
 'デバッグウィンドウにベクトルを表示する
-Private Sub showV(v As Variant, Optional r As Variant)
+Private Sub printV(v As Variant, Optional r As Variant)
     Dim SR&, ER&, i&, Msg$
     
     If Dimension(v) = 0 Then Debug.Print v: Exit Sub
@@ -104,9 +105,21 @@ Private Sub showV(v As Variant, Optional r As Variant)
         Exit Sub
     End If
     For i = SR To ER - 1 Step 1
-        If IsError(v(i)) = True Then Debug.Print Spc(2); "Error!" Else Debug.Print Spc(2); Trim(v(i));
+        If IsError(v(i)) = True Then
+            Debug.Print Spc(2); "Error!"
+        ElseIf IsArray(v(i)) = True Then
+            Debug.Print "  [nest]";
+        Else
+            Debug.Print Spc(2); Trim(v(i));
+        End If
     Next i
-    If IsError(v(ER)) = True Then Debug.Print Spc(2); "Error!" Else Debug.Print Spc(2); Trim(v(ER))
+    If IsError(v(ER)) = True Then
+        Debug.Print Spc(2); "Error!"
+    ElseIf IsArray(v(ER)) = True Then
+        Debug.Print "  [nest]"
+    Else
+        Debug.Print Spc(2); Trim(v(ER))
+    End If
 End Sub
 
 Private Function LenW(ByRef s As String) As Long
