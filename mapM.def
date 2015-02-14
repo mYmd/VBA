@@ -1,0 +1,21 @@
+; mapM.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "mapM"
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます
+
+	Dimension = Dimension
+	simple_invoke = simple_invoke
+	mapL = mapL
+	mapR = mapR
+	zipWith = zipWith
+	foldl = foldl
+	foldr = foldr
+	foldl1 = foldl1
+	foldr1 = foldr1
+	scanl = scanl
+	scanr = scanr
+	scanl1 = scanl1
+	scanr1 = scanr1
+	count_if = count_if
