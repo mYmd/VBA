@@ -31,13 +31,13 @@ End Function
     End Function
 
 'ふたつの引数を与える関数適用関数 : 配列にパックした引数を展開する
-' applyTogether([x, y], f)     ->    f(x, y)
-Function applyTogether(ByRef params As Variant, ByRef func As Variant) As Variant
-    applyTogether = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
+' applyUnzip([x, y], f)     ->    f(x, y)
+Function applyUnzip(ByRef params As Variant, ByRef func As Variant) As Variant
+    applyUnzip = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
 End Function
 
-    Function p_applyTogether() As Long
-        p_applyTogether = VBA.CLng(AddressOf applyTogether)
+    Function p_applyUnzip() As Long
+        p_applyUnzip = VBA.CLng(AddressOf applyUnzip)
     End Function
 
 '関数に引数を代入する関数
