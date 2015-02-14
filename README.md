@@ -48,7 +48,7 @@ printM m
 
 'フィボナッチ数列  
 N = 50  
-m = unzip(scanl(p_applyTogether, Array(0,1), repeat(p_fibonacci, N)), 1)(0)  
+m = unzip(scanl(p_applyUnzip, Array(0,1), repeat(p_fibonacci, N)), 1)(0)  
 printM m  
 m = unzip(scanr(p_setBothParams, Array(0,1), repeat(p_fibonacci, N)), 1)(0)  
 printM m  
