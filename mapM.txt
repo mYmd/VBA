@@ -10,7 +10,7 @@ End Function
         p_applyFun = VBA.CLng(AddressOf applyFun)
     End Function
 
-'第1引数を与える関数適用関数 : 第2引数は関数にキャプチャさせている
+'第1引数を与える関数適用関数 : 第2引数は関数にバインドしている
 ' applyAs1st(x, [f, b])   ->    f(x, b)
 Function applyAs1st(ByRef param As Variant, ByRef func As Variant) As Variant
     applyAs1st = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
@@ -20,7 +20,7 @@ End Function
         p_applyAs1st = VBA.CLng(AddressOf applyAs1st)
     End Function
 
-'第2引数を与える関数適用関数 : 第1引数は関数にキャプチャさせている
+'第2引数を与える関数適用関数 : 第1引数は関数にバインドしている
 ' applyAs2nd(x, [f, a])   ->    f(a, x)
 Function applyAs2nd(ByRef param As Variant, ByRef func As Variant) As Variant
     applyAs2nd = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
@@ -50,7 +50,7 @@ End Function
         p_setParam = VBA.CLng(AddressOf setParam)
     End Function
 
-'関数に第1引数を代入する関数 : 第2引数は関数にキャプチャさせている
+'関数に第1引数を代入する関数 : 第2引数は関数にバインドしている
 ' set1stParam([f, a], x)     ->    f(x, a)
 Function set1stParam(ByRef func As Variant, ByRef param As Variant) As Variant
     set1stParam = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
@@ -60,7 +60,7 @@ End Function
         p_set1stParam = VBA.CLng(AddressOf set1stParam)
     End Function
 
-'関数に第2引数を代入する関数 : 第1引数は関数にキャプチャさせている
+'関数に第2引数を代入する関数 : 第1引数は関数にバインドしている
 ' set2ndParam([f, a], x)     ->    f(a, x)
 Function set2ndParam(ByRef func As Variant, ByRef param As Variant) As Variant
     set2ndParam = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
