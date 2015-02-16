@@ -8,6 +8,7 @@ End Function
         p_elem_n = VBA.CLng(AddressOf elem_n)
     End Function
 
+'1番目の引数
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
     firstArg = a
 End Function
@@ -15,6 +16,7 @@ End Function
         p_firstArg = VBA.CLng(AddressOf firstArg)
     End Function
 
+'2番目の引数
 Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
     secondArg = b
 End Function
