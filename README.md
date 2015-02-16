@@ -32,6 +32,8 @@ printM mapL(p_log, Array(1,2,3,4,5,6,7))
 printM zipWith(p_plus, Array(1,2,3,4,5), Array(10, 100, 1000, 100, 10))  
 ? foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100  
 ? foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)  
+? mapL(p_applyFun, 3, Array(p_minus, 5, Null))  
+? mapL(p_applyFun, 3, Array(p_minus, Null, 5))  
 
 '円周率をシミュレーションによって確率的に求める  
 N=10000  
@@ -41,14 +43,17 @@ points = zip(mapL(p_rnd, repeat(0, N), 1), mapL(p_rnd, repeat(0, N), 1))
 'ロジスティック漸化式  
 N = 50  
 init = 0.1 : r = 3.754  
-m = scanl(p_applyAs1st, init, repeat(Array(p_Logistic, r), N))  
+m = scanl(p_applyFun, init, repeat(Array(p_Logistic, r, Null), N))  
 printM m  
-m = scanr(p_set1stParam, init, repeat(Array(p_Logistic, r), N))  
+m = scanr(p_setParam, init, repeat(Array(p_Logistic, r, Null), N))  
 printM m  
 
 'フィボナッチ数列  
 N = 50  
-m = unzip(scanl(p_applyUnzip, Array(0,1), repeat(p_fibonacci, N)), 1)(0)  
+m = unzip(scanl(p_applyFun, Array(0,1), repeat(Array(p_fibonacci, Null, Null), N)), 1)(0)  
 printM m  
-m = unzip(scanr(p_setBothParams, Array(0,1), repeat(p_fibonacci, N)), 1)(0)  
+m = unzip(scanr(p_setParam, Array(0,1), repeat(Array(p_fibonacci, Null, Null), N)), 1)(0)  
+printM m  
+'fibonacci関数が不要になった  
+m = unzip(scanl(p_applyFun2by2 , Array(0,1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)  
 printM m  
