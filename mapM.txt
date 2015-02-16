@@ -1,85 +1,106 @@
 Option Explicit
 
-'ひとつの引数を与える関数適用関数  引数に対して関数を適用する
-' applyFun(x, f)   ->   f(x)
+'n番目の要素
+Function elem_n(ByRef vec As Variant, ByRef n As Variant) As Variant
+    elem_n = vec(n)
+End Function
+    Function p_elem_n() As Long
+        p_elem_n = VBA.CLng(AddressOf elem_n)
+    End Function
+
+Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
+    firstArg = a
+End Function
+    Function p_firstArg() As Long
+        p_firstArg = VBA.CLng(AddressOf firstArg)
+    End Function
+
+Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
+    secondArg = b
+End Function
+    Function p_secondArg() As Long
+        p_secondArg = VBA.CLng(AddressOf secondArg)
+    End Function
+
+'関数適用関数  引数に対して関数を適用する   関数はNullをプレースホルダとした簡易Bind式
+' applyFun(x     ,  f             )  ->  f(x)
+' applyFun(x     , (f)            )  ->  f(x)
+' applyFun(x     , (f, Null)      )  ->  f(x)
+' applyFun(x     , (f, a)         )  ->  f(a, x)
+' applyFun(x     , (f, a, Null)   )  ->  f(a, x)
+' applyFun(x     , (f, Null, b)   )  ->  f(x, b)
+' applyFun((x, y), (f, Null, Null))  ->  f(x, y)
 Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
-    applyFun = simple_invoke(func, param)
+    If IsArray(func) Then
+        Select Case 1 + UBound(func) - LBound(func)
+        Case 1  '(f)
+            applyFun = simple_invoke(func(LBound(func)), param)
+        Case 2  ' (f, Null) または (f, a)
+            If IsNull(func(1 + LBound(func))) Then      ' (f, Null)
+                applyFun = simple_invoke(func(LBound(func)), param)
+            Else                                        ' (f, a)
+                applyFun = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
+            End If
+        Case 3  ' (f, a, Null) または (f, a, b) または (f, Null, b) または (f, Null, Null)
+            If IsNull(func(1 + LBound(func))) = False Then
+                If IsNull(func(2 + LBound(func))) = False Then          '(f, a, b)
+                    applyFun = simple_invoke(func(LBound(func)), func(1 + LBound(func)), func(2 + LBound(func)))
+                Else                                                    '(f, a, Null)
+                    applyFun = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
+                End If
+            ElseIf IsNull(func(2 + LBound(func))) = False Then          '(f, Null, b)
+                applyFun = simple_invoke(func(LBound(func)), param, func(2 + LBound(func)))
+            Else                                                        '(f, Null, Null)
+                applyFun = simple_invoke(func(LBound(func)), param(LBound(param)), param(1 + LBound(param)))
+            End If
+        Case Else
+           
+        End Select
+    Else
+        applyFun = simple_invoke(func, param)
+    End If
 End Function
     
     Function p_applyFun() As Long
         p_applyFun = VBA.CLng(AddressOf applyFun)
     End Function
 
-'第1引数を与える関数適用関数 : 第2引数は関数にバインドしている
-' applyAs1st(x, [f, b])   ->    f(x, b)
-Function applyAs1st(ByRef param As Variant, ByRef func As Variant) As Variant
-    applyAs1st = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
-End Function
-    
-    Function p_applyAs1st() As Long
-        p_applyAs1st = VBA.CLng(AddressOf applyAs1st)
-    End Function
-
-'第2引数を与える関数適用関数 : 第1引数は関数にバインドしている
-' applyAs2nd(x, [f, a])   ->    f(a, x)
-Function applyAs2nd(ByRef param As Variant, ByRef func As Variant) As Variant
-    applyAs2nd = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
-End Function
-
-    Function p_applyAs2nd() As Long
-        p_applyAs2nd = VBA.CLng(AddressOf applyAs2nd)
-    End Function
-
-'ふたつの引数を与える関数適用関数 : 配列にパックした引数を展開する
-' applyUnzip([x, y], f)     ->    f(x, y)
-Function applyUnzip(ByRef params As Variant, ByRef func As Variant) As Variant
-    applyUnzip = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
-End Function
-
-    Function p_applyUnzip() As Long
-        p_applyUnzip = VBA.CLng(AddressOf applyUnzip)
-    End Function
-
 '関数に引数を代入する関数
-' setParam(f, x)     ->    f(x)
+' setParam(f              , x     )  ->  f(x)
+' setParam((f)            , x     )  ->  f(x)
+' setParam((f, Null)      , x     )  ->  f(x)
+' setParam((f, a)         , x     )  ->  f(a, x)
+' setParam((f, a, Null)   , x     )  ->  f(a, x)
+' setParam((f, Null, b)   , x     )  ->  f(x, b)
+' setParam((f, Null, Null), (x, y))  ->  f(x, y)
 Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
-    setParam = simple_invoke(func, param)
+    setParam = applyFun(param, func)
 End Function
 
     Function p_setParam() As Long
         p_setParam = VBA.CLng(AddressOf setParam)
     End Function
 
-'関数に第1引数を代入する関数 : 第2引数は関数にバインドしている
-' set1stParam([f, a], x)     ->    f(x, a)
-Function set1stParam(ByRef func As Variant, ByRef param As Variant) As Variant
-    set1stParam = simple_invoke(func(LBound(func)), param, func(1 + LBound(func)))
+'((x, y), (f1, f2))  に対して  Array(f1(x, y), f2(x, y))     を返す
+Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Variant
+    applyFun2by2 = Array( _
+          simple_invoke(funcs(LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
+        , simple_invoke(funcs(1 + LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
+                     )
 End Function
 
-    Function p_set1stParam() As Long
-        p_set1stParam = VBA.CLng(AddressOf set1stParam)
+    Function p_applyFun2by2() As Long
+        p_applyFun2by2 = VBA.CLng(AddressOf applyFun2by2)
     End Function
 
-'関数に第2引数を代入する関数 : 第1引数は関数にバインドしている
-' set2ndParam([f, a], x)     ->    f(a, x)
-Function set2ndParam(ByRef func As Variant, ByRef param As Variant) As Variant
-    set2ndParam = simple_invoke(func(LBound(func)), func(1 + LBound(func)), param)
+'((f1, f2), (x, y))  に対して  Array(f1(x, y), f2(x, y))     を返す
+Function setParam2by2(ByRef funcs As Variant, ByRef params As Variant) As Variant
+    setParam2by2 = applyFun2by2(params, funcs)
 End Function
 
-    Function p_set2ndParam() As Long
-        p_set2ndParam = VBA.CLng(AddressOf set2ndParam)
+    Function p_setParam2by2() As Long
+        p_setParam2by2 = VBA.CLng(AddressOf setParam2by2)
     End Function
-
-'関数にふたつの引数を代入する関数 : 配列にパックした引数を展開する
-' setBothParams(f, [x, y])     ->    f(x, y)
-Function setBothParams(ByRef func As Variant, ByRef params As Variant) As Variant
-    setBothParams = simple_invoke(func, params(LBound(params)), params(1 + LBound(params)))
-End Function
-
-    Function p_setBothParams() As Long
-        p_setBothParams = VBA.CLng(AddressOf setBothParams)
-    End Function
-
 
 '============================================================================
 '============================================================================
