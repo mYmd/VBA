@@ -6,6 +6,9 @@ EXPORTS
     ; 明示的なエクスポートはここへ記述できます
 
 	Dimension = Dimension
+	variantRef = variantRef
+	isVariantRef = isVariantRef
+	variantDeRef = variantDeRef
 	simple_invoke = simple_invoke
 	mapL = mapL
 	mapR = mapR
