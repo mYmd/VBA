@@ -1,0 +1,93 @@
+Sub vbaUnit()
+    Dim n As Long
+    Dim Points As Variant, m As Variant
+    Dim init As Double, r As Double
+    Dim a1 As Variant, a2 As Variant, a3 As Variant, a4 As Variant, a5 As Variant, a6 As Variant
+    Dim x1 As Variant, x2 As Variant, x3 As Variant, x4 As Variant, x5 As Variant, x6 As Variant
+    
+    Debug.Print "------- mapL ----------"
+    printM mapL(p_log, Array(1, 2, 3, 4, 5, 6, 7))
+    Debug.Print "------- zipWith ----------"
+    printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
+    Debug.Print "------- foldl ----------"
+    printM foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100
+    Debug.Print "------- foldr ----------"
+    printM foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)
+    
+    Debug.Print "------- 円周率を確率的に求める ------------"
+    n = 10000
+    Points = zip(mapL(p_rnd, repeat(0, n), 1), mapL(p_rnd, repeat(0, n), 1))
+    printM 4 * count_if(p_less, mapL(p_distance, Points, Array(0, 0)), 1#) / n
+    
+    Debug.Print "------- ロジスティック漸化式 ------------"
+    n = 10
+    init = 0.1: r = 3.754
+    m = scanl(p_applyFun, init, repeat(Array(p_Logistic, Null, r), n))
+    printM m
+    m = scanr(p_setParam, init, repeat(Array(p_Logistic, Null, r), n))
+    printM m
+    
+    Debug.Print "------- フィボナッチ数列 ------------"
+    n = 10
+    m = unzip(scanl(p_applyFun, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), n)), 1)(0)
+    printM m
+    m = unzip(scanr(p_setParam, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), n)), 1)(0)
+    printM m
+    m = unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
+    printM m
+
+    Debug.Print "------- 配列への値の代入 ------------"
+    m = makeM(9, 5, repeat("", 50))
+    printM fillRow(fillCol(m, 2, repeat("*", 25)), 3, repeat("*", 25))
+    
+    Debug.Print "------- forward_as_tuple(1) ------------"
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4
+    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):
+    m = makeM(2, 2, forward_as_tuple(x1, x2, x3, x4))
+    printM m
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40
+    printM m
+    Debug.Print "------- forward_as_tuple(2) ------------"
+    m = catV(forward_as_tuple(x1, x2), forward_as_tuple(x3, x4))
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4
+    printM m
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40
+    printM m
+    Debug.Print "------- forward_as_tuple(3) ------------"
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4
+    m = catV(x1, forward_as_tuple(x2, x3, x4))
+    printM m
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40
+    printM m
+    Debug.Print "------- forward_as_tuple(4) ------------"
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4
+    m = catV(forward_as_tuple(x1, x2, x3), x4)
+    printM m
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40
+    printM m
+    Debug.Print "------- zip ------------"
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4
+    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):
+    m = zip(forward_as_tuple(x1, x2), forward_as_tuple(x3, x4))
+    printM m(0): printM m(1)
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40
+    printM m(0): printM m(1)
+    Debug.Print "------- unzip(1) ------------"
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4: a5 = 5: a6 = 6
+    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):: x5 = variantRef(a5): x6 = variantRef(a6)
+    m = zip(forward_as_tuple(x1, x2, x3), forward_as_tuple(x4, x5, x6))
+    printM m(0): printM m(1): printM m(2)
+    m = unzip(m, 1)
+    printM m(0): printM m(1)
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40: a5 = 50: a6 = 60
+    printM m(0): printM m(1)
+    Debug.Print "------- unzip(2) ------------"
+    a1 = 1: a2 = 2: a3 = 3: a4 = 4: a5 = 5: a6 = 6
+    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):: x5 = variantRef(a5): x6 = variantRef(a6)
+    m = zip(forward_as_tuple(x1, x2, x3), forward_as_tuple(x4, x5, x6))
+    printM m(0): printM m(1): printM m(2)
+    m = unzip(m, 2)
+    printM m
+    a1 = 10: a2 = 20: a3 = 30: a4 = 40: a5 = 50: a6 = 60
+    printM m
+End Sub
