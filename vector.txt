@@ -4,6 +4,12 @@ Option Explicit
     ' Function  rowSize              配列の行数
     ' Function  colSize              配列の列数
     ' Function  sizeof               配列の全要素数
+    ' Function  getLBound            LBoundの取得
+    ' Function  getUBound            UBoundの取得
+    ' Function  getElem0             スカラーの取得
+    ' Function  getElem1             1次元配列の要素の取得
+    ' Function  getElem2             2次元配列の要素の取得
+    ' Function  getElem3             3次元配列の要素の取得
     ' Function  a_rows               全行番号の列挙
     ' Function  a_cols               全列番号の列挙
     ' Function  repeat               N個の値を並べる
@@ -15,9 +21,9 @@ Option Explicit
     ' Function  selectRow            特定行の取得
     ' Function  selectCol            特定列の取得
     ' Function  makeM                配列の作成
-    ' Sub       fillM                配列をデータで埋める
-    ' Sub       fillRow              配列の特定行をデータで埋める
-    ' Sub       fillCol              配列の特定列をデータで埋める
+    ' Function  fillM                配列をデータで埋める
+    ' Function  fillRow              配列の特定行をデータで埋める
+    ' Function  fillCol              配列の特定列をデータで埋める
     ' Function  subM                 配列の部分配列を作成する
     ' Function  slashR               ベクトル・配列の（行の）取捨をする
     ' Function  slashC               ベクトル・配列の（列の）取捨をする
@@ -31,50 +37,118 @@ Option Explicit
     ' Function  product_set          ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
 
-Public Function rowSize(ByRef data As Variant) As Long
-    Select Case Dimension(data)
+'サイズ情報
+    Private Function size_imple(ByRef matrix As Variant, ByRef d As Variant) As Variant
+        size_imple = 1 + UBound(matrix, d) - LBound(matrix, d)
+    End Function
+        Function p_size_imple() As Long
+            p_size_imple = VBA.CLng(AddressOf size_imple)
+        End Function
+
+    Private Function lBound_imple(ByRef matrix As Variant, ByRef d As Variant) As Variant
+        lBound_imple = LBound(matrix, d)
+    End Function
+
+    Private Function uBound_imple(ByRef matrix As Variant, ByRef d As Variant) As Variant
+        uBound_imple = UBound(matrix, d)
+    End Function
+
+'行数
+Public Function rowSize(ByRef matrix As Variant) As Long
+    Select Case Dimension(matrix)
     Case 0
         rowSize = 0
     Case Else
-        rowSize = 1 + UBound(data) - LBound(data)
+        rowSize = simple_invoke(AddressOf size_imple, matrix, 1)
     End Select
 End Function
 
+'列数
 Public Function colSize(ByRef data As Variant) As Long
     Select Case Dimension(data)
     Case 0, 1
         colSize = 0
     Case Else
-        colSize = 1 + UBound(data, 2) - LBound(data, 2)
+        colSize = simple_invoke(AddressOf size_imple, data, 2)
     End Select
 End Function
 
+'全要素数
 Public Function sizeof(ByRef data As Variant) As Long
     Dim i As Long, d As Long
     
     d = Dimension(data)
     sizeof = 1
-    For i = 1 To d Step 1:        sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i)):    Next i
+    For i = 1 To d Step 1
+        sizeof = sizeof * simple_invoke(AddressOf size_imple, data, i)
+    Next i
 End Function
+
+'LBound
+Public Function getLBound(ByRef matrix As Variant, ByVal d As Long) As Variant
+    getLBound = simple_invoke(AddressOf lBound_imple, matrix, d)
+End Function
+
+'UBound
+Public Function getUBound(ByRef matrix As Variant, ByVal d As Long) As Variant
+    getUBound = simple_invoke(AddressOf uBound_imple, matrix, d)
+End Function
+
+
+'配列要素
+    Private Function getElem_imple(ByRef matrix As Variant, ByRef index As Variant) As Variant
+        Select Case index(0)
+        Case 0:        getElem_imple = matrix
+        Case 1:        getElem_imple = matrix(index(1))
+        Case 2:        getElem_imple = matrix(index(1), index(2))
+        Case 3:        getElem_imple = matrix(index(1), index(2), index(3))
+        End Select
+    End Function
+
+Public Function getElem0(ByRef matrix As Variant, ByVal i As Long) As Variant
+    getElem0 = simple_invoke(AddressOf getElem_imple, matrix, Array(0))
+End Function
+
+Public Function getElem1(ByRef matrix As Variant, ByVal i As Long) As Variant
+    getElem1 = simple_invoke(AddressOf getElem_imple, matrix, Array(1, i))
+End Function
+
+Public Function getElem2(ByRef matrix As Variant, ByVal i As Long, ByVal j As Long) As Variant
+    getElem2 = simple_invoke(AddressOf getElem_imple, matrix, Array(2, i, j))
+End Function
+
+Public Function getElem3(ByRef matrix As Variant, ByVal i As Long, ByVal j As Long, ByVal k As Long) As Variant
+    getElem3 = simple_invoke(AddressOf getElem_imple, matrix, Array(3, i, j, k))
+End Function
+
+
+'行番号・列番号
+    Private Function a_rows_cols_imple(ByRef matrix As Variant, ByRef rc As Variant) As Variant
+        a_rows_cols_imple = iota(LBound(matrix, rc), UBound(matrix, rc))
+    End Function
 
 '全行番号の列挙
 Public Function a_rows(ByRef matrix As Variant) As Variant
-    a_rows = iota(LBound(matrix, 1), UBound(matrix, 1))
+    a_rows = simple_invoke(AddressOf a_rows_cols_imple, matrix, 1)
 End Function
 
 '全列番号の列挙
 Public Function a_cols(ByRef matrix As Variant) As Variant
-    a_cols = iota(LBound(matrix, 2), UBound(matrix, 2))
+    a_cols = simple_invoke(AddressOf a_rows_cols_imple, matrix, 2)
 End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
+Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If N < 1 Then repeat = Array(): Exit Function
-    ReDim ret(0 To N - 1)
-    For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
+    If n < 1 Then repeat = Array(): Exit Function
+    ReDim ret(0 To n - 1)
+    If isVariantRef(v) Then
+        For i = 0 To n - 1 Step 1:  ret(i) = variantRef(v): Next i
+    Else
+        For i = 0 To n - 1 Step 1:  ret(i) = v: Next i
+    End If
     repeat = ret
 End Function
 
@@ -94,45 +168,52 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 'ベクトルの最初のN個をとる
-Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
-    Dim lb As Long, i As Long
-    Dim ret As Variant
-    
-    If N < 1 Then
-        headN = Array()
-    ElseIf sizeof(vec) < N Then
-        headN = vec
-    Else
-        lb = LBound(vec)
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
-            ret(i) = vec(i + lb)
-        Next i
-        headN = ret
-    End If
+    Private Function headN_imple(ByRef vec As Variant, ByRef n As Variant) As Variant
+        Dim LB As Long, i As Long
+        Dim ret As Variant
+        
+        If n < 1 Then
+            headN_imple = Array()
+        ElseIf sizeof(vec) < n Then
+            headN_imple = vec
+        Else
+            LB = LBound(vec)
+            ReDim ret(0 To n - 1)
+            For i = 0 To n - 1 Step 1
+                ret(i) = vec(i + LB)
+            Next i
+            headN_imple = ret
+        End If
+    End Function
+
+Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
+    headN = simple_invoke(AddressOf headN_imple, vec, n)
 End Function
-    
     Public Function p_headN() As Long
         p_headN = VBA.CLng(AddressOf headN)
     End Function
 
 'ベクトルの最後のN個をとる
-Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
-    Dim lb As Long, i As Long
-    Dim ret As Variant
-    
-    If N < 1 Then
-        tailN = Array()
-    ElseIf sizeof(vec) < N Then
-        tailN = vec
-    Else
-        lb = UBound(vec) - N + 1
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
-            ret(i) = vec(i + lb)
-        Next i
-        tailN = ret
-    End If
+    Private Function tailN_imple(ByRef vec As Variant, ByRef n As Variant) As Variant
+        Dim LB As Long, i As Long
+        Dim ret As Variant
+        
+        If n < 1 Then
+            tailN_imple = Array()
+        ElseIf sizeof(vec) < n Then
+            tailN_imple = vec
+        Else
+            LB = UBound(vec) - n + 1
+            ReDim ret(0 To n - 1)
+            For i = 0 To n - 1 Step 1
+                ret(i) = vec(i + LB)
+            Next i
+            tailN_imple = ret
+        End If
+    End Function
+
+Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
+    tailN = simple_invoke(AddressOf tailN_imple, vec, n)
 End Function
     
     Public Function p_tailN() As Long
@@ -140,83 +221,101 @@ End Function
     End Function
 
 'スカラー、配列のベクトル化(行→列)
-Public Function vector(data As Variant) As Variant
-    Dim i As Long, j As Long, kkkkkk As Long
-    Dim ret   As Variant
-    
-    Select Case Dimension(data)
-    Case 0
-        vector = Array(data)
-    Case 1
-        vector = data
-    Case 2
+    Private Function vector_imple(ByRef data As Variant, ByRef dummy As Variant) As Variant
+        Dim i As Long, j As Long, kkkkkk As Long
+        Dim ret   As Variant
+        
         kkkkkk = 0
         ReDim ret(0 To sizeof(data) - 1)
         For i = LBound(data, 1) To UBound(data, 1) Step 1
             For j = LBound(data, 2) To UBound(data, 2) Step 1
-                ret(kkkkkk) = data(i, j)
+                Call forward_assign1(ret, kkkkkk, data(i, j))
                 kkkkkk = kkkkkk + 1
             Next j
         Next i
-        vector = ret
+        vector_imple = ret
+    End Function
+
+Public Function vector(ByRef data As Variant) As Variant
+Dim ret As Variant
+    Select Case Dimension(data)
+    Case 0:     vector = forward_as_tuple(data)
+    Case 1:
+        If isVariantRef(data) = 1 Then
+            vector = variantRef(data)
+        Else
+            vector = data
+        End If
+    Case 2:     vector = simple_invoke(AddressOf vector_imple, data, data)
     End Select
+    
 End Function
 
 'ベクトルを逆順に並べる
-Public Function reverse(ByRef data As Variant) As Variant
-    Dim ret As Variant
-    Dim i  As Long, j As Long
+    Private Function reverse_imple(ByRef data As Variant, ByRef dummy As Variant) As Variant
+        Dim ret As Variant
+        Dim i  As Long, j As Long
+    
+        ret = data
+        If Dimension(data) = 1 Then
+             i = LBound(data)
+             j = UBound(data)
+            Do While i < j
+                Call forward_assign1(ret, i, data(j))
+                Call forward_assign1(ret, j, data(i))
+                i = i + 1
+                j = j - 1
+            Loop
+        End If
+        reverse_imple = ret
+    End Function
 
-    ret = data
-    If Dimension(data) = 1 Then
-         i = LBound(data)
-         j = UBound(data)
-        Do While i < j
-            ret(i) = data(j)
-            ret(j) = data(i)
-            i = i + 1
-            j = j - 1
-        Loop
-    End If
-    reverse = ret
+Public Function reverse(ByRef data As Variant) As Variant
+    reverse = simple_invoke(AddressOf reverse_imple, data, data)
 End Function
 
 '特定行の取得
+    Private Function selectRow_imple(data As Variant, ByRef i As Variant) As Variant
+        Dim j     As Long
+        Dim ret   As Variant
+    
+        If i < LBound(data, 1) Or UBound(data, 1) < i Then
+            selectRow_imple = Array()
+        Else
+            ReDim ret(LBound(data, 2) To UBound(data, 2))
+            For j = LBound(data, 2) To UBound(data, 2) Step 1
+                ret(j) = data(i, j)
+            Next j
+            selectRow_imple = ret
+        End If
+    End Function
+
 Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
-    Dim j     As Long
-    Dim ret   As Variant
-
-    If i < LBound(data, 1) Or UBound(data, 1) < i Then
-        selectRow = Array()
-    Else
-        ReDim ret(LBound(data, 2) To UBound(data, 2))
-        For j = LBound(data, 2) To UBound(data, 2) Step 1
-            ret(j) = data(i, j)
-        Next j
-        selectRow = ret
-    End If
+    selectRow = simple_invoke(AddressOf selectRow_imple, data, i)
 End Function
-
     Public Function p_selectRow() As Long
         p_selectRow = VBA.CLng(AddressOf selectRow)
     End Function
 
 '特定列の取得
-Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
-    Dim i     As Long
-    Dim ret   As Variant
-
-    If j < LBound(data, 2) Or UBound(data, 2) < j Then
-        selectCol = Array()
-    Else
-        ReDim ret(LBound(data, 1) To UBound(data, 1))
-        For i = LBound(data, 1) To UBound(data, 1) Step 1
-            ret(i) = data(i, j)
-        Next i
-        selectCol = ret
-    End If
-End Function
+    Private Function selectCol_imple(data As Variant, ByRef j As Variant) As Variant
+        Dim i     As Long
+        Dim ret   As Variant
     
+        If j < LBound(data, 2) Or UBound(data, 2) < j Then
+            selectCol_imple = Array()
+        Else
+            ReDim ret(LBound(data, 1) To UBound(data, 1))
+            For i = LBound(data, 1) To UBound(data, 1) Step 1
+                ret(i) = data(i, j)
+            Next i
+            selectCol_imple = ret
+        End If
+    End Function
+        
+Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
+    selectCol = simple_invoke(AddressOf selectCol_imple, data, j)
+End Function
     Public Function p_selectCol() As Long
         p_selectCol = VBA.CLng(AddressOf selectCol)
     End Function
@@ -230,360 +329,411 @@ Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByR
     Else
         ReDim ret(0 To r - 1, 0 To c - 1)
     End If
-    If IsMissing(data) = False Then Call fillM(ret, data)
+    If IsMissing(data) = False Then Call fillM_imple(ret, data)
     makeM = ret
 End Function
 
 '配列をデータで埋める
-Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
-    Dim i    As Long, j As Long, k As Long
-    Dim data_2  As Variant
-
-    If Dimension(data) = 0 Then
-        data_2 = repeat(data, sizeof(matrix))
-    Else
-        data_2 = vector(data)
-    End If
-    k = LBound(data_2)
-    Select Case Dimension(matrix)
-    Case 1
-        For i = LBound(matrix) To UBound(matrix) Step 1
-            matrix(i) = data_2(k)
-            k = k + 1
-            If UBound(data_2) < k Then Exit For
-        Next i
-    Case 2
-        For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-            If UBound(data_2) < k Then Exit For
-            For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-                matrix(i, j) = data_2(k)
+    Private Function fillM_imple(ByRef matrix As Variant, ByRef data As Variant) As Variant
+        Dim i    As Long, j As Long, k As Long
+        Dim data_2  As Variant
+        
+        If Dimension(data) = 0 Then
+            data_2 = repeat(data, sizeof(matrix))
+        Else
+            data_2 = vector(data)
+        End If
+        k = LBound(data_2)
+        Select Case Dimension(matrix)
+        Case 1
+            For i = LBound(matrix) To UBound(matrix) Step 1
+                Call forward_assign1(matrix, i, data_2(k))
                 k = k + 1
                 If UBound(data_2) < k Then Exit For
-            Next j
-        Next i
-    End Select
-End Sub
+            Next i
+        Case 2
+            For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+                If UBound(data_2) < k Then Exit For
+                For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+                    Call forward_assign2(matrix, i, j, data_2(k))
+                    k = k + 1
+                    If UBound(data_2) < k Then Exit For
+                Next j
+            Next i
+        End Select
+        fillM_imple = variantRef(matrix)
+    End Function
+
+'配列をデータで埋める
+Public Function fillM(ByRef matrix As Variant, ByRef data As Variant) As Variant
+    fillM = simple_invoke(AddressOf fillM_imple, matrix, data)
+End Function
 
 '配列の特定行をデータで埋める
-Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
-    Dim j As Long, k As Long
-    
-    If Dimension(data) = 0 Then
-        For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-            matrix(i, j) = data
-        Next j
-    ElseIf Dimension(data) = 1 Then
-        k = LBound(data)
-        For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-            matrix(i, j) = data(k)
-            k = k + 1
-            If UBound(data) < k Then Exit For
-        Next j
-    End If
-End Sub
+    Private Function fillRow_imple(ByRef matrix As Variant, ByRef idata As Variant) As Variant
+        Dim i As Long
+        Dim data As Variant
+        Dim j As Long, k As Long
+        
+        i = idata(0)
+        If Dimension(idata(1)) = 0 Then
+            For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+                matrix(i, j) = idata(1)
+            Next j
+        ElseIf Dimension(idata(1)) = 1 Then
+            k = LBound(idata(1))
+            For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+                Call forward_assign2(matrix, i, j, idata(1)(k))
+                k = k + 1
+                If UBound(idata(1)) < k Then Exit For
+            Next j
+        End If
+        fillRow_imple = variantRef(matrix)
+    End Function
+
+'配列の特定行をデータで埋める
+Public Function fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
+    fillRow = simple_invoke(AddressOf fillRow_imple, matrix, Array(i, variantRef(data)))
+End Function
 
 '((((配列の特定行をデータで埋める))))
-Private Sub fillRow_imple(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant, ByVal rrrr As Long)
-    Dim j As Long, k As Long
-    
-    k = LBound(data, 2)
-    For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-        matrix(i, j) = data(rrrr, k)
-        k = k + 1
-    Next j
-End Sub
+    Private Sub fillRow_subroutine(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant, ByVal rrrr As Long)
+        Dim j As Long, k As Long
+        
+        k = LBound(data, 2)
+        For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+            Call forward_assign2(matrix, i, j, data(rrrr, k))
+            k = k + 1
+        Next j
+    End Sub
 
 '配列の特定列をデータで埋める
-Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant)
-    Dim i As Long, k As Long
-    
-    If Dimension(data) = 0 Then
-        For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-            matrix(i, j) = data
-        Next i
-    ElseIf Dimension(data) = 1 Then
-        k = LBound(data)
-        For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-            matrix(i, j) = data(k)
-            k = k + 1
-            If UBound(data) < k Then Exit For
-        Next i
-    End If
-End Sub
+    Private Function fillCol_imple(ByRef matrix As Variant, ByRef jdata As Variant) As Variant
+        Dim j As Long
+        Dim i As Long, k As Long
+        
+        j = jdata(0)
+        fillCol_imple = 0
+        If Dimension(jdata(1)) = 0 Then
+            For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+                matrix(i, j) = jdata(1)
+            Next i
+        ElseIf Dimension(jdata(1)) = 1 Then
+            k = LBound(jdata(1))
+            For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+                Call forward_assign2(matrix, i, j, jdata(1)(k))
+                k = k + 1
+                If UBound(jdata(1)) < k Then Exit For
+            Next i
+        End If
+        fillCol_imple = variantRef(matrix)
+    End Function
+
+Public Function fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
+    fillCol = simple_invoke(AddressOf fillCol_imple, matrix, Array(j, variantRef(data)))
+End Function
 
 '((((配列の特定列をデータで埋める))))
-Private Sub fillCol_imple(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant, ByVal cccc As Long)
-    Dim i As Long, k As Long
-    
-    k = LBound(data, 1)
-    For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-        matrix(i, j) = data(k, cccc)
-        k = k + 1
-    Next i
-End Sub
+    Private Sub fillCol_subroutine(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant, ByVal cccc As Long)
+        Dim i As Long, k As Long
+        
+        k = LBound(data, 1)
+        For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+            Call forward_assign2(matrix, i, j, data(k, cccc))
+            k = k + 1
+        Next i
+    End Sub
 
 '配列の部分配列を作成する
-Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
-    Dim i As Long, j As Long, aaaaaa As Long, bbbbbb As Long
-    Dim ret As Variant
-
-    Select Case Dimension(matrix)
-    Case 0
-        ret = Array()
-    Case 1
-        aaaaaa = LBound(matrix, 1)
-        ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(rows))
-        For i = LBound(rows) To UBound(rows) Step 1
-            ret(aaaaaa) = matrix(rows(i))
-            aaaaaa = aaaaaa + 1
-        Next i
-    Case 2
-        aaaaaa = LBound(matrix, 1)
-        bbbbbb = LBound(matrix, 2)
-        If IsMissing(rows) Then rows = a_rows(matrix)
-        If IsMissing(cols) Then cols = a_cols(matrix)
-        ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(rows), bbbbbb To bbbbbb - 1 + sizeof(cols))
-        For i = LBound(rows) To UBound(rows) Step 1
+    Private Function subM_imple(matrix As Variant, ByRef RowsCols As Variant) As Variant
+        Dim i As Long, j As Long, aaaaaa As Long, bbbbbb As Long
+        Dim iiii As Long, jjjj As Long
+        Dim ret As Variant
+    
+        Select Case Dimension(matrix)
+        Case 0
+            ret = Array()
+        Case 1
+            aaaaaa = LBound(matrix, 1)
+            ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(RowsCols(0)))
+            For i = getLBound(RowsCols(0), 1) To getUBound(RowsCols(0), 1) Step 1
+                iiii = getElem1(RowsCols(0), i)
+                Call forward_assign1(ret, aaaaaa, matrix(iiii))
+                aaaaaa = aaaaaa + 1
+            Next i
+        Case 2
+            aaaaaa = LBound(matrix, 1)
             bbbbbb = LBound(matrix, 2)
-            For j = LBound(cols) To UBound(cols) Step 1
-                ret(aaaaaa, bbbbbb) = matrix(rows(i), cols(j))
-                bbbbbb = bbbbbb + 1
-            Next j
-            aaaaaa = aaaaaa + 1
-        Next i
-    End Select
-    subM = ret
+            ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(RowsCols(0)), bbbbbb To bbbbbb - 1 + sizeof(RowsCols(1)))
+            For i = getLBound(RowsCols(0), 1) To getUBound(RowsCols(0), 1) Step 1
+                bbbbbb = LBound(matrix, 2)
+                For j = getLBound(RowsCols(1), 1) To getUBound(RowsCols(1), 1) Step 1
+                    iiii = getElem1(RowsCols(0), i)
+                    jjjj = getElem1(RowsCols(1), j)
+                    Call forward_assign2(ret, aaaaaa, bbbbbb, matrix(iiii, jjj))
+                    bbbbbb = bbbbbb + 1
+                Next j
+                aaaaaa = aaaaaa + 1
+            Next i
+        End Select
+        subM_imple = ret
+    End Function
+    
+Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
+    If IsMissing(rows) Then rows = a_rows(matrix)
+    If IsMissing(cols) Then
+        cols = 0
+        If Dimension(matrix) = 2 Then cols = a_cols(matrix)
+    End If
+    subM = simple_invoke(AddressOf subM_imple, matrix, forward_as_tuple(variantRef(rows), variantRef(cols)))
 End Function
 
 'ベクトル・配列の（行の）取捨をする
 'Flgは 0/1
-Public Function slashR(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim ret As Variant
-    Dim length As Long, i As Long, kkkkkkkk As Long
-    
-    length = 0
-    For i = LBound(flg) To UBound(flg) Step 1
-        If 0 <> flg(i) Then length = length + 1
-    Next i
-    ret = Array()
-    If 0 < length Then
-        Select Case Dimension(data)
-        Case 1
-            If sizeof(data) < length Then length = sizeof(data)
-            ReDim ret(LBound(data) To LBound(data) - 1 + length)
-            kkkkkkkk = LBound(ret)
-            For i = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(i) Then
-                    ret(kkkkkkkk) = data(LBound(data) + i - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret) < kkkkkkkk Then Exit For
-                End If
-            Next i
-        Case 2
-            If rowSize(data) < length Then length = rowSize(data)
-            ReDim ret(LBound(data) To LBound(data) - 1 + length, LBound(data, 2) To UBound(data, 2))
-            kkkkkkkk = LBound(ret)
-            For i = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(i) Then
-                    Call fillRow_imple(ret, kkkkkkkk, data, LBound(data) + i - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret, 1) < kkkkkkkk Then Exit For
-                End If
-            Next i
-        End Select
-    End If
-    slashR = ret
-End Function
+    Private Function slashR_imple(ByRef matrix As Variant, ByRef flg As Variant) As Variant
+        Dim ret As Variant
+        Dim length As Long, i As Long, kkkkkkkk As Long
+        
+        length = 0
+        For i = LBound(flg) To UBound(flg) Step 1
+            If 0 <> flg(i) Then length = length + 1
+        Next i
+        ret = Array()
+        If 0 < length Then
+            Select Case Dimension(matrix)
+            Case 1
+                If sizeof(matrix) < length Then length = sizeof(matrix)
+                ReDim ret(LBound(matrix) To LBound(matrix) - 1 + length)
+                kkkkkkkk = LBound(ret)
+                For i = LBound(flg) To UBound(flg) Step 1
+                    If 0 <> flg(i) Then
+                        Call forward_assign1(ret, kkkkkkkk, matrix(LBound(matrix) + i - LBound(flg)))
+                        kkkkkkkk = kkkkkkkk + 1
+                        If UBound(ret) < kkkkkkkk Then Exit For
+                    End If
+                Next i
+            Case 2
+                If rowSize(matrix) < length Then length = rowSize(matrix)
+                ReDim ret(LBound(matrix) To LBound(matrix) - 1 + length, LBound(matrix, 2) To UBound(matrix, 2))
+                kkkkkkkk = LBound(ret)
+                For i = LBound(flg) To UBound(flg) Step 1
+                    If 0 <> flg(i) Then
+                        Call fillRow_subroutine(ret, kkkkkkkk, matrix, LBound(matrix) + i - LBound(flg))
+                        kkkkkkkk = kkkkkkkk + 1
+                        If UBound(ret, 1) < kkkkkkkk Then Exit For
+                    End If
+                Next i
+            End Select
+        End If
+        slashR_imple = ret
+    End Function
 
+Public Function slashR(ByRef matrix As Variant, ByRef flg As Variant) As Variant
+    slashR = simple_invoke(AddressOf slashR_imple, matrix, flg)
+End Function
     Public Function p_slashR() As Long
         p_slashR = VBA.CLng(AddressOf slashR)
     End Function
 
 'ベクトル・配列の（列の）取捨をする
 'Flgは 0/1
-Public Function slashC(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim ret As Variant
-    Dim length As Long, j As Long, kkkkkkkk As Long
-    
-    length = 0
-    For j = LBound(flg) To UBound(flg) Step 1
-        If 0 <> flg(j) Then length = length + 1
-    Next j
-    ret = Array()
-    If 0 < length Then
-        Select Case Dimension(data)
-        Case 1
-            If sizeof(data) < length Then length = sizeof(data)
-            ReDim ret(LBound(data) To LBound(data) - 1 + length)
-            kkkkkkkk = LBound(ret)
-            For j = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(j) Then
-                    ret(kkkkkkkk) = data(LBound(data) + j - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret) < kkkkkkkk Then Exit For
-                End If
-            Next j
-        Case 2
-            If colSize(data) < length Then length = colSize(data)
-            ReDim ret(LBound(data) To UBound(data), LBound(data, 2) To LBound(data, 2) - 1 + length)
-            kkkkkkkk = LBound(ret, 2)
-            For j = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(j) Then
-                    Call fillCol_imple(ret, kkkkkkkk, data, LBound(data, 2) + j - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret, 2) < kkkkkkkk Then Exit For
-                End If
-            Next j
-        End Select
-    End If
-    slashC = ret
-End Function
+    Private Function slashC_imple(ByRef matrix As Variant, ByRef flg As Variant) As Variant
+        Dim ret As Variant
+        Dim length As Long, j As Long, kkkkkkkk As Long
+        
+        length = 0
+        For j = LBound(flg) To UBound(flg) Step 1
+            If 0 <> flg(j) Then length = length + 1
+        Next j
+        ret = Array()
+        If 0 < length Then
+            Select Case Dimension(matrix)
+            Case 1
+                If sizeof(matrix) < length Then length = sizeof(matrix)
+                ReDim ret(LBound(matrix) To LBound(matrix) - 1 + length)
+                kkkkkkkk = LBound(ret)
+                For j = LBound(flg) To UBound(flg) Step 1
+                    If 0 <> flg(j) Then
+                        Call forward_assign1(ret, kkkkkkkk, matrix(LBound(matrix) + j - LBound(flg)))
+                        kkkkkkkk = kkkkkkkk + 1
+                        If UBound(ret) < kkkkkkkk Then Exit For
+                    End If
+                Next j
+            Case 2
+                If colSize(matrix) < length Then length = colSize(matrix)
+                ReDim ret(LBound(matrix) To UBound(matrix), LBound(matrix, 2) To LBound(matrix, 2) - 1 + length)
+                kkkkkkkk = LBound(ret, 2)
+                For j = LBound(flg) To UBound(flg) Step 1
+                    If 0 <> flg(j) Then
+                        Call fillCol_subroutine(ret, kkkkkkkk, matrix, LBound(matrix, 2) + j - LBound(flg))
+                        kkkkkkkk = kkkkkkkk + 1
+                        If UBound(ret, 2) < kkkkkkkk Then Exit For
+                    End If
+                Next j
+            End Select
+        End If
+        slashC_imple = ret
+    End Function
 
+Public Function slashC(ByRef matrix As Variant, ByRef flg As Variant) As Variant
+    slashC = simple_invoke(AddressOf slashC_imple, matrix, flg)
+End Function
     Public Function p_slashC() As Long
         p_slashC = VBA.CLng(AddressOf slashC)
     End Function
 
 'ベクトルを結合
-Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
-    Dim i As Long, kkkkkk As Long
-    Dim ret As Variant
-    
-    If Dimension(v1) = 1 And Dimension(v2) = 1 Then
+    Private Function catV_imple(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
+        Dim i As Long, kkkkkk As Long
+        Dim ret As Variant
+        
         ReDim ret(0 To sizeof(v1) + sizeof(v2) - 1)
         kkkkkk = 0
         For i = LBound(v1) To UBound(v1) Step 1
-            ret(kkkkkk) = v1(i)
+            Call forward_assign1(ret, kkkkkk, v1(i))
             kkkkkk = kkkkkk + 1
         Next i
         For i = LBound(v2) To UBound(v2) Step 1
-            ret(kkkkkk) = v2(i)
+            Call forward_assign1(ret, kkkkkk, v2(i))
             kkkkkk = kkkkkk + 1
         Next i
-        catV = ret
+        catV_imple = ret
+    End Function
+
+Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
+    If Dimension(v1) = 1 And Dimension(v2) = 1 Then
+        catV = simple_invoke(AddressOf catV_imple, v1, v2)
     ElseIf Dimension(v1) <> 1 And Dimension(v2) = 1 Then
-        catV = catV(vector(v1), v2)
+        catV = simple_invoke(AddressOf catV_imple, vector(v1), v2)
     ElseIf Dimension(v1) = 1 And Dimension(v2) <> 1 Then
-        catV = catV(v1, vector(v2))
+        catV = simple_invoke(AddressOf catV_imple, v1, vector(v2))
     Else
-        catV = catV(vector(v1), vector(v2))
+        catV = simple_invoke(AddressOf catV_imple, vector(v1), vector(v2))
     End If
 End Function
-
     Function p_catV() As Long
         p_catV = VBA.CLng(AddressOf catV)
     End Function
 
-
 '行方向に結合
+    Private Function catR_imple(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
+        Dim i As Long, kkkkkk As Long
+        Dim ret As Variant
+        
+        If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or colSize(matrix1) <> colSize(matrix2) Then
+            catR_imple = Array()
+        Else
+            ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
+            kkkkkk = 0
+            For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
+                Call fillRow_subroutine(ret, kkkkkk, matrix1, i)
+                kkkkkk = kkkkkk + 1
+            Next i
+            For i = LBound(matrix2, 1) To UBound(matrix2, 1) Step 1
+                Call fillRow_subroutine(ret, kkkkkk, matrix2, i)
+                kkkkkk = kkkkkk + 1
+            Next i
+            catR_imple = ret
+        End If
+    End Function
+
 Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    Dim i As Long, kkkkkk As Long
-    Dim ret As Variant
-    
-    If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or colSize(matrix1) <> colSize(matrix2) Then
-        catR = Array()
-    Else
-        ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
-        kkkkkk = 0
-        For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
-            Call fillRow_imple(ret, kkkkkk, matrix1, i)
-            kkkkkk = kkkkkk + 1
-        Next i
-        For i = LBound(matrix2, 1) To UBound(matrix2, 1) Step 1
-            Call fillRow_imple(ret, kkkkkk, matrix2, i)
-            kkkkkk = kkkkkk + 1
-        Next i
-        catR = ret
-    End If
+    catR = simple_invoke(AddressOf catR_imple, matrix1, matrix2)
 End Function
+    Function p_catR() As Long
+        p_catR = VBA.CLng(AddressOf catR)
+    End Function
 
 '列方向に結合
+    Private Function catC_imple(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
+        Dim i As Long, kkkkkk As Long
+        Dim ret As Variant
+        
+        If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
+            catC_imple = Array()
+        Else
+            ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
+            kkkkkk = 0
+            For i = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
+                Call fillCol_subroutine(ret, kkkkkk, matrix1, i)
+                kkkkkk = kkkkkk + 1
+            Next i
+            For i = LBound(matrix2, 2) To UBound(matrix2, 2) Step 1
+                Call fillCol_subroutine(ret, kkkkkk, matrix2, i)
+                kkkkkk = kkkkkk + 1
+            Next i
+            catC_imple = ret
+        End If
+    End Function
+
 Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    Dim i As Long, kkkkkk As Long
-    Dim ret As Variant
-    
-    If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
-        catC = Array()
-    Else
-        ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
-        kkkkkk = 0
-        For i = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
-            Call fillCol_imple(ret, kkkkkk, matrix1, i)
-            kkkkkk = kkkkkk + 1
-        Next i
-        For i = LBound(matrix2, 2) To UBound(matrix2, 2) Step 1
-            Call fillCol_imple(ret, kkkkkk, matrix2, i)
-            kkkkkk = kkkkkk + 1
-        Next i
-        catC = ret
-    End If
+    catC = simple_invoke(AddressOf catC_imple, matrix1, matrix2)
 End Function
+    Function p_catC() As Long
+        p_catC = VBA.CLng(AddressOf catC)
+    End Function
+
 
 '配列の行/列の転置
-Function transpose(ByRef matrix As Variant) As Variant
-    Dim i As Long, j As Long, r As Long, c As Long
-    Dim ret As Variant
-    
-    Select Case Dimension(matrix)
-    Case 0
-        transpose = matrix
-    Case 1
-        If LBound(matrix, 1) > UBound(matrix, 1) Then transpose = Array(): Exit Function
-        transpose = matrix
-    Case 2
+    Private Function transpose_imple(ByRef matrix As Variant, ByRef dummy As Variant) As Variant
+        Dim i As Long, j As Long, r As Long, c As Long
+        Dim ret As Variant
+
         r = LBound(matrix, 1)
         c = LBound(matrix, 2)
         ReDim ret(0 To UBound(matrix, 2) - c, 0 To UBound(matrix, 1) - r)
         For i = 0 To UBound(matrix, 2) - c
             For j = 0 To UBound(matrix, 1) - r
-                ret(i, j) = matrix(j + r, i + c)
+                Call forward_assign2(ret, i, j, matrix(j + r, i + c))
             Next j
         Next i
-        transpose = ret
-    Case Else
-        transpose = Array()
-    End Select
+        transpose_imple = ret
+    End Function
+
+Function transpose(ByRef matrix As Variant) As Variant
+    transpose = simple_invoke(AddressOf transpose_imple, matrix, matrix)
 End Function
 
 '複数の配列の対応する要素どうしをcatVして配列の配列を作る
-Public Function zip(ByRef a As Variant, ParamArray b() As Variant) As Variant
-    Dim z As Variant
-    zip = a
-    For Each z In b
-        zip = zipWith(AddressOf catV, zip, z)
-    Next z
+Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
+    Dim length As Long, i As Long
+    Dim ret As Variant
+
+    length = rowSize(a)
+    If length > rowSize(b) Then length = rowSize(b)
+    ReDim ret(0 To length - 1)
+    For i = 0 To length - 1 Step 1
+        ret(i) = forward_as_tuple(a(i + getLBound(a, 1)), b(i + getLBound(b, 1)))
+    Next i
+    zip = ret
 End Function
-
-'zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+'zipされた1次元配列をほどいて二つの1次元配列または一つの2次元配列に展開する
 Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As Variant
-    Dim colLen As Long, i As Long, j As Long, kkkk As Long
-    Dim ret As Variant, z As Variant
+    Dim i As Long, length As Long, kkkk As Long
+    Dim z1 As Variant, z2 As Variant, LB As Long
 
-    unzip = Array()
-    colLen = 0
-    For kkkk = LBound(vec) To UBound(vec) Step 1
-        If colLen < sizeof(vec(kkkk)) Then colLen = sizeof(vec(kkkk))
-    Next kkkk
-    If colLen = 0 Then Exit Function
+    length = sizeof(vec)
+    kkkk = getLBound(vec, 1)
     If dimen = 1 Then
-        ReDim ret(0 To colLen - 1)
-        For j = LBound(ret) To UBound(ret) Step 1
-            ReDim z(0 To sizeof(vec) - 1)
-            kkkk = 0
-            For i = LBound(vec) To UBound(vec) Step 1
-                If j <= UBound(vec(i)) Then z(kkkk) = vec(i)(j)
-                kkkk = kkkk + 1
-            Next i
-            ret(j) = z
-        Next j
-    Else
-        ReDim ret(0 To sizeof(vec) - 1, 0 To colLen - 1)
-        kkkk = LBound(vec)
-        For i = LBound(ret, 1) To UBound(ret, 1) Step 1
-            Call fillRow(ret, i, vec(kkkk))
+        ReDim z1(0 To length - 1)
+        ReDim z2(0 To length - 1)
+        For i = 0 To length - 1 Step 1
+            LB = getLBound(vec(kkkk), 1)
+            Call forward_assign1(z1, i, vec(kkkk)(LB))
+            Call forward_assign1(z2, i, vec(kkkk)(LB + 1))
             kkkk = kkkk + 1
         Next i
+        unzip = Array(z1, z2)
+    Else
+        ReDim z1(0 To length - 1, 0 To 1)
+        For i = 0 To length - 1 Step 1
+            LB = getLBound(vec(kkkk), 1)
+            Call forward_assign2(z1, i, 0, vec(kkkk)(LB))
+            Call forward_assign2(z1, i, 1, vec(kkkk)(LB + 1))
+            kkkk = kkkk + 1
+        Next i
+        unzip = z1
     End If
-    unzip = ret
 End Function
 
 ' Array(a, b)作成
