@@ -2,6 +2,8 @@
 mapM  
 
 VBA用のなんちゃってHaskellモジュール(32bit Office Only)  
+variantRef関数によってVariant変数を左辺値参照っぽく使えて、  
+forward_as_tupleによってそれを配列化することもできる。  
 
 mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファイル等でエクスポート  
 	Dimension = Dimension  
