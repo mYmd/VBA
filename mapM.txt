@@ -62,7 +62,6 @@ Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
         applyFun = simple_invoke(func, param)
     End If
 End Function
-    
     Function p_applyFun() As Long
         p_applyFun = VBA.CLng(AddressOf applyFun)
     End Function
@@ -78,7 +77,6 @@ End Function
 Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
     setParam = applyFun(param, func)
 End Function
-
     Function p_setParam() As Long
         p_setParam = VBA.CLng(AddressOf setParam)
     End Function
@@ -90,7 +88,6 @@ Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Varian
         , simple_invoke(funcs(1 + LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
                      )
 End Function
-
     Function p_applyFun2by2() As Long
         p_applyFun2by2 = VBA.CLng(AddressOf applyFun2by2)
     End Function
@@ -99,10 +96,80 @@ End Function
 Function setParam2by2(ByRef funcs As Variant, ByRef params As Variant) As Variant
     setParam2by2 = applyFun2by2(params, funcs)
 End Function
-
     Function p_setParam2by2() As Long
         p_setParam2by2 = VBA.CLng(AddressOf setParam2by2)
     End Function
+
+'値は値、参照は参照として配列を生成
+Public Function forward_as_tuple(Optional ByRef v0 As Variant, Optional ByRef v1 As Variant, _
+                                 Optional ByRef v2 As Variant, Optional ByRef v3 As Variant, _
+                                 Optional ByRef v4 As Variant, Optional ByRef v5 As Variant, _
+                                 Optional ByRef v6 As Variant, Optional ByRef v7 As Variant, _
+                                 Optional ByRef v8 As Variant, Optional ByRef v9 As Variant _
+                                 ) As Variant
+    Dim ret As Variant
+    Dim length As Long
+    
+    If IsMissing(v0) Then
+        Exit Function
+    ElseIf IsMissing(v1) Then length = 1
+    ElseIf IsMissing(v2) Then length = 2
+    ElseIf IsMissing(v3) Then length = 3
+    ElseIf IsMissing(v4) Then length = 4
+    ElseIf IsMissing(v5) Then length = 5
+    ElseIf IsMissing(v6) Then length = 6
+    ElseIf IsMissing(v7) Then length = 7
+    ElseIf IsMissing(v8) Then length = 8
+    ElseIf IsMissing(v9) Then length = 9
+    Else:                     length = 10
+    End If
+    ReDim ret(0 To length - 1)
+    If isVariantRef(v0) = 1 Then ret(0) = variantRef(v0) Else ret(0) = v0
+    If length = 1 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v1) = 1 Then ret(1) = variantRef(v1) Else ret(1) = v1
+    If length = 2 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v2) = 1 Then ret(2) = variantRef(v2) Else ret(2) = v2
+    If length = 3 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v3) = 1 Then ret(3) = variantRef(v3) Else ret(3) = v3
+    If length = 4 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v4) = 1 Then ret(4) = variantRef(v4) Else ret(4) = v4
+    If length = 5 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v5) = 1 Then ret(5) = variantRef(v5) Else ret(5) = v5
+    If length = 6 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v6) = 1 Then ret(6) = variantRef(v6) Else ret(6) = v6
+    If length = 7 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v7) = 1 Then ret(7) = variantRef(v7) Else ret(7) = v7
+    If length = 8 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v8) = 1 Then ret(8) = variantRef(v8) Else ret(8) = v8
+    If length = 9 Then forward_as_tuple = ret:      Exit Function
+    If isVariantRef(v9) = 1 Then ret(9) = variantRef(v9) Else ret(9) = v9
+    forward_as_tuple = ret
+End Function
+
+'配列への代入
+Sub forward_assign1(ByRef matrix As Variant, ByVal i As Long, ByRef x As Variant)
+    If isVariantRef(x) Then
+        matrix(i) = variantRef(x)
+    Else
+        matrix(i) = x
+    End If
+End Sub
+
+Sub forward_assign2(ByRef matrix As Variant, ByVal i As Long, ByVal j As Long, ByRef x As Variant)
+    If isVariantRef(x) Then
+        matrix(i, j) = variantRef(x)
+    Else
+        matrix(i, j) = x
+    End If
+End Sub
+
+Sub forward_assign3(ByRef matrix As Variant, ByVal i As Long, ByVal j As Long, ByVal k As Long, ByRef x As Variant)
+    If isVariantRef(x) Then
+        matrix(i, j, k) = variantRef(x)
+    Else
+        matrix(i, j, k) = x
+    End If
+End Sub
 
 '============================================================================
 '============================================================================
@@ -117,26 +184,21 @@ End Function
     End Function
 
 '対数関数
-Function logN(ByRef elem As Variant, Optional ByRef check As Variant = vbFalse) As Variant
-    If IsMissing(check) Then
-        logN = Log(elem)
-    ElseIf check <> vbFalse Then
-        If IsNumeric(elem) Then
-            If 0 < elem Then
-                logN = Log(elem)
-            Else
-                logN = 0
-            End If
-        Else
-            logN = 0
-        End If
-    Else
-        logN = Log(elem)
-    End If
+Function logN(ByRef elem As Variant, Optional ByRef check As Variant) As Variant
+    logN = Log(elem)
 End Function
     
     Function p_log() As Long
         p_log = VBA.CLng(AddressOf logN)
+    End Function
+
+'累乗
+Function pow(ByRef a As Variant, ByRef b As Variant) As Variant
+    pow = Exp(b * Log(a))
+End Function
+    
+    Function p_pow() As Long
+        p_pow = VBA.CLng(AddressOf pow)
     End Function
 
 '加算
@@ -242,6 +304,24 @@ End Function
         p_max = VBA.CLng(AddressOf max)
     End Function
     
+'述語 equal
+Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
+    equal = IIf(a = b, 1&, 0&)
+End Function
+    
+    Function p_equal() As Long
+        p_equal = VBA.CLng(AddressOf equal)
+    End Function
+
+'述語 notEqual
+Function notEqual(ByRef a As Variant, ByRef b As Variant) As Variant
+    notEqual = IIf(a <> b, 1&, 0&)
+End Function
+    
+    Function p_notEqual() As Long
+        p_notEqual = VBA.CLng(AddressOf notEqual)
+    End Function
+
 '述語 less
 Function less(ByRef a As Variant, ByRef b As Variant) As Variant
     less = IIf(a < b, 1&, 0&)
