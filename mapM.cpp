@@ -1,15 +1,64 @@
 #include "stdafx.h"
 #include "OAIdl.h"
 
-//VBA配列の次元取得
-__int32 __stdcall Dimension(const tagVARIANT* pv)
+//Variant左辺値の参照を返す
+tagVARIANT  __stdcall
+variantRef(tagVARIANT* lvalueRef)
 {
-	if ( !pv || 0 == (VT_ARRAY & pv->vt ) )
+    tagVARIANT      ret;
+    ::VariantInit(&ret);
+    if ( lvalueRef )
+    {
+        if ( (VT_BYREF & lvalueRef->vt) && (VT_VARIANT == (VT_VARIANT & lvalueRef->vt)) )
+        {
+            ret.vt = VT_BYREF | VT_VARIANT;
+            ret.pvarVal = lvalueRef->pvarVal;
+    }
+        else
+        {
+            ret.vt = VT_BYREF | VT_VARIANT;
+            ret.pvarVal = lvalueRef;
+        }
+    }
+    return ret;
+}
+
+    //Variant左辺値の参照外し
+    tagVARIANT* variantDeRef_imple(tagVARIANT* vRef)
+    {
+        return ( vRef && (VT_BYREF & vRef->vt) && (VT_VARIANT == (VT_VARIANT & vRef->vt)) )?
+            vRef->pvarVal:
+            vRef;
+    }
+// Variantの左辺値参照かどうかを返す
+__int32 __stdcall
+isVariantRef(tagVARIANT* value)
+{
+    return ( value && (VT_BYREF & value->vt) && (VT_VARIANT == (VT_VARIANT & value->vt)) )?
+        1:
+        0;
+}
+
+//Variant左辺値の参照外し
+tagVARIANT  __stdcall
+variantDeRef(tagVARIANT* vRef)
+{
+    tagVARIANT      ret;
+    ::VariantInit(&ret);
+    tagVARIANT* p = variantDeRef_imple(vRef);
+    if ( p )    ::VariantCopyInd(&ret, p);
+    return ret;
+}
+
+
+//VBA配列の次元取得
+__int32 __stdcall Dimension(tagVARIANT* pvariant)
+{
+    tagVARIANT* p = variantDeRef_imple(pvariant);
+	if ( !p || 0 == (VT_ARRAY & p->vt ) )
 		return	0;
-	if ( 0 == (VT_BYREF & pv->vt) )
-		return ::SafeArrayGetDim(pv->parray);
 	else
-		return (pv->pparray)? ::SafeArrayGetDim(*pv->pparray): 0;
+		return ::SafeArrayGetDim(p->parray);
 }
 
 //使用する唯一のVBAコールバック関数型  VBCallbackFunc  の宣言
@@ -63,17 +112,23 @@ namespace   {
 ////************************************************************************************
 
 //2引数にCallback（VBCallbackFunc型のVBA関数）を適用する
+    tagVARIANT
+    simple_invoke_imple(VBCallbackFunc func, tagVARIANT* param1, tagVARIANT* param2)
+    {
+        if ( !func )
+        {
+            tagVARIANT      ret;
+            ::VariantInit(&ret);
+            return ret;
+        }
+        return (*func)(variantDeRef_imple(param1), variantDeRef_imple(param2));
+    }
+
 tagVARIANT  __stdcall
 simple_invoke(__int32 pCallback, tagVARIANT* param1, tagVARIANT* param2)
 {
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !func )
-    {
-        tagVARIANT      ret;
-        ::VariantInit(&ret);
-        return ret;
-    }
-    return (*func)(param1, param2);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    return simple_invoke_imple(func, param1, param2);
 }
 
 //配列matrixの各要素elemとparamにCallback(elem, param)（VBCallbackFunc型のVBA関数）を適用する
@@ -94,23 +149,25 @@ mapR(__int32 pCallback, tagVARIANT* param, tagVARIANT* matrix)
 
 //配列matrix1とmatrix2の各要素に2変数のCallback（VBCallbackFunc型のVBA関数）を適用する
 tagVARIANT  __stdcall
-zipWith(__int32 pCallback, tagVARIANT* matrix1, tagVARIANT* matrix2)
+zipWith(__int32 pCallback, tagVARIANT* matrix1_, tagVARIANT* matrix2_)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto matrix1 = variantDeRef_imple(matrix1_);
+    auto matrix2 = variantDeRef_imple(matrix2_);
     //----------------------------
-    if ( !matrix1 || !matrix2 || !func )                        return ret;
+    if ( !matrix1 || !matrix2 || !func )                return ret;
     if (  0 == (VT_ARRAY & matrix1->vt ) &&  0 == (VT_ARRAY & matrix2->vt ) )
-                                                                return (*func)(matrix1, matrix2);
+                                                        return simple_invoke_imple(func, matrix1, matrix2);
     if (  0 == (VT_ARRAY & matrix1->vt ) ||  0 == (VT_ARRAY & matrix2->vt ) )
-                                                                return ret;
+                                                        return ret;
     //----------------------------
     SAFEARRAY* pArray1 = ( 0 == (VT_BYREF & matrix1->vt) )?  (matrix1->parray): (*matrix1->pparray);
     SAFEARRAY* pArray2 = ( 0 == (VT_BYREF & matrix2->vt) )?  (matrix2->parray): (*matrix2->pparray);
     UINT dim  = ::SafeArrayGetDim(pArray1);
     UINT dim2 = ::SafeArrayGetDim(pArray2);
-    if ( 0 == dim || 3 < dim || dim != dim2 )                   return ret;
+    if ( 0 == dim || 3 < dim || dim != dim2 )           return ret;
     SAFEARRAYBOUND bounds1[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
     SAFEARRAYBOUND bounds2[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
     safeArrayBounds(pArray1, dim, bounds1);
@@ -138,7 +195,7 @@ zipWith(__int32 pCallback, tagVARIANT* matrix1, tagVARIANT* matrix2)
                 ::VariantInit(&elem2);
                 ::SafeArrayGetElement(pArray1, index1, &elem1);
                 ::SafeArrayGetElement(pArray2, index2, &elem2);
-                tagVARIANT result = (*func)(&elem1, &elem2);
+                tagVARIANT result = simple_invoke_imple(func, &elem1, &elem2);
                 ::SafeArrayPutElement(retArray, index1, &result);
                 ::VariantClear(&elem1);
                 ::VariantClear(&elem2);
@@ -155,52 +212,58 @@ zipWith(__int32 pCallback, tagVARIANT* matrix1, tagVARIANT* matrix2)
 
 //3次元までのVBA配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
 tagVARIANT  __stdcall
-foldl(__int32 pCallback, tagVARIANT* init, tagVARIANT* matrix, __int32 axis)
+foldl(__int32 pCallback, tagVARIANT* init_, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !init || !func )                                return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return (*func)(init, matrix);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto init = variantDeRef_imple(init_);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !init || !func )                    return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return simple_invoke_imple(func, init, matrix);
     fold_imple(func, init, matrix, axis, ret, true);
     return      ret;
 }
 
 //3次元までのVBA配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
 tagVARIANT  __stdcall
-foldr(__int32 pCallback, tagVARIANT* init, tagVARIANT* matrix, __int32 axis)
+foldr(__int32 pCallback, tagVARIANT* init_, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !init || !func )                                return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return (*func)(matrix, init);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto init = variantDeRef_imple(init_);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !init || !func )                    return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return simple_invoke_imple(func, matrix, init);
     fold_imple(func, init, matrix, axis, ret, false);
     return      ret;
 }
 
 //3次元までのVBA配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
 tagVARIANT  __stdcall
-foldl1(__int32 pCallback, tagVARIANT* matrix, __int32 axis)
+foldl1(__int32 pCallback, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !func )                                         return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return *matrix;
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !func )                             return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return *matrix;
     fold_imple(func, 0, matrix, axis, ret, true);
     return      ret;
 }
 
 //3次元までのVBA配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
 tagVARIANT  __stdcall
-foldr1(__int32 pCallback, tagVARIANT* matrix, __int32 axis)
+foldr1(__int32 pCallback, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !func )                                         return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return *matrix;
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !func )                             return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return *matrix;
     fold_imple(func, 0, matrix, axis, ret, false);
     return      ret;
 }
@@ -209,52 +272,58 @@ foldr1(__int32 pCallback, tagVARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った左scan（初期値指定あり）
 tagVARIANT  __stdcall
-scanl(__int32 pCallback, tagVARIANT* init, tagVARIANT* matrix, __int32 axis)
+scanl(__int32 pCallback, tagVARIANT* init_, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !init || !func )                                return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return (*func)(init, matrix);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto init = variantDeRef_imple(init_);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !init || !func )                    return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return simple_invoke_imple(func, init, matrix);
     scan_imple(func, init, matrix, axis, ret, true);
     return      ret;
 }
 
 //3次元までのVBA配列に対する特定の軸に沿った右scan（初期値指定あり）
 tagVARIANT  __stdcall
-scanr(__int32 pCallback, tagVARIANT* init, tagVARIANT* matrix, __int32 axis)
+scanr(__int32 pCallback, tagVARIANT* init_, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !init || !func )                                return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return (*func)(matrix, init);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto init = variantDeRef_imple(init_);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !init || !func )                    return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return simple_invoke_imple(func, matrix, init);
     scan_imple(func, init, matrix, axis, ret, false);
     return      ret;
 }
 
 //3次元までのVBA配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
 tagVARIANT  __stdcall
-scanl1(__int32 pCallback, tagVARIANT* matrix, __int32 axis)
+scanl1(__int32 pCallback, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !func )                                         return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return *matrix;
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !func )                             return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return *matrix;
     scan_imple(func, 0, matrix, axis, ret, true);
     return      ret;
 }
 
 //3次元までのVBA配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
 tagVARIANT  __stdcall
-scanr1(__int32 pCallback, tagVARIANT* matrix, __int32 axis)
+scanr1(__int32 pCallback, tagVARIANT* matrix_, __int32 axis)
 {
     tagVARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    if ( !matrix || !func )                                         return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                           return *matrix;
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto matrix = variantDeRef_imple(matrix_);
+    if ( !matrix || !func )                             return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return *matrix;
     scan_imple(func, 0, matrix, axis, ret, false);
     return      ret;
 }
@@ -263,16 +332,18 @@ scanr1(__int32 pCallback, tagVARIANT* matrix, __int32 axis)
 
 //VBA配列matrixの各要素でCallbackによる評価結果がゼロでないものの数
 __int32     __stdcall
-count_if(__int32 pCallback, tagVARIANT* matrix, tagVARIANT* additionalParameter)
+count_if(__int32 pCallback, tagVARIANT* matrix_, tagVARIANT* additionalParameter_)
 {
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+    auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
     //----------------------------
-    if ( !matrix || !func )                                     return 0;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                       return (*func)(matrix, additionalParameter).lVal? 1: 0;
+    auto matrix = variantDeRef_imple(matrix_);
+    auto additionalParameter = variantDeRef_imple(additionalParameter_);
+    if ( !matrix || !func )                     return 0;
+    if (  0 == (VT_ARRAY & matrix->vt ) )       return simple_invoke_imple(func, matrix, additionalParameter).lVal? 1: 0;
     //----------------------------
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
     UINT dim = ::SafeArrayGetDim(pArray);
-    if ( 0 == dim || 3 < dim )                                  return 0;
+    if ( 0 == dim || 3 < dim )                  return 0;
     SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
     safeArrayBounds(pArray, dim, bounds);
     __int32     ret = 0;
@@ -288,7 +359,7 @@ count_if(__int32 pCallback, tagVARIANT* matrix, tagVARIANT* additionalParameter)
                 tagVARIANT elem;
                 ::VariantInit(&elem);
                 ::SafeArrayGetElement(pArray, index, &elem);
-                tagVARIANT result = (*func)(&elem, additionalParameter);
+                tagVARIANT result = simple_invoke_imple(func, &elem, additionalParameter);
                 if ( result.lVal )  ++ret;
                 ::VariantClear(&elem);
                 ::VariantClear(&result);
@@ -305,17 +376,19 @@ namespace   {
     //mapLとmapRの共通処理
     tagVARIANT  
     mapLR(  __int32         pCallback   ,
-            tagVARIANT*     matrix      ,
-            tagVARIANT*     param       ,
+            tagVARIANT*     matrix_     ,
+            tagVARIANT*     param_      ,
             bool            left        )   //left==true, right == false
     {
         tagVARIANT      ret;
         ::VariantInit(&ret);
-        VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+        auto  func = reinterpret_cast<VBCallbackFunc>(pCallback);
+        auto matrix = variantDeRef_imple(matrix_);
+        auto param = variantDeRef_imple(param_);
         //----------------------------
         if ( !matrix || !func )                                     return ret;
         if (  0 == (VT_ARRAY & matrix->vt ) )
-            return left? (*func)(matrix, param) : (*func)(param, matrix);
+            return left? simple_invoke_imple(func, matrix, param) : simple_invoke_imple(func, param, matrix);
         //----------------------------
         SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
         UINT dim = ::SafeArrayGetDim(pArray);
@@ -336,8 +409,8 @@ namespace   {
                     tagVARIANT elem;
                     ::VariantInit(&elem);
                     ::SafeArrayGetElement(pArray, index, &elem);
-                    tagVARIANT result = left?   (*func)(&elem, param):
-                                                (*func)(param, &elem);
+                    tagVARIANT result = left?   simple_invoke_imple(func, &elem, param):
+                                                simple_invoke_imple(func, param, &elem);
                     ::SafeArrayPutElement(retArray, index, &result);
                     ::VariantClear(&elem);
                     ::VariantClear(&result);
@@ -401,8 +474,8 @@ namespace   {
                         ::VariantInit(&elem);
                         ::VariantInit(&tmp);
                         ::SafeArrayGetElement(pArray, sourceIndex, &elem);
-                        if ( left )     tmp = (*func)(&result, &elem);
-                        else            tmp = (*func)(&elem, &result);
+                        if ( left )     tmp = simple_invoke_imple(func, &result, &elem);
+                        else            tmp = simple_invoke_imple(func, &elem, &result);
                         ::VariantClear(&result);
                         result = tmp;               //result = std::move(tmp)と同じ
                         ::VariantClear(&elem);
@@ -486,8 +559,8 @@ namespace   {
                         ::VariantInit(&elem);
                         ::VariantInit(&tmp);
                         ::SafeArrayGetElement(pArray, sourceIndex, &elem);
-                        if ( left )     tmp = (*func)(&result, &elem);
-                        else            tmp = (*func)(&elem, &result);
+                        if ( left )     tmp = simple_invoke_imple(func, &result, &elem);
+                        else            tmp = simple_invoke_imple(func, &elem, &result);
                         ::VariantClear(&result);
                         result = tmp;               //result = std::move(tmp)と同じ
                         ::VariantClear(&elem);
