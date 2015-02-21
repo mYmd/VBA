@@ -3,7 +3,7 @@ Option Explicit
 '======================================================
 '          API宣言
 '======================================================
-
+'H:\Projects\VC\ThreadTest\Debug\
 ' VBA配列の次元取得
 Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
@@ -11,7 +11,19 @@ Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 Declare Function simple_invoke Lib "mapM.dll" ( _
                 ByVal pCallback As Long, _
             Optional ByRef param1 As Variant, _
-        Optional ByRef param12 As Variant) As Variant
+        Optional ByRef param2 As Variant) As Variant
+
+' Variantの左辺値に対してその参照を返す
+Declare Function variantRef Lib "mapM.dll" ( _
+                            ByRef lvalue As Variant) As Variant
+
+' Variantの左辺値参照かどうかを返す
+Declare Function isVariantRef Lib "mapM.dll" ( _
+                            ByRef value As Variant) As Long
+
+' Variantの左辺値参照に対してその値を返す
+Declare Function variantDeRef Lib "mapM.dll" ( _
+                            ByRef lvalueRef As Variant) As Variant
 
 ' 配列matrixの各要素elemとparamにCallback(elem, param)を適用する
 Declare Function mapL Lib "mapM.dll" ( _
@@ -88,4 +100,3 @@ Declare Function count_if Lib "mapM.dll" ( _
                 ByVal pCallback As Long, _
             ByRef matrix As Variant, _
         Optional ByRef additionalPrameter As Variant) As Long
-
