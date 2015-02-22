@@ -40,6 +40,13 @@ Sub vbaUnit()
     m = makeM(9, 5, repeat("", 50))
     printM fillRow(fillCol(m, 2, repeat("*", 25)), 3, repeat("*", 25))
     
+    Debug.Print "------- 参照変数(variantRef) ------------"
+    m = makeM(3, 3, iota(1, 9))
+    x1 = variantRef(m)
+    printM m
+    m(1, 1) = 55555
+    printM x1
+    
     Debug.Print "------- forward_as_tuple(1) ------------"
     a1 = 1: a2 = 2: a3 = 3: a4 = 4
     x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):
@@ -65,6 +72,7 @@ Sub vbaUnit()
     printM m
     a1 = 10: a2 = 20: a3 = 30: a4 = 40
     printM m
+
     Debug.Print "------- zip ------------"
     a1 = 1: a2 = 2: a3 = 3: a4 = 4
     x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):
@@ -72,6 +80,7 @@ Sub vbaUnit()
     printM m(0): printM m(1)
     a1 = 10: a2 = 20: a3 = 30: a4 = 40
     printM m(0): printM m(1)
+
     Debug.Print "------- unzip(1) ------------"
     a1 = 1: a2 = 2: a3 = 3: a4 = 4: a5 = 5: a6 = 6
     x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):: x5 = variantRef(a5): x6 = variantRef(a6)
