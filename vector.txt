@@ -470,7 +470,7 @@ End Function
                 For j = getLBound(RowsCols(1), 1) To getUBound(RowsCols(1), 1) Step 1
                     iiii = getElem1(RowsCols(0), i)
                     jjjj = getElem1(RowsCols(1), j)
-                    Call forward_assign2(ret, aaaaaa, bbbbbb, matrix(iiii, jjj))
+                    Call forward_assign2(ret, aaaaaa, bbbbbb, matrix(iiii, jjjj))
                     bbbbbb = bbbbbb + 1
                 Next j
                 aaaaaa = aaaaaa + 1
