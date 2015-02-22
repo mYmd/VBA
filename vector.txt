@@ -480,10 +480,26 @@ End Function
     End Function
     
 Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
-    If IsMissing(rows) Then rows = a_rows(matrix)
+    If IsMissing(rows) Then
+        rows = a_rows(matrix)
+    End If
     If IsMissing(cols) Then
         cols = 0
         If Dimension(matrix) = 2 Then cols = a_cols(matrix)
+    End If
+    If Dimension(rows) = 0 Then
+        If 0 < rows Then
+            rows = headN(a_rows(matrix), rows)
+        ElseIf 0 > rows Then
+            rows = tailN(a_rows(matrix), -rows)
+        End If
+    End If
+    If Dimension(cols) = 0 Then
+        If 0 < cols Then
+            cols = headN(a_cols(matrix), cols)
+        ElseIf 0 > cols Then
+            cols = tailN(a_cols(matrix), -cols)
+        End If
     End If
     subM = simple_invoke(AddressOf subM_imple, matrix, forward_as_tuple(variantRef(rows), variantRef(cols)))
 End Function
