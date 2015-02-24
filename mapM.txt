@@ -110,7 +110,6 @@ End Function
 '     ファンクタ等
 '   Function expN           指数関数
 '   Function logN           対数関数
-'   Function pow            累乗
 '   Function plus           加算
 '   Function minus          減算
 '   Function mult           乗算
@@ -181,9 +180,7 @@ End Function
 
 '多項式　（係数は高次->低次）
 Function poly(ByRef elem As Variant, ByRef coef As Variant) As Variant
-    Dim z As Variant
-    poly = 0
-    For Each z In coef:    poly = poly * elem + z:      Next z
+    poly = foldr1(p_plus, zipWith(p_mult, coef, scanr(p_mult, 1, repeat(x, sizeof(coef) - 1))))
 End Function
     Function p_poly() As Long
         p_poly = VBA.CLng(AddressOf poly)
