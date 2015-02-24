@@ -64,7 +64,7 @@ End Function
         p_setParam = VBA.CLng(AddressOf setParam)
     End Function
 
-'((x, y), (f1, f2))  に対して  Array(f1(x, y), f2(x, y))     を返す
+'((x, y), (f1, f2))  に対して  Array(f1(x, y), f2(x, y))　　　 を返す
 Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Variant
     applyFun2by2 = Array( _
           simple_invoke(funcs(LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
@@ -179,7 +179,7 @@ End Function
     End Function
 
 '多項式　（係数は高次->低次）
-Function poly(ByRef elem As Variant, ByRef coef As Variant) As Variant
+Function poly(ByRef x As Variant, ByRef coef As Variant) As Variant
     poly = foldr1(p_plus, zipWith(p_mult, coef, scanr(p_mult, 1, repeat(x, sizeof(coef) - 1))))
 End Function
     Function p_poly() As Long
