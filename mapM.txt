@@ -1,29 +1,12 @@
 Option Explicit
 
-'n番目の要素
-Function elem_n(ByRef vec As Variant, ByRef n As Variant) As Variant
-    elem_n = vec(n)
-End Function
-    Function p_elem_n() As Long
-        p_elem_n = VBA.CLng(AddressOf elem_n)
-    End Function
-
-'1番目の引数
-Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
-    firstArg = a
-End Function
-    Function p_firstArg() As Long
-        p_firstArg = VBA.CLng(AddressOf firstArg)
-    End Function
-
-'2番目の引数
-Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
-    secondArg = b
-End Function
-    Function p_secondArg() As Long
-        p_secondArg = VBA.CLng(AddressOf secondArg)
-    End Function
-
+'********************************************************************
+'   関数型プログラム
+'   Function applyFun           関数適用関数
+'   Function setParam           関数に引数を代入
+'   Function applyFun2by2
+'   Function setParam2by2
+'********************************************************************
 '関数適用関数  引数に対して関数を適用する   関数はNullをプレースホルダとした簡易Bind式
 ' applyFun(x     ,  f             )  ->  f(x)
 ' applyFun(x     , (f)            )  ->  f(x)
@@ -100,105 +83,60 @@ End Function
         p_setParam2by2 = VBA.CLng(AddressOf setParam2by2)
     End Function
 
-'値は値、参照は参照として配列を生成
-Public Function forward_as_tuple(Optional ByRef v0 As Variant, Optional ByRef v1 As Variant, _
-                                 Optional ByRef v2 As Variant, Optional ByRef v3 As Variant, _
-                                 Optional ByRef v4 As Variant, Optional ByRef v5 As Variant, _
-                                 Optional ByRef v6 As Variant, Optional ByRef v7 As Variant, _
-                                 Optional ByRef v8 As Variant, Optional ByRef v9 As Variant _
-                                 ) As Variant
-    Dim ret As Variant
-    Dim length As Long
-    
-    If IsMissing(v0) Then
-        Exit Function
-    ElseIf IsMissing(v1) Then length = 1
-    ElseIf IsMissing(v2) Then length = 2
-    ElseIf IsMissing(v3) Then length = 3
-    ElseIf IsMissing(v4) Then length = 4
-    ElseIf IsMissing(v5) Then length = 5
-    ElseIf IsMissing(v6) Then length = 6
-    ElseIf IsMissing(v7) Then length = 7
-    ElseIf IsMissing(v8) Then length = 8
-    ElseIf IsMissing(v9) Then length = 9
-    Else:                     length = 10
-    End If
-    ReDim ret(0 To length - 1)
-    If isVariantRef(v0) = 1 Then ret(0) = variantRef(v0) Else ret(0) = v0
-    If length = 1 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v1) = 1 Then ret(1) = variantRef(v1) Else ret(1) = v1
-    If length = 2 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v2) = 1 Then ret(2) = variantRef(v2) Else ret(2) = v2
-    If length = 3 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v3) = 1 Then ret(3) = variantRef(v3) Else ret(3) = v3
-    If length = 4 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v4) = 1 Then ret(4) = variantRef(v4) Else ret(4) = v4
-    If length = 5 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v5) = 1 Then ret(5) = variantRef(v5) Else ret(5) = v5
-    If length = 6 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v6) = 1 Then ret(6) = variantRef(v6) Else ret(6) = v6
-    If length = 7 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v7) = 1 Then ret(7) = variantRef(v7) Else ret(7) = v7
-    If length = 8 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v8) = 1 Then ret(8) = variantRef(v8) Else ret(8) = v8
-    If length = 9 Then forward_as_tuple = ret:      Exit Function
-    If isVariantRef(v9) = 1 Then ret(9) = variantRef(v9) Else ret(9) = v9
-    forward_as_tuple = ret
+
+'********************************************************************
+'   要素アクセス
+'   Function firstArg           1番目の引数
+'   Function secondArg          2番目の引数
+'********************************************************************
+'1番目の引数
+Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
+    firstArg = a
 End Function
+    Function p_firstArg() As Long
+        p_firstArg = VBA.CLng(AddressOf firstArg)
+    End Function
 
-'配列への代入
-Sub forward_assign1(ByRef matrix As Variant, ByVal i As Long, ByRef x As Variant)
-    If isVariantRef(x) Then
-        matrix(i) = variantRef(x)
-    Else
-        matrix(i) = x
-    End If
-End Sub
+'2番目の引数
+Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
+    secondArg = b
+End Function
+    Function p_secondArg() As Long
+        p_secondArg = VBA.CLng(AddressOf secondArg)
+    End Function
 
-Sub forward_assign2(ByRef matrix As Variant, ByVal i As Long, ByVal j As Long, ByRef x As Variant)
-    If isVariantRef(x) Then
-        matrix(i, j) = variantRef(x)
-    Else
-        matrix(i, j) = x
-    End If
-End Sub
 
-Sub forward_assign3(ByRef matrix As Variant, ByVal i As Long, ByVal j As Long, ByVal k As Long, ByRef x As Variant)
-    If isVariantRef(x) Then
-        matrix(i, j, k) = variantRef(x)
-    Else
-        matrix(i, j, k) = x
-    End If
-End Sub
-
-'============================================================================
-'============================================================================
-
+'********************************************************************
+'     ファンクタ等
+'   Function expN           指数関数
+'   Function logN           対数関数
+'   Function pow            累乗
+'   Function plus           加算
+'   Function minus          減算
+'   Function mult           乗算
+'   Function divide         除算
+'   Function poly           多項式
+'   Function min            min
+'   Function max            max
+'   Function equal          述語 Equal
+'   Function notEqual       述語 Not Equal
+'   Function less           述語 less
+'   Function great          述語 great
+'********************************************************************
 '指数関数
 Function expN(ByRef elem As Variant, ByRef dummy As Variant) As Variant
     expN = Exp(elem)
 End Function
-    
     Function p_exp() As Long
         p_exp = VBA.CLng(AddressOf expN)
     End Function
 
 '対数関数
-Function logN(ByRef elem As Variant, Optional ByRef check As Variant) As Variant
+Function logN(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
     logN = Log(elem)
 End Function
-    
     Function p_log() As Long
         p_log = VBA.CLng(AddressOf logN)
-    End Function
-
-'累乗
-Function pow(ByRef a As Variant, ByRef b As Variant) As Variant
-    pow = Exp(b * Log(a))
-End Function
-    
-    Function p_pow() As Long
-        p_pow = VBA.CLng(AddressOf pow)
     End Function
 
 '加算
@@ -207,7 +145,6 @@ Function plus(ByRef elem As Variant, ByRef a As Variant) As Variant
         plus = elem + a
     End If
 End Function
-    
     Function p_plus() As Long
         p_plus = VBA.CLng(AddressOf plus)
     End Function
@@ -218,7 +155,6 @@ Function minus(ByRef elem As Variant, ByRef a As Variant) As Variant
         minus = elem - a
     End If
 End Function
-    
     Function p_minus() As Long
         p_minus = VBA.CLng(AddressOf minus)
     End Function
@@ -229,7 +165,6 @@ Function mult(ByRef elem As Variant, ByRef a As Variant) As Variant
         mult = elem * a
     End If
 End Function
-    
     Function p_mult() As Long
         p_mult = VBA.CLng(AddressOf mult)
     End Function
@@ -240,7 +175,6 @@ Function divide(ByRef elem As Variant, ByRef a As Variant) As Variant
         divide = elem / a
     End If
 End Function
-    
     Function p_divide() As Long
         p_divide = VBA.CLng(AddressOf divide)
     End Function
@@ -251,46 +185,14 @@ Function poly(ByRef elem As Variant, ByRef coef As Variant) As Variant
     poly = 0
     For Each z In coef:    poly = poly * elem + z:      Next z
 End Function
-    
     Function p_poly() As Long
         p_poly = VBA.CLng(AddressOf poly)
-    End Function
-
-'2点間の距離
-Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
-    Dim i As Long
-    
-    distance = 0#
-    If IsMissing(y) Then
-        For i = 0 To sizeof(x) - 1 Step 1
-            distance = distance + x(i + LBound(x)) ^ 2
-        Next i
-    Else
-        For i = 0 To sizeof(x) - 1 Step 1
-            distance = distance + (x(i + LBound(x)) - y(i + LBound(y))) ^ 2
-        Next i
-    End If
-    distance = distance ^ 0.5
-End Function
-    
-    Function p_distance() As Long
-        p_distance = VBA.CLng(AddressOf distance)
-    End Function
-
-'乱数
-Function vbRand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
-    vbRand = (to_ - from_) * Rnd() + from_
-End Function
-    
-    Function p_rnd() As Long
-        p_rnd = VBA.CLng(AddressOf vbRand)
     End Function
 
 'min
 Function min(ByRef a As Variant, ByRef b As Variant) As Variant
     min = IIf(a < b, a, b)
 End Function
-    
     Function p_min() As Long
         p_min = VBA.CLng(AddressOf min)
     End Function
@@ -299,34 +201,14 @@ End Function
 Function max(ByRef a As Variant, ByRef b As Variant) As Variant
     max = IIf(a < b, b, a)
 End Function
-    
     Function p_max() As Long
         p_max = VBA.CLng(AddressOf max)
     End Function
     
-'述語 equal
-Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
-    equal = IIf(a = b, 1&, 0&)
-End Function
-    
-    Function p_equal() As Long
-        p_equal = VBA.CLng(AddressOf equal)
-    End Function
-
-'述語 notEqual
-Function notEqual(ByRef a As Variant, ByRef b As Variant) As Variant
-    notEqual = IIf(a <> b, 1&, 0&)
-End Function
-    
-    Function p_notEqual() As Long
-        p_notEqual = VBA.CLng(AddressOf notEqual)
-    End Function
-
 '述語 less
 Function less(ByRef a As Variant, ByRef b As Variant) As Variant
     less = IIf(a < b, 1&, 0&)
 End Function
-    
     Function p_less() As Long
         p_less = VBA.CLng(AddressOf less)
     End Function
@@ -335,26 +217,6 @@ End Function
 Function great(ByRef a As Variant, ByRef b As Variant) As Variant
     great = IIf(a > b, 1&, 0&)
 End Function
-    
     Function p_great() As Long
         p_great = VBA.CLng(AddressOf great)
-    End Function
-
-'=======================================================================
-'フィボナッチ関数   (0,1)->(1,1)->(1,2)->(2,3)->(3,5)->(5,8)-> ...
-Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
-    fibonacci = Array(b, a + b)
-End Function
-    
-    Function p_fibonacci() As Long
-        p_fibonacci = VBA.CLng(AddressOf fibonacci)
-    End Function
-
-'ロジスティック写像   (Xn, r)->Xn+1
-Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
-    Logistic = r * x * (1 - x)
-End Function
-    
-    Function p_Logistic() As Long
-        p_Logistic = VBA.CLng(AddressOf Logistic)
     End Function
