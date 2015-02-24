@@ -1,102 +1,94 @@
+Option Explicit
+
+'2点間の距離
+Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
+    Dim i As Long
+    
+    distance = 0#
+    If IsMissing(y) Then
+        For i = 0 To sizeof(x) - 1 Step 1
+            distance = distance + x(i + LBound(x)) ^ 2
+        Next i
+    Else
+        For i = 0 To sizeof(x) - 1 Step 1
+            distance = distance + (x(i + LBound(x)) - y(i + LBound(y))) ^ 2
+        Next i
+    End If
+    distance = distance ^ 0.5
+End Function
+    Function p_distance() As Long
+        p_distance = VBA.CLng(AddressOf distance)
+    End Function
+
+'乱数
+Function vbRand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
+    vbRand = (to_ - from_) * Rnd() + from_
+End Function
+    Function p_rnd() As Long
+        p_rnd = VBA.CLng(AddressOf vbRand)
+    End Function
+
+'=======================================================================
+'フィボナッチ関数   (0,1)->(1,1)->(1,2)->(2,3)->(3,5)->(5,8)-> ...
+Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
+    fibonacci = Array(b, a + b)
+End Function
+    
+    Function p_fibonacci() As Long
+        p_fibonacci = VBA.CLng(AddressOf fibonacci)
+    End Function
+
+'ロジスティック写像   (Xn, r)->Xn+1
+Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
+    Logistic = r * x * (1 - x)
+End Function
+    
+    Function p_Logistic() As Long
+        p_Logistic = VBA.CLng(AddressOf Logistic)
+    End Function
+
 Sub vbaUnit()
-    Dim n As Long
-    Dim Points As Variant, m As Variant
+    Dim N As Long
+    Dim Points As Variant, m As Variant, z As Variant
     Dim init As Double, r As Double
-    Dim a1 As Variant, a2 As Variant, a3 As Variant, a4 As Variant, a5 As Variant, a6 As Variant
-    Dim x1 As Variant, x2 As Variant, x3 As Variant, x4 As Variant, x5 As Variant, x6 As Variant
     
     Debug.Print "------- mapL ----------"
     printM mapL(p_log, Array(1, 2, 3, 4, 5, 6, 7))
     Debug.Print "------- zipWith ----------"
     printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
     Debug.Print "------- foldl ----------"
-    printM foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100
+    Debug.Print foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100
     Debug.Print "------- foldr ----------"
-    printM foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)
+    Debug.Print foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)
     
     Debug.Print "------- 円周率を確率的に求める ------------"
-    n = 10000
-    Points = zip(mapL(p_rnd, repeat(0, n), 1), mapL(p_rnd, repeat(0, n), 1))
-    printM 4 * count_if(p_less, mapL(p_distance, Points, Array(0, 0)), 1#) / n
+    N = 10000
+    Points = zip(mapL(p_rnd, repeat(0, N), 1), mapL(p_rnd, repeat(0, N), 1))
+    Debug.Print 4 * count_if(p_less, mapL(p_distance, Points, Array(0, 0)), 1#) / N
     
     Debug.Print "------- ロジスティック漸化式 ------------"
-    n = 10
+    N = 10
     init = 0.1: r = 3.754
-    m = scanl(p_applyFun, init, repeat(Array(p_Logistic, Null, r), n))
+    m = scanl(p_applyFun, init, repeat(Array(p_Logistic, Null, r), N))
     printM m
-    m = scanr(p_setParam, init, repeat(Array(p_Logistic, Null, r), n))
+    m = scanr(p_setParam, init, repeat(Array(p_Logistic, Null, r), N))
     printM m
     
     Debug.Print "------- フィボナッチ数列 ------------"
-    n = 10
-    m = unzip(scanl(p_applyFun, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), n)), 1)(0)
+    N = 10
+    m = unzip(scanl(p_applyFun, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), N)), 1)(0)
     printM m
-    m = unzip(scanr(p_setParam, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), n)), 1)(0)
+    m = unzip(scanr(p_setParam, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), N)), 1)(0)
     printM m
-    m = unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
+    m = unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
     printM m
-
-    Debug.Print "------- 配列への値の代入 ------------"
-    m = makeM(9, 5, repeat("", 50))
-    printM fillRow(fillCol(m, 2, repeat("*", 25)), 3, repeat("*", 25))
     
-    Debug.Print "------- 参照変数(variantRef) ------------"
-    m = makeM(3, 3, iota(1, 9))
-    x1 = variantRef(m)
-    printM m
-    m(1, 1) = 55555
-    printM x1
-    
-    Debug.Print "------- forward_as_tuple(1) ------------"
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4
-    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):
-    m = makeM(2, 2, forward_as_tuple(x1, x2, x3, x4))
-    printM m
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40
-    printM m
-    Debug.Print "------- forward_as_tuple(2) ------------"
-    m = catV(forward_as_tuple(x1, x2), forward_as_tuple(x3, x4))
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4
-    printM m
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40
-    printM m
-    Debug.Print "------- forward_as_tuple(3) ------------"
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4
-    m = catV(x1, forward_as_tuple(x2, x3, x4))
-    printM m
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40
-    printM m
-    Debug.Print "------- forward_as_tuple(4) ------------"
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4
-    m = catV(forward_as_tuple(x1, x2, x3), x4)
-    printM m
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40
-    printM m
-
     Debug.Print "------- zip ------------"
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4
-    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):
-    m = zip(forward_as_tuple(x1, x2), forward_as_tuple(x3, x4))
-    printM m(0): printM m(1)
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40
-    printM m(0): printM m(1)
+    m = zip(Array(1, 2, 3, 4, 5), Array(11, 12, 13, 14, 15))
+    For Each z In m: printM z: Next z
 
-    Debug.Print "------- unzip(1) ------------"
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4: a5 = 5: a6 = 6
-    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):: x5 = variantRef(a5): x6 = variantRef(a6)
-    m = zip(forward_as_tuple(x1, x2, x3), forward_as_tuple(x4, x5, x6))
-    printM m(0): printM m(1): printM m(2)
-    m = unzip(m, 1)
-    printM m(0): printM m(1)
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40: a5 = 50: a6 = 60
-    printM m(0): printM m(1)
-    Debug.Print "------- unzip(2) ------------"
-    a1 = 1: a2 = 2: a3 = 3: a4 = 4: a5 = 5: a6 = 6
-    x1 = variantRef(a1): x2 = variantRef(a2): x3 = variantRef(a3): x4 = variantRef(a4):: x5 = variantRef(a5): x6 = variantRef(a6)
-    m = zip(forward_as_tuple(x1, x2, x3), forward_as_tuple(x4, x5, x6))
-    printM m(0): printM m(1): printM m(2)
-    m = unzip(m, 2)
-    printM m
-    a1 = 10: a2 = 20: a3 = 30: a4 = 40: a5 = 50: a6 = 60
-    printM m
+    Debug.Print "------- unzip ------------"
+    printM unzip(m, 1)(0)
+    printM unzip(m, 1)(1)
+    printM unzip(m, 2)
 End Sub
