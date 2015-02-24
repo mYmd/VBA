@@ -2,19 +2,8 @@ Option Explicit
 
 '2点間の距離
 Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
-    Dim i As Long
-    
-    distance = 0#
-    If IsMissing(y) Then
-        For i = 0 To sizeof(x) - 1 Step 1
-            distance = distance + x(i + LBound(x)) ^ 2
-        Next i
-    Else
-        For i = 0 To sizeof(x) - 1 Step 1
-            distance = distance + (x(i + LBound(x)) - y(i + LBound(y))) ^ 2
-        Next i
-    End If
-    distance = distance ^ 0.5
+        distance = foldr(p_plus, 0, mapL(p_poly, zipWith(p_minus, x, IIf(IsMissing(y), repeat(0, sizeof(x)), y)), Array(1, 0, 0))) ^ 0.5
+
 End Function
     Function p_distance() As Long
         p_distance = VBA.CLng(AddressOf distance)
