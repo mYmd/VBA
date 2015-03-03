@@ -5,6 +5,8 @@ VBA用のなんちゃってHaskellモジュール(32bit Office Only)
 
 mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファイル等でエクスポート  
 	Dimension = Dimension  
+	placeholder = placeholder  
+	is_placeholder = is_placeholder  
 	simple_invoke = simple_invoke  
 	mapL = mapL  
 	mapR = mapR  
@@ -27,7 +29,11 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
   printM.txt  
 Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせる。  
 
-'========= 実行例はtest.txt ======================  
+・実行例はtest.txt  
+
+2015/3/4  
+サンプルにFizzBuzzを追加  
+
 2015/2/24  
 左辺値参照関連の関数群を破棄した。（variantRef、forward_as_tuple等）  
 これによる影響は、配列をデータで埋める3種類の関数fillM、fillRow、fillColがSubになったことである。  
