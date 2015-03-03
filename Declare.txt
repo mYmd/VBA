@@ -3,9 +3,14 @@ Option Explicit
 '======================================================
 '          API宣言
 '======================================================
-
 ' VBA配列の次元取得
 Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
+
+'プレースホルダ・オブジェクトの生成
+Declare Function placeholder Lib "mapM.dll" () As Variant
+
+'プレースホルダ・オブジェクト判定
+Declare Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
 
 ' 2引数にCallback関数を適用する
 Declare Function simple_invoke Lib "mapM.dll" ( _
@@ -88,3 +93,5 @@ Declare Function count_if Lib "mapM.dll" ( _
                 ByVal pCallback As Long, _
             ByRef matrix As Variant, _
         Optional ByRef additionalPrameter As Variant) As Long
+
+
