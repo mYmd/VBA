@@ -2,8 +2,7 @@ Option Explicit
 
 '2点間の距離
 Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
-        distance = foldr(p_plus, 0, mapL(p_poly, zipWith(p_minus, x, IIf(IsMissing(y), repeat(0, sizeof(x)), y)), Array(1, 0, 0))) ^ 0.5
-
+    distance = foldr1(p_plus, mapL(p_poly, zipWith(p_minus, x, IIf(IsMissing(y), repeat(0, sizeof(x)), y)), Array(1, 0, 0))) ^ 0.5
 End Function
     Function p_distance() As Long
         p_distance = VBA.CLng(AddressOf distance)
@@ -22,7 +21,6 @@ End Function
 Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
     fibonacci = Array(b, a + b)
 End Function
-    
     Function p_fibonacci() As Long
         p_fibonacci = VBA.CLng(AddressOf fibonacci)
     End Function
@@ -31,7 +29,6 @@ End Function
 Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
     Logistic = r * x * (1 - x)
 End Function
-    
     Function p_Logistic() As Long
         p_Logistic = VBA.CLng(AddressOf Logistic)
     End Function
@@ -39,6 +36,7 @@ End Function
 Sub vbaUnit()
     Dim N As Long
     Dim Points As Variant, m As Variant, z As Variant
+    Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
     
     Debug.Print "------- mapL ----------"
@@ -58,18 +56,26 @@ Sub vbaUnit()
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
-    m = scanl(p_applyFun, init, repeat(Array(p_Logistic, Null, r), N))
+    m = scanl(p_applyFun, init, repeat(bind2nd(p_Logistic, r), N))
     printM m
-    m = scanr(p_setParam, init, repeat(Array(p_Logistic, Null, r), N))
+    m = scanr(p_setParam, init, repeat(bind2nd(p_Logistic, r), N))
     printM m
     
     Debug.Print "------- フィボナッチ数列 ------------"
     N = 10
-    m = unzip(scanl(p_applyFun, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), N)), 1)(0)
+    m = unzip(scanl(p_applyFun, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
     printM m
-    m = unzip(scanr(p_setParam, Array(0, 1), repeat(Array(p_fibonacci, Null, Null), N)), 1)(0)
+    m = unzip(scanr(p_setParam, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
     printM m
     m = unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
+    printM m
+    
+    Debug.Print "------- FizzBuzz ------------"
+    N100 = iota(1, 100)
+    m3 = mapL(p_foldl_Funs, N100, Array(bind2nd(p_mod, 3), bind2nd(p_if_else, Array(0, "Fizz", Null))))
+    m5 = mapL(p_foldl_Funs, N100, Array(bind2nd(p_mod, 5), bind2nd(p_if_else, Array(0, "Buzz", Null))))
+    m15 = mapL(p_foldl_Funs, N100, Array(bind2nd(p_mod, 15), bind2nd(p_if_else, Array(0, "FizzBuzz", Null))))
+    m = foldl1(p_replaceNull, makeM(4, 100, catV(m15, catV(m5, catV(m3, N100)))))
     printM m
     
     Debug.Print "------- zip ------------"
