@@ -1,34 +1,35 @@
 Option Explicit
 
 '====================================================================================================
-    ' Function  rowSize              配列の行数
-    ' Function  colSize              配列の列数
-    ' Function  sizeof               配列の全要素数
-    ' Function  a_rows               全行番号の列挙
-    ' Function  a_cols               全列番号の列挙
-    ' Function  repeat               N個の値を並べる
-    ' Function  iota                 自然数の連続データまたは同一のスカラーを繰り返したベクトルを返す
-    ' Function  headN                ベクトルの最初のN個をとる
-    ' Function  tailN                ベクトルの最後のN個をとる
-    ' Function  vector               スカラー、配列のベクトル化
-    ' Function  reverse              ベクトルを逆順に並べる
-    ' Function  selectRow            特定行の取得
-    ' Function  selectCol            特定列の取得
-    ' Function  makeM                配列の作成
-    ' Sub       fillM                配列をデータで埋める
-    ' Sub       fillRow              配列の特定行をデータで埋める
-    ' Sub       fillCol              配列の特定列をデータで埋める
-    ' Function  subM                 配列の部分配列を作成する
-    ' Function  slashR               ベクトル・配列の（行の）取捨をする
-    ' Function  slashC               ベクトル・配列の（列の）取捨をする
-    ' Function  catV                 ベクトルを結合
-    ' Function  catR                 行方向に結合
-    ' Function  catC                 列方向に結合
-    ' Function  transpose            配列の転置
-    ' Function  zip                  複数の配列の対応する要素どうしをcatV(ベクトル結合)して配列の配列を作る
-    ' Function  unzip                zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
-    ' Function  makePair             Array(a, b)作成
-    ' Function  product_set          ふたつのベクトルの直積に関数を適用した行列を作る
+    ' Function  rowSize             配列の行数
+    ' Function  colSize             配列の列数
+    ' Function  sizeof              配列の全要素数
+    ' Function  a_rows              全行番号の列挙
+    ' Function  a_cols              全列番号の列挙
+    ' Function  repeat              N個の値を並べる
+    ' Function  iota                自然数の連続データまたは同一のスカラーを繰り返したベクトルを返す
+    ' Function  headN               ベクトルの最初のN個をとる
+    ' Function  tailN               ベクトルの最後のN個をとる
+    ' Function  vector              スカラー、配列のベクトル化
+    ' Function  reverse             ベクトルを逆順に並べる
+    ' Function  selectRow           特定行の取得
+    ' Function  selectCol           特定列の取得
+    ' Function  makeM               配列の作成
+    ' Sub       fillM               配列をデータで埋める
+    ' Sub       fillRow             配列の特定行をデータで埋める
+    ' Sub       fillCol             配列の特定列をデータで埋める
+    ' Function  subM                配列の部分配列を作成する
+    ' Function  slashR              ベクトル・配列の（行の）取捨をする
+    ' Function  slashC              ベクトル・配列の（列の）取捨をする
+    ' Function  catV                ベクトルを結合
+    ' Function  catVs               ベクトルを結合（可変長引数）
+    ' Function  catR                行方向に結合
+    ' Function  catC                列方向に結合
+    ' Function  transpose           配列の転置
+    ' Function  zip                 複数の配列の対応する要素どうしをcatV(ベクトル結合)して配列の配列を作る
+    ' Function  unzip               zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+    ' Function  makePair            Array(a, b)作成
+    ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
 
 Public Function rowSize(ByRef data As Variant) As Long
@@ -72,7 +73,7 @@ Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If N < 1 Then repeat = Array(): Exit Function
+    If N < 1 Then repeat = VBA.Array(): Exit Function
     ReDim ret(0 To N - 1)
     For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
     repeat = ret
@@ -99,7 +100,7 @@ Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim ret As Variant
     
     If N < 1 Then
-        headN = Array()
+        headN = VBA.Array()
     ElseIf sizeof(vec) < N Then
         headN = vec
     Else
@@ -122,7 +123,7 @@ Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim ret As Variant
     
     If N < 1 Then
-        tailN = Array()
+        tailN = VBA.Array()
     ElseIf sizeof(vec) < N Then
         tailN = vec
     Else
@@ -146,7 +147,7 @@ Public Function vector(data As Variant) As Variant
     
     Select Case Dimension(data)
     Case 0
-        vector = Array(data)
+        vector = VBA.Array(data)
     Case 1
         vector = data
     Case 2
@@ -187,7 +188,7 @@ Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
     Dim ret   As Variant
 
     If i < LBound(data, 1) Or UBound(data, 1) < i Then
-        selectRow = Array()
+        selectRow = VBA.Array()
     Else
         ReDim ret(LBound(data, 2) To UBound(data, 2))
         For j = LBound(data, 2) To UBound(data, 2) Step 1
@@ -207,7 +208,7 @@ Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
     Dim ret   As Variant
 
     If j < LBound(data, 2) Or UBound(data, 2) < j Then
-        selectCol = Array()
+        selectCol = VBA.Array()
     Else
         ReDim ret(LBound(data, 1) To UBound(data, 1))
         For i = LBound(data, 1) To UBound(data, 1) Step 1
@@ -329,7 +330,7 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
 
     Select Case Dimension(matrix)
     Case 0
-        ret = Array()
+        ret = VBA.Array()
     Case 1
         aaaaaa = LBound(matrix, 1)
         ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(rows))
@@ -365,7 +366,7 @@ Public Function slashR(ByRef data As Variant, ByRef flg As Variant) As Variant
     For i = LBound(flg) To UBound(flg) Step 1
         If 0 <> flg(i) Then length = length + 1
     Next i
-    ret = Array()
+    ret = VBA.Array()
     If 0 < length Then
         Select Case Dimension(data)
         Case 1
@@ -409,7 +410,7 @@ Public Function slashC(ByRef data As Variant, ByRef flg As Variant) As Variant
     For j = LBound(flg) To UBound(flg) Step 1
         If 0 <> flg(j) Then length = length + 1
     Next j
-    ret = Array()
+    ret = VBA.Array()
     If 0 < length Then
         Select Case Dimension(data)
         Case 1
@@ -473,6 +474,10 @@ End Function
         p_catV = VBA.CLng(AddressOf catV)
     End Function
 
+'ベクトルを結合（可変長引数）
+Function catVs(ParamArray vectors() As Variant) As Variant
+    catVs = foldl1(p_catV, VBA.Array(vectors)(0))
+End Function
 
 '行方向に結合
 Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
@@ -480,7 +485,7 @@ Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     Dim ret As Variant
     
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or colSize(matrix1) <> colSize(matrix2) Then
-        catR = Array()
+        catR = VBA.Array()
     Else
         ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
         kkkkkk = 0
@@ -502,7 +507,7 @@ Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     Dim ret As Variant
     
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
-        catC = Array()
+        catC = VBA.Array()
     Else
         ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
         kkkkkk = 0
@@ -527,7 +532,7 @@ Function transpose(ByRef matrix As Variant) As Variant
     Case 0
         transpose = matrix
     Case 1
-        If LBound(matrix, 1) > UBound(matrix, 1) Then transpose = Array(): Exit Function
+        If LBound(matrix, 1) > UBound(matrix, 1) Then transpose = VBA.Array(): Exit Function
         transpose = matrix
     Case 2
         r = LBound(matrix, 1)
@@ -540,7 +545,7 @@ Function transpose(ByRef matrix As Variant) As Variant
         Next i
         transpose = ret
     Case Else
-        transpose = Array()
+        transpose = VBA.Array()
     End Select
 End Function
 
@@ -554,7 +559,7 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
     Dim colLen As Long, i As Long, j As Long, kkkk As Long
     Dim ret As Variant, z As Variant
 
-    unzip = Array()
+    unzip = VBA.Array()
     colLen = 0
     For kkkk = LBound(vec) To UBound(vec) Step 1
         If colLen < sizeof(vec(kkkk)) Then colLen = sizeof(vec(kkkk))
@@ -584,7 +589,7 @@ End Function
 
 ' Array(a, b)作成
 Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
-    makePair = Array(a, b)
+    makePair = VBA.Array(a, b)
 End Function
 
     Public Function p_makePair() As Long
