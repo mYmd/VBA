@@ -75,7 +75,7 @@ Sub vbaUnit()
     m3 = mapL(p_if_else, mapL(p_mod, N100, 3), VBA.Array(0, "Fizz", Null))
     m5 = mapL(p_if_else, mapL(p_mod, N100, 5), VBA.Array(0, "Buzz", Null))
     m15 = mapL(p_if_else, mapL(p_mod, N100, 15), VBA.Array(0, "FizzBuzz", Null))
-    printM foldl1(p_replaceNull, makeM(4, 100, catVs(m15, m5, m3, N100)))
+    printM foldl1(p_replaceNull, makeM(4, sizeof(N100), catVs(m15, m5, m3, N100)))
     
     Debug.Print "------- zip ------------"
     m = zip(Array(1, 2, 3, 4, 5), Array(11, 12, 13, 14, 15))
