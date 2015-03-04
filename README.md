@@ -29,7 +29,7 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
   printM.txt  
 Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせる。  
 
-・実行例はtest.txt  
+・実行例はtest.txt にある Sub vbaUnit()  
 
 2015/3/4  
 サンプルにFizzBuzzを追加  
