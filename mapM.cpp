@@ -18,13 +18,14 @@ VARIANT __stdcall placeholder()
     VARIANT ret;
     VariantClear(&ret);
     ret.vt = VT_ERROR;
+    ret.scode = 0;
     return ret;
 }
 
 //プレースホルダ・オブジェクト判定
 __int32 __stdcall is_placeholder(const VARIANT* pv)
 {
-    return ( pv && (pv->vt == VT_ERROR) ) ? 1 : 0;
+    return ( pv && (pv->vt == VT_ERROR) && pv->scode == 0 ) ? 1 : 0;
 }
 
 //使用する唯一のVBAコールバック関数型  VBCallbackFunc  の宣言
