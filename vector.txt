@@ -112,9 +112,8 @@ Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
         headN = ret
     End If
 End Function
-    
-    Public Function p_headN() As Long
-        p_headN = VBA.CLng(AddressOf headN)
+    Public Function p_headN(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_headN = make_funPointer(AddressOf headN, firstParam, secondParam)
     End Function
 
 'ベクトルの最後のN個をとる
@@ -135,9 +134,8 @@ Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
         tailN = ret
     End If
 End Function
-    
-    Public Function p_tailN() As Long
-        p_tailN = VBA.CLng(AddressOf tailN)
+    Public Function p_tailN(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_tailN = make_funPointer(AddressOf tailN, firstParam, secondParam)
     End Function
 
 'スカラー、配列のベクトル化(行→列)
@@ -197,9 +195,8 @@ Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
         selectRow = ret
     End If
 End Function
-
-    Public Function p_selectRow() As Long
-        p_selectRow = VBA.CLng(AddressOf selectRow)
+    Public Function p_selectRow(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_selectRow = make_funPointer(AddressOf selectRow, firstParam, secondParam)
     End Function
 
 '特定列の取得
@@ -217,9 +214,8 @@ Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
         selectCol = ret
     End If
 End Function
-    
-    Public Function p_selectCol() As Long
-        p_selectCol = VBA.CLng(AddressOf selectCol)
+    Public Function p_selectCol(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_selectCol = make_funPointer(AddressOf selectCol, firstParam, secondParam)
     End Function
 
 '配列の作成      makeM(6, 3) => 6行(0,1,2,3,4,5) x 3列(0,1,2)
@@ -395,9 +391,8 @@ Public Function slashR(ByRef data As Variant, ByRef flg As Variant) As Variant
     End If
     slashR = ret
 End Function
-
-    Public Function p_slashR() As Long
-        p_slashR = VBA.CLng(AddressOf slashR)
+    Public Function p_slashR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_slashR = make_funPointer(AddressOf slashR, firstParam, secondParam)
     End Function
 
 'ベクトル・配列の（列の）取捨をする
@@ -439,9 +434,8 @@ Public Function slashC(ByRef data As Variant, ByRef flg As Variant) As Variant
     End If
     slashC = ret
 End Function
-
-    Public Function p_slashC() As Long
-        p_slashC = VBA.CLng(AddressOf slashC)
+    Public Function p_slashC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_slashC = make_funPointer(AddressOf slashC, firstParam, secondParam)
     End Function
 
 'ベクトルを結合
@@ -469,9 +463,8 @@ Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
         catV = catV(vector(v1), vector(v2))
     End If
 End Function
-
-    Function p_catV() As Long
-        p_catV = VBA.CLng(AddressOf catV)
+    Function p_catV(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_catV = make_funPointer(AddressOf catV, firstParam, secondParam)
     End Function
 
 'ベクトルを結合（可変長引数）
@@ -591,9 +584,8 @@ End Function
 Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
     makePair = VBA.Array(a, b)
 End Function
-
-    Public Function p_makePair() As Long
-        p_makePair = VBA.CLng(AddressOf makePair)
+    Public Function p_makePair(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_makePair = make_funPointer(AddressOf makePair, firstParam, secondParam)
     End Function
 
 'ベクトルの直積に関数を適用した行列を作る
