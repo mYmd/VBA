@@ -1,19 +1,26 @@
 Option Explicit
 
-'********************************************************************
+'***********************************************************************************
 '   関数型プログラム
+' APIにCallbackとして渡せる関数のシグネチャは
+' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
+' もしくは
+' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
+'===================================================================================
 '   Function bindFun            関数の部分適用
+'   Function make_funPointer    ユーザ関数をbindファンクタ化する
 '   Function bind1st            1番目の引数を束縛
 '   Function bind2nd            2番目の引数を束縛
+'   Function mapF               配列matrixの各要素elemに関数funcを適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
-'   Function foldl_Funs
-'   Function scanl_Funs
-'   Function foldr_Funs
-'   Function scanr_Funs
+'   Function foldl_Funs         関数合成（foldl）
+'   Function scanl_Funs         関数合成（scanl）
+'   Function foldr_Funs         関数合成（foldr）
+'   Function scanr_Funs         関数合成（scanr）
 '   Function applyFun2by2
 '   Function setParam2by2
-'********************************************************************
+'***********************************************************************************
 
 '関数の部分適用
 'bindFun(func)                              引数の束縛なし
@@ -26,6 +33,15 @@ Function bindFun(ByVal func As Long, Optional ByRef firstParam As Variant, Optio
                         IIf(IsMissing(secondParam), placeholder, secondParam), _
                         placeholder _
                        )
+End Function
+
+'ユーザ関数をbindファンクタ化する
+Function make_funPointer(ByVal func As Long, Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    If IsMissing(firstParam) And IsMissing(secondParam) Then
+        make_funPointer = func
+    Else
+        make_funPointer = bindFun(func, firstParam, secondParam)
+    End If
 End Function
 
 'bindされた関数であることの判定
@@ -49,14 +65,33 @@ Function bind2nd(ByVal func As Variant, Optional ByRef secondParam As Variant) A
     bind2nd = bindFun(func, , secondParam)
 End Function
 
+' 配列matrixの各要素elemに関数funcを適用する
+Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
+    If IsNull(func) Or IsEmpty(func) Then
+        '
+    ElseIf is_bindFun(func) Then
+        Select Case placeholderPosition(func)
+        Case 0  '(f)
+            mapF = mapL(func(0), matrix)
+        Case 1  ' (f, placeholder, b)
+            mapF = mapL(func(0), matrix, func(2))
+        Case 2  ' (f, a, placeholder)
+            mapF = mapR(func(0), func(1), matrix)
+        End Select
+    Else
+        mapF = mapL(func, matrix)
+    End If
+End Function
+    Function p_mapF(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam)
+    End Function
 
-
-'関数適用関数  引数に対して関数を適用する   関数はplaceholderをプレースホルダとした簡易Bind式
-' applyFun(x     ,  Null          )      ->  x
-' applyFun(x     ,  Empty         )      ->  x
-' applyFun(x     , (f, a, b)      )      ->  f(a, b)
-' applyFun(x     , (f, a, placeholder) ) ->  f(a, x)
-' applyFun(x     , (f, placeholder, b) ) ->  f(x, b)
+'関数適用関数  引数に対して関数を適用する   関数はBind式
+' applyFun(x     ,  Null          )     ->  x
+' applyFun(x     ,  Empty         )     ->  x
+' applyFun(x     , (f, a, b)      )     ->  f(a, b)
+' applyFun(x     , (f, a) )             ->  f(a, x)
+' applyFun(x     , (f, , b) )           ->  f(x, b)
 ' applyFun((x, y), (f, placeholder, placeholder))  ->  f(x, y)
 ' applyFun(x     ,  f             )      ->  f(x)
 Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
@@ -77,8 +112,8 @@ Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
         applyFun = simple_invoke(func, param)
     End If
 End Function
-    Function p_applyFun() As Long
-        p_applyFun = VBA.CLng(AddressOf applyFun)
+    Function p_applyFun(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_applyFun = make_funPointer(AddressOf applyFun, firstParam, secondParam)
     End Function
 
 '関数に引数を代入する関数
@@ -89,40 +124,40 @@ End Function
 Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
     setParam = applyFun(param, func)
 End Function
-    Function p_setParam() As Long
-        p_setParam = VBA.CLng(AddressOf setParam)
+    Function p_setParam(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_setParam = make_funPointer(AddressOf setParam, firstParam, secondParam)
     End Function
 
 '関数合成（foldl）
 Function foldl_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     foldl_Funs = foldl(AddressOf applyFun, init, funcArray)
 End Function
-    Function p_foldl_Funs() As Long
-        p_foldl_Funs = VBA.CLng(AddressOf foldl_Funs)
+    Function p_foldl_Funs(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_foldl_Funs = make_funPointer(AddressOf foldl_Funs, firstParam, secondParam)
     End Function
 
 '関数合成（scanl）
 Function scanl_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     scanl_Funs = scanl(AddressOf applyFun, init, funcArray)
 End Function
-    Function p_scanl_Funs() As Long
-        p_scanl_Funs = VBA.CLng(AddressOf scanl_Funs)
+    Function p_scanl_Funs(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_scanl_Funs = make_funPointer(AddressOf scanl_Funs, firstParam, secondParam)
     End Function
 
 '関数合成（foldr）
 Function foldr_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     foldr_Funs = foldr(AddressOf setParam, init, funcArray)
 End Function
-    Function p_foldr_Funs() As Long
-        p_foldr_Funs = VBA.CLng(AddressOf foldr_Funs)
+    Function p_foldr_Funs(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_foldr_Funs = make_funPointer(AddressOf foldr_Funs, firstParam, secondParam)
     End Function
 
 '関数合成（scanr）
 Function scanr_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
-    scanr_Funs = foldr(AddressOf setParam, init, funcArray)
+    scanr_Funs = scanr(AddressOf setParam, init, funcArray)
 End Function
-    Function p_scanr_Funs() As Long
-        p_scanr_Funs = VBA.CLng(AddressOf scanr_Funs)
+    Function p_scanr_Funs(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_scanr_Funs = make_funPointer(AddressOf scanr_Funs, firstParam, secondParam)
     End Function
 
 '((x, y), (f1, f2))  に対して  Array(f1(x, y), f2(x, y))     を返す
@@ -132,16 +167,16 @@ Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Varian
         , simple_invoke(funcs(1 + LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
                      )
 End Function
-    Function p_applyFun2by2() As Long
-        p_applyFun2by2 = VBA.CLng(AddressOf applyFun2by2)
+    Function p_applyFun2by2(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_applyFun2by2 = make_funPointer(AddressOf applyFun2by2, firstParam, secondParam)
     End Function
 
 '((f1, f2), (x, y))  に対して  Array(f1(x, y), f2(x, y))     を返す
 Function setParam2by2(ByRef funcs As Variant, ByRef params As Variant) As Variant
     setParam2by2 = applyFun2by2(params, funcs)
 End Function
-    Function p_setParam2by2() As Long
-        p_setParam2by2 = VBA.CLng(AddressOf setParam2by2)
+    Function p_setParam2by2(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_setParam2by2 = make_funPointer(AddressOf setParam2by2, firstParam, secondParam)
     End Function
 
 
@@ -155,24 +190,24 @@ End Function
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
     firstArg = a
 End Function
-    Function p_firstArg() As Long
-        p_firstArg = VBA.CLng(AddressOf firstArg)
+    Function p_firstArg(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_firstArg = make_funPointer(AddressOf firstArg, firstParam, secondParam)
     End Function
 
 '2番目の引数
 Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
     secondArg = b
 End Function
-    Function p_secondArg() As Long
-        p_secondArg = VBA.CLng(AddressOf secondArg)
+    Function p_secondArg(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_secondArg = make_funPointer(AddressOf secondArg, firstParam, secondParam)
     End Function
 
 'N番目の配列要素
 Function getNth(ByRef index As Variant, ByRef matrix As Variant) As Variant
     getNth = matrix(index)
 End Function
-    Function p_getNth() As Long
-        p_getNth = VBA.CLng(AddressOf getNth)
+    Function p_getNth(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
     End Function
 
 '********************************************************************
@@ -193,37 +228,39 @@ End Function
 '   Function equal          述語 Equal
 '   Function notEqual       述語 Not Equal
 '   Function less           述語 less
-'   Function great          述語 great
+'   Function less_equal     述語 less_equal
+'   Function greater        述語 greater
+'   Function greater_equal  述語 greater_equal
 '********************************************************************
 
 '選択   if_else(値, [判定値(関数), 真の時の変換値(関数), 偽の時の変換値(関数)])
-Function if_else(ByRef val As Variant, ByRef transformer As Variant) As Variant
+Function if_else(ByRef val As Variant, ByRef trans As Variant) As Variant
     Dim lb As Long
     Dim check As Boolean
     
-    lb = LBound(transformer)
-    If is_bindFun(transformer(lb)) Then
-        check = applyFun(val, transformer(lb))
+    lb = LBound(trans)
+    If is_bindFun(trans(lb)) Then
+        check = applyFun(val, trans(lb))
     Else
-        check = (val = transformer(lb))
+        check = (val = trans(lb))
     End If
     If check Then
-        If is_bindFun(transformer(1 + lb)) Then
-            if_else = applyFun(val, transformer(1 + lb))
+        If is_bindFun(trans(1 + lb)) Then
+            if_else = applyFun(val, trans(1 + lb))
         Else
-            if_else = transformer(1 + lb)
+            if_else = trans(1 + lb)
         End If
     Else
-        If is_bindFun(transformer(2 + lb)) Then
-            if_else = applyFun(val, transformer(2 + lb))
+        If is_bindFun(trans(2 + lb)) Then
+            if_else = applyFun(val, trans(2 + lb))
         Else
-            if_else = transformer(2 + lb)
+            if_else = trans(2 + lb)
         End If
     End If
     If is_placeholder(if_else) Then if_else = val
 End Function
-    Function p_if_else() As Long
-        p_if_else = VBA.CLng(AddressOf if_else)
+    Function p_if_else(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_if_else = make_funPointer(AddressOf if_else, firstParam, secondParam)
     End Function
 
 'Nullを他の値に置換する
@@ -234,8 +271,8 @@ Function replaceNull(ByRef x As Variant, ByRef alt As Variant) As Variant
         replaceNull = x
     End If
 End Function
-    Function p_replaceNull() As Long
-        p_replaceNull = VBA.CLng(AddressOf replaceNull)
+    Function p_replaceNull(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_replaceNull = make_funPointer(AddressOf replaceNull, firstParam, secondParam)
     End Function
 
 'Emptyを他の値に置換する
@@ -246,8 +283,8 @@ Function replaceEmpty(ByRef x As Variant, ByRef alt As Variant) As Variant
         replaceEmpty = x
     End If
 End Function
-    Function p_replaceEmpty() As Long
-        p_replaceEmpty = VBA.CLng(AddressOf replaceEmpty)
+    Function p_replaceEmpty(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_replaceEmpty = make_funPointer(AddressOf replaceEmpty, firstParam, secondParam)
     End Function
 
 
@@ -255,16 +292,16 @@ End Function
 Function expN(ByRef elem As Variant, ByRef dummy As Variant) As Variant
     expN = Exp(elem)
 End Function
-    Function p_exp() As Long
-        p_exp = VBA.CLng(AddressOf expN)
+    Function p_exp(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_exp = make_funPointer(AddressOf expN, firstParam, secondParam)
     End Function
 
 '対数関数
 Function logN(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
     logN = Log(elem)
 End Function
-    Function p_log() As Long
-        p_log = VBA.CLng(AddressOf logN)
+    Function p_log(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_log = make_funPointer(AddressOf logN, firstParam, secondParam)
     End Function
 
 '加算
@@ -273,8 +310,8 @@ Function plus(ByRef elem As Variant, ByRef a As Variant) As Variant
         plus = elem + a
     End If
 End Function
-    Function p_plus() As Long
-        p_plus = VBA.CLng(AddressOf plus)
+    Function p_plus(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_plus = make_funPointer(AddressOf plus, firstParam, secondParam)
     End Function
 
 '減算
@@ -283,8 +320,8 @@ Function minus(ByRef elem As Variant, ByRef a As Variant) As Variant
         minus = elem - a
     End If
 End Function
-    Function p_minus() As Long
-        p_minus = VBA.CLng(AddressOf minus)
+    Function p_minus(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_minus = make_funPointer(AddressOf minus, firstParam, secondParam)
     End Function
 
 '乗算
@@ -293,8 +330,8 @@ Function mult(ByRef elem As Variant, ByRef a As Variant) As Variant
         mult = elem * a
     End If
 End Function
-    Function p_mult() As Long
-        p_mult = VBA.CLng(AddressOf mult)
+    Function p_mult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_mult = make_funPointer(AddressOf mult, firstParam, secondParam)
     End Function
 
 '除算
@@ -303,70 +340,86 @@ Function divide(ByRef elem As Variant, ByRef a As Variant) As Variant
         divide = elem / a
     End If
 End Function
-    Function p_divide() As Long
-        p_divide = VBA.CLng(AddressOf divide)
+    Function p_divide(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_divide = make_funPointer(AddressOf divide, firstParam, secondParam)
     End Function
     
 '剰余
 Function modN(ByRef elem As Variant, ByRef a As Variant) As Variant
     modN = elem Mod a
 End Function
-    Function p_mod() As Long
-        p_mod = VBA.CLng(AddressOf modN)
+    Function p_mod(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_mod = make_funPointer(AddressOf modN, firstParam, secondParam)
     End Function
 
 '多項式　（係数は高次->低次）
 Function poly(ByRef x As Variant, ByRef coef As Variant) As Variant
     poly = foldr1(p_plus, zipWith(p_mult, coef, scanr(p_mult, 1, repeat(x, sizeof(coef) - 1))))
 End Function
-    Function p_poly() As Long
-        p_poly = VBA.CLng(AddressOf poly)
+    Function p_poly(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_poly = make_funPointer(AddressOf poly, firstParam, secondParam)
     End Function
 
 'min
 Function min(ByRef a As Variant, ByRef b As Variant) As Variant
     min = IIf(a < b, a, b)
 End Function
-    Function p_min() As Long
-        p_min = VBA.CLng(AddressOf min)
+    Function p_min(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_min = make_funPointer(AddressOf min, firstParam, secondParam)
     End Function
 
 'max
 Function max(ByRef a As Variant, ByRef b As Variant) As Variant
     max = IIf(a < b, b, a)
 End Function
-    Function p_max() As Long
-        p_max = VBA.CLng(AddressOf max)
+    Function p_max(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_max = make_funPointer(AddressOf max, firstParam, secondParam)
     End Function
     
 '述語 equal
 Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
     equal = IIf(a = b, 1, 0)
 End Function
-    Function p_equal() As Long
-        p_equal = VBA.CLng(AddressOf equal)
+    Function p_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_equal = make_funPointer(AddressOf equal, firstParam, secondParam)
     End Function
 
 '述語 not equal
 Function notEqual(ByRef a As Variant, ByRef b As Variant) As Variant
     notEqual = IIf(a = b, 0, 1)
 End Function
-    Function p_notEqual() As Long
-       p_notEqual = VBA.CLng(AddressOf notEqual)
+    Function p_notEqual(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+       p_notEqual = make_funPointer(AddressOf notEqual, firstParam, secondParam)
     End Function
 
 '述語 less
 Function less(ByRef a As Variant, ByRef b As Variant) As Variant
     less = IIf(a < b, 1&, 0&)
 End Function
-    Function p_less() As Long
-        p_less = VBA.CLng(AddressOf less)
+    Function p_less(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_less = make_funPointer(AddressOf less, firstParam, secondParam)
     End Function
 
-'述語 great
-Function great(ByRef a As Variant, ByRef b As Variant) As Variant
-    great = IIf(a > b, 1&, 0&)
+'述語 less_equal
+Function less_equal(ByRef a As Variant, ByRef b As Variant) As Variant
+    less_equal = IIf(a <= b, 1&, 0&)
 End Function
-    Function p_great() As Long
-        p_great = VBA.CLng(AddressOf great)
+    Function p_less_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_less_equal = make_funPointer(AddressOf less_equal, firstParam, secondParam)
+    End Function
+
+'述語 greater
+Function greater(ByRef a As Variant, ByRef b As Variant) As Variant
+    greater = IIf(a > b, 1&, 0&)
+End Function
+    Function p_greater(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_greater = make_funPointer(AddressOf greater, firstParam, secondParam)
+    End Function
+
+'述語 greater_equal
+Function greater_equal(ByRef a As Variant, ByRef b As Variant) As Variant
+    greater_equal = IIf(a >= b, 1&, 0&)
+End Function
+    Function p_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_greater_equal = make_funPointer(AddressOf greater_equal, firstParam, secondParam)
     End Function
