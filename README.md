@@ -31,6 +31,10 @@ Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フ
 
 ・実行例はtest.txt にある Sub vbaUnit()  
 
+2015/3/5  
+引数をキャプチャする方式に変更。  
+これに伴い、ユーザコードではmapLやmapRに代わってmapFを主に使用する形態に変更。  
+
 2015/3/4  
 サンプルにFizzBuzzを追加  
 
