@@ -2,18 +2,18 @@ Option Explicit
 
 '2点間の距離
 Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
-    distance = foldr1(p_plus, mapL(p_poly, zipWith(p_minus, x, IIf(IsMissing(y), repeat(0, sizeof(x)), y)), Array(1, 0, 0))) ^ 0.5
+    distance = foldr1(p_plus, mapF(p_poly(, Array(1, 0, 0)), zipWith(p_minus, x, IIf(IsMissing(y), repeat(0, sizeof(x)), y)))) ^ 0.5
 End Function
-    Function p_distance() As Long
-        p_distance = VBA.CLng(AddressOf distance)
+    Function p_distance(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_distance = make_funPointer(AddressOf distance, firstParam, secondParam)
     End Function
 
 '乱数
 Function vbRand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
     vbRand = (to_ - from_) * Rnd() + from_
 End Function
-    Function p_rnd() As Long
-        p_rnd = VBA.CLng(AddressOf vbRand)
+    Function p_rnd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_rnd = make_funPointer(AddressOf vbRand, firstParam, secondParam)
     End Function
 
 '=======================================================================
@@ -21,16 +21,16 @@ End Function
 Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
     fibonacci = Array(b, a + b)
 End Function
-    Function p_fibonacci() As Long
-        p_fibonacci = VBA.CLng(AddressOf fibonacci)
+    Function p_fibonacci(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_fibonacci = make_funPointer(AddressOf fibonacci, firstParam, secondParam)
     End Function
 
 'ロジスティック写像   (Xn, r)->Xn+1
 Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
     Logistic = r * x * (1 - x)
 End Function
-    Function p_Logistic() As Long
-        p_Logistic = VBA.CLng(AddressOf Logistic)
+    Function p_Logistic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_Logistic = make_funPointer(AddressOf Logistic, firstParam, secondParam)
     End Function
 
 Sub vbaUnit()
@@ -39,42 +39,49 @@ Sub vbaUnit()
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
     
-    Debug.Print "------- mapL ----------"
-    printM mapL(p_log, Array(1, 2, 3, 4, 5, 6, 7))
+    Debug.Print "------- mapF ----------"
+    Debug.Print "mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))"
+    printM mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))
+    Debug.Print "mapF(p_minus(3), iota(1,15))"
+    printM mapF(p_minus(3), iota(1, 15))
+    Debug.Print "mapF(p_minus(, 3), iota(1, 15))"
+    printM mapF(p_minus(, 3), iota(1, 15))
+
     Debug.Print "------- zipWith ----------"
+    Debug.Print "zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))"
     printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
+    
     Debug.Print "------- foldl ----------"
-    Debug.Print foldl(p_minus, 0, iota(1, 100)) ' = (...(((0-1)-2)-3)-...-100
+    Debug.Print "foldl(p_minus, 0, iota(1, 100))  = (...(((0-1)-2)-3)-...-100"
+    Debug.Print foldl(p_minus, 0, iota(1, 100))
+    
     Debug.Print "------- foldr ----------"
-    Debug.Print foldr(p_minus, 0, iota(1, 100)) ' = 0-(1-(2-(3-...(99-100)))...)
+    Debug.Print "foldr(p_minus, 0, iota(1, 100))  = 0-(1-(2-(3-...(99-100)))...)"
+    Debug.Print foldr(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- 円周率を確率的に求める ------------"
     N = 10000
-    Points = zip(mapL(p_rnd, repeat(0, N), 1), mapL(p_rnd, repeat(0, N), 1))
-    Debug.Print 4 * count_if(p_less, mapL(p_distance, Points, Array(0, 0)), 1#) / N
+    Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
+    printM Array("π≒", 4 * count_if(p_less, mapF(p_distance, Points), 1#) / N)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
-    m = scanl(p_applyFun, init, repeat(bind2nd(p_Logistic, r), N))
-    printM m
-    m = scanr(p_setParam, init, repeat(bind2nd(p_Logistic, r), N))
-    printM m
-    
-    Debug.Print "------- フィボナッチ数列 ------------"
+    printM scanl(p_applyFun, init, repeat(bind2nd(p_Logistic, r), N))
+    printM scanr(p_setParam, init, repeat(bind2nd(p_Logistic, r), N))
+   
+    Debug.Print "------- フィボナッチ数列（４通り） ------------"
     N = 10
-    m = unzip(scanl(p_applyFun, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
-    printM m
-    m = unzip(scanr(p_setParam, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
-    printM m
-    m = unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
-    printM m
+    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
+    printM unzip(scanl_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
+    printM unzip(scanr_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
+    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
     
     Debug.Print "------- FizzBuzz ------------"
     N100 = iota(1, 100)
-    m3 = mapL(p_if_else, mapL(p_mod, N100, 3), VBA.Array(0, "Fizz", Null))
-    m5 = mapL(p_if_else, mapL(p_mod, N100, 5), VBA.Array(0, "Buzz", Null))
-    m15 = mapL(p_if_else, mapL(p_mod, N100, 15), VBA.Array(0, "FizzBuzz", Null))
+    m3 = mapF(p_if_else(, VBA.Array(0, "Fizz", Null)), mapF(p_mod(, 3), N100))
+    m5 = mapF(p_if_else(, VBA.Array(0, "Buzz", Null)), mapF(p_mod(, 5), N100))
+    m15 = mapF(p_if_else(, VBA.Array(0, "FizzBuzz", Null)), mapF(p_mod(, 15), N100))
     printM foldl1(p_replaceNull, makeM(4, sizeof(N100), catVs(m15, m5, m3, N100)))
     
     Debug.Print "------- zip ------------"
