@@ -20,6 +20,7 @@ Option Explicit
 '   Function scanr_Funs         関数合成（scanr）
 '   Function applyFun2by2
 '   Function setParam2by2
+'   Function count_if           配列の各要素でfuncによる評価結果がゼロでないものの数
 '***********************************************************************************
 
 '関数の部分適用
@@ -177,6 +178,14 @@ Function setParam2by2(ByRef funcs As Variant, ByRef params As Variant) As Varian
 End Function
     Function p_setParam2by2(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_setParam2by2 = make_funPointer(AddressOf setParam2by2, firstParam, secondParam)
+    End Function
+
+' 配列 matrix の各要素でfuncによる評価結果がゼロでないものの数   関数はBind式
+Function count_if(ByRef func As Variant, ByRef matrix As Variant) As Variant
+    count_if = foldl1(p_plus, mapF(p_notEqual(, 0), mapF(p_applyFun(, func), matrix)))
+End Function
+    Function p_count_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam)
     End Function
 
 
