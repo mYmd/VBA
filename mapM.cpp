@@ -277,45 +277,6 @@ scanr1(__int32 pCallback, VARIANT* matrix, __int32 axis)
 
 //**************************************************************************
 
-//VBA配列matrixの各要素でCallbackによる評価結果がゼロでないものの数
-__int32     __stdcall
-count_if(__int32 pCallback, VARIANT* matrix, VARIANT* additionalParameter)
-{
-    VBCallbackFunc  func = reinterpret_cast<VBCallbackFunc>(pCallback);
-    //----------------------------
-    if ( !matrix || !func )                                     return 0;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                       return (*func)(matrix, additionalParameter).lVal? 1: 0;
-    //----------------------------
-    SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
-    UINT dim = ::SafeArrayGetDim(pArray);
-    if ( 0 == dim || 3 < dim )                                  return 0;
-    SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-    safeArrayBounds(pArray, dim, bounds);
-    __int32     ret = 0;
-    for ( ULONG i = 0; i < bounds[0].cElements; ++i )
-    {
-        for ( ULONG j = 0; j < bounds[1].cElements; ++j )
-        {
-            for ( ULONG k = 0; k < bounds[2].cElements; ++k )
-            {
-                LONG index[3] = {   static_cast<LONG>(i)+bounds[0].lLbound,
-                                    static_cast<LONG>(j)+bounds[1].lLbound,
-                                    static_cast<LONG>(k)+bounds[2].lLbound  };
-                VARIANT elem;
-                ::VariantInit(&elem);
-                ::SafeArrayGetElement(pArray, index, &elem);
-                VARIANT result = (*func)(&elem, additionalParameter);
-                if ( result.lVal )  ++ret;
-                ::VariantClear(&elem);
-                ::VariantClear(&result);
-            }
-        }
-    }
-    return      ret;
-}
-
-//*****************************************************************
-
 namespace   {
 
     //mapLとmapRの共通処理
