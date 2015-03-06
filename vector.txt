@@ -19,8 +19,8 @@ Option Explicit
     ' Sub       fillRow             配列の特定行をデータで埋める
     ' Sub       fillCol             配列の特定列をデータで埋める
     ' Function  subM                配列の部分配列を作成する
-    ' Function  slashR              ベクトル・配列の（行の）取捨をする
-    ' Function  slashC              ベクトル・配列の（列の）取捨をする
+    ' Function  filterR             ベクトル・配列の（行の）取捨をする
+    ' Function  filterC             ベクトル・配列の（列の）取捨をする
     ' Function  catV                ベクトルを結合
     ' Function  catVs               ベクトルを結合（可変長引数）
     ' Function  catR                行方向に結合
@@ -354,7 +354,7 @@ End Function
 
 'ベクトル・配列の（行の）取捨をする
 'Flgは 0/1
-Public Function slashR(ByRef data As Variant, ByRef flg As Variant) As Variant
+Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim ret As Variant
     Dim length As Long, i As Long, kkkkkkkk As Long
     
@@ -389,15 +389,15 @@ Public Function slashR(ByRef data As Variant, ByRef flg As Variant) As Variant
             Next i
         End Select
     End If
-    slashR = ret
+    filterR = ret
 End Function
-    Public Function p_slashR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_slashR = make_funPointer(AddressOf slashR, firstParam, secondParam)
+    Public Function p_filterR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_filterR = make_funPointer(AddressOf filterR, firstParam, secondParam)
     End Function
 
 'ベクトル・配列の（列の）取捨をする
 'Flgは 0/1
-Public Function slashC(ByRef data As Variant, ByRef flg As Variant) As Variant
+Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim ret As Variant
     Dim length As Long, j As Long, kkkkkkkk As Long
     
@@ -432,10 +432,10 @@ Public Function slashC(ByRef data As Variant, ByRef flg As Variant) As Variant
             Next j
         End Select
     End If
-    slashC = ret
+    filterC = ret
 End Function
-    Public Function p_slashC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_slashC = make_funPointer(AddressOf slashC, firstParam, secondParam)
+    Public Function p_filterC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_filterC = make_funPointer(AddressOf filterC, firstParam, secondParam)
     End Function
 
 'ベクトルを結合
