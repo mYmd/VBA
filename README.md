@@ -19,17 +19,19 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
 	scanr = scanr  
 	scanl1 = scanl1  
 	scanr1 = scanr1  
-	count_if = count_if  
 
 以下のテキストファイルはVBAソースコード。
-標準モジュールにそのままコピーすればOK。  
-  Declare.txt  
-  mapM.txt  
-  vector.txt  
-  printM.txt  
-Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分は、dllの保存フォルダに合わせる。  
+ファイル名は無視して標準モジュールにそのままコピーする。  
+  Declare.txt（Declare文のみ）  
+  mapM.txt（中心となるモジュール）  
+  vector.txt（その他配列操作）  
+  printM.txt（配列表示）  
+  test.txt（これはサンプルプログラム Sub vbaUnit）  
+Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。  
 
-・実行例はtest.txt にある Sub vbaUnit()  
+2015/3/6  
+count_ifをC++側から削除し、VBA側の通常関数にした。  
+slashR, slashC　をそれぞれ filterR, filterC に名称変更した。  
 
 2015/3/5  
 引数をキャプチャする方式に変更。  
