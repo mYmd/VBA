@@ -56,7 +56,7 @@ Sub vbaUnit()
     Debug.Print foldl(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- foldr ----------"
-    Debug.Print "foldr(p_minus, 0, iota(1, 100))  = 0-(1-(2-(3-...(99-100)))...)"
+    Debug.Print "foldr(p_minus, 0, iota(1, 100))  = 1-(2-(3-...(99-(100-0)))...)"
     Debug.Print foldr(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- 円周率を確率的に求める ------------"
