@@ -92,9 +92,3 @@ Declare Function scanr1 Lib "mapM.dll" ( _
                 ByVal pCallback As Long, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
-
-' VBA配列matrixの各要素でCallbackによる評価結果がゼロでないものの数
-Declare Function count_if Lib "mapM.dll" ( _
-                ByVal pCallback As Long, _
-            ByRef matrix As Variant, _
-        Optional ByRef additionalPrameter As Variant) As Long
