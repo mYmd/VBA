@@ -20,4 +20,3 @@ EXPORTS
 	scanr = scanr
 	scanl1 = scanl1
 	scanr1 = scanr1
-	count_if = count_if
