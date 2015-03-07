@@ -72,8 +72,8 @@ Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
         '
     ElseIf is_bindFun(func) Then
         Select Case placeholderPosition(func)
-        Case 0  '(f)
-            mapF = mapL(func(0), func(1), func(2))
+        Case 0  '(f, a, b)
+            mapF = simple_invoke(func(0), func(1), func(2))
         Case 1  ' (f, placeholder, b)
             mapF = mapL(func(0), matrix, func(2))
         Case 2  ' (f, a, placeholder)
@@ -100,7 +100,7 @@ Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
         applyFun = param
     ElseIf is_bindFun(func) Then
         Select Case placeholderPosition(func)
-        Case 0  '(f)
+        Case 0  '(f, a, b)
             applyFun = simple_invoke(func(0), func(1), func(2))
         Case 1  ' (f, placeholder, b)
             applyFun = simple_invoke(func(0), param, func(2))
