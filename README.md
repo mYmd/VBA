@@ -26,8 +26,8 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
   mapM.txt（中心となるモジュール）  
   vector.txt（その他配列操作）  
   printM.txt（配列表示）  
-  test.txt（これはサンプルプログラム Sub vbaUnit）  
-Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。  
+  test.txt（サンプルプログラム：Sub vbaUnit）  
+（Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 2015/3/6  
 count_ifをC++側から削除し、VBA側の通常関数にした。  
@@ -35,7 +35,7 @@ slashR, slashC　をそれぞれ filterR, filterC に名称変更した。
 
 2015/3/5  
 引数をキャプチャする方式に変更。  
-これに伴い、ユーザコードではmapLやmapRに代わってmapFを主に使用する形態に変更。  
+これに伴い、ユーザコードではmapLやmapRに代わってmapFを主に使用するように変更。  
 
 2015/3/4  
 サンプルにFizzBuzzを追加  
