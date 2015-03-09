@@ -1,7 +1,8 @@
 # VBA
-mapM  
-
 VBA用のなんちゃってHaskellモジュール(32bit Office Only)  
+mapやzipWithやfoldやscan系の関数の真似事によってユーザーコードからループを  
+排除しようとする試み。  
+πを確率的に求めるコードがループなしの3行で書ける。（-> test.txt : vbaUnit）  
 
 mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファイル等でエクスポート  
 	Dimension = Dimension  
@@ -29,6 +30,7 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
   test.txt（サンプルプログラム：Sub vbaUnit）  
 （Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
+'=============================================================  
 2015/3/6  
 count_ifをC++側から削除し、VBA側の通常関数にした。  
 slashR, slashC　をそれぞれ filterR, filterC に名称変更した。  
