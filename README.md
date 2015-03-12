@@ -20,17 +20,23 @@ mapM.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファ�
 	scanr = scanr  
 	scanl1 = scanl1  
 	scanr1 = scanr1  
+	stdsort = stdsort  	
 
 以下のテキストファイルはVBAソースコード。
-ファイル名は無視して標準モジュールにそのままコピーする。  
-  Declare.txt（Declare文のみ）  
-  mapM.txt（中心となるモジュール）  
-  vector.txt（その他配列操作）  
-  printM.txt（配列表示）  
-  test.txt（サンプルプログラム：Sub vbaUnit）  
+標準モジュールにそのままコピーする。  
+  declare_module.txt（Declare文のみ）  
+  mapM_module.txt（中心となるモジュール）  
+  vector_module.txt（その他配列操作）  
+  printM_module.txt（配列表示）  
+  sort_module.ext（ソートとlower_bound等）  
+  test_module.txt（サンプルプログラム：Sub vbaUnit）  
 （Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/3/12  
+ソートとlower_bound等を追加
+(vbSort.cpp , sort_module.txt)
+
 2015/3/6  
 count_ifをC++側から削除し、VBA側の通常関数にした。  
 slashR, slashC　をそれぞれ filterR, filterC に名称変更した。  
