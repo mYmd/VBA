@@ -2,6 +2,22 @@ Option Explicit
 
 '======================================================
 '          API宣言
+'   Function Dimension          配列の次元取得
+'   Function placeholder        プレースホルダ・オブジェクトの生成
+'   Function is_placeholder     プレースホルダ・オブジェクト判定
+'   Function simple_invoke      2引数に関数を適用する
+'   Function mapL               配列の各要素と引数に関数を適用する（ユーザコードでは主にmapFを使用する）
+'   Function mapR               引数と配列の各要素に関数を適用する（ユーザコードでは主にmapFを使用する）
+'   Function zipWith            2つの配列の各要素に関数を適用する
+'   Function foldl              配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
+'   Function foldr              配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
+'   Function foldl1             配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
+'   Function foldr1             配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
+'   Function scanl              配列に対する特定の軸に沿った左scan（初期値指定あり）
+'   Function scanr              配列に対する特定の軸に沿った右scan（初期値指定あり）
+'   Function scanl1             配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
+'   Function scanr1             配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
+'   Function stdsort            1次元配列のソートインデックス出力
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -92,3 +108,6 @@ Declare Function scanr1 Lib "mapM.dll" ( _
                 ByVal pCallback As Long, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
+
+' 1次元配列のソートインデックス出力
+Declare Function stdsort Lib "mapM.dll" (ByRef ary As Variant, ByVal pComp As Long) As Variant
