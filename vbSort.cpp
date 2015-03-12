@@ -81,11 +81,11 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 pComp)
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & array->vt) )?  (array->parray): (*array->pparray);
     SAFEARRAYBOUND bound = {1, 0};   //要素数、LBound
     safeArrayBounds(pArray, 1, &bound);
-	std::unique_ptr<__int32[]>	index(new __int32[bound.cElements]);
+    std::unique_ptr<__int32[]>	index(new __int32[bound.cElements]);
     std::unique_ptr<VARIANT[]>	VArray(new VARIANT[bound.cElements]);
-	for ( ULONG i = 0; i < bound.cElements; ++i )
+    for ( ULONG i = 0; i < bound.cElements; ++i )
     {
-		index[i] = static_cast<__int32>(i);
+        index[i] = static_cast<__int32>(i);
         auto j = static_cast<LONG>(i + bound.lLbound);
         ::SafeArrayGetElement(pArray, &j, &VArray[i]);
     }
@@ -110,7 +110,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 pComp)
     VARIANT elem;
     ::VariantInit(&elem);
     elem.vt = VT_I4;
-	for ( LONG i = 0; i < static_cast<LONG>(bound.cElements); ++i )
+    for ( LONG i = 0; i < static_cast<LONG>(bound.cElements); ++i )
     {
         elem.lVal = index[i];
         ::SafeArrayPutElement(retArray, &i, &elem);
