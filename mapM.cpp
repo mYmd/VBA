@@ -36,21 +36,21 @@ __int32 __stdcall is_placeholder(const VARIANT* pv)
 typedef VARIANT (__stdcall *VBCallbackFunc)(VARIANT*, VARIANT*);
 
 
+//要素数とLBoundを取得
+void safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[3])
+{
+    for ( ULONG i = 0; i < dim; ++i )
+    {
+        ::SafeArrayGetLBound(pArray, i+1, &bounds[i].lLbound);
+        LONG ub = 0;
+        ::SafeArrayGetUBound(pArray, i+1, &ub);
+        bounds[i].cElements = 1 + ub - bounds[i].lLbound;
+    }
+}
+
 namespace   {
     //基本型のみ想定したmin
     template <typename T>  T minV(T a, T b) { return (a < b)? a: b; }
-
-    //要素数とLBoundを取得
-    void safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[3])
-    {
-        for ( ULONG i = 0; i < dim; ++i )
-        {
-            ::SafeArrayGetLBound(pArray, i+1, &bounds[i].lLbound);
-            LONG ub = 0;
-            ::SafeArrayGetUBound(pArray, i+1, &ub);
-            bounds[i].cElements = 1 + ub - bounds[i].lLbound;
-        }
-    }
 
     //mapLとmapRの共通処理
     VARIANT  mapLR(  __int32         pCallback   ,
