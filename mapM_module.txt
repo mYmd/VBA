@@ -56,12 +56,12 @@ Private Function placeholderPosition(ByRef val As Variant) As Long
     placeholderPosition = IIf(is_placeholder(val(1)), 1, 0) + IIf(is_placeholder(val(2)), 2, 0)
 End Function
 
-'1番目の引数の束縛(bindFuncの構文糖)
+'1番目の引数の束縛(bindFunの構文糖)
 Function bind1st(ByVal func As Variant, Optional ByRef firstParam As Variant) As Variant
     bind1st = bindFun(func, firstParam)
 End Function
     
-'2番目の引数の束縛(bindFuncの構文糖)
+'2番目の引数の束縛(bindFunの構文糖)
 Function bind2nd(ByVal func As Variant, Optional ByRef secondParam As Variant) As Variant
     bind2nd = bindFun(func, , secondParam)
 End Function
