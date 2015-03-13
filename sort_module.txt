@@ -12,7 +12,8 @@ Option Explicit
 '====================================================================================================
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
-'key_columns は2次元配列の場合のキー列指定 Array(0,2,4) 等
+'key_columns は2次元配列の場合のキー列指定 Array(0,2,4)
+'実際にソートする場合は、subM(配列、sortIndex)
 Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
@@ -26,6 +27,9 @@ Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Varian
         End If
     End Select
 End Function
+    Public Function p_sortIndex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_sortIndex = make_funPointer(AddressOf sortIndex, firstParam, secondParam)
+    End Function
 
 '任意の比較関数 comp によるソート後のインデックス配列
 Function sortIndex_pred(ByRef matrix As Variant, ByRef comp As Variant) As Variant
@@ -40,6 +44,9 @@ Function sortIndex_pred(ByRef matrix As Variant, ByRef comp As Variant) As Varia
         End If
     End Select
 End Function
+    Public Function p_sortIndex_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_sortIndex_pred = make_funPointer(AddressOf sortIndex_pred, firstParam, secondParam)
+    End Function
 
 
     Private Function lower_bound_imple(ByRef matrix As Variant, _
