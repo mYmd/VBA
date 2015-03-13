@@ -1,6 +1,7 @@
 Option Explicit
 
 '====================================================================================================
+' すべてのPublicなFunctionは副作用なし
     ' Function  rowSize             配列の行数
     ' Function  colSize             配列の列数
     ' Function  sizeof              配列の全要素数
@@ -27,11 +28,13 @@ Option Explicit
     ' Function  catC                列方向に結合
     ' Function  transpose           配列の転置
     ' Function  zip                 複数の配列の対応する要素どうしをcatV(ベクトル結合)して配列の配列を作る
+    ' Function  zipVs               可変長引数zip
     ' Function  unzip               zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
     ' Function  makePair            Array(a, b)作成
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
 
+'配列の行数
 Public Function rowSize(ByRef data As Variant) As Long
     Select Case Dimension(data)
     Case 0
@@ -41,6 +44,7 @@ Public Function rowSize(ByRef data As Variant) As Long
     End Select
 End Function
 
+'配列の列数
 Public Function colSize(ByRef data As Variant) As Long
     Select Case Dimension(data)
     Case 0, 1
@@ -50,6 +54,7 @@ Public Function colSize(ByRef data As Variant) As Long
     End Select
 End Function
 
+'配列の全要素数
 Public Function sizeof(ByRef data As Variant) As Long
     Dim i As Long, d As Long
     
@@ -140,7 +145,7 @@ End Function
 
 'スカラー、配列のベクトル化(行→列)
 Public Function vector(data As Variant) As Variant
-    Dim i As Long, j As Long, kkkkkk As Long
+    Dim i As Long, j As Long, counter As Long
     Dim ret   As Variant
     
     Select Case Dimension(data)
@@ -149,12 +154,12 @@ Public Function vector(data As Variant) As Variant
     Case 1
         vector = data
     Case 2
-        kkkkkk = 0
+        counter = 0
         ReDim ret(0 To sizeof(data) - 1)
         For i = LBound(data, 1) To UBound(data, 1) Step 1
             For j = LBound(data, 2) To UBound(data, 2) Step 1
-                ret(kkkkkk) = data(i, j)
-                kkkkkk = kkkkkk + 1
+                ret(counter) = data(i, j)
+                counter = counter + 1
             Next j
         Next i
         vector = ret
@@ -321,75 +326,75 @@ End Sub
 
 '配列の部分配列を作成する
 Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
-    Dim i As Long, j As Long, aaaaaa As Long, bbbbbb As Long
+    Dim i As Long, j As Long, counterR As Long, counterC As Long
     Dim ret As Variant
 
     Select Case Dimension(matrix)
     Case 0
-        ret = VBA.Array()
+        subM = matrix
+        Exit Function
     Case 1
-        aaaaaa = LBound(matrix, 1)
-        ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(rows))
+        counterR = LBound(matrix, 1)
+        ReDim ret(counterR To counterR - 1 + sizeof(rows))
         For i = LBound(rows) To UBound(rows) Step 1
-            ret(aaaaaa) = matrix(rows(i))
-            aaaaaa = aaaaaa + 1
+            ret(counterR) = matrix(rows(i))
+            counterR = counterR + 1
         Next i
     Case 2
-        aaaaaa = LBound(matrix, 1)
-        bbbbbb = LBound(matrix, 2)
-        If IsMissing(rows) Then rows = a_rows(matrix)
-        If IsMissing(cols) Then cols = a_cols(matrix)
-        ReDim ret(aaaaaa To aaaaaa - 1 + sizeof(rows), bbbbbb To bbbbbb - 1 + sizeof(cols))
+        If IsMissing(rows) Then
+            If IsArray(rows) Then
+                subM = VBA.Array()
+                Exit Function
+            Else
+                rows = a_rows(matrix)
+            End If
+        End If
+        If IsMissing(cols) Then
+            If IsArray(cols) Then
+                subM = VBA.Array()
+                Exit Function
+            Else
+                cols = a_cols(matrix)
+            End If
+        End If
+        counterR = LBound(matrix, 1)
+        counterC = LBound(matrix, 2)
+        ReDim ret(counterR To counterR - 1 + sizeof(rows), counterC To counterC - 1 + sizeof(cols))
         For i = LBound(rows) To UBound(rows) Step 1
-            bbbbbb = LBound(matrix, 2)
+            counterC = LBound(matrix, 2)
             For j = LBound(cols) To UBound(cols) Step 1
-                ret(aaaaaa, bbbbbb) = matrix(rows(i), cols(j))
-                bbbbbb = bbbbbb + 1
+                ret(counterR, counterC) = matrix(rows(i), cols(j))
+                counterC = counterC + 1
             Next j
-            aaaaaa = aaaaaa + 1
+            counterR = counterR + 1
         Next i
     End Select
     subM = ret
 End Function
 
+    Private Function filter_imple(ByRef pos As Variant, ByRef index As Variant) As Variant
+        If 0 <> index Then
+            pos(2)(pos(3)) = pos(0) + pos(1)
+            filter_imple = VBA.Array(pos(0) + 1, pos(1), pos(2), pos(3) + 1)
+        Else
+            filter_imple = VBA.Array(pos(0) + 1, pos(1), pos(2), pos(3))
+        End If
+    End Function
+
+
 'ベクトル・配列の（行の）取捨をする
 'Flgは 0/1
 Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim ret As Variant
-    Dim length As Long, i As Long, kkkkkkkk As Long
+    Dim filterSize As Long, dataSize As Long, i As Long
+    Dim indice As Variant, tmpFlag As Variant
     
-    length = 0
-    For i = LBound(flg) To UBound(flg) Step 1
-        If 0 <> flg(i) Then length = length + 1
-    Next i
-    ret = VBA.Array()
-    If 0 < length Then
-        Select Case Dimension(data)
-        Case 1
-            If sizeof(data) < length Then length = sizeof(data)
-            ReDim ret(LBound(data) To LBound(data) - 1 + length)
-            kkkkkkkk = LBound(ret)
-            For i = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(i) Then
-                    ret(kkkkkkkk) = data(LBound(data) + i - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret) < kkkkkkkk Then Exit For
-                End If
-            Next i
-        Case 2
-            If rowSize(data) < length Then length = rowSize(data)
-            ReDim ret(LBound(data) To LBound(data) - 1 + length, LBound(data, 2) To UBound(data, 2))
-            kkkkkkkk = LBound(ret)
-            For i = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(i) Then
-                    Call fillRow_imple(ret, kkkkkkkk, data, LBound(data) + i - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret, 1) < kkkkkkkk Then Exit For
-                End If
-            Next i
-        End Select
-    End If
-    filterR = ret
+    filterSize = sizeof(flg)
+    dataSize = rowSize(data)
+    If dataSize < filterSize Then filterSize = dataSize
+    tmpFlag = headN(flg, filterSize)
+    ReDim indice(0 To -1 + count_if(p_notEqual(, 0), tmpFlag))
+    indice = foldl(AddressOf filter_imple, VBA.Array(0, LBound(flg), indice, 0), tmpFlag)
+    filterR = subM(data, indice(2))
 End Function
     Public Function p_filterR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_filterR = make_funPointer(AddressOf filterR, firstParam, secondParam)
@@ -398,41 +403,16 @@ End Function
 'ベクトル・配列の（列の）取捨をする
 'Flgは 0/1
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim ret As Variant
-    Dim length As Long, j As Long, kkkkkkkk As Long
+    Dim filterSize As Long, dataSize As Long, i As Long
+    Dim indice As Variant, tmpFlag As Variant
     
-    length = 0
-    For j = LBound(flg) To UBound(flg) Step 1
-        If 0 <> flg(j) Then length = length + 1
-    Next j
-    ret = VBA.Array()
-    If 0 < length Then
-        Select Case Dimension(data)
-        Case 1
-            If sizeof(data) < length Then length = sizeof(data)
-            ReDim ret(LBound(data) To LBound(data) - 1 + length)
-            kkkkkkkk = LBound(ret)
-            For j = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(j) Then
-                    ret(kkkkkkkk) = data(LBound(data) + j - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret) < kkkkkkkk Then Exit For
-                End If
-            Next j
-        Case 2
-            If colSize(data) < length Then length = colSize(data)
-            ReDim ret(LBound(data) To UBound(data), LBound(data, 2) To LBound(data, 2) - 1 + length)
-            kkkkkkkk = LBound(ret, 2)
-            For j = LBound(flg) To UBound(flg) Step 1
-                If 0 <> flg(j) Then
-                    Call fillCol_imple(ret, kkkkkkkk, data, LBound(data, 2) + j - LBound(flg))
-                    kkkkkkkk = kkkkkkkk + 1
-                    If UBound(ret, 2) < kkkkkkkk Then Exit For
-                End If
-            Next j
-        End Select
-    End If
-    filterC = ret
+    filterSize = sizeof(flg)
+    dataSize = colSize(data)
+    If dataSize < filterSize Then filterSize = dataSize
+    tmpFlag = headN(flg, filterSize)
+    ReDim indice(0 To -1 + count_if(p_notEqual(, 0), tmpFlag))
+    indice = foldl(AddressOf filter_imple, VBA.Array(0, LBound(flg), indice, 0), tmpFlag)
+    filterC = subM(data, , indice(2))
 End Function
     Public Function p_filterC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_filterC = make_funPointer(AddressOf filterC, firstParam, secondParam)
@@ -440,19 +420,19 @@ End Function
 
 'ベクトルを結合
 Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
-    Dim i As Long, kkkkkk As Long
+    Dim i As Long, counter As Long
     Dim ret As Variant
     
     If Dimension(v1) = 1 And Dimension(v2) = 1 Then
         ReDim ret(0 To sizeof(v1) + sizeof(v2) - 1)
-        kkkkkk = 0
+        counter = 0
         For i = LBound(v1) To UBound(v1) Step 1
-            ret(kkkkkk) = v1(i)
-            kkkkkk = kkkkkk + 1
+            ret(counter) = v1(i)
+            counter = counter + 1
         Next i
         For i = LBound(v2) To UBound(v2) Step 1
-            ret(kkkkkk) = v2(i)
-            kkkkkk = kkkkkk + 1
+            ret(counter) = v2(i)
+            counter = counter + 1
         Next i
         catV = ret
     ElseIf Dimension(v1) <> 1 And Dimension(v2) = 1 Then
@@ -474,21 +454,21 @@ End Function
 
 '行方向に結合
 Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    Dim i As Long, kkkkkk As Long
+    Dim i As Long, counter As Long
     Dim ret As Variant
     
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or colSize(matrix1) <> colSize(matrix2) Then
         catR = VBA.Array()
     Else
         ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
-        kkkkkk = 0
+        counter = 0
         For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
-            Call fillRow_imple(ret, kkkkkk, matrix1, i)
-            kkkkkk = kkkkkk + 1
+            Call fillRow_imple(ret, counter, matrix1, i)
+            counter = counter + 1
         Next i
         For i = LBound(matrix2, 1) To UBound(matrix2, 1) Step 1
-            Call fillRow_imple(ret, kkkkkk, matrix2, i)
-            kkkkkk = kkkkkk + 1
+            Call fillRow_imple(ret, counter, matrix2, i)
+            counter = counter + 1
         Next i
         catR = ret
     End If
@@ -496,21 +476,21 @@ End Function
 
 '列方向に結合
 Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    Dim i As Long, kkkkkk As Long
+    Dim i As Long, counter As Long
     Dim ret As Variant
     
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
         catC = VBA.Array()
     Else
         ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
-        kkkkkk = 0
+        counter = 0
         For i = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
-            Call fillCol_imple(ret, kkkkkk, matrix1, i)
-            kkkkkk = kkkkkk + 1
+            Call fillCol_imple(ret, counter, matrix1, i)
+            counter = counter + 1
         Next i
         For i = LBound(matrix2, 2) To UBound(matrix2, 2) Step 1
-            Call fillCol_imple(ret, kkkkkk, matrix2, i)
-            kkkkkk = kkkkkk + 1
+            Call fillCol_imple(ret, counter, matrix2, i)
+            counter = counter + 1
         Next i
         catC = ret
     End If
@@ -546,35 +526,43 @@ End Function
 Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
     zip = zipWith(AddressOf catV, a, b)
 End Function
+    Function p_zip(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_zip = make_funPointer(AddressOf zip, firstParam, secondParam)
+    End Function
+
+'zip（可変長引数）
+Function zipVs(ParamArray vectors() As Variant) As Variant
+    zipVs = foldl1(p_zip, VBA.Array(vectors)(0))
+End Function
 
 'zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
 Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As Variant
-    Dim colLen As Long, i As Long, j As Long, kkkk As Long
+    Dim colLen As Long, i As Long, j As Long, counter As Long
     Dim ret As Variant, z As Variant
 
     unzip = VBA.Array()
     colLen = 0
-    For kkkk = LBound(vec) To UBound(vec) Step 1
-        If colLen < sizeof(vec(kkkk)) Then colLen = sizeof(vec(kkkk))
-    Next kkkk
+    For counter = LBound(vec) To UBound(vec) Step 1
+        If colLen < sizeof(vec(counter)) Then colLen = sizeof(vec(counter))
+    Next counter
     If colLen = 0 Then Exit Function
     If dimen = 1 Then
         ReDim ret(0 To colLen - 1)
         For j = LBound(ret) To UBound(ret) Step 1
             ReDim z(0 To sizeof(vec) - 1)
-            kkkk = 0
+            counter = 0
             For i = LBound(vec) To UBound(vec) Step 1
-                If j <= UBound(vec(i)) Then z(kkkk) = vec(i)(j)
-                kkkk = kkkk + 1
+                If j <= UBound(vec(i)) Then z(counter) = vec(i)(j)
+                counter = counter + 1
             Next i
             ret(j) = z
         Next j
     Else
         ReDim ret(0 To sizeof(vec) - 1, 0 To colLen - 1)
-        kkkk = LBound(vec)
+        counter = LBound(vec)
         For i = LBound(ret, 1) To UBound(ret, 1) Step 1
-            Call fillRow(ret, i, vec(kkkk))
-            kkkk = kkkk + 1
+            Call fillRow(ret, i, vec(counter))
+            counter = counter + 1
         Next i
     End If
     unzip = ret
