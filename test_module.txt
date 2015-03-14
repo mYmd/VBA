@@ -33,7 +33,6 @@ End Function
         p_Logistic = make_funPointer(AddressOf Logistic, firstParam, secondParam)
     End Function
 
-
 '円／球
 Function circle_(ByRef point As Variant, ByRef r As Variant) As Variant
     circle_ = VBA.Array(point, r)
@@ -74,6 +73,16 @@ Sub vbaUnit()
     Debug.Print "mapF(p_minus(, 3), iota(1, 15))"
     printM mapF(p_minus(, 3), iota(1, 15))
 
+    Debug.Print "------- mapFのネスト ----------"
+    m = mapF(p_mapF(, iota(1, 10)), Array(p_log, p_plus(100), p_divide(, 100)))
+    Debug.Print "m = mapF(p_mapF(, iota(1, 10)), Array(p_log, p_plus(100), p_divide(, 100)))"
+    Debug.Print "m(0)"
+    printM m(0)
+    Debug.Print "m(1)"
+    printM m(1)
+    Debug.Print "m(2)"
+    printM m(2)
+    
     Debug.Print "------- zipWith ----------"
     Debug.Print "zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))"
     printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
@@ -94,10 +103,13 @@ Sub vbaUnit()
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
-    printM scanl(p_applyFun, init, repeat(bind2nd(p_Logistic, r), N))
-    printM scanr(p_setParam, init, repeat(bind2nd(p_Logistic, r), N))
+    printM scanl_Funs(init, repeat(p_Logistic(, r), N))
+         'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) に相当
+    printM scanr_Funs(init, repeat(p_Logistic(, r), N))
+         'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
    
     Debug.Print "------- フィボナッチ数列（４通り） ------------"
+    'bindFunを使っている理由は、applyFunの適用例 7. もしくは setParamの適用例 4. を参照
     N = 10
     printM unzip(scanl(p_applyFun, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
     printM unzip(scanl_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
@@ -111,12 +123,14 @@ Sub vbaUnit()
     m15 = mapF(p_if_else(, VBA.Array(0, "FizzBuzz", Null)), mapF(p_mod(, 15), N100))
     printM foldl1(p_replaceNull, makeM(4, sizeof(N100), catVs(m15, m5, m3, N100)))
     '--------------------
-    m = product_set(p_foldl_Funs, iota(1, 100), Array( _
-                                                      Array(p_mod(, 15), p_if_else(, Array(0, "FizzBuzz", Null))), _
-                                                      Array(p_mod(, 5), p_if_else(, Array(0, "Buzz", Null))), _
-                                                      Array(p_mod(, 3), p_if_else(, Array(0, "Fizz", Null))), _
-                                                      Array(p_firstArg(, 0)) _
-                                                    ))
+    m = product_set(p_foldl_Funs, iota(1, 100), _
+                                  Array( _
+                                          Array(p_mod(, 15), p_if_else(, Array(0, "FizzBuzz", Null))), _
+                                          Array(p_mod(, 5), p_if_else(, Array(0, "Buzz", Null))), _
+                                          Array(p_mod(, 3), p_if_else(, Array(0, "Fizz", Null))), _
+                                          Array(p_firstArg(, 0)) _
+                                       ) _
+                    )
     printM foldl1(p_replaceNull, m, 2)
 
     Debug.Print "------- zip ------------"
