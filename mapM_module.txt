@@ -28,7 +28,9 @@ Option Explicit
 'bindFun(func, firstParam)                  1番目の引数を束縛
 'bindFun(func, , secondParam)               2番目の引数を束縛
 'bindFun(func, firstParam, secondParam)     両方の引数を束縛（遅延評価）
-Function bindFun(ByVal func As Long, Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+Function bindFun(ByVal func As Long, _
+                 Optional ByRef firstParam As Variant, _
+                 Optional ByRef secondParam As Variant) As Variant
     bindFun = VBA.Array(func, _
                         IIf(IsMissing(firstParam), placeholder, firstParam), _
                         IIf(IsMissing(secondParam), placeholder, secondParam), _
@@ -88,13 +90,14 @@ End Function
     End Function
 
 '関数適用関数  引数に対して関数を適用する   関数はBind式
-' applyFun(x     ,  Null          )     ->  x
-' applyFun(x     ,  Empty         )     ->  x
-' applyFun(x     , (f, a, b)      )     ->  f(a, b)
-' applyFun(x     , (f, a) )             ->  f(a, x)
-' applyFun(x     , (f, , b) )           ->  f(x, b)
-' applyFun((x, y), (f, placeholder, placeholder))  ->  f(x, y)
-' applyFun(x     ,  f             )      ->  f(x)
+'1. applyFun(x     ,  Null          )     ->  x
+'2. applyFun(x     ,  Empty         )     ->  x
+'3. applyFun(x     ,  f             )     ->  f(x)
+'4. applyFun(x     , (f, a, b)      )     ->  f(a, b)
+'5. applyFun(x     , (f, a) )             ->  f(a, x)
+'6. applyFun(x     , (f, , b) )           ->  f(x, b)
+'7. applyFun((x, y), (f, placeholder, placeholder))  ->  f(x, y)
+         ' (f, placeholder, placeholder)は bindFun(f)で作成できる
 Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
     If IsNull(func) Or IsEmpty(func) Then
         applyFun = param
@@ -118,10 +121,11 @@ End Function
     End Function
 
 '関数に引数を代入する関数
-' setParam(f              , x     )  ->  f(x)
-' setParam((f, a, placeholder), x )  ->  f(a, x)
-' setParam((f, placeholder, b), x )  ->  f(x, b)
-' setParam((f, placeholder, placeholder), (x, y))  ->  f(x, y)
+'1. setParam(f              , x     )  ->  f(x)
+'2. setParam((f, a, placeholder), x )  ->  f(a, x)
+'3. setParam((f, placeholder, b), x )  ->  f(x, b)
+'4. setParam((f, placeholder, placeholder), (x, y))  ->  f(x, y)
+      ' (f, placeholder, placeholder)は bindFun(f)で作成できる
 Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
     setParam = applyFun(param, func)
 End Function
