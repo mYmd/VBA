@@ -303,64 +303,56 @@ End Function
 
 
 '指数関数
-Function expN(ByRef elem As Variant, ByRef dummy As Variant) As Variant
-    expN = Exp(elem)
+Function expN(ByRef a As Variant, ByRef dummy As Variant) As Variant
+    expN = Exp(a)
 End Function
     Function p_exp(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_exp = make_funPointer(AddressOf expN, firstParam, secondParam)
     End Function
 
 '対数関数
-Function logN(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
-    logN = Log(elem)
+Function logN(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    logN = Log(a)
 End Function
     Function p_log(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_log = make_funPointer(AddressOf logN, firstParam, secondParam)
     End Function
 
 '加算
-Function plus(ByRef elem As Variant, ByRef a As Variant) As Variant
-    If IsNumeric(elem) And IsNumeric(a) Then
-        plus = elem + a
-    End If
+Function plus(ByRef a As Variant, ByRef b As Variant) As Variant
+    plus = a + b
 End Function
     Function p_plus(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_plus = make_funPointer(AddressOf plus, firstParam, secondParam)
     End Function
 
 '減算
-Function minus(ByRef elem As Variant, ByRef a As Variant) As Variant
-    If IsNumeric(elem) And IsNumeric(a) Then
-        minus = elem - a
-    End If
+Function minus(ByRef a As Variant, ByRef b As Variant) As Variant
+    minus = a - b
 End Function
     Function p_minus(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_minus = make_funPointer(AddressOf minus, firstParam, secondParam)
     End Function
 
 '乗算
-Function mult(ByRef elem As Variant, ByRef a As Variant) As Variant
-    If IsNumeric(elem) And IsNumeric(a) Then
-        mult = elem * a
-    End If
+Function mult(ByRef a As Variant, ByRef b As Variant) As Variant
+    mult = a * b
 End Function
     Function p_mult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mult = make_funPointer(AddressOf mult, firstParam, secondParam)
     End Function
 
 '除算
-Function divide(ByRef elem As Variant, ByRef a As Variant) As Variant
-    If IsNumeric(elem) And IsNumeric(a) Then
-        divide = elem / a
-    End If
+Function divide(ByRef a As Variant, ByRef b As Variant) As Variant
+    divide = a / b
 End Function
     Function p_divide(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_divide = make_funPointer(AddressOf divide, firstParam, secondParam)
     End Function
     
 '剰余
-Function modN(ByRef elem As Variant, ByRef a As Variant) As Variant
-    modN = elem Mod a
+Function modN(ByRef a As Variant, ByRef b As Variant) As Variant
+    modN = a Mod b
 End Function
     Function p_mod(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mod = make_funPointer(AddressOf modN, firstParam, secondParam)
