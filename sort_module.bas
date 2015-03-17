@@ -35,13 +35,9 @@ End Function
 Function sortIndex_pred(ByRef matrix As Variant, ByRef comp As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
-        sortIndex = stdsort(matrix, comp)
+        sortIndex_pred = stdsort(matrix, comp)
     Case 2
-        If UBound(key_columns) < LBound(key_columns) Then
-            sortIndex = stdsort(zipVs(mapF(p_selectCol(matrix), a_cols(matrix))), comp)
-        Else
-            sortIndex = stdsort(zipVs(mapF(p_selectCol(matrix), Array(key_columns)(0))), comp)
-        End If
+        sortIndex_pred = stdsort(foldl1(p_zip, mapF(p_selectCol(matrix), a_cols(matrix))), comp)
     End Select
 End Function
     Public Function p_sortIndex_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
