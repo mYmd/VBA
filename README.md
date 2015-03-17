@@ -29,17 +29,20 @@ mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数�
 	scanr1 = scanr1  
 	stdsort = stdsort  	
 
-以下のテキストファイルはVBAソースコード。
-標準モジュールにそのままコピーする。  
-  declare_module.txt（Declare文のみ）  
-  mapM_module.txt（中心となるモジュール）  
-  vector_module.txt（その他配列操作）  
-  printM_module.txt（配列表示）  
-  sort_module.ext（ソートとlower_bound等）  
-  test_module.txt（サンプルプログラム：Sub vbaUnit）  
-（Declare.txtにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
+以下のbasファイルはVBAソースコード。
+標準モジュールにそのまま取り込む。  
+  declare_module.bas（Declare文のみ）  
+  mapM_module.bas（中心となるモジュール）  
+  vector_module.bas（その他配列操作）  
+  printM_module.bas（配列表示）  
+  sort_module.bas（ソートとlower_bound等）  
+  test_module.bas（サンプルプログラム：Sub vbaUnit）  
+（declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/3/17  
+VBAモジュールの拡張子をtxtからbasへ変更。  
+
 2015/3/12  
 ソートとlower_bound等を追加
 (vbSort.cpp , sort_module.txt)
