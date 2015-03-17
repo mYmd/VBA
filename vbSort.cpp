@@ -112,7 +112,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 pComp)
     elem.vt = VT_I4;
     for ( LONG i = 0; i < static_cast<LONG>(bound.cElements); ++i )
     {
-        elem.lVal = index[i];
+        elem.lVal = index[i] + bound.lLbound;
         ::SafeArrayPutElement(retArray, &i, &elem);
     }
     ret.vt = VT_ARRAY | VT_VARIANT;
