@@ -1,3 +1,4 @@
+Attribute VB_Name = "test_module"
 Option Explicit
 
 '2点間の距離
