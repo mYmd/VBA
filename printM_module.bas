@@ -1,3 +1,4 @@
+Attribute VB_Name = "printM_module"
 Option Explicit
 
 '================================================================================
@@ -135,18 +136,3 @@ End Sub
 Private Function LenW(ByRef s As String) As Long
     LenW = LenB(StrConv(s, vbFromUnicode))
 End Function
-
-Sub pasteM(ByRef matrix As Variant, ByRef r As Range, Optional ByVal col = 0)
-    Select Case Dimension(matrix)
-    Case 0:
-        r.value = matrix
-    Case 1:
-        If col = 0 Then
-            r.Resize(1, sizeof(matrix)).value = matrix
-        Else
-            r.Resize(sizeof(matrix), 1).value = makeM(sizeof(matrix), 1, matrix)
-        End If
-    Case 2:
-        r.Resize(rowSize(matrix), colSize(matrix)).value = matrix
-    End Select
-End Sub
