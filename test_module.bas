@@ -1,4 +1,6 @@
 Attribute VB_Name = "test_module"
+'test_module
+'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
 '2点間の距離
