@@ -1,3 +1,5 @@
+//vbSort.cpp
+//Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
 #include <algorithm>
 #include <memory>
