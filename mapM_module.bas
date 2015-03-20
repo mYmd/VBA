@@ -1,4 +1,6 @@
 Attribute VB_Name = "mapM_module"
+'mapM_module
+'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
 '***********************************************************************************
@@ -60,14 +62,20 @@ Private Function placeholderPosition(ByRef val As Variant) As Long
 End Function
 
 '1番目の引数の束縛(bindFunの構文糖)
-Function bind1st(ByVal func As Variant, Optional ByRef firstParam As Variant) As Variant
+Function bind1st(ByRef func As Variant, Optional ByRef firstParam As Variant) As Variant
     bind1st = bindFun(func, firstParam)
 End Function
+    Function p_bind1st(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_bind1st = make_funPointer(AddressOf bind1st, firstParam, secondParam)
+    End Function
     
 '2番目の引数の束縛(bindFunの構文糖)
-Function bind2nd(ByVal func As Variant, Optional ByRef secondParam As Variant) As Variant
+Function bind2nd(ByRef func As Variant, Optional ByRef secondParam As Variant) As Variant
     bind2nd = bindFun(func, , secondParam)
 End Function
+    Function p_bind2nd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_bind2nd = make_funPointer(AddressOf bind2nd, firstParam, secondParam)
+    End Function
 
 ' 配列の各要素に関数を適用する
 Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
@@ -240,6 +248,10 @@ End Function
 '   Function min            min
 '   Function max            max
 '   Function getCLng        CLng（整数化）
+'   Function str_len        Len
+'   Function str_left       Left
+'   Function str_right      Right
+'   Function str_mid        Mid
 '   Function equal          述語 Equal
 '   Function notEqual       述語 Not Equal
 '   Function less           述語 less
@@ -390,6 +402,39 @@ End Function
     Function p_getCLng(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_getCLng = make_funPointer(AddressOf getCLng, firstParam, secondParam)
     End Function
+    
+'Len
+Function str_len(ByRef st As Variant, ByRef dummy As Variant) As Variant
+    str_len = Len(st)
+End Function
+    Function p_len(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_getCLng = make_funPointer(AddressOf str_len, firstParam, secondParam)
+    End Function
+    
+'Left
+Function str_left(ByRef st As Variant, ByRef length As Variant) As Variant
+    str_left = Left(st, length)
+End Function
+    Function p_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_left = make_funPointer(AddressOf str_left, firstParam, secondParam)
+    End Function
+    
+'Right
+Function str_right(ByRef st As Variant, ByRef length As Variant) As Variant
+    str_right = Right(st, length)
+End Function
+    Function p_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_right = make_funPointer(AddressOf str_right, firstParam, secondParam)
+    End Function
+    
+'Mid
+Function str_mid(ByRef st As Variant, ByRef begin_end As Variant) As Variant
+    str_mid = Mid(st, begin_end(0), begin_end(1))
+End Function
+    Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
+    End Function
+    
     
 '述語 equal
 Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
