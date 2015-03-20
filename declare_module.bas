@@ -1,4 +1,6 @@
 Attribute VB_Name = "declare_module"
+'declare_module
+'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
 '======================================================
