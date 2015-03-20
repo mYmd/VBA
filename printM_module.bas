@@ -1,4 +1,6 @@
 Attribute VB_Name = "printM_module"
+'printM_module
+'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
 '================================================================================
@@ -22,7 +24,7 @@ End Sub
 
 'デバッグウィンドウに２次元配列を表示する
 Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
-    Dim SR&, ER&, Sc&, EC&, i&, j&, MaxL%(), TMP() As Variant, Msg$
+    Dim SR&, ER&, Sc&, EC&, i&, j&, MaxL%(), tmp() As Variant, Msg$
     
     If Dimension(m) = 0 Then Debug.Print m: Exit Sub
     If LBound(m) > UBound(m) Then Debug.Print "#Empty Matrix#": Exit Sub
@@ -68,22 +70,22 @@ Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
         Exit Sub
     End If
     ReDim MaxL(Sc To EC)
-    ReDim TMP(SR To ER, Sc To EC)
+    ReDim tmp(SR To ER, Sc To EC)
     For j = Sc To EC Step 1
         For i = SR To ER Step 1
-            TMP(i, j) = m(i, j)
-            If IsError(m(i, j)) = True Then TMP(i, j) = "Error!"
-            If IsEmpty(m(i, j)) = True Then TMP(i, j) = ""
-            If IsNull(m(i, j)) = True Then TMP(i, j) = ""
-            If IsArray(m(i, j)) = True Then TMP(i, j) = "[" & i & "," & j & "]"
-            If MaxL(j) < LenW(Trim(TMP(i, j))) Then MaxL(j) = LenW(Trim(TMP(i, j)))
+            tmp(i, j) = m(i, j)
+            If IsError(m(i, j)) = True Then tmp(i, j) = "Error!"
+            If IsEmpty(m(i, j)) = True Then tmp(i, j) = ""
+            If IsNull(m(i, j)) = True Then tmp(i, j) = ""
+            If IsArray(m(i, j)) = True Then tmp(i, j) = "[" & i & "," & j & "]"
+            If MaxL(j) < LenW(Trim(tmp(i, j))) Then MaxL(j) = LenW(Trim(tmp(i, j)))
         Next i
     Next j
     For i = SR To ER Step 1
         For j = Sc To EC - 1 Step 1
-            Debug.Print Spc(2 + MaxL(j) - LenW(Trim(TMP(i, j)))); Trim(TMP(i, j));
+            Debug.Print Spc(2 + MaxL(j) - LenW(Trim(tmp(i, j)))); Trim(tmp(i, j));
         Next j
-        Debug.Print Spc(2 + MaxL(UBound(TMP, 2)) - LenW(Trim(TMP(i, UBound(TMP, 2))))); Trim(TMP(i, UBound(TMP, 2)))
+        Debug.Print Spc(2 + MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2))))); Trim(tmp(i, UBound(tmp, 2)))
     Next i
 End Sub
     
