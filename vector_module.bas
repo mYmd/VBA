@@ -1,8 +1,14 @@
 Attribute VB_Name = "vector_module"
+'vector_module
+'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
 '====================================================================================================
 ' すべてのPublicなFunctionは副作用なし
+' 大多数のFunction に対して付随している p_Function は関数ポインタ。
+'     mapF や zipWith の引数として使える。
+'     p_Function : 裸の関数ポインタ、p_Function(a) : 第１引数を束縛、p_Function(, b) : 第２引数を束縛
+'====================================================================================================
     ' Function  rowSize             配列の行数
     ' Function  colSize             配列の列数
     ' Function  sizeof              配列の全要素数
@@ -386,7 +392,7 @@ End Function
 'ベクトル・配列の（行の）取捨をする
 'Flgは 0/1
 Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim filterSize As Long, dataSize As Long, i As Long
+    Dim filterSize As Long, dataSize As Long
     Dim indice As Variant, tmpFlag As Variant
     
     filterSize = sizeof(flg)
@@ -404,7 +410,7 @@ End Function
 'ベクトル・配列の（列の）取捨をする
 'Flgは 0/1
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim filterSize As Long, dataSize As Long, i As Long
+    Dim filterSize As Long, dataSize As Long
     Dim indice As Variant, tmpFlag As Variant
     
     filterSize = sizeof(flg)
