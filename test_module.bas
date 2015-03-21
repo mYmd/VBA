@@ -119,24 +119,21 @@ Sub vbaUnit()
     printM unzip(scanr_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
     printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
     
-    Debug.Print "------- FizzBuzz（２通り） ------------"
-    N100 = iota(1, 100)
-    m3 = mapF(p_if_else(, VBA.Array(0, "Fizz", Null)), mapF(p_mod(, 3), N100))
-    m5 = mapF(p_if_else(, VBA.Array(0, "Buzz", Null)), mapF(p_mod(, 5), N100))
-    m15 = mapF(p_if_else(, VBA.Array(0, "FizzBuzz", Null)), mapF(p_mod(, 15), N100))
-    printM foldl1(p_replaceNull, makeM(4, sizeof(N100), catVs(m15, m5, m3, N100)))
-    '--------------------
-    m = product_set(p_foldl_Funs, iota(1, 100), _
-                                  Array( _
-                                          Array(p_mod(, 15), p_if_else(, Array(0, "FizzBuzz", Null))), _
-                                          Array(p_mod(, 5), p_if_else(, Array(0, "Buzz", Null))), _
-                                          Array(p_mod(, 3), p_if_else(, Array(0, "Fizz", Null))), _
-                                          Array(p_firstArg(, 0)) _
-                                       ) _
+    Debug.Print "------- FizzBuzz ------------"
+    m = product_set(p_if_else, _
+                    iota(1, 100), _
+                    Array( _
+                            Array(p_mod(, 15), Null, "FizzBuzz"), _
+                            Array(p_mod(, 5), Null, "Buzz"), _
+                            Array(p_mod(, 3), placeholder, "Fizz") _
+                         ) _
                     )
     printM foldl1(p_replaceNull, m, 2)
 
     Debug.Print "------- zip ------------"
+    m = "文字をひとつずつ分離する"
+    printM mapF(p_mid(m), zip(iota(1, Len(m)), repeat(1, Len(m))))
+    
     m = zip(Array(1, 2, 3, 4, 5), Array(11, 12, 13, 14, 15))
     For Each z In m: printM z: Next z
 
