@@ -67,7 +67,7 @@ Sub vbaUnit()
     Dim Points As Variant, m As Variant, z As Variant
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
-    
+
     Debug.Print "------- mapF ----------"
     Debug.Print "mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))"
     printM mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))
@@ -85,24 +85,24 @@ Sub vbaUnit()
     printM m(1)
     Debug.Print "m(2)"
     printM m(2)
-    
+
     Debug.Print "------- zipWith ----------"
     Debug.Print "zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))"
     printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
-    
+
     Debug.Print "------- foldl ----------"
     Debug.Print "foldl(p_minus, 0, iota(1, 100))  = (...(((0-1)-2)-3)-...-100"
     Debug.Print foldl(p_minus, 0, iota(1, 100))
-    
+
     Debug.Print "------- foldr ----------"
     Debug.Print "foldr(p_minus, 0, iota(1, 100))  = 1-(2-(3-...(99-(100-0)))...)"
     Debug.Print foldr(p_minus, 0, iota(1, 100))
-    
+
     Debug.Print "------- 円周率を確率的に求める ------------"
     N = 10000
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)
-    
+
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
@@ -110,7 +110,7 @@ Sub vbaUnit()
          'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) に相当
     printM scanr_Funs(init, repeat(p_Logistic(, r), N))
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
-   
+
     Debug.Print "------- フィボナッチ数列（４通り） ------------"
     'bindFunを使っている理由は、applyFunの適用例 7. もしくは setParamの適用例 4. を参照
     N = 10
@@ -118,22 +118,17 @@ Sub vbaUnit()
     printM unzip(scanl_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
     printM unzip(scanr_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
     printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
-    
+
     Debug.Print "------- FizzBuzz ------------"
-    m = product_set(p_if_else, _
-                    iota(1, 100), _
-                    Array( _
-                            Array(p_mod(, 15), Null, "FizzBuzz"), _
-                            Array(p_mod(, 5), Null, "Buzz"), _
-                            Array(p_mod(, 3), placeholder, "Fizz") _
-                         ) _
-                    )
-    printM foldl1(p_replaceNull, m, 2)
+    m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
+              Array(p_mod(, 5), Null, "Buzz"), _
+              Array(p_mod(, 3), placeholder, "Fizz"))
+    printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
 
     Debug.Print "------- zip ------------"
     m = "文字をひとつずつ分離する"
     printM mapF(p_mid(m), zip(iota(1, Len(m)), repeat(1, Len(m))))
-    
+
     m = zip(Array(1, 2, 3, 4, 5), Array(11, 12, 13, 14, 15))
     For Each z In m: printM z: Next z
 
