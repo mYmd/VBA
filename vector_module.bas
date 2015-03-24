@@ -585,15 +585,5 @@ End Function
 
 'ベクトルの直積に関数を適用した行列を作る
 Public Function product_set(ByVal pCallback As Long, ByRef a As Variant, ByRef b As Variant) As Variant
-    Dim i As Long
-    Dim z As Variant
-    
-   If Dimension(a) = 1 And Dimension(b) = 1 Then
-        product_set = makeM(sizeof(a), sizeof(b))
-        i = 0
-        For Each z In b
-            Call fillCol(product_set, i, mapL(pCallback, a, z))
-            i = i + 1
-        Next z
-   End If
+    product_set = unzip(mapF(p_mapF(, b), mapF(p_bind1st(pCallback), a)), 2)
 End Function
