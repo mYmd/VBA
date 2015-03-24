@@ -61,13 +61,29 @@ End Function
         p_circleArea = make_funPointer(AddressOf circleArea, firstParam, secondParam)
     End Function
 
+'内積inner product
+Function innerProduct(ByRef a As Variant, ByRef b As Variant) As Variant
+    innerProduct = foldl1(p_plus, zipWith(p_mult, a, b))
+End Function
+    Function p_innerProduct(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_innerPproduct = make_funPointer(AddressOf innerProduct, firstParam, secondParam)
+    End Function
+
+'行列積
+Function matrixMult(ByRef a As Variant, ByRef b As Variant) As Variant
+    matrixMult = product_set(AddressOf innerProduct, mapF(p_selectRow(a), a_rows(a)), mapF(p_selectCol(b), a_cols(b)))
+End Function
+    Function p_matrixMult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_matrixMult = make_funPointer(AddressOf matrixMult, firstParam, secondParam)
+    End Function
+
 
 Sub vbaUnit()
     Dim N As Long
     Dim Points As Variant, m As Variant, z As Variant
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
-
+    
     Debug.Print "------- mapF ----------"
     Debug.Print "mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))"
     printM mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))
@@ -85,24 +101,24 @@ Sub vbaUnit()
     printM m(1)
     Debug.Print "m(2)"
     printM m(2)
-
+    
     Debug.Print "------- zipWith ----------"
     Debug.Print "zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))"
     printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
-
+    
     Debug.Print "------- foldl ----------"
     Debug.Print "foldl(p_minus, 0, iota(1, 100))  = (...(((0-1)-2)-3)-...-100"
     Debug.Print foldl(p_minus, 0, iota(1, 100))
-
+    
     Debug.Print "------- foldr ----------"
     Debug.Print "foldr(p_minus, 0, iota(1, 100))  = 1-(2-(3-...(99-(100-0)))...)"
     Debug.Print foldr(p_minus, 0, iota(1, 100))
-
+    
     Debug.Print "------- 円周率を確率的に求める ------------"
     N = 10000
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)
-
+    
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
@@ -128,7 +144,7 @@ Sub vbaUnit()
     Debug.Print "------- zip ------------"
     m = "文字をひとつずつ分離する"
     printM mapF(p_mid(m), zip(iota(1, Len(m)), repeat(1, Len(m))))
-
+    
     m = zip(Array(1, 2, 3, 4, 5), Array(11, 12, 13, 14, 15))
     For Each z In m: printM z: Next z
 
@@ -147,4 +163,7 @@ Sub vbaUnit()
     z = equal_range(m, 5)
     Debug.Print "equal_range(m, 5)"
     printM mapF(p_getNth(, m), iota(z(0), z(1)))
+    
+    Debug.Print "------- 行列積 ------------"
+    printM matrixMult(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
 End Sub
