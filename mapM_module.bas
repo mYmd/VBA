@@ -195,7 +195,7 @@ End Function
 
 ' 配列 matrix の各要素でfuncによる評価結果がゼロでないものの数   関数はBind式
 Function count_if(ByRef func As Variant, ByRef matrix As Variant) As Variant
-    count_if = foldl1(p_plus, mapF(p_notEqual(, 0), mapF(p_applyFun(, func), matrix)))
+    count_if = foldl1(p_plus, mapF(p_if_else(, Array(func, 1, 0)), matrix))
 End Function
     Function p_count_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam)
