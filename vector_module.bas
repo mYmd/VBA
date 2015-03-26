@@ -34,9 +34,9 @@ Option Explicit
     ' Function  catR                行方向に結合
     ' Function  catC                列方向に結合
     ' Function  transpose           配列の転置
-    ' Function  zip                 複数の配列の対応する要素どうしをcatV(ベクトル結合)して配列の配列を作る
+    ' Function  zip                 ふたつの配列の対応する要素どうしをcatV(ベクトル結合)してジャグ配列を作る
     ' Function  zipVs               可変長引数zip
-    ' Function  unzip               zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+    ' Function  unzip               zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
     ' Function  makePair            Array(a, b)作成
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
@@ -529,7 +529,7 @@ Function transpose(ByRef matrix As Variant) As Variant
     End Select
 End Function
 
-'複数の配列の対応する要素どうしをcatVして配列の配列を作る
+'ふたつの配列の対応する要素どうしをcatVしてジャグ配列を作る
 Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
     zip = zipWith(AddressOf catV, a, b)
 End Function
@@ -542,7 +542,7 @@ Function zipVs(ParamArray vectors() As Variant) As Variant
     zipVs = foldl1(p_zip, VBA.Array(vectors)(0))
 End Function
 
-'zipされた1次元配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+'zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
 Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As Variant
     Dim colLen As Long, i As Long, j As Long, counter As Long
     Dim ret As Variant, z As Variant
