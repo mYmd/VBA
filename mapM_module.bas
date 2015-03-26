@@ -193,9 +193,13 @@ End Function
         p_setParam2by2 = make_funPointer(AddressOf setParam2by2, firstParam, secondParam)
     End Function
 
-' 配列 matrix の各要素でfuncによる評価結果がゼロでないものの数   関数はBind式
+' 配列 matrix の各要素でfuncによる評価結果がゼロでないものの数
 Function count_if(ByRef func As Variant, ByRef matrix As Variant) As Variant
-    count_if = foldl1(p_plus, mapF(p_if_else(, Array(func, 1, 0)), matrix))
+    Dim z As Variant
+    count_if = 0&
+    For Each z In mapF(func, matrix)
+        If z <> 0 Then count_if = count_if + 1
+    Next z
 End Function
     Function p_count_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam)
@@ -252,6 +256,8 @@ End Function
 '   Function str_left       Left
 '   Function str_right      Right
 '   Function str_mid        Mid
+'   Function gcm            gcm
+'   Function lcm            lcm
 '   Function equal          述語 Equal
 '   Function notEqual       述語 Not Equal
 '   Function less           述語 less
@@ -434,7 +440,28 @@ End Function
     Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
     End Function
+
+'gcm
+Function gcm(ByRef a As Variant, ByRef b As Variant) As Variant
+    If a = 0 Then
+        gcm = b
+    ElseIf b = 0 Then
+        gcm = a
+    Else
+        gcm = gcm(b, a Mod b)
+    End If
+End Function
+    Function p_gcm(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_gcm = make_funPointer(AddressOf gcm, firstParam, secondParam)
+    End Function
     
+'lcm
+Function lcm(ByRef a As Variant, ByRef b As Variant) As Variant
+    lcm = a * b / gcm(a, b)
+End Function
+    Function p_lcm(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_lcm = make_funPointer(AddressOf lcm, firstParam, secondParam)
+    End Function
     
 '述語 equal
 Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
