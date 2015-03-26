@@ -16,8 +16,8 @@ Option Explicit
     ' Function  a_cols              全列番号の列挙
     ' Function  repeat              N個の値を並べる
     ' Function  iota                自然数の連続データまたは同一のスカラーを繰り返したベクトルを返す
-    ' Function  headN               ベクトルの最初のN個をとる
-    ' Function  tailN               ベクトルの最後のN個をとる
+    ' Function  headN               ベクトルの最初のN個
+    ' Function  tailN               ベクトルの最後のN個
     ' Function  vector              スカラー、配列のベクトル化
     ' Function  reverse             ベクトルを逆順に並べる
     ' Function  selectRow           特定行の取得
@@ -27,8 +27,8 @@ Option Explicit
     ' Sub       fillRow             配列の特定行をデータで埋める
     ' Sub       fillCol             配列の特定列をデータで埋める
     ' Function  subM                配列の部分配列を作成する
-    ' Function  filterR             ベクトル・配列の（行の）取捨をする
-    ' Function  filterC             ベクトル・配列の（列の）取捨をする
+    ' Function  filterR             ベクトル・配列の（行の）フィルタリング
+    ' Function  filterC             ベクトル・配列の（列の）フィルタリング
     ' Function  catV                ベクトルを結合
     ' Function  catVs               ベクトルを結合（可変長引数）
     ' Function  catR                行方向に結合
@@ -106,7 +106,7 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
     iota = ret
 End Function
 
-'ベクトルの最初のN個をとる
+'ベクトルの最初のN個
 Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
@@ -128,7 +128,7 @@ End Function
         p_headN = make_funPointer(AddressOf headN, firstParam, secondParam)
     End Function
 
-'ベクトルの最後のN個をとる
+'ベクトルの最後のN個
 Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
@@ -379,47 +379,47 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
     subM = ret
 End Function
 
-    Private Function filter_imple(ByRef pos As Variant, ByRef index As Variant) As Variant
-        If 0 <> index Then
-            pos(2)(pos(3)) = pos(0) + pos(1)
-            filter_imple = VBA.Array(pos(0) + 1, pos(1), pos(2), pos(3) + 1)
-        Else
-            filter_imple = VBA.Array(pos(0) + 1, pos(1), pos(2), pos(3))
-        End If
-    End Function
-
-
-'ベクトル・配列の（行の）取捨をする
+'ベクトル・配列の（行の）フィルタリング
 'Flgは 0/1
 Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim filterSize As Long, dataSize As Long
-    Dim indice As Variant, tmpFlag As Variant
+    Dim indice As Variant, localFlag As Variant
+    Dim i As Long, counter As Long, z As Variant
     
-    filterSize = sizeof(flg)
-    dataSize = rowSize(data)
-    If dataSize < filterSize Then filterSize = dataSize
-    tmpFlag = headN(flg, filterSize)
-    ReDim indice(0 To -1 + count_if(p_notEqual(, 0), tmpFlag))
-    indice = foldl(AddressOf filter_imple, VBA.Array(0, LBound(flg), indice, 0), tmpFlag)
-    filterR = subM(data, indice(2))
+    localFlag = headN(flg, min(sizeof(flg), rowSize(data)))
+    indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
+    i = 0
+    counter = 0
+    For Each z In localFlag
+        If z <> 0 Then
+            indice(counter) = i + LBound(data, 1)
+            counter = counter + 1
+        End If
+        i = i + 1
+    Next z
+    filterR = subM(data, indice)
 End Function
     Public Function p_filterR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_filterR = make_funPointer(AddressOf filterR, firstParam, secondParam)
     End Function
 
-'ベクトル・配列の（列の）取捨をする
+'ベクトル・配列の（列の）フィルタリング
 'Flgは 0/1
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim filterSize As Long, dataSize As Long
-    Dim indice As Variant, tmpFlag As Variant
+    Dim indice As Variant, localFlag As Variant
+    Dim i As Long, counter As Long, z As Variant
     
-    filterSize = sizeof(flg)
-    dataSize = colSize(data)
-    If dataSize < filterSize Then filterSize = dataSize
-    tmpFlag = headN(flg, filterSize)
-    ReDim indice(0 To -1 + count_if(p_notEqual(, 0), tmpFlag))
-    indice = foldl(AddressOf filter_imple, VBA.Array(0, LBound(flg), indice, 0), tmpFlag)
-    filterC = subM(data, , indice(2))
+    localFlag = headN(flg, min(sizeof(flg), colSize(data)))
+    indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
+    i = 0
+    counter = 0
+    For Each z In localFlag
+        If z <> 0 Then
+            indice(counter) = i + LBound(data, 2)
+            counter = counter + 1
+        End If
+        i = i + 1
+    Next z
+    filterC = subM(data, , indice)
 End Function
     Public Function p_filterC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_filterC = make_funPointer(AddressOf filterC, firstParam, secondParam)
