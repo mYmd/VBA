@@ -9,9 +9,7 @@ mapやzipWithやfoldやscan系の関数の真似事によってユーザーコ�
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)  
 
 FizzBuzz は２行くらい  
-    m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _  
-              Array(p_mod(, 5), Null, "Buzz"), _  
-              Array(p_mod(, 3), placeholder, "Fizz"))  
+    m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), Array(p_mod(, 5), Null, "Buzz"), Array(p_mod(, 3), placeholder, "Fizz"))  
     printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)  
 
 mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
