@@ -186,11 +186,13 @@ Sub vbaUnit()
     m = Array(2, 3, 5)
     z = iota(2, m(UBound(m)) ^ 2)
         m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+        printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
     z = iota(2, m(UBound(m)) ^ 2)
         m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+        printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
     z = iota(2, m(UBound(m)) ^ 2)
         m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
-    printM catVs(headN(m, 10), Array("・・・"), tailN(m, 3))
+        printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
 End Sub
 
 
