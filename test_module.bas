@@ -77,6 +77,21 @@ End Function
         p_matrixMult = make_funPointer(AddressOf matrixMult, firstParam, secondParam)
     End Function
 
+'素数判定(val：判定対象の自然数、pm : 既存の素数列, valはpmの最大数の2乗を超えないこと)
+Function isPrime(ByRef val As Variant, ByRef pm As Variant) As Variant
+    Dim z As Variant
+    For Each z In pm
+        If val Mod z = 0 Then
+            isPrime = 0
+            Exit Function
+        End If
+    Next z
+    isPrime = 1
+End Function
+    Function p_isPrime(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_isPrime = make_funPointer(AddressOf isPrime, firstParam, secondParam)
+    End Function
+
 
 Sub vbaUnit()
     Dim N As Long
@@ -166,4 +181,19 @@ Sub vbaUnit()
     
     Debug.Print "------- 行列積 ------------"
     printM matrixMult(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
+
+    Debug.Print "------- 素数列（[2,3,5]からの生成を３回適用） ------------"
+    m = Array(2, 3, 5)
+    N = m(UBound(m))
+        z = iota(2, N * N)
+            m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+    N = m(UBound(m))
+        z = iota(2, N * N)
+            m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+    N = m(UBound(m))
+        z = iota(2, N * N)
+            m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+    printM catVs(headN(m, 10), Array("・・・"), tailN(m, 3))
 End Sub
+
+
