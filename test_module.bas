@@ -81,7 +81,7 @@ End Function
 Function isPrime(ByRef val As Variant, ByRef pm As Variant) As Variant
     Dim z As Variant
     For Each z In pm
-        If val Mod z = 0 Then
+        If z < val And val Mod z = 0 Then
             isPrime = 0
             Exit Function
         End If
@@ -185,14 +185,12 @@ Sub vbaUnit()
     Debug.Print "------- 素数列（[2,3,5]からの生成を３回適用） ------------"
     m = Array(2, 3, 5)
     z = iota(2, m(UBound(m)) ^ 2)
-        m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+        m = filterR(z, mapF(p_isPrime(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
     z = iota(2, m(UBound(m)) ^ 2)
-        m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+        m = filterR(z, mapF(p_isPrime(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
     z = iota(2, m(UBound(m)) ^ 2)
-        m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+        m = filterR(z, mapF(p_isPrime(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
 End Sub
-
-
