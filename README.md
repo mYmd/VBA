@@ -4,13 +4,18 @@ mapやzipWithやfoldやscan系の関数の真似事によってユーザーコ�
 排除しようとする試み。  
 
 πを確率的に求めるコードがループなしの3行で書ける。（-> test.txt : vbaUnit）  
-    N = 10000  
-    Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)  
+N = 10000  
+Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
+printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)  
 
 FizzBuzz は２行くらい  
-    m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), Array(p_mod(, 5), Null, "Buzz"), Array(p_mod(, 3), placeholder, "Fizz"))  
-    printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)  
+m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), Array(p_mod(, 5), Null, "Buzz"), Array(p_mod(, 3), placeholder, "Fizz"))  
+printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)  
+
+素数列の生成は 次の2.3.を繰り返し適用することで得られる（効率は考慮外）  
+1. m = Array(2, 3, 5)  '初期  
+2. z = iota(2, m(UBound(m)) ^ 2)  
+3. m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))  
 
 mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
 考えているが、そこまでの知性がない。  
