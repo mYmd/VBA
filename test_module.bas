@@ -184,15 +184,12 @@ Sub vbaUnit()
 
     Debug.Print "------- 素数列（[2,3,5]からの生成を３回適用） ------------"
     m = Array(2, 3, 5)
-    N = m(UBound(m))
-        z = iota(2, N * N)
-            m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
-    N = m(UBound(m))
-        z = iota(2, N * N)
-            m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
-    N = m(UBound(m))
-        z = iota(2, N * N)
-            m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+    z = iota(2, m(UBound(m)) ^ 2)
+        m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+    z = iota(2, m(UBound(m)) ^ 2)
+        m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
+    z = iota(2, m(UBound(m)) ^ 2)
+        m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))
     printM catVs(headN(m, 10), Array("・・・"), tailN(m, 3))
 End Sub
 
