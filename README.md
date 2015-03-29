@@ -3,7 +3,8 @@ VBA用のなんちゃってHaskellモジュール(32bit Office Only)
 mapやzipWithやfoldやscan系の関数の真似事によってユーザーコードからループを  
 排除しようとする試み。  
 
-πを確率的に求めるコードがループなしの3行で書ける。（-> test.txt : vbaUnit）  
+//// test_module.bas のサンプルプログラム(vbaUnit)より ////////////////////  
+πを確率的に求めるコードがループなしの3行で書ける。  
 N = 10000  
 Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
 printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)  
@@ -19,6 +20,7 @@ printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
 
 mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
 考えているが、そこまでの知性がない。  
+
 ///////////////////////////////////////////////////////////////////////////////  
 mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファイル等でエクスポート  
 	Dimension = Dimension  
