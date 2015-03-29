@@ -15,7 +15,7 @@ printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
 素数列の生成は 次の2.3.を繰り返し適用することで得られる（効率は考慮外）  
 1. m = Array(2, 3, 5)  '初期  
 2. z = iota(2, m(UBound(m)) ^ 2)  
-3. m = catV(m, filterR(z, mapF(p_isPrime(, m), z)))  
+3. m = filterR(z, mapF(p_isPrime(, m), z))  
 
 mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
 考えているが、そこまでの知性がない。  
