@@ -37,6 +37,8 @@ Option Explicit
     ' Function  zip                 ふたつの配列の対応する要素どうしをcatV(ベクトル結合)してジャグ配列を作る
     ' Function  zipVs               可変長引数zip
     ' Function  unzip               zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+    ' Function  zipR                2次元配列の各行ベクトルをzip
+    ' Function  zipC                2次元配列の各列ベクトルをzip
     ' Function  makePair            Array(a, b)作成
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
@@ -540,6 +542,30 @@ End Function
 'zip（可変長引数）
 Function zipVs(ParamArray vectors() As Variant) As Variant
     zipVs = foldl1(p_zip, VBA.Array(vectors)(0))
+End Function
+
+'２次元配列の各行ベクトルをzip
+Function zipR(ByRef m As Variant) As Variant
+    Dim i As Long
+    Dim ret As Variant
+
+    ReDim ret(0 To colSize(m) - 1)
+    For i = LBound(ret) To UBound(ret) Step 1
+        ret(i) = selectCol(m, i)
+    Next i
+    zipR = ret
+End Function
+
+'２次元配列の各列ベクトルをzip
+Function zipC(ByRef m As Variant) As Variant
+    Dim i As Long
+    Dim ret As Variant
+
+    ReDim ret(0 To rowSize(m) - 1)
+    For i = LBound(ret) To UBound(ret) Step 1
+        ret(i) = selectRow(m, i)
+    Next i
+    zipC = ret
 End Function
 
 'zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
