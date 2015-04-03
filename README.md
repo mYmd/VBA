@@ -18,8 +18,8 @@ printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
 2. z = iota(2, m(UBound(m)) ^ 2)  
 3. m = filterR(z, mapF(p_isPrime(, m), z))  
 
-単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する１ステップを表す関数を作り、  
-繰り返し適用する(関数合成 foldl_Funs)ことで求める  
+単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する１ステップを  
+表す関数を作り、繰り返し適用する(関数合成 foldl_Funs)ことで求める  
 foldl_Funs(初期値, repeat(p_Newton_Raphson(, Array(f, df/dx)), 回数))  
 
 &lt;/ test_module.bas のサンプルプログラム(vbaUnit)より >  
