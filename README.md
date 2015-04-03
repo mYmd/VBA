@@ -21,7 +21,8 @@ printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
 単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する  
 １ステップを表す関数を繰り返し適用して求める  
 foldl_Funs(初期値, repeat(p_Newton_Raphson(, Array(f, df/dx)), 回数))  
-</ test_module.bas のサンプルプログラム(vbaUnit)より >  
+
+&lt;/ test_module.bas のサンプルプログラム(vbaUnit)より >  
 
 mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
 考えているが、そこまでの知性がない。  
