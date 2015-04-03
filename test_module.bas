@@ -2,6 +2,9 @@ Attribute VB_Name = "test_module"
 'test_module
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
+'=======================================
+'   テスト用関数 vbaUnit
+'=======================================
 
 '2点間の距離
 Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
@@ -92,7 +95,19 @@ End Function
         p_isPrime = make_funPointer(AddressOf isPrime, firstParam, secondParam)
     End Function
 
+'ニュートン法による求根の１ステップ　(x1, f(x)) から (x2, f(x2)) を出力する
+'第１引数 ：　(x1, f(x))   第２引数 (f, df/dx)
+Function Newton_Raphson(ByRef xy As Variant, ByRef fdf As Variant) As Variant
+    Dim x2 As Double
+    
+    x2 = xy(0) - xy(1) / applyFun(xy(0), fdf(1))
+    Newton_Raphson = VBA.Array(x2, applyFun(x2, fdf(0)))
+End Function
+    Function p_Newton_Raphson(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_Newton_Raphson = make_funPointer(AddressOf Newton_Raphson, firstParam, secondParam)
+    End Function
 
+'テスト関数
 Sub vbaUnit()
     Dim N As Long
     Dim Points As Variant, m As Variant, z As Variant
@@ -193,4 +208,10 @@ Sub vbaUnit()
     z = iota(2, m(UBound(m)) ^ 2)
         m = filterR(z, mapF(p_isPrime(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
+
+    Debug.Print "------- 単純なNewton法による多項式の根 ------------"
+    Debug.Print " f(x) = 2x^3 + x^2 - 5x + 4 の零点 （x = 0 から15回反復）"
+    m = p_poly(, Array(2, 1, -5, 4))
+    z = p_poly(, Array(6, 2, -5))
+    printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
 End Sub
