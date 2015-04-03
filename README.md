@@ -3,7 +3,7 @@ VBA用のなんちゃってHaskellモジュール(32bit Office Only)
 mapやzipWithやfoldやscan系の関数の真似事によってユーザーコードからループを  
 排除しようとする試み。  
 
-//// test_module.bas のサンプルプログラム(vbaUnit)より ////////////////////  
+< test_module.bas のサンプルプログラム(vbaUnit)より >  
 πを確率的に求めるコードがループなしの3行で書ける。  
 N = 10000  
 Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
@@ -17,6 +17,11 @@ printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
 1. m = Array(2, 3, 5)  '初期  
 2. z = iota(2, m(UBound(m)) ^ 2)  
 3. m = filterR(z, mapF(p_isPrime(, m), z))  
+
+単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する  
+１ステップを表す関数を繰り返し適用して求める  
+foldl_Funs(初期値, repeat(p_Newton_Raphson(, Array(f, df/dx)), 回数))  
+</ test_module.bas のサンプルプログラム(vbaUnit)より >  
 
 mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
 考えているが、そこまでの知性がない。  
