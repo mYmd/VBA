@@ -514,8 +514,11 @@ Function transpose(ByRef matrix As Variant) As Variant
     Case 0
         transpose = matrix
     Case 1
-        If LBound(matrix, 1) > UBound(matrix, 1) Then transpose = VBA.Array(): Exit Function
-        transpose = matrix
+        If LBound(matrix, 1) > UBound(matrix, 1) Then
+            transpose = VBA.Array()
+        Else
+            transpose = makeM(sizeof(matrix), 1, matrix)
+        End If
     Case 2
         r = LBound(matrix, 1)
         c = LBound(matrix, 2)
