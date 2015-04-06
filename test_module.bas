@@ -107,6 +107,29 @@ End Function
         p_Newton_Raphson = make_funPointer(AddressOf Newton_Raphson, firstParam, secondParam)
     End Function
 
+'unfoldr   pred : 停止条件     fun : 展開時に適用する関数      val : 初期値
+' (無限ループに対するガードはない)
+Function unfoldr(ByRef pred As Variant, ByRef fun As Variant, ByVal val As Variant) As Variant
+    Dim ret As Variant: ReDim ret(0 To 0)
+    Dim i As Long:      i = -1
+    Do While applyFun(val, pred) = False
+        i = i + 1
+        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 2)
+        ret(i) = val
+        val = applyFun(val, fun)
+    Loop
+    ReDim Preserve ret(0 To i)
+    unfoldr = ret
+End Function
+
+'コラッツ数列
+Function collatz(ByRef x As Variant, Optional ByRef dummy As Variant = 0) As Variant
+    collatz = IIf(x Mod 2 = 0, x \ 2, x * 3 + 1)
+End Function
+    Function p_collatz(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_collatz = make_funPointer(AddressOf collatz, firstParam, secondParam)
+    End Function
+
 'テスト関数
 Sub vbaUnit()
     Dim N As Long
@@ -214,4 +237,10 @@ Sub vbaUnit()
     m = p_poly(, Array(2, 1, -5, 4))
     z = p_poly(, Array(6, 2, -5))
     printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
+    
+    Debug.Print "------- unfoldrによるコラッツ数列の展開 ------------"
+    printM unfoldr(p_equal(1), p_collatz, 11)
+    Debug.Print "  （scanl_Funs(11, repeat(p_collatz, 13)) でも結果は同じ）"
 End Sub
+
+
