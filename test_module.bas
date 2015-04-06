@@ -242,5 +242,3 @@ Sub vbaUnit()
     printM unfoldr(p_equal(1), p_collatz, 11)
     Debug.Print "  （scanl_Funs(11, repeat(p_collatz, 13)) でも結果は同じ）"
 End Sub
-
-
