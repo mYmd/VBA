@@ -1,5 +1,5 @@
-Attribute VB_Name = "sort_module"
-'sort_module
+Attribute VB_Name = "Haskell_5_sort"
+'Haskell_5_sort
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
