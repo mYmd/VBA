@@ -1,5 +1,5 @@
-Attribute VB_Name = "printM_module"
-'printM_module
+Attribute VB_Name = "Haskell_3_printM"
+'Haskell_3_printM
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
