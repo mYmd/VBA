@@ -1,5 +1,5 @@
-Attribute VB_Name = "vector_module"
-'vector_module
+Attribute VB_Name = "Haskell_4_vector"
+'Haskell_4_vector
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
