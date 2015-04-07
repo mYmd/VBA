@@ -46,18 +46,25 @@ mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数�
 	scanr1 = scanr1  
 	stdsort = stdsort  	
 
+(mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
 以下のbasファイルはVBAソースコード。
 標準モジュールにそのまま取り込む。  
-  declare_module.bas（Declare文のみ）  
-  mapM_module.bas（中心となるモジュール）  
-  vector_module.bas（その他配列操作）  
-  printM_module.bas（配列表示）  
-  sort_module.bas（ソートとlower_bound等）  
+  Haskell_0_declare.bas（Declare文のみ）  
+  Haskell_1_Core.bas（中心となるモジュール）  
+  Haskell_2_stdFun.bas（Haskell的なリスト操作）  
+  Haskell_3_printM.bas（配列表示）  
+  Haskell_4_vector.bas（その他配列操作）  
+  Haskell_5_sort.bas（ソートとlower_bound等）  
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/4/8  
+モジュール名称を全体的に変更  
+Haskell_1_Core に以下の関数を追加  
+repeat_while, repeat_while_not, generate_while, generate_while_not  
+
 2015/4/7  
 unfoldrを追加してみたがあまり使い道がなさそうなのでtestのみ  
 
