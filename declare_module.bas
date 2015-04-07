@@ -1,5 +1,5 @@
-Attribute VB_Name = "declare_module"
-'declare_module
+Attribute VB_Name = "Haskell_0_declare"
+'Haskell_0_declare
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
