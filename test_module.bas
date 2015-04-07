@@ -232,11 +232,12 @@ Sub vbaUnit()
         m = filterR(z, mapF(p_isPrime(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
 
-    Debug.Print "------- 単純なNewton法による多項式の根 ------------"
-    Debug.Print " f(x) = 2x^3 + x^2 - 5x + 4 の零点 （x = 0 から15回反復）"
+    Debug.Print "------- 単純なNewton法による多項式の根（2通り） ------------"
+    Debug.Print " f(x) = 2x^3 + x^2 - 5x + 4 の零点 （x = 0 から反復）"
     m = p_poly(, Array(2, 1, -5, 4))
     z = p_poly(, Array(6, 2, -5))
     printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
+    printM repeat_while(Array(0, applyFun(0, m)), p_foldl_Funs(, Array(p_getNth(1), p_abs, p_less(0.000000000000001))), p_Newton_Raphson(, Array(m, z)))
     
     Debug.Print "------- unfoldrによるコラッツ数列の展開 ------------"
     printM unfoldr(p_equal(1), p_collatz, 11)
