@@ -8,9 +8,8 @@ EXPORTS
 	Dimension = Dimension
 	placeholder = placeholder
 	is_placeholder = is_placeholder
-	simple_invoke = simple_invoke
-	mapL = mapL
-	mapR = mapR
+	bind_invoke = bind_invoke
+	mapF_imple = mapF_imple
 	zipWith = zipWith
 	foldl = foldl
 	foldr = foldr
@@ -21,4 +20,3 @@ EXPORTS
 	scanl1 = scanl1
 	scanr1 = scanr1
 	stdsort = stdsort
-	
