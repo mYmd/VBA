@@ -536,7 +536,7 @@ End Function
 
 'ふたつの配列の対応する要素どうしをcatVしてジャグ配列を作る
 Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
-    zip = zipWith(AddressOf catV, a, b)
+    zip = zipWith(p_catV, a, b)
 End Function
     Function p_zip(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_zip = make_funPointer(AddressOf zip, firstParam, secondParam)
@@ -613,6 +613,13 @@ End Function
     End Function
 
 'ベクトルの直積に関数を適用した行列を作る
-Public Function product_set(ByVal pCallback As Long, ByRef a As Variant, ByRef b As Variant) As Variant
-    product_set = unzip(mapF(p_mapF(, b), mapF(p_bind1st(pCallback), a)), 2)
+Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
+    Dim i As Long, j As Long
+    Dim ret As Variant:     ReDim ret(0 To rowSize(a) - 1, 0 To rowSize(b) - 1)
+    For i = 0 To UBound(ret, 1) Step 1
+        For j = 0 To UBound(ret, 2) Step 1
+            ret(i, j) = bind_invoke(pCallback, a(i + LBound(a)), b(j + LBound(b)))
+        Next j
+    Next i
+    product_set = ret
 End Function
