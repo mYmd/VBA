@@ -20,13 +20,13 @@ Option Explicit
 Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
-        sortIndex = stdsort(matrix, -1)
+        sortIndex = stdsort(matrix, 1, 0)
     Case 2
         If IsMissing(key_columns) Then key_columns = a_cols(matrix)
         If sizeof(key_columns) = 1 Then
-            sortIndex = stdsort(selectCol(matrix, key_columns(LBound(key_columns))), -1)
+            sortIndex = stdsort(selectCol(matrix, key_columns(LBound(key_columns))), 1, 0)
         Else
-            sortIndex = stdsort(foldl1(p_zip, mapF(p_selectCol(matrix), key_columns)), -2)
+            sortIndex = stdsort(foldl1(p_zip, mapF(p_selectCol(matrix), key_columns)), 2, 0)
         End If
     End Select
 End Function
@@ -38,9 +38,9 @@ End Function
 Function sortIndex_pred(ByRef matrix As Variant, ByRef comp As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
-        sortIndex_pred = stdsort(matrix, comp)
+        sortIndex_pred = stdsort(matrix, 0, comp)
     Case 2
-        sortIndex_pred = stdsort(foldl1(p_zip, mapF(p_selectCol(matrix), a_cols(matrix))), comp)
+        sortIndex_pred = stdsort(foldl1(p_zip, mapF(p_selectCol(matrix), a_cols(matrix))), 0, comp)
     End Select
 End Function
     Public Function p_sortIndex_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -50,20 +50,20 @@ End Function
 
     Private Function lower_bound_imple(ByRef matrix As Variant, _
                                        ByRef val As Variant, _
-                                       ByRef comp As Long, _
+                                       ByRef comp As Variant, _
                                        ByRef begin_end As Variant) As Long
         Dim begin_ As Long, end_ As Long, mid_ As Long
         begin_ = begin_end(0)
         end_ = begin_end(1)
         If end_ - begin_ < 8 Then
-            Do While simple_invoke(comp, matrix(begin_), val) 'And begin_ < end_
+            Do While bind_invoke(comp, matrix(begin_), val) 'And begin_ < end_
                 begin_ = begin_ + 1
                 If end_ <= begin_ Then Exit Do
             Loop
             lower_bound_imple = begin_
         Else
             mid_ = begin_ + CLng((end_ - begin_) / 2)
-            If simple_invoke(comp, matrix(mid_), val) Then
+            If bind_invoke(comp, matrix(mid_), val) Then
                 lower_bound_imple = lower_bound_imple(matrix, val, comp, VBA.Array(mid_, end_))
             Else
                 lower_bound_imple = lower_bound_imple(matrix, val, comp, VBA.Array(begin_, mid_))
@@ -90,20 +90,20 @@ End Function
 
     Private Function upper_bound_imple(ByRef matrix As Variant, _
                                        ByRef val As Variant, _
-                                       ByRef comp As Long, _
+                                       ByRef comp As Variant, _
                                        ByRef begin_end As Variant) As Long
         Dim begin_ As Long, end_ As Long, mid_ As Long
         begin_ = begin_end(0)
         end_ = begin_end(1)
         If end_ - begin_ < 8 Then
-            Do While 0 = simple_invoke(comp, val, matrix(begin_)) 'And begin_ < end_
+            Do While 0 = bind_invoke(comp, val, matrix(begin_)) 'And begin_ < end_
                 begin_ = begin_ + 1
                 If end_ <= begin_ Then Exit Do
             Loop
             upper_bound_imple = begin_
         Else
             mid_ = begin_ + CLng((end_ - begin_) / 2)
-            If simple_invoke(comp, val, matrix(mid_)) Then
+            If bind_invoke(comp, val, matrix(mid_)) Then
                 upper_bound_imple = upper_bound_imple(matrix, val, comp, VBA.Array(begin_, mid_))
             Else
                 upper_bound_imple = upper_bound_imple(matrix, val, comp, VBA.Array(mid_, end_))
