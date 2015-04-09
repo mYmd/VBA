@@ -5,9 +5,9 @@ mapやzipWithやfoldやscan系の関数の真似事によってユーザーコ�
 
 < test_module.bas のサンプルプログラム(vbaUnit)より >  
 πを確率的に求めるコードがループなしの3行で書ける。  
-N = 10000  
-Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
-printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)  
+    N = 10000  
+    Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
+    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)  
 
 FizzBuzz は２行くらい  
 m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), Array(p_mod(, 5), Null, "Buzz"), Array(p_mod(, 3), placeholder, "Fizz"))  
@@ -32,9 +32,8 @@ mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数�
 	Dimension = Dimension  
 	placeholder = placeholder  
 	is_placeholder = is_placeholder  
-	simple_invoke = simple_invoke  
-	mapL = mapL  
-	mapR = mapR  
+	bind_invoke = bind_invoke  
+	mapF_imple = mapF_imple  
 	zipWith = zipWith  
 	foldl = foldl  
 	foldr = foldr  
@@ -60,6 +59,10 @@ mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数�
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/4/10  
+関数構造を大幅に変更した  
+これによって関数合成がかなり自然に書けるようになった  
+
 2015/4/8  
 モジュール名称を全体的に変更  
 Haskell_1_Core に以下の関数を追加  
