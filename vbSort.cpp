@@ -5,22 +5,18 @@
 #include <memory>
 #include <OleAuto.h>//<OAIdl.h>
 
-//VBA比較関数型  vbCompFunc  の宣言 (VBCallbackFuncと同一)
-//VBAにおけるシグネチャは
-// Function comp(ByRef elem As Variant, ByRef dummy As Variant) As Variant
-typedef VARIANT (__stdcall *vbCompFunc)(VARIANT*, VARIANT*);
-
 __int32 __stdcall Dimension(const VARIANT* pv);
 void safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[]);
+VARIANT  __stdcall bind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2);
 
 class compareByVBAfunc   {
     VARIANT*    begin;
-    vbCompFunc  comp;
+    VARIANT*    comp;
 public:
-    compareByVBAfunc(VARIANT* pA, vbCompFunc f) : begin(pA), comp(f) { }
+    compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA), comp(f) { }
     bool operator ()(__int32 i, __int32 j) const
     {
-        return (*comp)(begin + i, begin + j).lVal ? true: false;
+        return bind_invoke(comp, begin + i, begin + j).lVal ? true: false;
     }
 };
 
@@ -75,7 +71,7 @@ public:
     }
 };
 
-VARIANT __stdcall stdsort(VARIANT* array, __int32 pComp)
+VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -91,19 +87,19 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 pComp)
         auto j = static_cast<LONG>(i + bound.lLbound);
         ::SafeArrayGetElement(pArray, &j, &VArray[i]);
     }
-    if ( 0 < pComp )
-    {
-        compareByVBAfunc functor(VArray.get(), reinterpret_cast<vbCompFunc>(pComp));
-        std::sort(index.get(), index.get() + bound.cElements, functor);
-    }
-    else if ( -1 == pComp ) //1次元昇順
+    if ( defaultFlag == 1 ) //1次元昇順
     {
         compFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + bound.cElements, functor);
     }
-    else if ( -2 == pComp  ) //2次元昇順
+    else if ( defaultFlag == 2 ) //2次元昇順
     {
         compDictionaryFunctor   functor(VArray.get());
+        std::sort(index.get(), index.get() + bound.cElements, functor);
+    }
+    else
+    {
+        compareByVBAfunc functor(VArray.get(), pComp);
         std::sort(index.get(), index.get() + bound.cElements, functor);
     }
     //-------------------------------------------------------
