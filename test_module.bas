@@ -7,8 +7,9 @@ Option Explicit
 '=======================================
 
 '2点間の距離
-Function distance(ByRef x As Variant, Optional ByRef y As Variant) As Variant
-    distance = foldr1(p_plus, mapF(p_poly(, Array(1, 0, 0)), zipWith(p_minus, x, IIf(IsMissing(y), repeat(0, sizeof(x)), y)))) ^ 0.5
+Function distance(ByRef x As Variant, ByRef y As Variant) As Variant
+    'distance = foldr1(p_plus, mapF(p_poly(, Array(1, 0, 0)), zipWith(p_minus, x, y))) ^ 0.5
+    distance = foldr1(p_plus, mapF(p_mult, zipWith(p_minus, x, y))) ^ 0.5
 End Function
     Function p_distance(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_distance = make_funPointer(AddressOf distance, firstParam, secondParam)
@@ -24,8 +25,8 @@ End Function
 
 '=======================================================================
 'フィボナッチ関数   (0,1)->(1,1)->(1,2)->(2,3)->(3,5)->(5,8)-> ...
-Function fibonacci(ByRef a As Variant, ByRef b As Variant) As Variant
-    fibonacci = Array(b, a + b)
+Function fibonacci(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    fibonacci = Array(a(LBound(a) + 1), a(LBound(a)) + a(LBound(a) + 1))
 End Function
     Function p_fibonacci(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_fibonacci = make_funPointer(AddressOf fibonacci, firstParam, secondParam)
@@ -69,12 +70,12 @@ Function innerProduct(ByRef a As Variant, ByRef b As Variant) As Variant
     innerProduct = foldl1(p_plus, zipWith(p_mult, a, b))
 End Function
     Function p_innerProduct(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_innerPproduct = make_funPointer(AddressOf innerProduct, firstParam, secondParam)
+        p_innerProduct = make_funPointer(AddressOf innerProduct, firstParam, secondParam)
     End Function
 
 '行列積
 Function matrixMult(ByRef a As Variant, ByRef b As Variant) As Variant
-    matrixMult = product_set(AddressOf innerProduct, mapF(p_selectRow(a), a_rows(a)), mapF(p_selectCol(b), a_cols(b)))
+    matrixMult = product_set(p_innerProduct, mapF(p_selectRow(a), a_rows(a)), mapF(p_selectCol(b), a_cols(b)))
 End Function
     Function p_matrixMult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_matrixMult = make_funPointer(AddressOf matrixMult, firstParam, secondParam)
@@ -107,28 +108,6 @@ End Function
         p_Newton_Raphson = make_funPointer(AddressOf Newton_Raphson, firstParam, secondParam)
     End Function
 
-'unfoldr   pred : 停止条件     fun : 展開時に適用する関数      val : 初期値
-' (無限ループに対するガードはない)
-Function unfoldr(ByRef pred As Variant, ByRef fun As Variant, ByVal val As Variant) As Variant
-    Dim ret As Variant: ReDim ret(0 To 0)
-    Dim i As Long:      i = -1
-    Do While applyFun(val, pred) = False
-        i = i + 1
-        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 2)
-        ret(i) = val
-        val = applyFun(val, fun)
-    Loop
-    ReDim Preserve ret(0 To i)
-    unfoldr = ret
-End Function
-
-'コラッツ数列
-Function collatz(ByRef x As Variant, Optional ByRef dummy As Variant = 0) As Variant
-    collatz = IIf(x Mod 2 = 0, x \ 2, x * 3 + 1)
-End Function
-    Function p_collatz(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_collatz = make_funPointer(AddressOf collatz, firstParam, secondParam)
-    End Function
 
 'テスト関数
 Sub vbaUnit()
@@ -170,7 +149,7 @@ Sub vbaUnit()
     Debug.Print "------- 円周率を確率的に求める ------------"
     N = 10000
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance, Points)) / N)
+    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
@@ -181,11 +160,10 @@ Sub vbaUnit()
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
 
     Debug.Print "------- フィボナッチ数列（４通り） ------------"
-    'bindFunを使っている理由は、applyFunの適用例 7. もしくは setParamの適用例 4. を参照
     N = 10
-    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
-    printM unzip(scanl_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
-    printM unzip(scanr_Funs(Array(0, 1), repeat(bindFun(p_fibonacci), N)), 1)(0)
+    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
+    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
+    printM unzip(scanr_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
     printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
 
     Debug.Print "------- FizzBuzz ------------"
@@ -237,9 +215,6 @@ Sub vbaUnit()
     m = p_poly(, Array(2, 1, -5, 4))
     z = p_poly(, Array(6, 2, -5))
     printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
-    printM repeat_while(Array(0, applyFun(0, m)), p_foldl_Funs(, Array(p_getNth(1), p_abs, p_less(0.000000000000001))), p_Newton_Raphson(, Array(m, z)))
-    
-    Debug.Print "------- unfoldrによるコラッツ数列の展開 ------------"
-    printM unfoldr(p_equal(1), p_collatz, 11)
-    Debug.Print "  （scanl_Funs(11, repeat(p_collatz, 13)) でも結果は同じ）"
+    printM repeat_while(Array(0, applyFun(0, m)), p_less(0.000000000000001, p_abs(p_getNth(1), 0)), p_Newton_Raphson(, Array(m, z)))
 End Sub
+
