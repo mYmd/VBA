@@ -8,7 +8,8 @@ Option Explicit
 '   Function Dimension          配列の次元取得
 '   Function placeholder        プレースホルダ・オブジェクトの生成
 '   Function is_placeholder     プレースホルダ・オブジェクト判定
-'   Function bind_invoke        2引数に関数を適用する
+'   Function unbind_invoke      bindされていないVBA関数を2引数で呼び出す
+'   Function bind_invoke        bindされたVBA関数を1引数で呼び出す
 '   Function mapF_imple         配列matrixの各要素elemにCallback関数を適用する
 '   Function zipWith            2つの配列の各要素に関数を適用する
 '   Function foldl              配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
@@ -35,11 +36,16 @@ Declare Function placeholder Lib "mapM.dll" () As Variant
 'プレースホルダ・オブジェクト判定
 Declare Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
 
-' 2引数にCallback関数を適用する
+'bindされていないVBA関数を2引数で呼び出す
+Declare Function unbind_invoke Lib "mapM.dll" ( _
+                ByRef pCallback As Variant, _
+            ByRef param1 As Variant, _
+        ByRef param2 As Variant) As Variant
+
+'bindされたVBA関数を1引数で呼び出す
 Declare Function bind_invoke Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
-            Optional ByRef param1 As Variant, _
-        Optional ByRef param12 As Variant) As Variant
+            ByRef param As Variant) As Variant
 
 ' 配列matrixの各要素elemにCallback関数を適用する
 Declare Function mapF_imple Lib "mapM.dll" ( _
