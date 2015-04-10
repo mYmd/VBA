@@ -28,10 +28,15 @@ mapのネストや引数の束縛を実装したので、もっと巧みなこ�
 考えているが、そこまでの知性がない。  
 
 ///////////////////////////////////////////////////////////////////////////////  
-mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数をdefファイル等でエクスポート  
+C++ファイルは４つ  
+mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp  
+をdllとしてコンパイル＆ビルド  
+以下の関数をdefファイル等でエクスポート  
+
 	Dimension = Dimension  
 	placeholder = placeholder  
 	is_placeholder = is_placeholder  
+	unbind_invoke = unbind_invoke  
 	bind_invoke = bind_invoke  
 	mapF_imple = mapF_imple  
 	zipWith = zipWith  
@@ -47,6 +52,7 @@ mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数�
 
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
+
 以下のbasファイルはVBAソースコード。
 標準モジュールにそのまま取り込む。  
   Haskell_0_declare.bas（Declare文のみ）  
@@ -59,6 +65,10 @@ mapM.cppとvbSort.cpp をコンパイル＆ビルドしdll化、以下の関数�
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/4/11  
+バグ修正とともにC++側ファイル追加  
+VBA_NestFunc.hppとVBA_NestFunc.cpp  
+
 2015/4/10  
 関数構造を大幅に変更した  
 これによって関数合成がかなり自然に書けるようになった  
