@@ -56,14 +56,14 @@ End Function
         begin_ = begin_end(0)
         end_ = begin_end(1)
         If end_ - begin_ < 8 Then
-            Do While bind_invoke(comp, matrix(begin_), val) 'And begin_ < end_
+            Do While unbind_invoke(comp, matrix(begin_), val) 'And begin_ < end_
                 begin_ = begin_ + 1
                 If end_ <= begin_ Then Exit Do
             Loop
             lower_bound_imple = begin_
         Else
             mid_ = begin_ + CLng((end_ - begin_) / 2)
-            If bind_invoke(comp, matrix(mid_), val) Then
+            If unbind_invoke(comp, matrix(mid_), val) Then
                 lower_bound_imple = lower_bound_imple(matrix, val, comp, VBA.Array(mid_, end_))
             Else
                 lower_bound_imple = lower_bound_imple(matrix, val, comp, VBA.Array(begin_, mid_))
@@ -96,14 +96,14 @@ End Function
         begin_ = begin_end(0)
         end_ = begin_end(1)
         If end_ - begin_ < 8 Then
-            Do While 0 = bind_invoke(comp, val, matrix(begin_)) 'And begin_ < end_
+            Do While 0 = unbind_invoke(comp, val, matrix(begin_)) 'And begin_ < end_
                 begin_ = begin_ + 1
                 If end_ <= begin_ Then Exit Do
             Loop
             upper_bound_imple = begin_
         Else
             mid_ = begin_ + CLng((end_ - begin_) / 2)
-            If bind_invoke(comp, val, matrix(mid_)) Then
+            If unbind_invoke(comp, val, matrix(mid_)) Then
                 upper_bound_imple = upper_bound_imple(matrix, val, comp, VBA.Array(begin_, mid_))
             Else
                 upper_bound_imple = upper_bound_imple(matrix, val, comp, VBA.Array(mid_, end_))
