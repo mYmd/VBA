@@ -316,3 +316,5 @@ End Function
     Function p_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_greater_equal = make_funPointer(AddressOf greater_equal, firstParam, secondParam)
     End Function
+
+
