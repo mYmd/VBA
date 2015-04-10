@@ -135,9 +135,8 @@ End Function
     End Function
 
 '絶対値
-Function absD(ByRef val As Variant, Optional ByRef org As Variant) As Variant
-    If IsMissing(org) Then org = 0
-    absD = Abs(val - org)
+Function absD(ByRef val As Variant, Optional ByRef dummy As Variant) As Variant
+    absD = Abs(val)
 End Function
     Function p_abs(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_abs = make_funPointer(AddressOf absD, firstParam, secondParam)
