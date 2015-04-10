@@ -8,6 +8,7 @@ EXPORTS
 	Dimension = Dimension
 	placeholder = placeholder
 	is_placeholder = is_placeholder
+	unbind_invoke = unbind_invoke
 	bind_invoke = bind_invoke
 	mapF_imple = mapF_imple
 	zipWith = zipWith
