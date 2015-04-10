@@ -217,4 +217,3 @@ Sub vbaUnit()
     printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
     printM repeat_while(Array(0, applyFun(0, m)), p_less(0.000000000000001, p_abs(p_getNth(1), 0)), p_Newton_Raphson(, Array(m, z)))
 End Sub
-
