@@ -618,7 +618,7 @@ Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRe
     Dim ret As Variant:     ReDim ret(0 To rowSize(a) - 1, 0 To rowSize(b) - 1)
     For i = 0 To UBound(ret, 1) Step 1
         For j = 0 To UBound(ret, 2) Step 1
-            ret(i, j) = bind_invoke(pCallback, a(i + LBound(a)), b(j + LBound(b)))
+            ret(i, j) = unbind_invoke(pCallback, a(i + LBound(a)), b(j + LBound(b)))
         Next j
     Next i
     product_set = ret
