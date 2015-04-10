@@ -2,12 +2,9 @@
 //Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
 #include <algorithm>
-#include <memory>
 #include <OleAuto.h>//<OAIdl.h>
+#include "VBA_NestFunc.hpp"
 
-__int32 __stdcall Dimension(const VARIANT* pv);
-void safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[]);
-VARIANT  __stdcall bind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2);
 
 class compareByVBAfunc   {
     VARIANT*    begin;
@@ -16,7 +13,7 @@ public:
     compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA), comp(f) { }
     bool operator ()(__int32 i, __int32 j) const
     {
-        return bind_invoke(comp, begin + i, begin + j).lVal ? true: false;
+        return unbind_invoke(comp, begin + i, begin + j).lVal ? true: false;
     }
 };
 
