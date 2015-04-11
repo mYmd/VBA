@@ -127,19 +127,24 @@ End Function
     End Function
 
 '対数関数
-Function logN(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
-    logN = Log(a)
+Function logN(ByRef a As Variant, Optional ByRef base As Variant) As Variant
+    If IsMissing(base) Then
+        logN = Log(a)
+    Else
+        logN = Log(a) / Log(base)
+    End If
 End Function
     Function p_log(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_log = make_funPointer(AddressOf logN, firstParam, secondParam)
+        p_log = make_funPointer_with_2nd_Default(AddressOf logN, firstParam, secondParam)
     End Function
 
 '絶対値
 Function absD(ByRef val As Variant, Optional ByRef dummy As Variant) As Variant
-    absD = Abs(val)
+    If IsMissing(dummy) Then dummy = 0
+    absD = Abs(val - dummy)
 End Function
     Function p_abs(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_abs = make_funPointer(AddressOf absD, firstParam, secondParam)
+        p_abs = make_funPointer_with_2nd_Default(AddressOf absD, firstParam, secondParam)
     End Function
 
 '加算
