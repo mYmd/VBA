@@ -11,7 +11,8 @@ Option Explicit
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '===================================================================================
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
-'   make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
+'   Function make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
+'   Function is_bindFun         bindされた関数であることの判定
 ' * Function mapF               配列の各要素に関数を適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
@@ -222,4 +223,3 @@ Function generate_while_not(ByVal val As Variant, _
     ReDim Preserve ret(0 To i)
     generate_while_not = ret
 End Function
-
