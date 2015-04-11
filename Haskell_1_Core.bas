@@ -11,6 +11,7 @@ Option Explicit
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '===================================================================================
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
+'   make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
 ' * Function mapF               配列の各要素に関数を適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
@@ -35,15 +36,22 @@ Option Explicit
 Function make_funPointer(ByVal func As Long, _
                          Optional ByRef firstParam As Variant, _
                          Optional ByRef secondParam As Variant) As Variant
-    'If IsMissing(firstParam) And IsMissing(secondParam) Then
-     '   make_funPointer = func
-    'Else
-        make_funPointer = VBA.Array(func, _
-                        IIf(IsMissing(firstParam), placeholder, firstParam), _
-                        IIf(IsMissing(secondParam), placeholder, secondParam), _
-                        placeholder _
-                       )
-    'End If
+    make_funPointer = VBA.Array(func, _
+                    IIf(IsMissing(firstParam), placeholder, firstParam), _
+                    IIf(IsMissing(secondParam), placeholder, secondParam), _
+                    placeholder _
+                   )
+End Function
+
+'ユーザ関数をbindファンクタ化する（2番目の引数にデフォルト値を設定する場合）
+Function make_funPointer_with_2nd_Default(ByVal func As Long, _
+                         Optional ByRef firstParam As Variant, _
+                         Optional ByRef secondParam As Variant) As Variant
+    make_funPointer_with_2nd_Default = VBA.Array(func, _
+                                 IIf(IsMissing(firstParam), placeholder, firstParam), _
+                                 secondParam, _
+                                 placeholder _
+                                )
 End Function
 
 'bindされた関数であることの判定
