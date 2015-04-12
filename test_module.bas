@@ -216,4 +216,12 @@ Sub vbaUnit()
     z = p_poly(, Array(6, 2, -5))
     printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
     printM repeat_while(Array(0, applyFun(0, m)), p_less(0.000000000000001, p_abs(p_getNth(1), 0)), p_Newton_Raphson(, Array(m, z)))
+
+    Debug.Print "------- 条件によるFind ------------"
+    Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.90超 29.99未満のものを探す"
+    Points = mapF(p_rnd(0), repeat(100, 10000))
+    z = p_mult(p_greater(, 29.9), p_less(, 29.99))
+    m = find_pred(z, Points)
+    If (IsNull(m)) Then Debug.Print "なし" Else Debug.Print Points(m) & " (index=" & m & ")"
 End Sub
+
