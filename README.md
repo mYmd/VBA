@@ -65,6 +65,9 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/4/12  
+find_pred関数をHaskell_1_Coreに追加  
+
 2015/4/11  
 バグ修正とともにC++側ファイル追加  
 VBA_NestFunc.hppとVBA_NestFunc.cpp  
