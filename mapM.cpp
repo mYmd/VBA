@@ -27,7 +27,7 @@ namespace   {
 }   // namespace
 
 //bindされていないVBA関数を2引数で呼び出す
-VARIANT __stdcall
+VARIANT  __stdcall
 unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
 {
     VARIANT      ret;
@@ -47,17 +47,7 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
 VARIANT  __stdcall
 bind_invoke(VARIANT* bfun, VARIANT* param)
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    if ( !bfun )    return ret;
-    VARIANT tmp1, tmp2;
-    VBCallbackFunc pf = get_bindFun(bfun, tmp1, tmp2);
-    if ( pf )
-    {
-        functionExpr func(pf, tmp1, tmp2);
-        ::VariantCopy(&ret, func.eval(param, param));
-    }
-    return ret;
+    return unbind_invoke(bfun, param, param);
 }
 
 ////************************************************************************************
