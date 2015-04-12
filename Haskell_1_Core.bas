@@ -22,7 +22,8 @@ Option Explicit
 '   Function scanr_Funs         関数合成（scanr）
 '   Function applyFun2by2
 '   Function setParam2by2
-'   Function count_if           配列の各要素でfuncによる評価結果がゼロでないものの数
+'   Function count_if           配列の各要素で述語による評価結果がゼロでないものの数
+'   Function find_pred          1次元配列から条件に合致するものを検索
 '   Function repeat_while       述語による条件が満たされる間繰り返し関数適用
 '   Function repeat_while_not   述語による条件が満たされない間繰り返し関数適用
 '   Function generate_while     述語による条件が満たされる間繰り返し関数適用の履歴を生成
@@ -148,16 +149,33 @@ End Function
         p_setParam2by2 = make_funPointer(AddressOf setParam2by2, firstParam, secondParam)
     End Function
 
-' 配列 matrix の各要素でfuncによる評価結果がゼロでないものの数
-Function count_if(ByRef func As Variant, ByRef matrix As Variant) As Variant
+' 配列 matrix の各要素で述語による評価結果がゼロでないものの数
+Function count_if(ByRef pred As Variant, ByRef matrix As Variant) As Variant
     Dim z As Variant
     count_if = 0&
-    For Each z In mapF(func, matrix)
+    For Each z In mapF(pred, matrix)
         If z <> 0 Then count_if = count_if + 1
     Next z
 End Function
     Function p_count_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam)
+    End Function
+
+'1次元配列から条件に合致するものを検索(最初にヒットしたインデックスまたはNullを返す)
+Function find_pred(ByRef pred As Variant, ByRef vec As Variant) As Variant
+    Dim z As Variant
+    Dim i As Long: i = LBound(vec)
+    For Each z In vec
+        If applyFun(z, pred) Then
+            find_pred = i
+            Exit Function
+        End If
+        i = i + 1
+    Next z
+    find_pred = Null
+End Function
+    Function p_find_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_find_pred = make_funPointer(AddressOf find_pred, firstParam, secondParam)
     End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用
