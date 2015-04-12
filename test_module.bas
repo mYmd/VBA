@@ -112,7 +112,7 @@ End Function
 'テスト関数
 Sub vbaUnit()
     Dim N As Long
-    Dim Points As Variant, m As Variant, z As Variant
+    Dim Points As Variant, m As Variant, z As Variant, pred As Variant
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
     
@@ -220,8 +220,7 @@ Sub vbaUnit()
     Debug.Print "------- 条件によるFind ------------"
     Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.90超 29.99未満のものを探す"
     Points = mapF(p_rnd(0), repeat(100, 10000))
-    z = p_mult(p_greater(, 29.9), p_less(, 29.99))
-    m = find_pred(z, Points)
+    pred = p_mult(p_greater(, 29.9), p_less(, 29.99))
+    m = find_pred(pred, Points)
     If (IsNull(m)) Then Debug.Print "なし" Else Debug.Print Points(m) & " (index=" & m & ")"
 End Sub
-
