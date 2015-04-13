@@ -85,7 +85,8 @@ End Function
 Function isPrime(ByRef val As Variant, ByRef pm As Variant) As Variant
     Dim z As Variant
     For Each z In pm
-        If z < val And val Mod z = 0 Then
+        If val < z * z Then Exit For
+        If val Mod z = 0 Then
             isPrime = 0
             Exit Function
         End If
@@ -218,9 +219,10 @@ Sub vbaUnit()
     printM repeat_while(Array(0, applyFun(0, m)), p_less(0.000000000000001, p_abs(p_getNth(1), 0)), p_Newton_Raphson(, Array(m, z)))
 
     Debug.Print "------- 条件によるFind ------------"
-    Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.90超 29.99未満のものを探す"
+    Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.9超 29.99未満のものを探す"
     Points = mapF(p_rnd(0), repeat(100, 10000))
     pred = p_mult(p_greater(, 29.9), p_less(, 29.99))
     m = find_pred(pred, Points)
     If (IsNull(m)) Then Debug.Print "なし" Else Debug.Print Points(m) & " (index=" & m & ")"
 End Sub
+
