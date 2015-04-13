@@ -48,7 +48,8 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 	scanr = scanr  
 	scanl1 = scanl1  
 	scanr1 = scanr1  
-	stdsort = stdsort  	
+	stdsort = stdsort  
+	find_imple = find_imple  	
 
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
@@ -65,6 +66,9 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/4/14  
+APIにfind_impleを追加してfind_pred関数の実装をdll側に移動  
+
 2015/4/12  
 find_pred関数をHaskell_1_Coreに追加  
 
