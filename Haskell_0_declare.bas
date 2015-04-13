@@ -21,6 +21,7 @@ Option Explicit
 '   Function scanl1             配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
 '   Function scanr1             配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
 '   Function stdsort            1次元配列のソートインデックス出力
+'   Function find_imple         述語による検索
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -115,3 +116,8 @@ Declare Function stdsort Lib "mapM.dll" (ByRef ary As Variant, _
                                          ByVal defaultFlag As Long, _
                                          ByRef pComp As Variant) As Variant
 
+' 述語による検索
+Declare Function find_imple Lib "mapM.dll" ( _
+                ByRef pCallback As Variant, _
+            ByRef matrix As Variant, _
+        ByVal def As Long) As Long
