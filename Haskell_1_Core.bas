@@ -163,16 +163,12 @@ End Function
 
 '1次元配列から条件に合致するものを検索(最初にヒットしたインデックスまたはNullを返す)
 Function find_pred(ByRef pred As Variant, ByRef vec As Variant) As Variant
-    Dim z As Variant
-    Dim i As Long: i = LBound(vec)
-    For Each z In vec
-        If applyFun(z, pred) Then
-            find_pred = i
-            Exit Function
-        End If
-        i = i + 1
-    Next z
-    find_pred = Null
+    If Dimension(vec) = 1 Then
+        find_pred = find_imple(pred, vec, UBound(vec) + 1)
+        If find_pred = UBound(vec) + 1 Then find_pred = Null
+    Else
+        find_pred = Null
+    End If
 End Function
     Function p_find_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_find_pred = make_funPointer(AddressOf find_pred, firstParam, secondParam)
