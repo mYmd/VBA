@@ -21,3 +21,5 @@ EXPORTS
 	scanl1 = scanl1
 	scanr1 = scanr1
 	stdsort = stdsort
+	find_imple = find_imple
+	
