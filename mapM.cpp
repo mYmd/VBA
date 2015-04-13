@@ -101,6 +101,39 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
     return      ret;
 }
 
+//述語による1次元配列からの検索
+__int32  __stdcall
+find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def)
+{
+    VARIANT tmp1, tmp2;
+    VBCallbackFunc pf = get_bindFun(bfun, tmp1, tmp2);
+    if ( !matrix || !pf )                           return def;
+    functionExpr func(pf, tmp1, tmp2);
+    if (  0 == (VT_ARRAY & matrix->vt ) )           return def;
+    SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
+    if ( 1 != ::SafeArrayGetDim(pArray) )           return def;
+    SAFEARRAYBOUND bounds = {1,0};   //要素数、LBound
+    safeArrayBounds(pArray, 1, &bounds);
+    SAFEARRAYBOUND Bounds = { bounds.cElements, bounds.lLbound };
+    for ( ULONG i = 0; i < Bounds.cElements; ++i )
+    {
+        LONG index = static_cast<LONG>(i) + bounds.lLbound;
+        VARIANT elem, ret;
+        ::VariantInit(&elem);
+        ::VariantInit(&ret);
+        ::SafeArrayGetElement(pArray, &index, &elem);
+        ::VariantChangeType(&ret, func.eval(&elem, &elem), 0, VT_I4);
+        if ( ret.lVal != 0 )
+        {
+            ::VariantClear(&elem);
+            ::VariantClear(&ret);
+            return static_cast<__int32>(index);
+        }
+        ::VariantClear(&elem);
+        ::VariantClear(&ret);
+    }
+    return      def;
+}
 //**************************************************************************
 
 //配列matrix1とmatrix2の各要素に2変数のCallback（VBCallbackFunc型のVBA関数）を適用する
