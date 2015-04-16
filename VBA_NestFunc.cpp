@@ -20,7 +20,7 @@ __int32 __stdcall Dimension(const VARIANT* pv)
 VARIANT __stdcall placeholder()
 {
     VARIANT ret;
-    VariantClear(&ret);
+    ::VariantInit(&ret);
     ret.vt = VT_ERROR;
     ret.scode = 0;
     return ret;
