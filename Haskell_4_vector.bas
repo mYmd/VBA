@@ -237,9 +237,9 @@ Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByR
     Dim ret   As Variant
     
     If IsMissing(c) Then
-        ReDim ret(0 To r - 1)
+        If 0 < r Then ReDim ret(0 To r - 1)
     Else
-        ReDim ret(0 To r - 1, 0 To c - 1)
+        If 0 < r And 0 < c Then ReDim ret(0 To r - 1, 0 To c - 1)
     End If
     If IsMissing(data) = False Then Call fillM(ret, data)
     makeM = ret
@@ -344,7 +344,7 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
         Exit Function
     Case 1
         counterR = LBound(matrix, 1)
-        ReDim ret(counterR To counterR - 1 + sizeof(rows))
+        If 0 < sizeof(rows) Then ReDim ret(counterR To counterR - 1 + sizeof(rows))
         For i = LBound(rows) To UBound(rows) Step 1
             ret(counterR) = matrix(rows(i))
             counterR = counterR + 1
@@ -368,7 +368,9 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
         End If
         counterR = LBound(matrix, 1)
         counterC = LBound(matrix, 2)
-        ReDim ret(counterR To counterR - 1 + sizeof(rows), counterC To counterC - 1 + sizeof(cols))
+        If 0 < sizeof(rows) And 0 < sizeof(cols) Then
+            ReDim ret(counterR To counterR - 1 + sizeof(rows), counterC To counterC - 1 + sizeof(cols))
+        End If
         For i = LBound(rows) To UBound(rows) Step 1
             counterC = LBound(matrix, 2)
             For j = LBound(cols) To UBound(cols) Step 1
@@ -433,7 +435,7 @@ Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     Dim ret As Variant
     
     If Dimension(v1) = 1 And Dimension(v2) = 1 Then
-        ReDim ret(0 To sizeof(v1) + sizeof(v2) - 1)
+        If 0 < sizeof(v1) + sizeof(v2) Then ReDim ret(0 To sizeof(v1) + sizeof(v2) - 1)
         counter = 0
         For i = LBound(v1) To UBound(v1) Step 1
             ret(counter) = v1(i)
@@ -469,7 +471,9 @@ Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or colSize(matrix1) <> colSize(matrix2) Then
         catR = VBA.Array()
     Else
-        ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
+        If 0 < rowSize(matrix1) + rowSize(matrix2) And 0 < colSize(matrix1) Then
+            ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
+        End If
         counter = 0
         For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
             Call fillRow_imple(ret, counter, matrix1, i)
@@ -491,7 +495,9 @@ Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
         catC = VBA.Array()
     Else
-        ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
+        If 0 < rowSize(matrix1) And 0 < colSize(matrix1) + colSize(matrix2) Then
+            ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
+        End If
         counter = 0
         For i = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
             Call fillCol_imple(ret, counter, matrix1, i)
@@ -522,7 +528,9 @@ Function transpose(ByRef matrix As Variant) As Variant
     Case 2
         r = LBound(matrix, 1)
         c = LBound(matrix, 2)
-        ReDim ret(0 To UBound(matrix, 2) - c, 0 To UBound(matrix, 1) - r)
+        If c <= UBound(matrix, 2) And r <= UBound(matrix, 1) Then
+            ReDim ret(0 To UBound(matrix, 2) - c, 0 To UBound(matrix, 1) - r)
+        End If
         For i = 0 To UBound(matrix, 2) - c
             For j = 0 To UBound(matrix, 1) - r
                 ret(i, j) = matrix(j + r, i + c)
@@ -552,7 +560,7 @@ Function zipR(ByRef m As Variant) As Variant
     Dim i As Long
     Dim ret As Variant
 
-    ReDim ret(0 To colSize(m) - 1)
+    If 0 < colSize(m) Then ReDim ret(0 To colSize(m) - 1)
     For i = LBound(ret) To UBound(ret) Step 1
         ret(i) = selectCol(m, i)
     Next i
@@ -564,7 +572,7 @@ Function zipC(ByRef m As Variant) As Variant
     Dim i As Long
     Dim ret As Variant
 
-    ReDim ret(0 To rowSize(m) - 1)
+    If 0 < rowSize(m) Then ReDim ret(0 To rowSize(m) - 1)
     For i = LBound(ret) To UBound(ret) Step 1
         ret(i) = selectRow(m, i)
     Next i
@@ -614,12 +622,20 @@ End Function
 
 'ベクトルの直積に関数を適用した行列を作る
 Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
-    Dim i As Long, j As Long
+    Dim z As Variant, k As Long
     Dim ret As Variant:     ReDim ret(0 To rowSize(a) - 1, 0 To rowSize(b) - 1)
-    For i = 0 To UBound(ret, 1) Step 1
-        For j = 0 To UBound(ret, 2) Step 1
-            ret(i, j) = unbind_invoke(pCallback, a(i + LBound(a)), b(j + LBound(b)))
-        Next j
-    Next i
+    If rowSize(a) < rowSize(b) Then
+        k = LBound(a)
+        For Each z In a
+            Call fillRow(ret, k, mapF(bind1st(pCallback, z), b))
+            k = k + 1
+        Next z
+    Else
+        k = LBound(b)
+        For Each z In b
+            Call fillCol(ret, k, mapF(bind2nd(pCallback, z), a))
+            k = k + 1
+        Next z
+    End If
     product_set = ret
 End Function
