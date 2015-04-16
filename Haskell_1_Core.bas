@@ -71,16 +71,14 @@ End Function
                                       bind1st_imple(func(1), firstParam), _
                                       bind1st_imple(func(2), firstParam), _
                                       placeholder)
-        Else
+        ElseIf is_placeholder(func) Then
             bind1st_imple = firstParam
+        Else
+            bind1st_imple = func
         End If
     End Function
 Function bind1st(ByRef func As Variant, ByRef firstParam As Variant) As Variant
-    If is_bindFun(func) Then
-        bind1st = VBA.Array(func(0), bind1st(func(1), firstParam), func(2), placeholder)
-    Else
-        bind1st = firstParam
-    End If
+    bind1st = VBA.Array(func(0), bind1st_imple(func(1), firstParam), func(2), placeholder)
 End Function
     Function p_bind1st(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bind1st = make_funPointer(AddressOf bind1st, firstParam, secondParam)
@@ -93,16 +91,14 @@ End Function
                                       bind2nd_imple(func(1), secondParam), _
                                       bind2nd_imple(func(2), secondParam), _
                                       placeholder)
-        Else
+        ElseIf is_placeholder(func) Then
             bind2nd_imple = secondParam
+        Else
+            bind2nd_imple = func
         End If
     End Function
 Function bind2nd(ByRef func As Variant, ByRef secondParam As Variant) As Variant
-    If is_bindFun(func) Then
-        bind2nd = VBA.Array(func(0), func(1), bind2nd(func(2), secondParam), placeholder)
-    Else
-        bind2nd = secondParam
-    End If
+    bind2nd = VBA.Array(func(0), func(1), bind2nd_imple(func(2), secondParam), placeholder)
 End Function
     Function p_bind2nd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bind2nd = make_funPointer(AddressOf bind2nd, firstParam, secondParam)
