@@ -13,6 +13,8 @@ Option Explicit
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
 '   Function make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
 '   Function is_bindFun         bindされた関数であることの判定
+'   Function bind1st            1番目の引数を再束縛する
+'   Function bind2nd            2番目の引数を再束縛する
 ' * Function mapF               配列の各要素に関数を適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
@@ -61,6 +63,50 @@ Function is_bindFun(ByRef val As Variant) As Boolean
     is_bindFun = False
     If Dimension(val) = 1 And sizeof(val) = 4 Then is_bindFun = is_placeholder(val(3))
 End Function
+
+'1番目の引数を再束縛する
+    Private Function bind1st_imple(ByRef func As Variant, ByRef firstParam As Variant) As Variant
+        If is_bindFun(func) Then
+            bind1st_imple = VBA.Array(func(0), _
+                                      bind1st_imple(func(1), firstParam), _
+                                      bind1st_imple(func(2), firstParam), _
+                                      placeholder)
+        Else
+            bind1st_imple = firstParam
+        End If
+    End Function
+Function bind1st(ByRef func As Variant, ByRef firstParam As Variant) As Variant
+    If is_bindFun(func) Then
+        bind1st = VBA.Array(func(0), bind1st(func(1), firstParam), func(2), placeholder)
+    Else
+        bind1st = firstParam
+    End If
+End Function
+    Function p_bind1st(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_bind1st = make_funPointer(AddressOf bind1st, firstParam, secondParam)
+    End Function
+
+'2番目の引数を再束縛する
+    Private Function bind2nd_imple(ByRef func As Variant, ByRef secondParam As Variant) As Variant
+        If is_bindFun(func) Then
+            bind2nd_imple = VBA.Array(func(0), _
+                                      bind2nd_imple(func(1), secondParam), _
+                                      bind2nd_imple(func(2), secondParam), _
+                                      placeholder)
+        Else
+            bind2nd_imple = secondParam
+        End If
+    End Function
+Function bind2nd(ByRef func As Variant, ByRef secondParam As Variant) As Variant
+    If is_bindFun(func) Then
+        bind2nd = VBA.Array(func(0), func(1), bind2nd(func(2), secondParam), placeholder)
+    Else
+        bind2nd = secondParam
+    End If
+End Function
+    Function p_bind2nd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_bind2nd = make_funPointer(AddressOf bind2nd, firstParam, secondParam)
+    End Function
 
 ' 配列の各要素に関数を適用する
 Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
@@ -179,12 +225,11 @@ Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
                       Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:  i = -1
+    Dim i As Long:  i = 0
     repeat_while = val
-    Do While applyFun(repeat_while, pred)
-        i = i + 1
-        If 0 <= N And N <= i Then Exit Do
+    Do While applyFun(repeat_while, pred) And (N < 0 Or i < N)
         repeat_while = applyFun(repeat_while, fun)
+        i = i + 1
     Loop
 End Function
 
@@ -193,12 +238,11 @@ Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
                           Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:  i = -1
+    Dim i As Long:  i = 0
     repeat_while_not = val
-    Do While 0 = applyFun(repeat_while_not, pred)
-        i = i + 1
-        If 0 <= N And N <= i Then Exit Do
+    Do While 0 = applyFun(repeat_while_not, pred) And (N < 0 Or i < N)
         repeat_while_not = applyFun(repeat_while_not, fun)
+        i = i + 1
     Loop
 End Function
 
@@ -207,14 +251,13 @@ Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
                         Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:      i = -1
+    Dim i As Long:      i = 0
     Dim ret As Variant: ReDim ret(0 To 0)
-    Do While applyFun(val, pred)
-        i = i + 1
-        If 0 <= N And N <= i Then Exit Do
-        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 1)
+    Do While applyFun(val, pred) And (N < 0 Or i < N)
+        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 2)
         ret(i) = val
         val = applyFun(val, fun)
+        i = i + 1
     Loop
     ReDim Preserve ret(0 To i)
     generate_while = ret
@@ -225,14 +268,13 @@ Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
                             Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:      i = -1
+    Dim i As Long:      i = 0
     Dim ret As Variant: ReDim ret(0 To 0)
-    Do While 0 = applyFun(val, pred)
-        i = i + 1
-        If 0 <= N And N <= i Then Exit Do
-        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 1)
+    Do While 0 = applyFun(val, pred) And (N < 0 Or i < N)
+        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 2)
         ret(i) = val
         val = applyFun(val, fun)
+        i = i + 1
     Loop
     ReDim Preserve ret(0 To i)
     generate_while_not = ret
