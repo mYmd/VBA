@@ -5,15 +5,21 @@
 #include <OleAuto.h>//<OAIdl.h>
 #include "VBA_NestFunc.hpp"
 
-
+//比較関数
 class compareByVBAfunc   {
     VARIANT*    begin;
-    VARIANT*    comp;
+    std::shared_ptr<functionExpr> comp;
 public:
-    compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA), comp(f) { }
+    compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA)
+    {
+        VARIANT tmp1, tmp2;
+        VBCallbackFunc pf = get_bindFun(f, tmp1, tmp2);
+        if ( pf )   comp.reset(new functionExpr(pf, tmp1, tmp2));
+    }
+    bool valid() const  { return static_cast<bool>(comp);  }
     bool operator ()(__int32 i, __int32 j) const
     {
-        return unbind_invoke(comp, begin + i, begin + j).lVal ? true: false;
+        return comp->eval(begin + i, begin + j)->lVal ? true: false;
     }
 };
 
@@ -94,10 +100,11 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
         compDictionaryFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + bound.cElements, functor);
     }
-    else
+    else if ( pComp )
     {
         compareByVBAfunc functor(VArray.get(), pComp);
-        std::sort(index.get(), index.get() + bound.cElements, functor);
+        if ( functor.valid() )
+            std::sort(index.get(), index.get() + bound.cElements, functor);
     }
     //-------------------------------------------------------
     SAFEARRAYBOUND boundRet = { bound.cElements, 0};   //要素数、LBound
