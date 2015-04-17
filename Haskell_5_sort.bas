@@ -8,10 +8,10 @@ Option Explicit
     ' Function  sortIndex_pred      任意の比較関数によるソート後のインデックス配列
     ' Function  lower_bound         ソート済み配列からのキーの検索（std::lower_boundと同じ）
     ' Function  lower_bound_pred    ソート済み配列からのキーの検索（std::lower_boundと同じ）
-    ' Function  upper_bound         ソード済み配列からのキーの検索（std::upper_boundと同じ）
-    ' Function  upper_bound_pred    ソード済み配列からのキーの検索（std::upper_boundと同じ）
-    ' Function  equal_range         ソード済み配列からのキーの検索（std::equal_rangeと同じ）
-    ' Function  equal_range_pred    ソード済み配列からのキーの検索（std::equal_rangeと同じ）
+    ' Function  upper_bound         ソート済み配列からのキーの検索（std::upper_boundと同じ）
+    ' Function  upper_bound_pred    ソート済み配列からのキーの検索（std::upper_boundと同じ）
+    ' Function  equal_range         ソート済み配列からのキーの検索（std::equal_rangeと同じ）
+    ' Function  equal_range_pred    ソート済み配列からのキーの検索（std::equal_rangeと同じ）
 '====================================================================================================
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
@@ -31,7 +31,7 @@ Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Varian
     End Select
 End Function
     Public Function p_sortIndex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_sortIndex = make_funPointer(AddressOf sortIndex, firstParam, secondParam)
+        p_sortIndex = make_funPointer_with_2nd_Default(AddressOf sortIndex, firstParam, secondParam)
     End Function
 
 '任意の比較関数 comp によるソート後のインデックス配列
