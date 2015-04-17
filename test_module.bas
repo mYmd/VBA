@@ -101,12 +101,30 @@ End Function
 '第１引数 ：　(x1, f(x))   第２引数 (f, df/dx)
 Function Newton_Raphson(ByRef xy As Variant, ByRef fdf As Variant) As Variant
     Dim x2 As Double
-    
     x2 = xy(0) - xy(1) / applyFun(xy(0), fdf(1))
     Newton_Raphson = VBA.Array(x2, applyFun(x2, fdf(0)))
 End Function
     Function p_Newton_Raphson(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_Newton_Raphson = make_funPointer(AddressOf Newton_Raphson, firstParam, secondParam)
+    End Function
+
+'整数を各桁の数字の合計で比較する
+Function compareSS(ByRef a As Variant, ByRef b As Variant) As Variant
+    Dim i As Long, aa As Long, bb As Long, aaa As Long, bbb As Long
+    aa = Abs(CLng(a))
+    bb = Abs(CLng(b))
+    Do While 0 < aa
+        aaa = aaa + (aa Mod 10)
+        aa = aa \ 10
+    Loop
+    Do While 0 < bb
+        bbb = bbb + (bb Mod 10)
+        bb = bb \ 10
+    Loop
+    compareSS = IIf(aaa < bbb, 1, 0)
+End Function
+    Function p_compareSS(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_compareSS = make_funPointer(AddressOf compareSS, firstParam, secondParam)
     End Function
 
 
@@ -185,16 +203,14 @@ Sub vbaUnit()
     printM unzip(m, 1)(1)
     printM unzip(m, 2)
 
-    Debug.Print "------- ソートとequal_range ------------"
-    m = mapF(p_getCLng, mapF(p_rnd(, 10), repeat(0, 20)))
+    Debug.Print "------- ソート ------------"
+    m = mapF(p_getCLng, mapF(p_rnd(, 30), repeat(10, 30)))
     Debug.Print "ソート前"
     printM m
-    m = subM(m, sortIndex(m))
-    Debug.Print "ソート後"
-    printM m
-    z = equal_range(m, 5)
-    Debug.Print "equal_range(m, 5)"
-    printM mapF(p_getNth(, m), iota(z(0), z(1)))
+    Debug.Print "昇順ソート"
+    printM subM(m, sortIndex(m))
+    Debug.Print "各桁の数字の合計で比較するファンクタでソート"
+    printM subM(m, sortIndex_pred(m, p_compareSS))
     
     Debug.Print "------- 行列積 ------------"
     printM matrixMult(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
