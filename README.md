@@ -1,34 +1,42 @@
 # VBA
 VBA用のなんちゃってHaskellモジュール(32bit Office Only)  
-mapやzipWithやfoldやscan系の関数の真似事によってユーザーコードからループを  
-排除しようとする試み。  
 
-< test_module.bas のサンプルプログラム(vbaUnit)より >  
-πを確率的に求めるコードがループなしの3行で書ける。  
+・関数型プログラミングのサポート  
+　　関数を合成して新しい関数オブジェクトとして返す機能  
+　　引数を束縛することによる関数の部分適用  
+　　関数オブジェクトの実行  
+　　関数を関数の引数にする  
+　　
+・リスト操作によるループ削減  
+　　mapやzipWithやfoldやscan系の関数を用意  
+
+・汎用的なソート関数  
+　　ユーザー定義の比較関数を渡してソートできる  
+
+
+以下は利用事例  
+・円周率πを確率的に求めるコードがループなしの3行で書ける。  
     N = 10000  
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)  
 
-FizzBuzz は２行くらい  
+・FizzBuzz は２行くらい  
 m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), Array(p_mod(, 5), Null, "Buzz"), Array(p_mod(, 3), placeholder, "Fizz"))  
 printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)  
 
-素数列の生成は 次の2.3.を繰り返し適用することで得られる（効率は考慮外）  
+・素数列の生成は 次の2.3.を繰り返し適用することで得られる（効率は考慮外）  
 1. m = Array(2, 3, 5)  '初期  
 2. z = iota(2, m(UBound(m)) ^ 2)  
 3. m = filterR(z, mapF(p_isPrime(, m), z))  
 
-単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する１ステップを  
+・単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する１ステップを  
 表す関数を作り、繰り返し適用する(関数合成 foldl_Funs)ことで求める  
 foldl_Funs(初期値, repeat(p_Newton_Raphson(, Array(f, df/dx)), 回数))  
 
-&lt;/ test_module.bas のサンプルプログラム(vbaUnit)より >  
-
-mapのネストや引数の束縛を実装したので、もっと巧みなことがきるのではないかと  
-考えているが、そこまでの知性がない。  
-
 ///////////////////////////////////////////////////////////////////////////////  
-C++ファイルは４つ  
+'=============================================================  
+ 構成要素
+・C++ソースは４ファイル  
 mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp  
 をdllとしてコンパイル＆ビルド  
 以下の関数をdefファイル等でエクスポート  
@@ -54,7 +62,7 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
 
-以下のbasファイルはVBAソースコード。
+以下のbasファイルはVBAのソースコード。
 標準モジュールにそのまま取り込む。  
   Haskell_0_declare.bas（Declare文のみ）  
   Haskell_1_Core.bas（中心となるモジュール）  
