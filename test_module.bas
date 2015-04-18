@@ -242,3 +242,55 @@ Sub vbaUnit()
     If (IsNull(m)) Then Debug.Print "なし" Else Debug.Print Points(m) & " (index=" & m & ")"
 End Sub
 
+
+'型がバラバラで配列も含む比較関数
+Function comp000(ByRef a As Variant, ByRef b As Variant) As Variant
+    ' 型が違う場合
+    If VarType(a) <> VarType(b) Then
+        comp000 = IIf(VarType(a) < VarType(b), 1, 0)
+    Else
+        ' 配列の場合
+        If IsArray(a) Then
+            ' 次元が異なる場合
+            If Dimension(a) <> Dimension(b) Then
+                comp000 = IIf(Dimension(a) < Dimension(b), 1, 0)
+            Else
+                comp000 = IIf(sizeof(a) < sizeof(b), 1, 0)
+            End If
+        ElseIf IsNull(a) Then
+            comp000 = 0
+        Else    ' 数値または文字列
+            comp000 = IIf(a < b, 1, 0)
+        End If
+    End If
+End Function
+    Function p_comp000(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_comp000 = make_funPointer(AddressOf comp000, firstParam, secondParam)
+    End Function
+
+'型がバラバラで配列も含む配列をソートするテスト
+Sub sortTest()
+    Dim m As Variant, z As Variant:    ReDim m(0 To 9)
+    Debug.Print "型がバラバラで配列も含む配列のソート"
+    m(0) = 75676786
+    m(1) = "abc"
+    m(2) = iota(1, 8)
+    m(3) = "鳥小屋"
+    m(4) = 6
+    m(5) = makeM(2, 2, iota(1, 4))
+    m(6) = 300
+    m(7) = iota(1, 15)
+    m(8) = "犬小屋"
+    m(9) = makeM(2, 3, iota(1, 6))
+    Debug.Print vbLf & "===============ソート前==============="
+    For Each z In m
+        Debug.Print "-+-+-+-+-+-"
+        printM z
+    Next z
+    Debug.Print vbLf & "===============ソート後==============="
+    m = subM(m, sortIndex_pred(m, p_comp000))
+    For Each z In m
+        Debug.Print "-+-+-+-+-+-"
+        printM z
+    Next z
+End Sub
