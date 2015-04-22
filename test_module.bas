@@ -165,11 +165,12 @@ Sub vbaUnit()
     Debug.Print "foldr(p_minus, 0, iota(1, 100))  = 1-(2-(3-...(99-(100-0)))...)"
     Debug.Print foldr(p_minus, 0, iota(1, 100))
     
-    Debug.Print "------- 円周率を確率的に求める ------------"
+    Debug.Print "------- 円周率を確率的に求める（2通り） ------------"
     N = 10000
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)
-    
+    printM Array("π≒", 4 * repeat_while(0, p_equal(0, 0), p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
+     
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
