@@ -44,90 +44,103 @@ void safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[3])
     }
 }
 
-//---------------------------------------
+//===================================================================
 funcExpr_i::~funcExpr_i()
 {   }
 
-//---------------------------------------
-valueExpr::valueExpr(VARIANT* v)
+//--------------------------------------------------------
+class valueExpr : public funcExpr_i    {
+    VARIANT     val;
+public:
+    valueExpr(VARIANT* v)
+    {
+        ::VariantInit(&val);
+        ::VariantCopy(&val, v);
+    }
+    ~valueExpr()    {   }
+    VARIANT* eval(VARIANT*, VARIANT*)   {   return &val;    }
+};
+
+//--------------------------------------------------------
+class placeholderExpr : public funcExpr_i    {
+public:
+    ~placeholderExpr()  {   }
+    VARIANT* eval(VARIANT* x, VARIANT*) {   return x;   }
+};
+
+//-------------------------------------------------------------
+functionExpr::VBCallbackFunc_::VBCallbackFunc_(const VARIANT* bfun) : fun(0)
 {
-    ::VariantInit(&val);
-    ::VariantCopy(&val, v);
-}
-
-valueExpr::~valueExpr()
-{   }
-
-VARIANT* valueExpr::eval(VARIANT*, VARIANT*)
-{
-    return &val;
-}
-
-//---------------------------------------
-placeholderExpr::~placeholderExpr()
-{   }
-
-VARIANT* placeholderExpr::eval(VARIANT* x, VARIANT*)
-{
-    return x;
-}
-
-//---------------------------------------
-
-VBCallbackFunc get_bindFun(const VARIANT* bfun, VARIANT& elem1, VARIANT& elem2)
-{
-    VBCallbackFunc ret = 0;
-    if ( 1 != Dimension(bfun) )         return 0;
+    ::VariantInit(&elem1);
+    ::VariantInit(&elem2);
+    if ( 1 != Dimension(bfun) )         return;
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & bfun->vt) )?  (bfun->parray): (*bfun->pparray);
-    if ( !pArray )                      return 0;
+    if ( !pArray )                      return;
     SAFEARRAYBOUND bounds = {1,0};   //要素数、LBound
     safeArrayBounds(pArray, 1, &bounds);
-    if ( bounds.cElements != 4 )        return 0;
+    if ( bounds.cElements < 4 )         return;
     LONG index = bounds.lLbound + 3;
     {
         VARIANT elem3;
         ::VariantInit(&elem3);
         ::SafeArrayGetElement(pArray, &index, &elem3);
-        if ( !is_placeholder(&elem3) )  return 0;
-    }{
+        auto isP = is_placeholder(&elem3);
+        ::VariantClear(&elem3);
+        if ( !isP )                     return;
+    }
+    {
         VARIANT elem0;
         ::VariantInit(&elem0);
         index = bounds.lLbound + 0;
         ::SafeArrayGetElement(pArray, &index, &elem0);
-        if ( elem0.vt != VT_I4 || elem0.lVal == 0 )     return 0;
-        ret = reinterpret_cast<VBCallbackFunc>(elem0.lVal);
-    }{
-        ::VariantInit(&elem1);
+        if ( elem0.vt != VT_I4 || elem0.lVal == 0 )
+        {
+            ::VariantClear(&elem0);
+            return;
+        }
+        fun = reinterpret_cast<vbCallbackFunc_t>(elem0.lVal);
+        ::VariantClear(&elem0);
+    }
+    {
         index = bounds.lLbound + 1;
         ::SafeArrayGetElement(pArray, &index, &elem1);
-        ::VariantInit(&elem2);
         index = bounds.lLbound + 2;
         ::SafeArrayGetElement(pArray, &index, &elem2);
     }
-    return ret;
 }
 
-functionExpr::functionExpr(VBCallbackFunc f, VARIANT& elem1, VARIANT& elem2) : fun(f)
+functionExpr::VBCallbackFunc_::~VBCallbackFunc_()
+{
+    ::VariantClear(&elem1);
+    ::VariantClear(&elem2);
+}
+
+functionExpr::VBCallbackFunc_::operator bool() const
+{
+    return 0 != fun;
+}
+
+//--------------------------------------------------------
+functionExpr::functionExpr(VBCallbackFunc_& callback) : fun(callback.fun)
 {
     ::VariantInit(&val);
     {
-        VARIANT elem11, elem12;
-        VBCallbackFunc fun1;
-        if ( fun1 = get_bindFun(&elem1, elem11, elem12) )
-            left.reset(new functionExpr(fun1, elem11, elem12));
-        else if ( is_placeholder(&elem1) )
+        VBCallbackFunc_ fun1(&callback.elem1);
+        if ( fun1 )
+            left.reset(new functionExpr(fun1));
+        else if ( is_placeholder(&callback.elem1) )
             left.reset(new placeholderExpr);
         else
-            left.reset(new valueExpr(&elem1));
-    }{
-        VARIANT elem21, elem22;
-        VBCallbackFunc fun2;
-        if ( fun2 = get_bindFun(&elem2, elem21, elem22) )
-            right.reset(new functionExpr(fun2, elem21, elem22));
-        else if ( is_placeholder(&elem2) )
+            left.reset(new valueExpr(&callback.elem1));
+    }
+    {
+        VBCallbackFunc_ fun2(&callback.elem2);
+        if ( fun2 )
+            right.reset(new functionExpr(fun2));
+        else if ( is_placeholder(&callback.elem2) )
             right.reset(new placeholderExpr);
         else
-            right.reset(new valueExpr(&elem2));
+            right.reset(new valueExpr(&callback.elem2));
     }
 }
 
