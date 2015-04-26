@@ -221,12 +221,7 @@ Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
                       Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:  i = 0
-    repeat_while = val
-    Do While applyFun(repeat_while, pred) And (N < 0 Or i < N)
-        repeat_while = applyFun(repeat_while, fun)
-        i = i + 1
-    Loop
+    repeat_while = repeat_imple(val, pred, fun, N, 0, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用
@@ -234,12 +229,7 @@ Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
                           Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:  i = 0
-    repeat_while_not = val
-    Do While 0 = applyFun(repeat_while_not, pred) And (N < 0 Or i < N)
-        repeat_while_not = applyFun(repeat_while_not, fun)
-        i = i + 1
-    Loop
+    repeat_while_not = repeat_imple(val, pred, fun, N, 0, 1)
 End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用の履歴を生成
@@ -247,16 +237,7 @@ Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
                         Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:      i = 0
-    Dim ret As Variant: ReDim ret(0 To 0)
-    Do While applyFun(val, pred) And (N < 0 Or i < N)
-        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 2)
-        ret(i) = val
-        val = applyFun(val, fun)
-        i = i + 1
-    Loop
-    ReDim Preserve ret(0 To i)
-    generate_while = ret
+    generate_while = repeat_imple(val, pred, fun, N, 1, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用の履歴を生成
@@ -264,14 +245,5 @@ Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
                             Optional ByVal N As Long = -1) As Variant
-    Dim i As Long:      i = 0
-    Dim ret As Variant: ReDim ret(0 To 0)
-    Do While 0 = applyFun(val, pred) And (N < 0 Or i < N)
-        If UBound(ret) < i Then ReDim Preserve ret(0 To i * 2)
-        ret(i) = val
-        val = applyFun(val, fun)
-        i = i + 1
-    Loop
-    ReDim Preserve ret(0 To i)
-    generate_while_not = ret
+    generate_while_not = repeat_imple(val, pred, fun, N, 1, 1)
 End Function
