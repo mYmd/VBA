@@ -22,4 +22,4 @@ EXPORTS
 	scanr1 = scanr1
 	stdsort = stdsort
 	find_imple = find_imple
-	
+	repeat_imple = repeat_imple
