@@ -57,7 +57,8 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 	scanl1 = scanl1  
 	scanr1 = scanr1  
 	stdsort = stdsort  
-	find_imple = find_imple  	
+	find_imple = find_imple  
+	repeat_imple = repeat_imple  
 
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
@@ -74,6 +75,10 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/4/26  
+functionExprオブジェクトの構築過程をリファクタリング  
+API関数にrepeat_impleを追加  
+
 2015/4/14  
 APIにfind_impleを追加してfind_pred関数の実装をdll側に移動  
 
