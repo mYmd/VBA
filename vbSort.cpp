@@ -5,7 +5,7 @@
 #include <OleAuto.h>//<OAIdl.h>
 #include "VBA_NestFunc.hpp"
 
-//”äŠrŠÖ”
+//比較関数
 class compareByVBAfunc   {
     VARIANT*    begin;
     std::shared_ptr<functionExpr> comp;
@@ -22,7 +22,7 @@ public:
     }
 };
 
-//1ŽŸŒ³¸‡
+//1次元昇順
 class compFunctor  {
     VARIANT*    begin;
 public:
@@ -33,7 +33,7 @@ public:
     }
 };
 
-//2ŽŸŒ³¸‡
+//2次元昇順
 class compDictionaryFunctor  {
     VARIANT*    begin;
     void set(__int32 k, SAFEARRAY*&  pArray, SAFEARRAYBOUND& bound) const
@@ -79,7 +79,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     ::VariantInit(&ret);
     if ( 1 != Dimension(array) )            return ret;
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & array->vt) )?  (array->parray): (*array->pparray);
-    SAFEARRAYBOUND bound = {1, 0};   //—v‘f”ALBound
+    SAFEARRAYBOUND bound = {1, 0};   //要素数、LBound
     safeArrayBounds(pArray, 1, &bound);
     std::unique_ptr<__int32[]>	index(new __int32[bound.cElements]);
     std::unique_ptr<VARIANT[]>	VArray(new VARIANT[bound.cElements]);
@@ -89,12 +89,12 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
         auto j = static_cast<LONG>(i + bound.lLbound);
         ::SafeArrayGetElement(pArray, &j, &VArray[i]);
     }
-    if ( defaultFlag == 1 ) //1ŽŸŒ³¸‡
+    if ( defaultFlag == 1 ) //1次元昇順
     {
         compFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + bound.cElements, functor);
     }
-    else if ( defaultFlag == 2 ) //2ŽŸŒ³¸‡
+    else if ( defaultFlag == 2 ) //2次元昇順
     {
         compDictionaryFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + bound.cElements, functor);
@@ -106,7 +106,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
             std::sort(index.get(), index.get() + bound.cElements, functor);
     }
     //-------------------------------------------------------
-    SAFEARRAYBOUND boundRet = { bound.cElements, 0};   //—v‘f”ALBound
+    SAFEARRAYBOUND boundRet = { bound.cElements, 0};   //要素数、LBound
     SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
     VARIANT elem;
     ::VariantInit(&elem);
