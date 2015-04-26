@@ -5,16 +5,15 @@
 #include <OleAuto.h>//<OAIdl.h>
 #include "VBA_NestFunc.hpp"
 
-//比較関数
+//”äŠrŠÖ”
 class compareByVBAfunc   {
     VARIANT*    begin;
     std::shared_ptr<functionExpr> comp;
 public:
     compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA)
     {
-        VARIANT tmp1, tmp2;
-        VBCallbackFunc pf = get_bindFun(f, tmp1, tmp2);
-        if ( pf )   comp.reset(new functionExpr(pf, tmp1, tmp2));
+        VBCallbackFunc pf(f);
+        if ( pf )   comp.reset(new functionExpr(pf));
     }
     bool valid() const  { return static_cast<bool>(comp);  }
     bool operator ()(__int32 i, __int32 j) const
@@ -23,7 +22,7 @@ public:
     }
 };
 
-//1次元昇順
+//1ŽŸŒ³¸‡
 class compFunctor  {
     VARIANT*    begin;
 public:
@@ -34,7 +33,7 @@ public:
     }
 };
 
-//2次元昇順
+//2ŽŸŒ³¸‡
 class compDictionaryFunctor  {
     VARIANT*    begin;
     void set(__int32 k, SAFEARRAY*&  pArray, SAFEARRAYBOUND& bound) const
@@ -80,7 +79,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     ::VariantInit(&ret);
     if ( 1 != Dimension(array) )            return ret;
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & array->vt) )?  (array->parray): (*array->pparray);
-    SAFEARRAYBOUND bound = {1, 0};   //要素数、LBound
+    SAFEARRAYBOUND bound = {1, 0};   //—v‘f”ALBound
     safeArrayBounds(pArray, 1, &bound);
     std::unique_ptr<__int32[]>	index(new __int32[bound.cElements]);
     std::unique_ptr<VARIANT[]>	VArray(new VARIANT[bound.cElements]);
@@ -90,12 +89,12 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
         auto j = static_cast<LONG>(i + bound.lLbound);
         ::SafeArrayGetElement(pArray, &j, &VArray[i]);
     }
-    if ( defaultFlag == 1 ) //1次元昇順
+    if ( defaultFlag == 1 ) //1ŽŸŒ³¸‡
     {
         compFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + bound.cElements, functor);
     }
-    else if ( defaultFlag == 2 ) //2次元昇順
+    else if ( defaultFlag == 2 ) //2ŽŸŒ³¸‡
     {
         compDictionaryFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + bound.cElements, functor);
@@ -107,7 +106,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
             std::sort(index.get(), index.get() + bound.cElements, functor);
     }
     //-------------------------------------------------------
-    SAFEARRAYBOUND boundRet = { bound.cElements, 0};   //要素数、LBound
+    SAFEARRAYBOUND boundRet = { bound.cElements, 0};   //—v‘f”ALBound
     SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
     VARIANT elem;
     ::VariantInit(&elem);
