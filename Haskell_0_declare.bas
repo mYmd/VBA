@@ -22,6 +22,7 @@ Option Explicit
 '   Function scanr1             配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
 '   Function stdsort            1次元配列のソートインデックス出力
 '   Function find_imple         述語による検索
+'   Function repeat_imple       関数適用のループ（+ 終了条件）
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -121,3 +122,12 @@ Declare Function find_imple Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         ByVal def As Long) As Long
+
+'関数適用のループ（+ 終了条件）
+Declare Function repeat_imple Lib "mapM.dll" ( _
+                        ByRef init As Variant, _
+                    ByRef pred As Variant, _
+                ByRef trans As Variant, _
+            ByVal maxN As Long, _
+        ByVal scan As Long, _
+    ByVal stopCondition As Long) As Variant
