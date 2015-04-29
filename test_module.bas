@@ -170,7 +170,7 @@ Sub vbaUnit()
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)
     printM Array("π≒", 4 * repeat_while(0, p_equal(0, 0), p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
-     
+    
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
     init = 0.1: r = 3.754
@@ -179,13 +179,14 @@ Sub vbaUnit()
     printM scanr_Funs(init, repeat(p_Logistic(, r), N))
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
 
-    Debug.Print "------- フィボナッチ数列（４通り） ------------"
-    N = 10
+    Debug.Print "------- フィボナッチ数列（5通り） ------------"
+    N = 15
     printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
     printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
-    printM unzip(scanr_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
     printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
-
+    printM unzip(generate_while(Array(0, 1), p_equal(0, 0), p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_equal(0, 0), p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
+    
     Debug.Print "------- FizzBuzz ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
               Array(p_mod(, 5), Null, "Buzz"), _
@@ -216,7 +217,7 @@ Sub vbaUnit()
     Debug.Print "------- 行列積 ------------"
     printM matrixMult(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
 
-    Debug.Print "------- 素数列（[2,3,5]からの生成を３回適用） ------------"
+    Debug.Print "------- 素数列（[2,3,5]からの生成を3回適用） ------------"
     m = Array(2, 3, 5)
     z = iota(2, m(UBound(m)) ^ 2)
         m = filterR(z, mapF(p_isPrime(, m), z))
@@ -295,4 +296,3 @@ Sub sortTest()
         printM z
     Next z
 End Sub
-
