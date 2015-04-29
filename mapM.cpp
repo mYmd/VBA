@@ -414,14 +414,11 @@ namespace   {
                     }
                     else
                     {
-                        VARIANT elem, tmp;
+                        VARIANT elem;
                         ::VariantInit(&elem);
-                        ::VariantInit(&tmp);
                         ::SafeArrayGetElement(pArray, sourceIndex, &elem);
-                        if ( left )     ::VariantCopy(&tmp, bfun.eval(&result, &elem));
-                        else            ::VariantCopy(&tmp, bfun.eval(&elem, &result));
-                        ::VariantClear(&result);
-                        result = tmp;               //result = std::move(tmp)と同じ
+                        if ( left )     ::VariantCopy(&result, bfun.eval(&result, &elem));
+                        else            ::VariantCopy(&result, bfun.eval(&elem, &result));
                         ::VariantClear(&elem);
                     }
                 }
@@ -500,14 +497,11 @@ namespace   {
                     else
                     {
                         first_time = false;
-                        VARIANT elem, tmp;
+                        VARIANT elem;
                         ::VariantInit(&elem);
-                        ::VariantInit(&tmp);
                         ::SafeArrayGetElement(pArray, sourceIndex, &elem);
-                        if ( left )     ::VariantCopy(&tmp, bfun.eval(&result, &elem));
-                        else            ::VariantCopy(&tmp, bfun.eval(&elem, &result));
-                        ::VariantClear(&result);
-                        result = tmp;               //result = std::move(tmp)と同じ
+                        if ( left )     ::VariantCopy(&result, bfun.eval(&result, &elem));
+                        else            ::VariantCopy(&result, bfun.eval(&elem, &result));
                         ::VariantClear(&elem);
                     }
                     LONG targetIndex[3] = { index[0], index[1], index[2] };
@@ -534,38 +528,35 @@ namespace   {
                             bool            scan    ,
                             __int32         stopCondition)
     {
+        VARIANT zero, check;
         ::VariantClear(&ret);
-        VARIANT zero, check, current;
         ::VariantInit(&zero);
         ::VariantInit(&check);
-        ::VariantInit(&current);
-        ::VariantCopy(&current, init);
-        __int32 i = 0;
+        ::VariantCopy(&ret, init);
         std::list<VARIANT> vlist;
-        while ( maxN < 0 || i <= maxN )
+        if ( scan )
         {
-            ::VariantChangeType(&check, pred.eval(&current, &current), 0, VT_I4);
+            vlist.push_back(zero);
+            ::VariantCopy(&vlist.back(), &ret);
+        }
+        __int32 count = 0;
+        while ( maxN < 0 || count < maxN )
+        {
+            ::VariantChangeType(&check, pred.eval(&ret, &ret), 0, VT_I4);
             if ( stopCheck(check.lVal, stopCondition) )
             {
-                ::VariantClear(&current);
                 ::VariantClear(&check);
                 break;
             }
+            VARIANT*  v = trans.eval(&ret, &ret);
+            ::VariantCopy(&ret, v);
             if ( scan )
             {
                 vlist.push_back(zero);
-                ::VariantCopy(&vlist.back(), &current);
+                ::VariantCopy(&vlist.back(), &ret);
             }
-            else
-            {
-                ::VariantClear(&ret);
-                ::VariantCopy(&ret, &current);
-            }
-            VARIANT*  v = trans.eval(&current, &current);
-            ::VariantClear(&current);
-            ::VariantCopy(&current, v);
             ::VariantClear(&check);
-            ++i;
+            ++count;
         }
         if ( scan && 0 < vlist.size() )
         {
@@ -577,10 +568,11 @@ namespace   {
                 ::SafeArrayPutElement(retArray, &index, &*it);
                 ::VariantClear(&*it);
             }
+            ::VariantClear(&ret);
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = retArray;
         }
-        return i;
+        return count;
     }
 
 }   // namespace
