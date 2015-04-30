@@ -22,8 +22,8 @@ Option Explicit
 '   Function scanl_Funs         関数合成（scanl）
 '   Function foldr_Funs         関数合成（foldr）
 '   Function scanr_Funs         関数合成（scanr）
-'   Function applyFun2by2
-'   Function setParam2by2
+'   Function applyFun2by2       ((x, y), (f1, f2, ...)) -> Array(f1(x, y), f2(x, y), ...)
+'   Function setParam2by2       ((f1, f2, ...), (x, y)) -> Array(f1(x, y), f2(x, y), ...)
 '   Function count_if           配列の各要素で述語による評価結果がゼロでないものの数
 '   Function find_pred          1次元配列から条件に合致するものを検索
 '   Function repeat_while       述語による条件が満たされる間繰り返し関数適用
@@ -172,18 +172,27 @@ End Function
         p_scanr_Funs = make_funPointer(AddressOf scanr_Funs, firstParam, secondParam)
     End Function
 
-'((x, y), (f1, f2))  に対して  Array(f1(x, y), f2(x, y))     を返す
+'((x, y), f)  に対して  f(x, y)     を返す
+'((x, y), (f1, f2, ...))  に対して  Array(f1(x, y), f2(x, y), ...)     を返す
 Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Variant
-    applyFun2by2 = VBA.Array( _
-          unbind_invoke(funcs(LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
-        , unbind_invoke(funcs(1 + LBound(funcs)), params(LBound(params)), params(1 + LBound(params))) _
-                     )
+    Dim ret As Variant, z As Variant, k As Long: k = 0
+    If is_bindFun(funcs) Then
+         applyFun2by2 = unbind_invoke(funcs, params(LBound(params)), params(1 + LBound(params)))
+    Else
+        ReDim ret(0 To sizeof(funcs) - 1)
+        For Each z In funcs
+            ret(k) = unbind_invoke(z, params(LBound(params)), params(1 + LBound(params)))
+            k = k + 1
+        Next z
+        applyFun2by2 = ret
+    End If
 End Function
     Function p_applyFun2by2(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_applyFun2by2 = make_funPointer(AddressOf applyFun2by2, firstParam, secondParam)
     End Function
 
-'((f1, f2), (x, y))  に対して  Array(f1(x, y), f2(x, y))     を返す
+'(f, (x, y))  に対して  f(x, y)     を返す
+'((f1, f2, ...), (x, y))  に対して  Array(f1(x, y), f2(x, y), ...)     を返す
 Function setParam2by2(ByRef funcs As Variant, ByRef params As Variant) As Variant
     setParam2by2 = applyFun2by2(params, funcs)
 End Function
