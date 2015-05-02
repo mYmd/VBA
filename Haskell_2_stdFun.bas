@@ -272,10 +272,14 @@ End Function
     Function p_lcm(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_lcm = make_funPointer(AddressOf lcm, firstParam, secondParam)
     End Function
-    
+
 '述語 equal
 Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
-    equal = IIf(a = b, 1, 0)
+    If IsNull(a) Or IsNull(b) Then
+        equal = IIf(IsNull(a) = IsNull(b), 1, 0)
+    Else
+        equal = IIf(a = b, 1, 0)
+    End If
 End Function
     Function p_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_equal = make_funPointer(AddressOf equal, firstParam, secondParam)
@@ -283,7 +287,7 @@ End Function
 
 '述語 not equal
 Function notEqual(ByRef a As Variant, ByRef b As Variant) As Variant
-    notEqual = IIf(a = b, 0, 1)
+    notEqual = IIf(equal(a, b), 0, 1)
 End Function
     Function p_notEqual(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
        p_notEqual = make_funPointer(AddressOf notEqual, firstParam, secondParam)
