@@ -296,3 +296,81 @@ Sub sortTest()
         printM z
     Next z
 End Sub
+
+'========木構造のテスト======================
+Function makeNode(ByRef key As Variant, ByRef val As Variant, Optional ByRef comp As Variant) As Variant
+    Dim ret As Variant:     ReDim ret(0 To 4)
+    ret(0) = key
+    ret(1) = val
+    ret(2) = Empty  'Left
+    ret(3) = Empty  'Right
+    ret(4) = IIf(IsMissing(comp), Empty, comp)
+    makeNode = ret
+End Function
+
+    Private Function less_with(ByRef a As Variant, ByRef b As Variant, ByRef comp As Variant) As Boolean
+        If IsEmpty(comp) Then
+            less_with = (a < b)
+        Else
+            less_with = 0 <> unbind_invoke(comp, a, b)
+        End If
+    End Function
+
+Function insertNode(ByRef node As Variant, ByRef tree As Variant) As Variant
+    If IsEmpty(tree) Then
+        insertNode = makeNode(node(0), node(1), node(4))
+    Else
+        If less_with(node(0), tree(0), node(4)) Then
+            tree(2) = moveVariant(insertNode(node, tree(2)))
+        ElseIf less_with(tree(0), node(0), node(4)) Then
+            tree(3) = moveVariant(insertNode(node, tree(3)))
+        Else
+            tree(1) = node(1)
+        End If
+        insertNode = moveVariant(tree)
+    End If
+End Function
+    Function p_insertNode(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_insertNode = make_funPointer(AddressOf insertNode, firstParam, secondParam)
+    End Function
+
+Function getNode(ByRef key As Variant, ByRef tree As Variant) As Variant
+    If IsEmpty(tree) Then
+        getNode = Empty
+    Else
+        If less_with(key, tree(0), tree(4)) Then
+            getNode = getNode(key, tree(2))
+        ElseIf less_with(tree(0), key, tree(4)) Then
+            getNode = getNode(key, tree(3))
+        Else
+            getNode = tree(1)
+        End If
+    End If
+End Function
+
+'型がバラバラで配列も含む木構造のテスト
+Sub treeTest()
+    Dim nodes As Variant, tree As Variant
+    Debug.Print "型がバラバラで配列も含むキーによる木構造のテスト"
+    '===============ノードの集合===============
+    nodes = Array(makeNode(75676786, "A", p_comp000) _
+                , makeNode("abc", "B", p_comp000) _
+                , makeNode(iota(1, 8), "C", p_comp000) _
+                , makeNode("鳥小屋", "D", p_comp000) _
+                , makeNode(6, "E", p_comp000) _
+                , makeNode(makeM(2, 2, iota(1, 4)), "F", p_comp000) _
+                , makeNode(300, "G", p_comp000) _
+                , makeNode(iota(1, 15), "H", p_comp000) _
+                , makeNode("犬小屋", "I", p_comp000) _
+                , makeNode(makeM(2, 3, iota(1, 6)), "J", p_comp000) _
+              )
+    '===============畳み込みによる木の構築===============
+    tree = foldr(p_insertNode, Empty, nodes)
+    '===============キーの選択===============
+    Debug.Print """abc"" => ";
+    printM getNode("abc", tree)
+    Debug.Print """犬小屋"" => ";
+    printM getNode("犬小屋", tree)
+    Debug.Print "iota(1, 8) => ";
+    printM getNode(iota(1, 8), tree)
+End Sub
