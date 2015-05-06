@@ -122,7 +122,7 @@ Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
     If IsNull(func) Or IsEmpty(func) Then
         applyFun = param
     Else
-        applyFun = bind_invoke(func, param)
+        applyFun = unbind_invoke(func, param, param)
     End If
 End Function
     Function p_applyFun(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
