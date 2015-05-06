@@ -45,7 +45,6 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 	placeholder = placeholder  
 	is_placeholder = is_placeholder  
 	unbind_invoke = unbind_invoke  
-	bind_invoke = bind_invoke  
 	mapF_imple = mapF_imple  
 	zipWith = zipWith  
 	foldl = foldl  
@@ -59,6 +58,7 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 	stdsort = stdsort  
 	find_imple = find_imple  
 	repeat_imple = repeat_imple  
+	moveVariant = moveVariant  
 
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
@@ -75,6 +75,10 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/5/6  
+bind_invokeの廃止とmoveVariantの追加  
+テストモジュールに木構造のテストを追加  
+
 2015/4/26  
 functionExprオブジェクトの構築過程をリファクタリング  
 API関数にrepeat_impleを追加  
