@@ -9,7 +9,6 @@ Option Explicit
 '   Function placeholder        プレースホルダ・オブジェクトの生成
 '   Function is_placeholder     プレースホルダ・オブジェクト判定
 '   Function unbind_invoke      bindされていないVBA関数を2引数で呼び出す
-'   Function bind_invoke        bindされたVBA関数を1引数で呼び出す
 '   Function mapF_imple         配列matrixの各要素elemにCallback関数を適用する
 '   Function zipWith            2つの配列の各要素に関数を適用する
 '   Function foldl              配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
@@ -23,6 +22,7 @@ Option Explicit
 '   Function stdsort            1次元配列のソートインデックス出力
 '   Function find_imple         述語による検索
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
+'   Function moveVariant        sourceのVARIANT変数をtargetのVARIANTへmoveする
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -43,11 +43,6 @@ Declare Function unbind_invoke Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef param1 As Variant, _
         ByRef param2 As Variant) As Variant
-
-'bindされたVBA関数を1引数で呼び出す
-Declare Function bind_invoke Lib "mapM.dll" ( _
-                ByRef pCallback As Variant, _
-            ByRef param As Variant) As Variant
 
 ' 配列matrixの各要素elemにCallback関数を適用する
 Declare Function mapF_imple Lib "mapM.dll" ( _
@@ -131,3 +126,6 @@ Declare Function repeat_imple Lib "mapM.dll" ( _
             ByVal maxN As Long, _
         ByVal scan As Long, _
     ByVal stopCondition As Long) As Variant
+
+'sourceのVARIANT変数をtargetのVARIANTへmoveする
+Declare Function moveVariant Lib "mapM.dll" (ByRef source As Variant) As Variant
