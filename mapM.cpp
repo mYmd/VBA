@@ -51,11 +51,14 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
     return ret;
 }
 
-//bindされたVBA関数を1引数で呼び出す
-VARIANT  __stdcall
-bind_invoke(VARIANT* bfun, VARIANT* param)
+//sourceのVARIANT変数をtargetのVARIANTへmoveする
+VARIANT __stdcall
+moveVariant(VARIANT* source)
 {
-    return unbind_invoke(bfun, param, param);
+    VARIANT target;
+    ::VariantInit(&target);
+    std::swap(target, *source);
+    return target;
 }
 
 ////************************************************************************************
