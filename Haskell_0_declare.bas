@@ -22,7 +22,7 @@ Option Explicit
 '   Function stdsort            1次元配列のソートインデックス出力
 '   Function find_imple         述語による検索
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
-'   Function moveVariant        sourceのVARIANT変数をtargetのVARIANTへmoveする
+'   Function moveVariant        sourceのVARIANT変数を返り値のVARIANTへmoveする
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -127,5 +127,5 @@ Declare Function repeat_imple Lib "mapM.dll" ( _
         ByVal scan As Long, _
     ByVal stopCondition As Long) As Variant
 
-'sourceのVARIANT変数をtargetのVARIANTへmoveする
+'sourceのVARIANT変数を返り値のVARIANTへmoveする
 Declare Function moveVariant Lib "mapM.dll" (ByRef source As Variant) As Variant
