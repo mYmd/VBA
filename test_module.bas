@@ -321,9 +321,9 @@ Function insertNode(ByRef node As Variant, ByRef tree As Variant) As Variant
         insertNode = makeNode(node(0), node(1), node(4))
     Else
         If less_with(node(0), tree(0), node(4)) Then
-            tree(2) = moveVariant(insertNode(node, tree(2)))
+            tree(2) = insertNode(node, tree(2))
         ElseIf less_with(tree(0), node(0), node(4)) Then
-            tree(3) = moveVariant(insertNode(node, tree(3)))
+            tree(3) = insertNode(node, tree(3))
         Else
             tree(1) = node(1)
         End If
