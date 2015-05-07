@@ -90,7 +90,7 @@ Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
     If N < 1 Then repeat = VBA.Array(): Exit Function
     ReDim ret(0 To N - 1)
     For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
-    repeat = ret
+    repeat = moveVariant(ret)
 End Function
 
 'from_iからto_iまでの自然数を並べたベクトルを返す
@@ -105,7 +105,7 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
         ret(k) = i
         k = k + 1
     Next i
-    iota = ret
+    iota = moveVariant(ret)
 End Function
 
 'ベクトルの最初のN個
@@ -123,7 +123,7 @@ Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
         For i = 0 To N - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
-        headN = ret
+        headN = moveVariant(ret)
     End If
 End Function
     Public Function p_headN(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -145,7 +145,7 @@ Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
         For i = 0 To N - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
-        tailN = ret
+        tailN = moveVariant(ret)
     End If
 End Function
     Public Function p_tailN(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -171,7 +171,7 @@ Public Function vector(data As Variant) As Variant
                 counter = counter + 1
             Next j
         Next i
-        vector = ret
+        vector = moveVariant(ret)
     End Select
 End Function
 
@@ -191,7 +191,7 @@ Public Function reverse(ByRef data As Variant) As Variant
             j = j - 1
         Loop
     End If
-    reverse = ret
+    reverse = moveVariant(ret)
 End Function
 
 '特定行の取得
@@ -206,7 +206,7 @@ Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
         For j = LBound(data, 2) To UBound(data, 2) Step 1
             ret(j) = data(i, j)
         Next j
-        selectRow = ret
+        selectRow = moveVariant(ret)
     End If
 End Function
     Public Function p_selectRow(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -225,7 +225,7 @@ Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
         For i = LBound(data, 1) To UBound(data, 1) Step 1
             ret(i) = data(i, j)
         Next i
-        selectCol = ret
+        selectCol = moveVariant(ret)
     End If
 End Function
     Public Function p_selectCol(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -242,7 +242,7 @@ Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByR
         If 0 < r And 0 < c Then ReDim ret(0 To r - 1, 0 To c - 1)
     End If
     If IsMissing(data) = False Then Call fillM(ret, data)
-    makeM = ret
+    makeM = moveVariant(ret)
 End Function
 
 '配列をデータで埋める
@@ -380,7 +380,7 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
             counterR = counterR + 1
         Next i
     End Select
-    subM = ret
+    subM = moveVariant(ret)
 End Function
 
 'ベクトル・配列の（行の）フィルタリング
@@ -445,7 +445,7 @@ Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
             ret(counter) = v2(i)
             counter = counter + 1
         Next i
-        catV = ret
+        catV = moveVariant(ret)
     ElseIf Dimension(v1) <> 1 And Dimension(v2) = 1 Then
         catV = catV(vector(v1), v2)
     ElseIf Dimension(v1) = 1 And Dimension(v2) <> 1 Then
@@ -483,7 +483,7 @@ Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
             Call fillRow_imple(ret, counter, matrix2, i)
             counter = counter + 1
         Next i
-        catR = ret
+        catR = moveVariant(ret)
     End If
 End Function
 
@@ -507,7 +507,7 @@ Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
             Call fillCol_imple(ret, counter, matrix2, i)
             counter = counter + 1
         Next i
-        catC = ret
+        catC = moveVariant(ret)
     End If
 End Function
 
@@ -536,7 +536,7 @@ Function transpose(ByRef matrix As Variant) As Variant
                 ret(i, j) = matrix(j + r, i + c)
             Next j
         Next i
-        transpose = ret
+        transpose = moveVariant(ret)
     Case Else
         transpose = VBA.Array()
     End Select
@@ -564,7 +564,7 @@ Function zipR(ByRef m As Variant) As Variant
     For i = LBound(ret) To UBound(ret) Step 1
         ret(i) = selectCol(m, i)
     Next i
-    zipR = ret
+    zipR = moveVariant(ret)
 End Function
 
 '２次元配列の各列ベクトルをzip
@@ -576,7 +576,7 @@ Function zipC(ByRef m As Variant) As Variant
     For i = LBound(ret) To UBound(ret) Step 1
         ret(i) = selectRow(m, i)
     Next i
-    zipC = ret
+    zipC = moveVariant(ret)
 End Function
 
 'zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
@@ -599,7 +599,7 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
                 If j <= UBound(vec(i)) Then z(counter) = vec(i)(j)
                 counter = counter + 1
             Next i
-            ret(j) = z
+            ret(j) = moveVariant(z)
         Next j
     Else
         ReDim ret(0 To sizeof(vec) - 1, 0 To colLen - 1)
@@ -609,7 +609,7 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
             counter = counter + 1
         Next i
     End If
-    unzip = ret
+    unzip = moveVariant(ret)
 End Function
 
 ' Array(a, b)作成
@@ -637,5 +637,5 @@ Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRe
             k = k + 1
         Next z
     End If
-    product_set = ret
+    product_set = moveVariant(ret)
 End Function
