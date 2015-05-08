@@ -57,4 +57,4 @@ public:
     VARIANT* eval(VARIANT*, VARIANT*);
 };
 
-using VBCallbackFunc = functionExpr::VBCallbackFunc_;
+typedef functionExpr::VBCallbackFunc_   VBCallbackFunc;
