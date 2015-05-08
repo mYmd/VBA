@@ -152,10 +152,6 @@ functionExpr::~functionExpr()
 VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y)
 {
     ::VariantClear(&val);
-    if ( fun )
-    {
-        VARIANT tmp = fun(left->eval(x, x), right->eval(y, y));
-        ::VariantCopy(&val, &tmp);
-    }
+    if ( fun )      val = fun(left->eval(x, x), right->eval(y, y));
     return &val;
 }
