@@ -46,7 +46,7 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
     if ( pf )
     {
         functionExpr func(pf);
-        ::VariantCopy(&ret, func.eval(param1, param2));
+        std::swap(ret, *func.eval(param1, param2));
     }
     return ret;
 }
@@ -395,11 +395,12 @@ namespace   {
             for ( index[j] = 0; index[j] < static_cast<LONG>(bounds[j].cElements); ++index[j] )
             {
                 VARIANT result;
-                ::VariantInit(&result);
+                VARIANT* presult = &result;
+                ::VariantInit(presult);
                 bool first_time = true;
                 if ( init )
                 {
-                    ::VariantCopy(&result, init);
+                    ::VariantCopy(presult, init);
                     first_time = false;
                 }
                 for (   index[axis] = left? 0: static_cast<LONG>(bounds[axis].cElements) - 1;
@@ -412,7 +413,7 @@ namespace   {
                                             index[2] + bounds[2].lLbound    };
                     if ( first_time )
                     {
-                        ::SafeArrayGetElement(pArray, sourceIndex, &result);
+                        ::SafeArrayGetElement(pArray, sourceIndex, presult);
                         first_time = false;
                     }
                     else
@@ -420,19 +421,19 @@ namespace   {
                         VARIANT elem;
                         ::VariantInit(&elem);
                         ::SafeArrayGetElement(pArray, sourceIndex, &elem);
-                        if ( left )     ::VariantCopy(&result, bfun.eval(&result, &elem));
-                        else            ::VariantCopy(&result, bfun.eval(&elem, &result));
+                        if ( left )     presult = bfun.eval(presult, &elem);
+                        else            presult = bfun.eval(&elem, presult);
                         ::VariantClear(&elem);
                     }
                 }
                 if ( 1 == dim )
                 {
-                    ::VariantCopy(&ret, &result);
+                    ::VariantCopy(&ret, presult);
                 }
                 else
                 {
                     LONG targetIndex[2] = { index[i], index[j] };
-                    ::SafeArrayPutElement(retArray, targetIndex, &result);
+                    ::SafeArrayPutElement(retArray, targetIndex, presult);
                 }
                 ::VariantClear(&result);
             }
@@ -474,14 +475,15 @@ namespace   {
             for ( index[j] = 0; index[j] < static_cast<LONG>(bounds[j].cElements); ++index[j] )
             {
                 VARIANT result;
-                ::VariantInit(&result);
+                VARIANT* presult = &result;
+                ::VariantInit(presult);
                 bool first_time = true;
                 if ( init )
                 {
-                    ::VariantCopy(&result, init);
+                    ::VariantCopy(presult, init);
                     LONG targetIndex[3] = { index[0], index[1], index[2] };
                     targetIndex[axis] = left? 0: static_cast<LONG>(bounds[axis].cElements);
-                    ::SafeArrayPutElement(retArray, targetIndex, &result);
+                    ::SafeArrayPutElement(retArray, targetIndex, presult);
                     first_time = false;
                 }
                 for (   index[axis] = left? 0: static_cast<LONG>(bounds[axis].cElements) - 1;
@@ -494,7 +496,7 @@ namespace   {
                                             index[2] + bounds[2].lLbound    };
                     if ( first_time )
                     {
-                        ::SafeArrayGetElement(pArray, sourceIndex, &result);
+                        ::SafeArrayGetElement(pArray, sourceIndex, presult);
                         first_time = false;
                     }
                     else
@@ -503,13 +505,13 @@ namespace   {
                         VARIANT elem;
                         ::VariantInit(&elem);
                         ::SafeArrayGetElement(pArray, sourceIndex, &elem);
-                        if ( left )     ::VariantCopy(&result, bfun.eval(&result, &elem));
-                        else            ::VariantCopy(&result, bfun.eval(&elem, &result));
+                        if ( left )     presult = bfun.eval(presult, &elem);
+                        else            presult = bfun.eval(&elem, presult);
                         ::VariantClear(&elem);
                     }
                     LONG targetIndex[3] = { index[0], index[1], index[2] };
                     if ( init && left )     targetIndex[axis] += 1;
-                    ::SafeArrayPutElement(retArray, targetIndex, &result);
+                    ::SafeArrayPutElement(retArray, targetIndex, presult);
                 }
                 ::VariantClear(&result);
             }
@@ -536,27 +538,27 @@ namespace   {
         ::VariantInit(&zero);
         ::VariantInit(&check);
         ::VariantCopy(&ret, init);
+        VARIANT* pret = &ret;
         std::list<VARIANT> vlist;
         if ( scan )
         {
             vlist.push_back(zero);
-            ::VariantCopy(&vlist.back(), &ret);
+            ::VariantCopy(&vlist.back(), pret);
         }
         __int32 count = 0;
         while ( maxN < 0 || count < maxN )
         {
-            ::VariantChangeType(&check, pred.eval(&ret, &ret), 0, VT_I4);
+            ::VariantChangeType(&check, pred.eval(pret, pret), 0, VT_I4);
             if ( stopCheck(check.lVal, stopCondition) )
             {
                 ::VariantClear(&check);
                 break;
             }
-            VARIANT*  v = trans.eval(&ret, &ret);
-            ::VariantCopy(&ret, v);
+            pret = trans.eval(pret, pret);
             if ( scan )
             {
                 vlist.push_back(zero);
-                ::VariantCopy(&vlist.back(), &ret);
+                ::VariantCopy(&vlist.back(), pret);
             }
             ::VariantClear(&check);
             ++count;
@@ -574,6 +576,10 @@ namespace   {
             ::VariantClear(&ret);
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = retArray;
+        }
+        else
+        {
+            ::VariantCopy(&ret, pret);
         }
         return count;
     }
