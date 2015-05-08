@@ -7,8 +7,10 @@ Option Explicit
 '   要素アクセス
 ' Function firstArg           1番目の引数
 ' Function secondArg          2番目の引数
-' Function getNth             N番目の配列要素
-'*********  ***********************************************************
+' Function getNth             N番目の配列要素取得
+' Sub      setNth             N番目の配列要素設定
+' Function setNth_move        N番目の配列要素設定
+'********************************************************************
 '1番目の引数
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
     firstArg = a
@@ -25,12 +27,25 @@ End Function
         p_secondArg = make_funPointer(AddressOf secondArg, firstParam, secondParam)
     End Function
 
-'N番目の配列要素
+'N番目の配列要素取得
 Function getNth(ByRef index As Variant, ByRef matrix As Variant) As Variant
     getNth = matrix(index)
 End Function
     Function p_getNth(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
+    End Function
+
+'N番目の配列要素設定  (index, value)
+Sub setNth(ByRef index_value As Variant, ByRef matrix As Variant)
+    matrix(index_value(LBound(index_value))) = index_value(1 + LBound(index_value))
+End Sub
+
+Function setNth_move(ByRef index_value As Variant, ByRef matrix As Variant) As Variant
+    Call setNth(index_value, matrix)
+    setNth_move = moveVariant(matrix)
+End Function
+    Function p_setNth_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_setNth_move = make_funPointer(AddressOf setNth_move, firstParam, secondParam)
     End Function
 
 '********************************************************************
@@ -272,7 +287,7 @@ End Function
     Function p_lcm(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_lcm = make_funPointer(AddressOf lcm, firstParam, secondParam)
     End Function
-
+    
 '述語 equal
 Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
     If IsNull(a) Or IsNull(b) Then
