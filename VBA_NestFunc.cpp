@@ -1,4 +1,4 @@
-//VBA_NetFunc.cpp
+//VBA_NestFunc.cpp
 //Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
 #include "OAIdl.h"      //wtypes.h
