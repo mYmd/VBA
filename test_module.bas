@@ -206,7 +206,7 @@ Sub vbaUnit()
     printM unzip(m, 2)
 
     Debug.Print "------- ソート ------------"
-    m = mapF(p_getCLng, mapF(p_rnd(, 30), repeat(10, 30)))
+    m = mapF(p_getCLng(p_rnd(, 30)), repeat(10, 30))
     Debug.Print "ソート前"
     printM m
     Debug.Print "昇順ソート"
