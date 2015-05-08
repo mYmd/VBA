@@ -1,4 +1,4 @@
-//VBA_NetFunc.hpp
+//VBA_NestFunc.hpp
 //Copyright (c) 2015 mmYYmmdd
 
 #include <memory>
