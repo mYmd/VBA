@@ -151,7 +151,11 @@ functionExpr::~functionExpr()
 
 VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y)
 {
-    ::VariantClear(&val);
-    if ( fun )      val = fun(left->eval(x, x), right->eval(y, y));
+    if ( fun )
+    {
+        VARIANT tmp = fun(left->eval(x, x), right->eval(y, y));
+        ::VariantClear(&val);
+        std::swap(val, tmp);
+    }
     return &val;
 }
