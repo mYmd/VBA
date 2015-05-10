@@ -2,13 +2,15 @@ Attribute VB_Name = "test_module"
 'test_module
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
+
+Declare Function GetTickCount Lib "Kernel32.dll" () As Long
+
 '=======================================
 '   テスト用関数 vbaUnit
 '=======================================
 
 '2点間の距離
 Function distance(ByRef x As Variant, ByRef y As Variant) As Variant
-    'distance = foldr1(p_plus, mapF(p_poly(, Array(1, 0, 0)), zipWith(p_minus, x, y))) ^ 0.5
     distance = foldr1(p_plus, mapF(p_mult, zipWith(p_minus, x, y))) ^ 0.5
 End Function
     Function p_distance(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -97,7 +99,7 @@ End Function
         p_isPrime = make_funPointer(AddressOf isPrime, firstParam, secondParam)
     End Function
 
-'ニュートン法による求根の１ステップ　(x1, f(x)) から (x2, f(x2)) を出力する
+'ニュートン法による求根の１ステップ　：　(x1, f(x)) から (x2, f(x2)) を出力する
 '第１引数 ：　(x1, f(x))   第２引数 (f, df/dx)
 Function Newton_Raphson(ByRef xy As Variant, ByRef fdf As Variant) As Variant
     Dim x2 As Double
@@ -166,10 +168,10 @@ Sub vbaUnit()
     Debug.Print foldr(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- 円周率を確率的に求める（2通り） ------------"
-    N = 10000
+    N = 9999
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
     printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)
-    printM Array("π≒", 4 * repeat_while(0, p_equal(0, 0), p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
+    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
@@ -184,8 +186,8 @@ Sub vbaUnit()
     printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
     printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
     printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_equal(0, 0), p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_equal(0, 0), p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
     
     Debug.Print "------- FizzBuzz ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
@@ -305,8 +307,15 @@ Function makeNode(ByRef key As Variant, ByRef val As Variant, Optional ByRef com
     ret(2) = Empty  'Left
     ret(3) = Empty  'Right
     ret(4) = IIf(IsMissing(comp), Empty, comp)
-    makeNode = ret
+    makeNode = moveVariant(ret)
 End Function
+
+Function makeNode0(ByRef key As Variant, ByRef val As Variant) As Variant
+    makeNode0 = makeNode(key, val)
+End Function
+    Function p_makeNode0(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_makeNode0 = make_funPointer(AddressOf makeNode0, firstParam, secondParam)
+    End Function
 
     Private Function less_with(ByRef a As Variant, ByRef b As Variant, ByRef comp As Variant) As Boolean
         If IsEmpty(comp) Then
@@ -347,11 +356,15 @@ Function getNode(ByRef key As Variant, ByRef tree As Variant) As Variant
         End If
     End If
 End Function
+    Function p_getNode(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_getNode = make_funPointer(AddressOf getNode, firstParam, secondParam)
+    End Function
 
-'型がバラバラで配列も含む木構造のテスト
+'型がバラバラで配列も含む木構造のテスト (速度的に実用性は無し)
 Sub treeTest()
-    Dim nodes As Variant, tree As Variant
-    Debug.Print "型がバラバラで配列も含むキーによる木構造のテスト"
+    Dim nodes As Variant, tree As Variant, N As Long, t As Long
+    Dim Dic As Variant, i As Long
+    Debug.Print "==== 型がバラバラで配列も含むキーによる木構造のテスト ===="
     '===============ノードの集合===============
     nodes = Array(makeNode(75676786, "A", p_comp000) _
                 , makeNode("abc", "B", p_comp000) _
@@ -373,4 +386,23 @@ Sub treeTest()
     printM getNode("犬小屋", tree)
     Debug.Print "iota(1, 8) => ";
     printM getNode(iota(1, 8), tree)
+    '==========================================================
+    N = 1000
+    Debug.Print "==== 0～" & N & " ランダム整数キー ===="
+    nodes = zipWith(p_makeNode0, mapF(p_getCLng(p_rnd(0)), repeat(N, N)), iota(1, N))
+    t = GetTickCount
+    tree = foldr(p_insertNode, Empty, nodes)
+    Debug.Print GetTickCount - t & "ms"
+    printM mapF(p_getNode(, tree), iota(0, 10))
+    
+    Set Dic = CreateObject("Scripting.Dictionary")
+    t = GetTickCount
+    For i = UBound(nodes) To LBound(nodes) Step -1
+        Dic.Item(nodes(i)(0)) = nodes(i)(1)
+    Next i
+    Debug.Print GetTickCount - t & "ms  " & Dic.count & "_Items"
+    For i = 0 To 10 Step 1
+        Debug.Print Dic.Item(i);
+    Next i
+    Set Dic = Nothing
 End Sub
