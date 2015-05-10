@@ -50,6 +50,9 @@ End Function
 
 '********************************************************************
 '     ファンクタ等
+'   Function p_constant     定数関数
+'   Function p_true         定数関数(true)
+'   Function p_false        定数関数(false)
 ' * Function if_else        if else 選択
 '   Function replaceNull    Nullを他の値に置換する
 '   Function replaceEmpty   Emptyを他の値に置換する
@@ -61,8 +64,8 @@ End Function
 '   Function mult           乗算
 '   Function divide         除算
 '   Function poly           多項式
-'   Function min            min
-'   Function max            max
+'   Function min_fun        min
+'   Function max_fun        max
 '   Function getCLng        CLng（整数化）
 '   Function str_len        Len
 '   Function str_left       Left
@@ -77,6 +80,21 @@ End Function
 '   Function greater        述語 greater
 '   Function greater_equal  述語 greater_equal
 '********************************************************************
+
+'定数関数
+Function p_constant(ByRef x As Variant) As Variant
+    p_constant = p_firstArg(x, 0)
+End Function
+
+'定数関数(true)
+Function p_true() As Variant
+    p_true = p_constant(1&)
+End Function
+
+'定数関数(false)
+Function p_false() As Variant
+    p_false = p_constant(0&)
+End Function
 
 '選択   if_else(値, [判定値(関数), 真の時の変換値(関数), 偽の時の変換値(関数)])
 Function if_else(ByRef val As Variant, ByRef trans As Variant) As Variant
@@ -211,19 +229,19 @@ End Function
     End Function
 
 'min
-Function min(ByRef a As Variant, ByRef b As Variant) As Variant
-    min = IIf(a < b, a, b)
+Function min_fun(ByRef a As Variant, ByRef b As Variant) As Variant
+    min_fun = IIf(a < b, a, b)
 End Function
     Function p_min(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_min = make_funPointer(AddressOf min, firstParam, secondParam)
+        p_min = make_funPointer(AddressOf min_fun, firstParam, secondParam)
     End Function
 
 'max
-Function max(ByRef a As Variant, ByRef b As Variant) As Variant
-    max = IIf(a < b, b, a)
+Function max_fun(ByRef a As Variant, ByRef b As Variant) As Variant
+    max_fun = IIf(a < b, b, a)
 End Function
     Function p_max(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_max = make_funPointer(AddressOf max, firstParam, secondParam)
+        p_max = make_funPointer(AddressOf max_fun, firstParam, secondParam)
     End Function
     
 'CLng
@@ -339,5 +357,3 @@ End Function
     Function p_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_greater_equal = make_funPointer(AddressOf greater_equal, firstParam, secondParam)
     End Function
-
-
