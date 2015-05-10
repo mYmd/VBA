@@ -389,7 +389,7 @@ Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim indice As Variant, localFlag As Variant
     Dim i As Long, counter As Long, z As Variant
     
-    localFlag = headN(flg, min(sizeof(flg), rowSize(data)))
+    localFlag = headN(flg, min_fun(sizeof(flg), rowSize(data)))
     indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
     i = 0
     counter = 0
@@ -412,7 +412,7 @@ Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim indice As Variant, localFlag As Variant
     Dim i As Long, counter As Long, z As Variant
     
-    localFlag = headN(flg, min(sizeof(flg), colSize(data)))
+    localFlag = headN(flg, min_fun(sizeof(flg), colSize(data)))
     indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
     i = 0
     counter = 0
