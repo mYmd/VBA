@@ -67,6 +67,7 @@ End Function
 '   Function min_fun        min
 '   Function max_fun        max
 '   Function getCLng        CLng（整数化）
+'   Function cStr_fun       CStr（文字列化）
 '   Function str_len        Len
 '   Function str_left       Left
 '   Function str_right      Right
@@ -245,15 +246,23 @@ End Function
     End Function
     
 'CLng
-Function getCLng(ByRef a As Variant, ByRef dummy As Variant) As Variant
+Function getCLng(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
     getCLng = CLng(a)
 End Function
     Function p_getCLng(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_getCLng = make_funPointer(AddressOf getCLng, firstParam, secondParam)
     End Function
-    
+
+'CStr
+Function cStr_fun(ByRef v As Variant, Optional ByRef dummy As Variant) As Variant
+    cStr_fun = CStr(v)
+End Function
+    Function p_cStr(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_cStr = make_funPointer(AddressOf cStr_fun, firstParam, secondParam)
+    End Function
+
 'Len
-Function str_len(ByRef st As Variant, ByRef dummy As Variant) As Variant
+Function str_len(ByRef st As Variant, Optional ByRef dummy As Variant) As Variant
     str_len = Len(st)
 End Function
     Function p_len(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
