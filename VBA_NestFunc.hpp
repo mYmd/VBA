@@ -7,7 +7,7 @@
 __int32 __stdcall   Dimension(const VARIANT* pv);
 
 //プレースホルダの生成
-VARIANT __stdcall   placeholder();
+VARIANT __stdcall   placeholder(__int32);
 
 //プレースホルダの判定
 __int32 __stdcall   is_placeholder(const VARIANT* pv);
@@ -25,7 +25,7 @@ void    safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[]);
 class funcExpr_i    {
 public:
     virtual ~funcExpr_i();
-    virtual VARIANT* eval(VARIANT*, VARIANT*) = 0;
+    virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) = 0;
 };
 
 //--------------------------------------------------------
@@ -54,7 +54,7 @@ public:
     //---------------------------------
     functionExpr(VBCallbackFunc_&);
     ~functionExpr();
-    VARIANT* eval(VARIANT*, VARIANT*);
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0);
 };
 
 typedef functionExpr::VBCallbackFunc_   VBCallbackFunc;
