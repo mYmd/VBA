@@ -132,7 +132,7 @@ End Function
 
 'テスト関数
 Sub vbaUnit()
-    Dim N As Long
+    Dim n As Long
     Dim Points As Variant, m As Variant, z As Variant, pred As Variant
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
@@ -168,26 +168,26 @@ Sub vbaUnit()
     Debug.Print foldr(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- 円周率を確率的に求める（2通り） ------------"
-    N = 9999
-    Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)
-    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
+    n = 9999
+    Points = zip(mapF(p_rnd(, 1), repeat(0, n)), mapF(p_rnd(, 1), repeat(0, n)))
+    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / n)
+    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), n) / n)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
-    N = 10
+    n = 10
     init = 0.1: r = 3.754
-    printM scanl_Funs(init, repeat(p_Logistic(, r), N))
+    printM scanl_Funs(init, repeat(p_Logistic(, r), n))
          'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) に相当
-    printM scanr_Funs(init, repeat(p_Logistic(, r), N))
+    printM scanr_Funs(init, repeat(p_Logistic(, r), n))
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
 
     Debug.Print "------- フィボナッチ数列（5通り） ------------"
-    N = 15
-    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
-    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
-    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
+    n = 15
+    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
+    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
+    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), n), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), n), 1)(0)
     
     Debug.Print "------- FizzBuzz ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
@@ -362,7 +362,7 @@ End Function
 
 '型がバラバラで配列も含む木構造のテスト (速度的に実用性は無し)
 Sub treeTest()
-    Dim nodes As Variant, tree As Variant, N As Long, t As Long
+    Dim nodes As Variant, tree As Variant, n As Long, t As Long
     Dim Dic As Variant, i As Long
     Debug.Print "==== 型がバラバラで配列も含むキーによる木構造のテスト ===="
     '===============ノードの集合===============
@@ -387,9 +387,9 @@ Sub treeTest()
     Debug.Print "iota(1, 8) => ";
     printM getNode(iota(1, 8), tree)
     '==========================================================
-    N = 1000
-    Debug.Print "==== 0～" & N & " ランダム整数キー ===="
-    nodes = zipWith(p_makeNode0, mapF(p_getCLng(p_rnd(0)), repeat(N, N)), iota(1, N))
+    n = 1000
+    Debug.Print "==== 0～" & n & " ランダム整数キー ===="
+    nodes = zipWith(p_makeNode0, mapF(p_getCLng(p_rnd(0)), repeat(n, n)), iota(1, n))
     t = GetTickCount
     tree = foldr(p_insertNode, Empty, nodes)
     Debug.Print GetTickCount - t & "ms"
@@ -405,4 +405,27 @@ Sub treeTest()
         Debug.Print Dic.Item(i);
     Next i
     Set Dic = Nothing
+End Sub
+
+'数を並び替えて可能な最大数を返すテスト
+Sub sortTest2()
+    Dim comp4 As Variant, arr As Variant, tmp As Variant, result As Variant
+    
+    Debug.Print "==== 数を並び替えて可能な最大数を返すテスト ===="
+    Debug.Print "1～99 の整数乱数を20個作る"
+    arr = mapF(p_getCLng(p_rnd(, 99)), repeat(0, 20))
+    printM arr
+    Debug.Print ""
+    '--------------------
+    comp4 = p_less(p_getCLng(p_plus(ph_1, ph_2)), p_getCLng(p_plus(ph_2, ph_1)))
+    Debug.Print "比較関数はこれ↓  f(x, y) = CLng(x & y) < CLng(y & x)  に相当する"
+    Debug.Print "  p_less(p_getCLng(p_plus(ph_1, ph_2)), p_getCLng(p_plus(ph_2, ph_1)))"
+    Debug.Print ""
+    '--------------------
+    tmp = mapF(p_cStr, arr)    ' 文字列化
+    Debug.Print "比較関数でソート（逆順）"
+    result = subM(tmp, reverse(sortIndex_pred(tmp, p_Question4Comp)))
+    printM result
+    Debug.Print "解"
+    Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' 文字列を結合して表示
 End Sub
