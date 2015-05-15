@@ -10,6 +10,9 @@ Option Explicit
 ' もしくは
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '===================================================================================
+'   Function ph_0               プレースホルダ
+'   Function ph_1               プレースホルダ
+'   Function ph_2               プレースホルダ
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
 '   Function make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
 '   Function is_bindFun         bindされた関数であることの判定
@@ -31,6 +34,22 @@ Option Explicit
 '   Function generate_while     述語による条件が満たされる間繰り返し関数適用の履歴を生成
 '   Function generate_while_not 述語による条件が満たされない間繰り返し関数適用の履歴を生成
 '***********************************************************************************
+
+'プレースホルダ（置かれた位置によって第1引数もしくは第2引数を受け取る）
+Function ph_0() As Variant
+    ph_0 = placeholder(0)
+End Function
+
+'プレースホルダ（第1引数を受け取る）
+Function ph_1() As Variant
+    ph_1 = placeholder(1)
+End Function
+
+'プレースホルダ（第2引数を受け取る）
+Function ph_2() As Variant
+    ph_2 = placeholder(2)
+End Function
+
 
 'ユーザ関数をbindファンクタ化する（関数の部分適用）
 'make_funPointer(func)                              引数の束縛なし
@@ -229,30 +248,30 @@ End Function
 Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
-                      Optional ByVal N As Long = -1) As Variant
-    repeat_while = repeat_imple(val, pred, fun, N, 0, 0)
+                      Optional ByVal n As Long = -1) As Variant
+    repeat_while = repeat_imple(val, pred, fun, n, 0, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用
 Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
-                          Optional ByVal N As Long = -1) As Variant
-    repeat_while_not = repeat_imple(val, pred, fun, N, 0, 1)
+                          Optional ByVal n As Long = -1) As Variant
+    repeat_while_not = repeat_imple(val, pred, fun, n, 0, 1)
 End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用の履歴を生成
 Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
-                        Optional ByVal N As Long = -1) As Variant
-    generate_while = repeat_imple(val, pred, fun, N, 1, 0)
+                        Optional ByVal n As Long = -1) As Variant
+    generate_while = repeat_imple(val, pred, fun, n, 1, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用の履歴を生成
 Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
-                            Optional ByVal N As Long = -1) As Variant
-    generate_while_not = repeat_imple(val, pred, fun, N, 1, 1)
+                            Optional ByVal n As Long = -1) As Variant
+    generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
 End Function
