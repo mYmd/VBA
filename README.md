@@ -75,6 +75,9 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/5/16  
+新しいプレースホルダ ph_1 と ph_2 を追加  
+
 2015/5/6  
 bind_invokeの廃止とmoveVariantの追加  
 テストモジュールに木構造のテストを追加  
