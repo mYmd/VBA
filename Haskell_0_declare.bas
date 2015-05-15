@@ -22,7 +22,7 @@ Option Explicit
 '   Function stdsort            1次元配列のソートインデックス出力
 '   Function find_imple         述語による検索
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
-'   Function moveVariant        sourceのVARIANT変数を返り値のVARIANTへmoveする
+'   Function moveVariant        sourceのVARIANT変数をtargetのVARIANTへmoveする
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -33,7 +33,7 @@ Option Explicit
 Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
 'プレースホルダ・オブジェクトの生成
-Declare Function placeholder Lib "mapM.dll" () As Variant
+Declare Function placeholder Lib "mapM.dll" (Optional ByVal n As Long = 0) As Variant
 
 'プレースホルダ・オブジェクト判定
 Declare Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
@@ -127,5 +127,5 @@ Declare Function repeat_imple Lib "mapM.dll" ( _
         ByVal scan As Long, _
     ByVal stopCondition As Long) As Variant
 
-'sourceのVARIANT変数を返り値のVARIANTへmoveする
+'sourceのVARIANT変数をtargetのVARIANTへmoveする
 Declare Function moveVariant Lib "mapM.dll" (ByRef source As Variant) As Variant
