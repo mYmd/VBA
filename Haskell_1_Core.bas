@@ -83,41 +83,41 @@ Function is_bindFun(ByRef val As Variant) As Boolean
     If Dimension(val) = 1 And sizeof(val) = 4 Then is_bindFun = is_placeholder(val(3))
 End Function
 
-'1番目の引数を再束縛する
-    Private Function bind1st_imple(ByRef func As Variant, ByRef firstParam As Variant) As Variant
+'引数を再束縛する
+    Private Function bind_imple(ByRef func As Variant, _
+                                ByRef param As Variant, _
+                                ByVal p0 As Long, _
+                                ByVal p1 As Long) As Variant
         If is_bindFun(func) Then
-            bind1st_imple = VBA.Array(func(0), _
-                                      bind1st_imple(func(1), firstParam), _
-                                      bind1st_imple(func(2), firstParam), _
-                                      placeholder)
+            bind_imple = VBA.Array(func(0), _
+                                   bind_imple(func(1), param, p0, p1), _
+                                   bind_imple(func(2), param, p0, p1), _
+                                   placeholder)
         ElseIf is_placeholder(func) Then
-            bind1st_imple = firstParam
+            If func = placeholder(p0) Or func = placeholder(p1) Then
+                bind_imple = param
+            Else
+                bind_imple = func
+            End If
         Else
-            bind1st_imple = func
+            bind_imple = func
         End If
     End Function
 Function bind1st(ByRef func As Variant, ByRef firstParam As Variant) As Variant
-    bind1st = VBA.Array(func(0), bind1st_imple(func(1), firstParam), func(2), placeholder)
+    bind1st = VBA.Array(func(0), _
+                        bind_imple(func(1), firstParam, 0, 1), _
+                        bind_imple(func(2), firstParam, 1, 1), _
+                        placeholder)
 End Function
     Function p_bind1st(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bind1st = make_funPointer(AddressOf bind1st, firstParam, secondParam)
     End Function
 
-'2番目の引数を再束縛する
-    Private Function bind2nd_imple(ByRef func As Variant, ByRef secondParam As Variant) As Variant
-        If is_bindFun(func) Then
-            bind2nd_imple = VBA.Array(func(0), _
-                                      bind2nd_imple(func(1), secondParam), _
-                                      bind2nd_imple(func(2), secondParam), _
-                                      placeholder)
-        ElseIf is_placeholder(func) Then
-            bind2nd_imple = secondParam
-        Else
-            bind2nd_imple = func
-        End If
-    End Function
 Function bind2nd(ByRef func As Variant, ByRef secondParam As Variant) As Variant
-    bind2nd = VBA.Array(func(0), func(1), bind2nd_imple(func(2), secondParam), placeholder)
+    bind2nd = VBA.Array(func(0), _
+                        bind_imple(func(1), secondParam, 2, 2), _
+                        bind_imple(func(2), secondParam, 0, 2), _
+                        placeholder)
 End Function
     Function p_bind2nd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bind2nd = make_funPointer(AddressOf bind2nd, firstParam, secondParam)
