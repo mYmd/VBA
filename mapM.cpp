@@ -1,7 +1,6 @@
 //mapM.cpp
 //Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
-#include "OAIdl.h"      //wtypes.h
 #include "VBA_NestFunc.hpp"
 #include <list>
 
