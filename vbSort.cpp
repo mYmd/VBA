@@ -2,7 +2,6 @@
 //Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
 #include <algorithm>
-#include <OleAuto.h>//<OAIdl.h>
 #include "VBA_NestFunc.hpp"
 
 //比較関数
