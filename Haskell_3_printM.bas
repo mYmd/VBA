@@ -4,8 +4,9 @@ Attribute VB_Name = "Haskell_3_printM"
 Option Explicit
 
 '================================================================================
-    ' Sub printS                    デバッグウィンドウに配列のサイズを表示する
-    ' Sub printM                    デバッグウィンドウに２次元配列を表示する
+'   Sub         printS          デバッグウィンドウに配列のサイズを表示する
+'   Sub         printM          デバッグウィンドウに２次元配列を表示する
+'   Function    dumpFun         ネストした関数を文字列化
 '================================================================================
 
 'デバッグウィンドウに配列のサイズを表示する
@@ -137,4 +138,32 @@ End Sub
 
 Private Function LenW(ByRef s As String) As Long
     LenW = LenB(StrConv(s, vbFromUnicode))
+End Function
+
+'ネストした関数を文字列化
+Function dumpFun(ByRef x As Variant) As Variant
+    Dim ret As Variant
+    If is_bindFun(x) Then
+        dumpFun = "F" & (x(0) Mod 10000) & "(" & dumpFun(x(1)) & ", " & dumpFun(x(2)) & ")"
+    ElseIf is_placeholder(x) Then
+        If x = placeholder Then
+            dumpFun = "_"
+        ElseIf x = placeholder(1) Then
+            dumpFun = "_1"
+        ElseIf x = placeholder(2) Then
+            dumpFun = "_2"
+        Else
+            dumpFun = ""
+        End If
+    ElseIf IsEmpty(x) Then
+        dumpFun = ""
+    Else
+        If IsNumeric(x) Or VarType(x) = vbString Then
+            dumpFun = x
+        ElseIf IsArray(x) Then
+            dumpFun = "matrix"
+        Else
+            dumpFun = "*"
+        End If
+    End If
 End Function
