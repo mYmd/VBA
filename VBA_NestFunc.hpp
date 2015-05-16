@@ -1,6 +1,6 @@
 //VBA_NestFunc.hpp
 //Copyright (c) 2015 mmYYmmdd
-
+#include "OAIdl.h"      //wtypes.h
 #include <memory>
 
 //VBA配列の次元取得
