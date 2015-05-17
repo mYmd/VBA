@@ -160,8 +160,6 @@ Function dumpFun(ByRef x As Variant) As Variant
     Else
         If IsNumeric(x) Or VarType(x) = vbString Then
             dumpFun = x
-        ElseIf IsArray(x) Then
-            dumpFun = "matrix"
         Else
             dumpFun = "*"
         End If
