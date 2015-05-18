@@ -142,7 +142,6 @@ End Function
 
 'ネストした関数を文字列化
 Function dumpFun(ByRef x As Variant) As Variant
-    Dim ret As Variant
     If is_bindFun(x) Then
         dumpFun = "F" & (x(0) Mod 10000) & "(" & dumpFun(x(1)) & ", " & dumpFun(x(2)) & ")"
     ElseIf is_placeholder(x) Then
@@ -158,10 +157,11 @@ Function dumpFun(ByRef x As Variant) As Variant
     ElseIf IsEmpty(x) Then
         dumpFun = ""
     Else
-        If IsNumeric(x) Or VarType(x) = vbString Then
+        If VarType(x) = vbString Then
+            dumpFun = """" & x & """"
+        ElseIf IsNumeric(x) Then
             dumpFun = x
         Else
             dumpFun = "*"
         End If
-    End If
 End Function
