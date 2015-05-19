@@ -424,7 +424,7 @@ Sub sortTest2()
     '--------------------
     tmp = mapF(p_cStr, arr)    ' 文字列化
     Debug.Print "比較関数でソート（逆順）"
-    result = subM(tmp, reverse(sortIndex_pred(tmp, p_Question4Comp)))
+    result = subM(tmp, reverse(sortIndex_pred(tmp, comp4)))
     printM result
     Debug.Print "解"
     Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' 文字列を結合して表示
