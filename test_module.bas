@@ -99,16 +99,20 @@ End Function
         p_isPrime = make_funPointer(AddressOf isPrime, firstParam, secondParam)
     End Function
 
-'ニュートン法による求根の１ステップ　：　(x1, f(x)) から (x2, f(x2)) を出力する
-'第１引数 ：　(x1, f(x))   第２引数 (f, df/dx)
-Function Newton_Raphson(ByRef xy As Variant, ByRef fdf As Variant) As Variant
-    Dim x2 As Double
-    x2 = xy(0) - xy(1) / applyFun(xy(0), fdf(1))
-    Newton_Raphson = VBA.Array(x2, applyFun(x2, fdf(0)))
+'ニュートン法による求根の１ステップ　：　x1 から x2 を出力する
+'第1引数 ：　x ,  第2引数 (f, df/dx)
+Function Newton_Raphson(ByRef x As Variant, ByRef fdf As Variant) As Variant
+    Newton_Raphson = x - applyFun(x, fdf(0)) / applyFun(x, fdf(1))
 End Function
     Function p_Newton_Raphson(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_Newton_Raphson = make_funPointer(AddressOf Newton_Raphson, firstParam, secondParam)
     End Function
+
+'多項式の微分（係数のみ）
+Function poly_deriv(ByRef coef As Variant) As Variant
+    poly_deriv = headN(zipWith(p_mult, coef, iota(sizeof(coef) - 1, 0)), sizeof(coef) - 1)
+End Function
+
 
 '整数を各桁の数字の合計で比較する
 Function compareSS(ByRef a As Variant, ByRef b As Variant) As Variant
@@ -232,11 +236,12 @@ Sub vbaUnit()
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
 
     Debug.Print "------- 単純なNewton法による多項式の根（2通り） ------------"
-    Debug.Print " f(x) = 2x^3 + x^2 - 5x + 4 の零点 （x = 0 から反復）"
-    m = p_poly(, Array(2, 1, -5, 4))
-    z = p_poly(, Array(6, 2, -5))
-    printM foldl_Funs(Array(0, applyFun(0, m)), repeat(p_Newton_Raphson(, VBA.Array(m, z)), 15))
-    printM repeat_while(Array(0, applyFun(0, m)), p_less(0.000000000000001, p_abs(p_getNth(1), 0)), p_Newton_Raphson(, Array(m, z)))
+    Debug.Print " f(x) = 2x^3 + x^2 - 5x + 0.5 の零点"
+    z = Array(2, 1, -5, 0.5)
+    m = VBA.Array(p_poly(, z), p_poly(, poly_deriv(z)))
+    Debug.Print "x0 =  0 -> x = " & foldl_Funs(0, repeat(p_Newton_Raphson(, m), 7))
+    Debug.Print "x0 =  1 -> x = " & repeat_while(1, p_less(0.0001, p_abs(m(0), 0)), p_Newton_Raphson(, m))
+    Debug.Print "x0 = -7 -> x = " & repeat_while(-7, p_less(0.0001, p_abs(m(0), 0)), p_Newton_Raphson(, m))
 
     Debug.Print "------- 条件によるFind ------------"
     Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.9超 29.99未満のものを探す"
@@ -429,3 +434,4 @@ Sub sortTest2()
     Debug.Print "解"
     Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' 文字列を結合して表示
 End Sub
+
