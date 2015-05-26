@@ -10,6 +10,7 @@ Option Explicit
 ' もしくは
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '===================================================================================
+'   Function moveVariant        sourceのVARIANT変数をtargetのVARIANTへmoveする
 '   Function ph_0               プレースホルダ
 '   Function ph_1               プレースホルダ
 '   Function ph_2               プレースホルダ
@@ -18,6 +19,8 @@ Option Explicit
 '   Function is_bindFun         bindされた関数であることの判定
 '   Function bind1st            1番目の引数を再束縛する
 '   Function bind2nd            2番目の引数を再束縛する
+'   Sub      swap1st            第1引数のswap（大きな変数の場合に使用）
+'   Sub      swap2nd            第2引数のswap（大きな変数の場合に使用）
 ' * Function mapF               配列の各要素に関数を適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
@@ -35,6 +38,12 @@ Option Explicit
 '   Function generate_while_not 述語による条件が満たされない間繰り返し関数適用の履歴を生成
 '***********************************************************************************
 
+'sourceのVARIANT変数をtargetのVARIANTへmoveする
+Function moveVariant(ByRef source As Variant) As Variant
+    swapVariant moveVariant, source
+End Function
+'***********************************************************************************
+
 'プレースホルダ（置かれた位置によって第1引数もしくは第2引数を受け取る）
 Function ph_0() As Variant
     ph_0 = placeholder(0)
@@ -50,6 +59,10 @@ Function ph_2() As Variant
     ph_2 = placeholder(2)
 End Function
 
+    ' Array() が IsMissing = True になることのWorkAround
+    Function Is_Missing_(Optional ByRef x As Variant) As Boolean
+        Is_Missing_ = IIf(IsMissing(x) And Not IsArray(x), True, False)
+    End Function
 
 'ユーザ関数をbindファンクタ化する（関数の部分適用）
 'make_funPointer(func)                              引数の束縛なし
@@ -60,8 +73,8 @@ Function make_funPointer(ByVal func As Long, _
                          Optional ByRef firstParam As Variant, _
                          Optional ByRef secondParam As Variant) As Variant
     make_funPointer = VBA.Array(func, _
-                    IIf(IsMissing(firstParam), placeholder, firstParam), _
-                    IIf(IsMissing(secondParam), placeholder, secondParam), _
+                    IIf(Is_Missing_(firstParam), placeholder, firstParam), _
+                    IIf(Is_Missing_(secondParam), placeholder, secondParam), _
                     placeholder _
                    )
 End Function
@@ -71,7 +84,7 @@ Function make_funPointer_with_2nd_Default(ByVal func As Long, _
                          Optional ByRef firstParam As Variant, _
                          Optional ByRef secondParam As Variant) As Variant
     make_funPointer_with_2nd_Default = VBA.Array(func, _
-                                 IIf(IsMissing(firstParam), placeholder, firstParam), _
+                                 IIf(Is_Missing_(firstParam), placeholder, firstParam), _
                                  secondParam, _
                                  placeholder _
                                 )
@@ -123,14 +136,22 @@ End Function
         p_bind2nd = make_funPointer(AddressOf bind2nd, firstParam, secondParam)
     End Function
 
+'第1引数のswap（大きな変数の場合に使用）
+Sub swap1st(ByRef func As Variant, ByRef firstParam As Variant)
+    If is_bindFun(func) Then swapVariant func(1), firstParam
+End Sub
+
+'第2引数のswap（大きな変数の場合に使用）
+Sub swap2nd(ByRef func As Variant, ByRef secondParam As Variant)
+    If is_bindFun(func) Then swapVariant func(2), secondParam
+End Sub
+
 ' 配列の各要素に関数を適用する
 Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
     mapF = mapF_imple(func, matrix)
 End Function
-    Function p_mapF(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam)
-    End Function
 
+'*************************************************************************
 '関数適用関数  1引数に対して関数を適用する   関数はBind式
 '1. applyFun(x     ,  Null          )     ->  x
 '2. applyFun(x     ,  Empty         )     ->  x
