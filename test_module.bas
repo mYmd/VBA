@@ -426,6 +426,15 @@ Sub sortTest2()
     Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' 文字列を結合して表示
 End Sub
 
+
+' \a b -> [a] : map (a:) b のうち、map (a:) b の部分
+Function consMap(ByRef a As Variant, ByRef v As Variant) As Variant
+    consMap = mapF(p_cons(a), v)
+End Function
+    Public Function p_consMap(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_consMap = make_funPointer(AddressOf consMap, firstParam, secondParam)
+    End Function
+
 '引数の部分文字列のリストを取り出す「関数プログラミング実践入門」の問題
 Sub segmentsTest()
     Debug.Print "==== 引数の部分文字列のリストを取り出すHaskell関数 ===="
