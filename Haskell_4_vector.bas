@@ -40,6 +40,7 @@ Option Explicit
     ' Function  zipR                2次元配列の各行ベクトルをzip
     ' Function  zipC                2次元配列の各列ベクトルをzip
     ' Function  makePair            Array(a, b)作成
+    ' Function  cons                配列の先頭に要素を追加
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
 
@@ -83,13 +84,13 @@ Public Function a_cols(ByRef matrix As Variant) As Variant
 End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
+Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If N < 1 Then repeat = VBA.Array(): Exit Function
-    ReDim ret(0 To N - 1)
-    For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
+    If n < 1 Then repeat = VBA.Array(): Exit Function
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1 Step 1:         ret(i) = v:       Next i
     repeat = moveVariant(ret)
 End Function
 
@@ -109,18 +110,18 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 'ベクトルの最初のN個
-Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         headN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         headN = vec
     Else
         lb = LBound(vec)
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         headN = moveVariant(ret)
@@ -131,18 +132,18 @@ End Function
     End Function
 
 'ベクトルの最後のN個
-Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         tailN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         tailN = vec
     Else
-        lb = UBound(vec) - N + 1
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        lb = UBound(vec) - n + 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         tailN = moveVariant(ret)
@@ -613,11 +614,23 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
 End Function
 
 ' Array(a, b)作成
-Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
-    makePair = VBA.Array(a, b)
+Function makePair(ByRef a As Variant, Optional ByRef b As Variant) As Variant
+    If Is_Missing_(b) Then
+        makePair = VBA.Array(a)
+    Else
+        makePair = VBA.Array(a, b)
+    End If
 End Function
     Public Function p_makePair(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_makePair = make_funPointer(AddressOf makePair, firstParam, secondParam)
+        p_makePair = make_funPointer_with_2nd_Default(AddressOf makePair, firstParam, secondParam)
+    End Function
+
+' 配列の先頭に要素を追加
+Function cons(ByRef a As Variant, ByRef v As Variant) As Variant
+    cons = catV(Array(a), v)
+End Function
+Public Function p_cons(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
     End Function
 
 'ベクトルの直積に関数を適用した行列を作る
