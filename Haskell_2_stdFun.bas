@@ -72,6 +72,8 @@ End Function
 '   Function str_left       Left
 '   Function str_right      Right
 '   Function str_mid        Mid
+'   Function splitFun       Split
+'   Function joinFun        Join
 '   Function gcm            gcm
 '   Function lcm            lcm
 '   Function equal          述語 Equal
@@ -291,6 +293,26 @@ Function str_mid(ByRef st As Variant, ByRef begin_end As Variant) As Variant
 End Function
     Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
+    End Function
+
+'Split
+Function splitFun(ByRef s As Variant, ByRef delim As Variant) As Variant
+    splitFun = Split(s, delim)
+End Function
+    Function p_split(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_split = make_funPointer(AddressOf splitFun, firstParam, secondParam)
+    End Function
+
+'Join
+Function joinFun(ByRef m As Variant, ByRef delim As Variant) As Variant
+    If IsEmpty(m) Or IsNull(m) Then
+        joinFun = ""
+    Else
+        joinFun = Join(m, delim)
+    End If
+End Function
+    Function p_join(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_join = make_funPointer(AddressOf joinFun, firstParam, secondParam)
     End Function
 
 'gcm
