@@ -149,16 +149,6 @@ Sub vbaUnit()
     Debug.Print "mapF(p_minus(, 3), iota(1, 15))"
     printM mapF(p_minus(, 3), iota(1, 15))
 
-    Debug.Print "------- mapFのネスト ----------"
-    m = mapF(p_mapF(, iota(1, 10)), Array(p_log, p_plus(100), p_divide(, 100)))
-    Debug.Print "m = mapF(p_mapF(, iota(1, 10)), Array(p_log, p_plus(100), p_divide(, 100)))"
-    Debug.Print "m(0)"
-    printM m(0)
-    Debug.Print "m(1)"
-    printM m(1)
-    Debug.Print "m(2)"
-    printM m(2)
-    
     Debug.Print "------- zipWith ----------"
     Debug.Print "zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))"
     printM zipWith(p_plus, Array(1, 2, 3, 4, 5), Array(10, 100, 1000, 100, 10))
@@ -239,8 +229,8 @@ Sub vbaUnit()
     Debug.Print " f(x) = 2x^3 + x^2 - 5x + 0.5 の零点"
     z = Array(2, 1, -5, 0.5)
     m = VBA.Array(p_poly(, z), p_poly(, poly_deriv(z)))
-    Debug.Print "x0 =  0 -> x = " & foldl_Funs(0, repeat(p_Newton_Raphson(, m), 7))
-    Debug.Print "x0 =  1 -> x = " & repeat_while(1, p_less(0.0001, p_abs(m(0), 0)), p_Newton_Raphson(, m))
+    Debug.Print "x0 = 0  -> x = " & foldl_Funs(0, repeat(p_Newton_Raphson(, m), 7))
+    Debug.Print "x0 = 1  -> x = " & repeat_while(1, p_less(0.0001, p_abs(m(0), 0)), p_Newton_Raphson(, m))
     Debug.Print "x0 = -7 -> x = " & repeat_while(-7, p_less(0.0001, p_abs(m(0), 0)), p_Newton_Raphson(, m))
 
     Debug.Print "------- 条件によるFind ------------"
@@ -409,6 +399,7 @@ Sub treeTest()
     For i = 0 To 10 Step 1
         Debug.Print Dic.Item(i);
     Next i
+    Debug.Print ""
     Set Dic = Nothing
 End Sub
 
@@ -435,3 +426,18 @@ Sub sortTest2()
     Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' 文字列を結合して表示
 End Sub
 
+'引数の部分文字列のリストを取り出す「関数プログラミング実践入門」の問題
+Sub segmentsTest()
+    Debug.Print "==== 引数の部分文字列のリストを取り出すHaskell関数 ===="
+    Debug.Print "    segments :: [a] -> [[a]]"
+    Debug.Print "    segments = foldr (++) [] . scanr (\a b -> [a] : map (a:) b) []"
+    Dim a As Variant, f As Variant, m As Variant
+    
+    a = Array("A", "B", "C", "D", "E")
+    Debug.Print "これをfoldrする"
+    Debug.Print "scanr(p_cons(p_makePair, p_consMap(ph_1, ph_2))"
+    f = p_cons(p_makePair, p_consMap(ph_1, ph_2))
+    m = foldr(p_catV, Array(), scanr(f, Array(), a))
+    Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") を展開する"
+    printM mapF(p_join(, ""), m)
+End Sub
