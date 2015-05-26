@@ -51,13 +51,15 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
 }
 
 //sourceのVARIANT変数をtargetのVARIANTへmoveする
-VARIANT __stdcall
-moveVariant(VARIANT* source)
+__int32 __stdcall
+swapVariant(VARIANT* a, VARIANT* b)
 {
-    VARIANT target;
-    ::VariantInit(&target);
-    std::swap(target, *source);
-    return target;
+	if (a && b)
+	{
+		std::swap(*a, *b);
+		return 1;
+	}
+	return 0;
 }
 
 ////************************************************************************************
