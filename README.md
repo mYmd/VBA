@@ -58,7 +58,7 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 	stdsort = stdsort  
 	find_imple = find_imple  
 	repeat_imple = repeat_imple  
-	moveVariant = moveVariant  
+	swapVariant = swapVariant  
 
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
 (dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
