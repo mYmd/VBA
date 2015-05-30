@@ -5,9 +5,15 @@ Option Explicit
 
 Declare Function GetTickCount Lib "Kernel32.dll" () As Long
 
-'=======================================
-'   テスト用関数 vbaUnit
-'=======================================
+'***********************************************************************
+'   テスト関数
+'   Sub vbaUnit         基本機能いろいろ
+'   Sub sortTest        型がバラバラで配列も含む配列をソートするテスト
+'   Sub treeTest        型がバラバラで配列も含む木構造のテスト
+'   Sub sortTest2       数を並び替えて可能な最大数を返すテスト
+'   Sub segmentsTest    引数の部分文字列のリストを取り出す
+'   Sub segmentsTest2   ラムダ式使用バージョン
+'***********************************************************************
 
 '2点間の距離
 Function distance(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -426,7 +432,7 @@ Sub sortTest2()
     Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' 文字列を結合して表示
 End Sub
 
-
+'====================================================================
 ' \a b -> [a] : map (a:) b のうち、map (a:) b の部分
 Function consMap(ByRef a As Variant, ByRef v As Variant) As Variant
     consMap = mapF(p_cons(a), v)
@@ -440,6 +446,7 @@ Sub segmentsTest()
     Debug.Print "==== 引数の部分文字列のリストを取り出すHaskell関数 ===="
     Debug.Print "    segments :: [a] -> [[a]]"
     Debug.Print "    segments = foldr (++) [] . scanr (\a b -> [a] : map (a:) b) []"
+    Debug.Print "==== segmentsTest（ヘルパ関数使用バージョン） ===="
     Dim a As Variant, f As Variant, m As Variant
     
     a = Array("A", "B", "C", "D", "E")
@@ -450,3 +457,23 @@ Sub segmentsTest()
     Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") を展開する"
     printM mapF(p_join(, ""), m)
 End Sub
+
+
+'引数の部分文字列のリストを取り出す「関数プログラミング実践入門」の問題
+'ラムダ式 lambdaExprによって、アドホックな関数 consMap を使用しなくて済むようにした
+Sub segmentsTest2()
+    Debug.Print "==== 引数の部分文字列のリストを取り出すHaskell関数 ===="
+    Debug.Print "    segments :: [a] -> [[a]]"
+    Debug.Print "    segments = foldr (++) [] . scanr (\a b -> [a] : map (a:) b) []"
+    Debug.Print "==== segmentsTest2（ラムダ式バージョン） ===="
+    Dim a As Variant, f As Variant, m As Variant
+    
+    a = Array("A", "B", "C", "D", "E")
+    Debug.Print "これをfoldrする"
+    Debug.Print "scanr(p_cons(p_makePair, p_Mapf(lambdaexpr(p_cons, ph_1), ph_2))"
+    f = p_cons(p_makePair, p_mapF(lambdaExpr(p_cons, ph_1), ph_2))
+    m = foldr(p_catV, Array(), scanr(f, Array(), a))
+    Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") を展開する"
+    printM mapF(p_join(, ""), m)
+End Sub
+
