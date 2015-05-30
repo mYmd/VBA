@@ -21,6 +21,7 @@ Option Explicit
 '   Function bind2nd            2番目の引数を再束縛する
 '   Sub      swap1st            第1引数のswap（大きな変数の場合に使用）
 '   Sub      swap2nd            第2引数のswap（大きな変数の場合に使用）
+'   Function lambdaExpr         ラムダ式の生成
 ' * Function mapF               配列の各要素に関数を適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
@@ -39,8 +40,8 @@ Option Explicit
 '***********************************************************************************
 
 'sourceのVARIANT変数をtargetのVARIANTへmoveする
-Function moveVariant(ByRef source As Variant) As Variant
-    swapVariant moveVariant, source
+Function moveVariant(ByRef Source As Variant) As Variant
+    swapVariant moveVariant, Source
 End Function
 '***********************************************************************************
 
@@ -146,10 +147,33 @@ Sub swap2nd(ByRef func As Variant, ByRef secondParam As Variant)
     If is_bindFun(func) Then swapVariant func(2), secondParam
 End Sub
 
+'*************************************************************************
+'ラムダ式の生成
+    Private Function bindL1(ByRef funcA As Variant, ByRef firstParam As Variant) As Variant
+        bindL1 = bind1st(funcA(0), firstParam)
+    End Function
+    
+    Private Function bindL2(ByRef funcA As Variant, ByRef secondParam As Variant) As Variant
+        bindL2 = bind2nd(funcA(0), secondParam)
+    End Function
+    
+Function lambdaExpr(ByRef func As Variant, ByRef bindPH As Variant) As Variant
+        If bindPH = placeholder(1) Then
+            lambdaExpr = make_funPointer(AddressOf bindL1, VBA.Array(func), bindPH)
+        ElseIf bindPH = placeholder(2) Then
+            lambdaExpr = make_funPointer(AddressOf bindL2, VBA.Array(func), bindPH)
+        End If
+End Function
+
+
+'*************************************************************************
 ' 配列の各要素に関数を適用する
 Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
     mapF = mapF_imple(func, matrix)
 End Function
+    Function p_mapF(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam)
+    End Function
 
 '*************************************************************************
 '関数適用関数  1引数に対して関数を適用する   関数はBind式
