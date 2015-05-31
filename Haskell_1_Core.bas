@@ -149,6 +149,10 @@ End Sub
 
 '*************************************************************************
 'ラムダ式の生成
+    Private Function bindL0(ByRef funcA As Variant, ByRef firstParam As Variant) As Variant
+        bindL0 = funcA(0)
+    End Function
+    
     Private Function bindL1(ByRef funcA As Variant, ByRef firstParam As Variant) As Variant
         bindL1 = bind1st(funcA(0), firstParam)
     End Function
@@ -157,11 +161,13 @@ End Sub
         bindL2 = bind2nd(funcA(0), secondParam)
     End Function
     
-Function lambdaExpr(ByRef func As Variant, ByRef bindPH As Variant) As Variant
-        If bindPH = placeholder(1) Then
+Function lambdaExpr(ByRef func As Variant, ByVal bind12 As Long, ByRef bindPH As Variant) As Variant
+        If bind12 = 1 Then
             lambdaExpr = make_funPointer(AddressOf bindL1, VBA.Array(func), bindPH)
-        ElseIf bindPH = placeholder(2) Then
+        ElseIf bind12 = 2 Then
             lambdaExpr = make_funPointer(AddressOf bindL2, VBA.Array(func), bindPH)
+        Else
+            lambdaExpr = make_funPointer(AddressOf bindL0, VBA.Array(func), vbEmpty)
         End If
 End Function
 
