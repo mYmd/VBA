@@ -470,8 +470,8 @@ Sub segmentsTest2()
     
     a = Array("A", "B", "C", "D", "E")
     Debug.Print "これをfoldrする"
-    Debug.Print "scanr(p_cons(p_makePair, p_Mapf(lambdaexpr(p_cons, ph_1), ph_2))"
-    f = p_cons(p_makePair, p_mapF(lambdaExpr(p_cons, ph_1), ph_2))
+    Debug.Print "scanr(p_cons(p_makePair, p_Mapf(lambdaExpr(p_cons, 1, ph_1), ph_2))"
+    f = p_cons(p_makePair, p_mapF(lambdaExpr(p_cons, 1, ph_1), ph_2))
     m = foldr(p_catV, Array(), scanr(f, Array(), a))
     Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") を展開する"
     printM mapF(p_join(, ""), m)
