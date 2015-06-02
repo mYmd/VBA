@@ -39,6 +39,7 @@ Option Explicit
     ' Function  unzip               zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
     ' Function  zipR                2次元配列の各行ベクトルをzip
     ' Function  zipC                2次元配列の各列ベクトルをzip
+    ' Function  makeSole            Array(a)作成
     ' Function  makePair            Array(a, b)作成
     ' Function  cons                配列の先頭に要素を追加
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
@@ -613,16 +614,20 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
     unzip = moveVariant(ret)
 End Function
 
+' Array(a)作成
+Function makeSole(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    makeSole = VBA.Array(a)
+End Function
+    Public Function p_makeSole(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_makeSole = make_funPointer(AddressOf makeSole, firstParam, secondParam)
+    End Function
+
 ' Array(a, b)作成
-Function makePair(ByRef a As Variant, Optional ByRef b As Variant) As Variant
-    If Is_Missing_(b) Then
-        makePair = VBA.Array(a)
-    Else
-        makePair = VBA.Array(a, b)
-    End If
+Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
+    makePair = VBA.Array(a, b)
 End Function
     Public Function p_makePair(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_makePair = make_funPointer_with_2nd_Default(AddressOf makePair, firstParam, secondParam)
+        p_makePair = make_funPointer(AddressOf makePair, firstParam, secondParam)
     End Function
 
 ' 配列の先頭に要素を追加
