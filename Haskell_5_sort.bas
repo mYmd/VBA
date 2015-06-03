@@ -6,6 +6,7 @@ Option Explicit
 '====================================================================================================
     ' Function  sortIndex           昇順ソート後のインデックス配列
     ' Function  sortIndex_pred      任意の比較関数によるソート後のインデックス配列
+    ' Sub       permutate           1次元配列の並べ換え
     ' Function  lower_bound         ソート済み配列からのキーの検索（std::lower_boundと同じ）
     ' Function  lower_bound_pred    ソート済み配列からのキーの検索（std::lower_boundと同じ）
     ' Function  upper_bound         ソート済み配列からのキーの検索（std::upper_boundと同じ）
@@ -16,7 +17,7 @@ Option Explicit
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
 'key_columns は2次元配列の場合のキー列指定 Array(0,2,4)
-'実際にソートする場合は、subM(配列、sortIndex)
+'実際にソートする場合は、permutate(配列, sortIndex) とするかもしくはsubM(配列, sortIndex) を取る
 Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
@@ -46,6 +47,16 @@ End Function
     Public Function p_sortIndex_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_sortIndex_pred = make_funPointer(AddressOf sortIndex_pred, firstParam, secondParam)
     End Function
+
+'1次元配列vecの並べ換え   sindexがvecの範囲外もしくは重複があった場合の動作は未定義
+Sub permutate(ByRef vec As Variant, ByRef sindex As Variant)
+    Dim i As Long
+    Dim ret As Variant:    ReDim ret(LBound(vec) To UBound(vec))
+    For i = LBound(vec) To UBound(vec) Step 1
+        swapVariant ret(i), vec(sindex(i))
+    Next i
+    swapVariant ret, vec
+End Sub
 
 
     Private Function lower_bound_imple(ByRef matrix As Variant, _
