@@ -50,7 +50,7 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
     return ret;
 }
 
-//sourceのVARIANT変数をtargetのVARIANTへmoveする
+//VARIANT変数のswap
 __int32 __stdcall
 swapVariant(VARIANT* a, VARIANT* b)
 {
