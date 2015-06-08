@@ -75,6 +75,9 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/6/08  
+safearrayRefクラスの導入によるリファクタリング  
+
 2015/5/31  
 lambdaExpr関数を追加  
 
