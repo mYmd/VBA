@@ -3,7 +3,6 @@
 #include "stdafx.h"
 #include "VBA_NestFunc.hpp"
 
-
 //VBA配列の次元取得
 __int32 __stdcall Dimension(const VARIANT* pv)
 {
