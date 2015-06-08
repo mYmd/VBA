@@ -78,37 +78,29 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
         ::VariantCopy(&ret, func.eval(matrix, matrix));
         return ret;
     }
+    safearrayRef arIn(matrix);
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
-    if ( !pArray )                                  return ret;
-    UINT dim  = ::SafeArrayGetDim(pArray);
-    if ( 0 == dim || 3 < dim )                      return ret;
-    SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-    safeArrayBounds(pArray, dim, bounds);
+    if ( arIn.getDim() == 0 )                      return ret;
     SAFEARRAYBOUND Bounds[3] = {
-                                { bounds[0].cElements, bounds[0].lLbound },
-                                { bounds[1].cElements, bounds[1].lLbound },
-                                { bounds[2].cElements, bounds[2].lLbound }    };
+                                { arIn.getSize(1), 0 },
+                                { arIn.getSize(2), 0 },
+                                { arIn.getSize(3), 0 } };
     // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, Bounds);
+    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, arIn.getDim(), Bounds);
+    ret.vt = VT_ARRAY | VT_VARIANT;
+    ret.parray = retArray;
+    safearrayRef arOut(&ret);
     for ( ULONG i = 0; i < Bounds[0].cElements; ++i )
     {
         for ( ULONG j = 0; j < Bounds[1].cElements; ++j )
         {
             for ( ULONG k = 0; k < Bounds[2].cElements; ++k )
             {
-                LONG index[3] = {   static_cast<LONG>(i)+bounds[0].lLbound,
-                                    static_cast<LONG>(j)+bounds[1].lLbound,
-                                    static_cast<LONG>(k)+bounds[2].lLbound     };
-                VARIANT elem;
-                ::VariantInit(&elem);
-                ::SafeArrayGetElement(pArray, index, &elem);
-                ::SafeArrayPutElement(retArray, index, func.eval(&elem, &elem));
-                ::VariantClear(&elem);
+                VARIANT& elem = arIn(i, j, k);
+                ::VariantCopy(&arOut(i, j, k), func.eval(&elem, &elem));
             }
         }
     }
-    ret.vt = VT_ARRAY | VT_VARIANT;
-    ret.parray = retArray;
     return      ret;
 }
 
@@ -129,50 +121,32 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
         ::VariantCopy(&ret, func.eval(matrix1, matrix2));
         return ret;
     }
-    if (  0 == (VT_ARRAY & matrix1->vt ) ||  0 == (VT_ARRAY & matrix2->vt ) )
-                                                                return ret;
+    safearrayRef arIn1(matrix1);
+    safearrayRef arIn2(matrix2);
+    if ( 0 == arIn1.getDim() || 0 == arIn2.getDim() || arIn1.getDim() != arIn2.getDim() )
+        return ret;
     //----------------------------
-    SAFEARRAY* pArray1 = ( 0 == (VT_BYREF & matrix1->vt) )?  (matrix1->parray): (*matrix1->pparray);
-    SAFEARRAY* pArray2 = ( 0 == (VT_BYREF & matrix2->vt) )?  (matrix2->parray): (*matrix2->pparray);
-    if ( !pArray1 || !pArray2 )                                 return ret;
-    UINT dim  = ::SafeArrayGetDim(pArray1);
-    UINT dim2 = ::SafeArrayGetDim(pArray2);
-    if ( 0 == dim || 3 < dim || dim != dim2 )                   return ret;
-    SAFEARRAYBOUND bounds1[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-    SAFEARRAYBOUND bounds2[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-    safeArrayBounds(pArray1, dim, bounds1);
-    safeArrayBounds(pArray2, dim, bounds2);
     SAFEARRAYBOUND minBounds[3] = {
-                        { minV(bounds1[0].cElements, bounds2[0].cElements), bounds1[0].lLbound },
-                        { minV(bounds1[1].cElements, bounds2[1].cElements), bounds1[1].lLbound },
-                        { minV(bounds1[2].cElements, bounds2[2].cElements), bounds1[2].lLbound }    };
+                        { minV(arIn1.getSize(1), arIn2.getSize(1)), 0 },
+                        { minV(arIn1.getSize(2), arIn2.getSize(2)), 0 },
+                        { minV(arIn1.getSize(3), arIn2.getSize(3)), 0 } };
     // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, minBounds);
+    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, arIn1.getDim(), minBounds);
+    ret.vt = VT_ARRAY | VT_VARIANT;
+    ret.parray = retArray;
+    safearrayRef arOut(&ret);
     for ( ULONG i = 0; i < minBounds[0].cElements; ++i )
     {
         for ( ULONG j = 0; j < minBounds[1].cElements; ++j )
         {
             for ( ULONG k = 0; k < minBounds[2].cElements; ++k )
             {
-                LONG index1[3] = {  static_cast<LONG>(i)+bounds1[0].lLbound,
-                                    static_cast<LONG>(j)+bounds1[1].lLbound,
-                                    static_cast<LONG>(k)+bounds1[2].lLbound     };
-                LONG index2[3] = {  static_cast<LONG>(i)+bounds2[0].lLbound,
-                                    static_cast<LONG>(j)+bounds2[1].lLbound,
-                                    static_cast<LONG>(k)+bounds2[2].lLbound };
-                VARIANT elem1, elem2;
-                ::VariantInit(&elem1);
-                ::VariantInit(&elem2);
-                ::SafeArrayGetElement(pArray1, index1, &elem1);
-                ::SafeArrayGetElement(pArray2, index2, &elem2);
-                ::SafeArrayPutElement(retArray, index1, func.eval(&elem1, &elem2));
-                ::VariantClear(&elem1);
-                ::VariantClear(&elem2);
+                VARIANT& elem1 = arIn1(i, j, k);
+                VARIANT& elem2 = arIn2(i, j, k);
+                ::VariantCopy(&arOut(i, j, k), func.eval(&elem1, &elem2));
             }
         }
     }
-    ret.vt = VT_ARRAY | VT_VARIANT;
-    ret.parray = retArray;
     return      ret;
 }
 
@@ -314,31 +288,22 @@ __int32  __stdcall
 find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def)
 {
     if ( !bfun || !matrix )                         return def;
-    if (  0 == (VT_ARRAY & matrix->vt ) )           return def;
-    SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
-    if ( !pArray )                                  return def;
-    if ( 1 != ::SafeArrayGetDim(pArray) )           return def;
+    safearrayRef arIn(matrix);
+    if ( arIn.getDim() != 1 )                       return def;
     VBCallbackFunc pf(bfun);
     if ( !pf )                                      return def;
     functionExpr func(pf);
-    SAFEARRAYBOUND bounds = {1,0};   //要素数、LBound
-    safeArrayBounds(pArray, 1, &bounds);
-    SAFEARRAYBOUND Bounds = { bounds.cElements, bounds.lLbound };
-    for ( ULONG i = 0; i < Bounds.cElements; ++i )
+    for ( std::size_t i = 0; i <arIn.getSize(1); ++i )
     {
-        LONG index = static_cast<LONG>(i) + bounds.lLbound;
-        VARIANT elem, ret;
-        ::VariantInit(&elem);
+        VARIANT& elem = arIn(i);
+        VARIANT ret;
         ::VariantInit(&ret);
-        ::SafeArrayGetElement(pArray, &index, &elem);
         ::VariantChangeType(&ret, func.eval(&elem, &elem), 0, VT_I4);
         if ( ret.lVal != 0 )
         {
-            ::VariantClear(&elem);
             ::VariantClear(&ret);
-            return static_cast<__int32>(index);
+            return static_cast<__int32>(i + arIn.getOriginalLBound(1));
         }
-        ::VariantClear(&elem);
         ::VariantClear(&ret);
     }
     return      def;
@@ -373,27 +338,33 @@ namespace   {
     void   fold_imple(  functionExpr&   bfun    ,
                         VARIANT*        init    ,
                         VARIANT*        matrix  ,
-                        __int32         axis    ,
+                        __int32 const   axis    ,
                         VARIANT&        ret     ,
-                        bool            left    ) //left==true, right == false
+                        bool const      left    ) //left==true, right == false
     {
-        SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
-        if ( !pArray )                                                  return;
-        UINT dim = ::SafeArrayGetDim(pArray);
-        if ( 0 == dim || 3 < dim )                                      return;
-        if ( axis < 1 || static_cast<__int32>(dim) < axis )             return;
-        axis -= 1;
-        SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-        safeArrayBounds(pArray, dim, bounds);
+        safearrayRef arIn(matrix);
+        __int32 const dim = arIn.getDim();
+        if ( 0 == dim )                     return;
+        if ( axis < 1 || dim < axis )       return;
+        int i = 0, j = 0, k = 0;
+        int& index1 = (axis == 1) ? j : i;
+        int& index2 = (axis == 3) ? j : k;
+        int& index = (axis == 1) ? i : (axis == 2)? j: k;
+        const int bound1 = (axis == 1) ? arIn.getSize(2) : arIn.getSize(1);
+        const int bound2 = (axis == 3) ? arIn.getSize(2) : arIn.getSize(3);
+        const int bound = (axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3);
         // SAFEARRAY作成
-        const LONG i = (axis == 0)? 1 : 0;
-        const LONG j = (axis == 2)? 1 : 2;
-        SAFEARRAYBOUND resultBounds[2] = { { bounds[i].cElements, 0 }, { bounds[j].cElements, 0} };
-        SAFEARRAY* retArray = (dim == 1)? 0 :   ::SafeArrayCreate(VT_VARIANT, dim-1, resultBounds);
-        LONG index[3];
-        for ( index[i] = 0; index[i] < static_cast<LONG>(bounds[i].cElements); ++index[i] )
+        SAFEARRAYBOUND resultBounds[2] = {{bound1, 0}, {bound2, 0}};
+        SAFEARRAY* retArray = (dim == 1)? 0 : SafeArrayCreate(VT_VARIANT, dim-1, resultBounds);
+        if ( 1 != dim )
         {
-            for ( index[j] = 0; index[j] < static_cast<LONG>(bounds[j].cElements); ++index[j] )
+            ret.vt = VT_ARRAY | VT_VARIANT;
+            ret.parray = retArray;
+        }
+        safearrayRef arOut(&ret);
+        for ( index1 = 0; index1 < bound1; ++index1 )
+        {
+            for ( index2 = 0; index2 < bound2; ++index2 )
             {
                 VARIANT result;
                 VARIANT* presult = &result;
@@ -404,45 +375,24 @@ namespace   {
                     ::VariantCopy(presult, init);
                     first_time = false;
                 }
-                for (   index[axis] = left? 0: static_cast<LONG>(bounds[axis].cElements) - 1;
-                        left? index[axis] < static_cast<LONG>(bounds[axis].cElements): 0 <= index[axis];
-                        index[axis] += (left? 1: -1)
-                    )
+                for (index = left? 0: bound - 1; left? index < bound: 0 <= index; index += (left? 1: -1))
                 {
-                    LONG sourceIndex[3] = { index[0] + bounds[0].lLbound,
-                                            index[1] + bounds[1].lLbound,
-                                            index[2] + bounds[2].lLbound    };
                     if ( first_time )
                     {
-                        ::SafeArrayGetElement(pArray, sourceIndex, presult);
+                        ::VariantCopy(presult, &arIn(i, j, k));
                         first_time = false;
                     }
                     else
                     {
-                        VARIANT elem;
-                        ::VariantInit(&elem);
-                        ::SafeArrayGetElement(pArray, sourceIndex, &elem);
+                        VARIANT& elem = arIn(i, j, k);
                         if ( left )     presult = bfun.eval(presult, &elem);
                         else            presult = bfun.eval(&elem, presult);
-                        ::VariantClear(&elem);
                     }
                 }
-                if ( 1 == dim )
-                {
-                    ::VariantCopy(&ret, presult);
-                }
-                else
-                {
-                    LONG targetIndex[2] = { index[i], index[j] };
-                    ::SafeArrayPutElement(retArray, targetIndex, presult);
-                }
-                ::VariantClear(&result);
+                if ( 1 == dim ) VariantCopy(&ret, presult);
+                else            VariantCopy(&arOut(index1, index2), presult);
+                VariantClear(presult);
             }
-        }
-        if ( 1 != dim )
-        {
-            ret.vt = VT_ARRAY | VT_VARIANT;
-            ret.parray = retArray;
         }
     }
 
@@ -450,30 +400,36 @@ namespace   {
     void   scan_imple(  functionExpr&   bfun    ,
                         VARIANT*        init    ,
                         VARIANT*        matrix  ,
-                        __int32         axis    ,
+                        __int32 const   axis    ,
                         VARIANT&        ret     ,
-                        bool            left    ) //left==true, right == false
+                        bool const      left    ) //left==true, right == false
     {
-        SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
-        if ( !pArray )                                                  return;
-        UINT dim = ::SafeArrayGetDim(pArray);
-        if ( 0 == dim || 3 < dim )                                      return;
-        if ( axis < 1 || static_cast<__int32>(dim) < axis )             return;
-        axis -= 1;
-        SAFEARRAYBOUND bounds[3] = {{1,0}, {1,0}, {1,0}};   //要素数、LBound
-        safeArrayBounds(pArray, dim, bounds);
+        safearrayRef arIn(matrix);
+        __int32 const dim = arIn.getDim();
+        if ( 0 == dim )                         return;
+        if ( axis < 1 || dim < axis )           return;
+        int i = 0, j = 0, k = 0;
+        int& index1 = (axis == 1) ? j : i;
+        int& index2 = (axis == 3) ? j : k;
+        int& index = (axis == 1) ? i : (axis == 2)? j: k;
+        const int bound1 = (axis == 1) ? arIn.getSize(2) : arIn.getSize(1);
+        const int bound2 = (axis == 3) ? arIn.getSize(2) : arIn.getSize(3);
+        const int bound = (axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3);
         // SAFEARRAY作成
-        const LONG i = (axis == 0)? 1 : 0;
-        const LONG j = (axis == 2)? 1 : 2;
-        SAFEARRAYBOUND resultBounds[3] = {  { bounds[0].cElements, 0},
-                                            { bounds[1].cElements, 0},
-                                            { bounds[2].cElements, 0}   };
-        if ( init )     resultBounds[axis].cElements += 1;
-        SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds);
-        LONG index[3];
-        for ( index[i] = 0; index[i] < static_cast<LONG>(bounds[i].cElements); ++index[i] )
         {
-            for ( index[j] = 0; index[j] < static_cast<LONG>(bounds[j].cElements); ++index[j] )
+            SAFEARRAYBOUND resultBounds[3] = { { arIn.getSize(1), 0 },
+                                               { arIn.getSize(2), 0 },
+                                               { arIn.getSize(3), 0 } };
+            if (init)     resultBounds[axis-1].cElements += 1;
+            SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds);
+            ret.vt = VT_ARRAY | VT_VARIANT;
+            ret.parray = retArray;
+        }
+        safearrayRef arOut(&ret);
+        auto adj = [=](std::size_t x){ return (init && left && x == axis) ? 1 : 0; };
+        for ( index1 = 0; index1 < bound1; ++index1 )
+        {
+            for ( index2 = 0; index2 < bound2; ++index2 )
             {
                 VARIANT result;
                 VARIANT* presult = &result;
@@ -482,43 +438,35 @@ namespace   {
                 if ( init )
                 {
                     ::VariantCopy(presult, init);
-                    LONG targetIndex[3] = { index[0], index[1], index[2] };
-                    targetIndex[axis] = left? 0: static_cast<LONG>(bounds[axis].cElements);
-                    ::SafeArrayPutElement(retArray, targetIndex, presult);
+                    index = left ? 0 : bound;
+                    ::VariantCopy(&arOut(i, j, k), presult);
                     first_time = false;
                 }
-                for (   index[axis] = left? 0: static_cast<LONG>(bounds[axis].cElements) - 1;
-                        left? index[axis] < static_cast<LONG>(bounds[axis].cElements): 0 <= index[axis];
-                        index[axis] += (left? 1: -1)
+                for (   index = left? 0: bound-1;
+                        left? index < bound: 0 <= index;
+                        index += (left? 1: -1)
                     )
                 {
-                    LONG sourceIndex[3] = { index[0] + bounds[0].lLbound,
-                                            index[1] + bounds[1].lLbound,
-                                            index[2] + bounds[2].lLbound    };
                     if ( first_time )
                     {
-                        ::SafeArrayGetElement(pArray, sourceIndex, presult);
                         first_time = false;
+                        ::VariantCopy(presult, &arIn(i, j, k));
                     }
                     else
                     {
                         first_time = false;
                         VARIANT elem;
                         ::VariantInit(&elem);
-                        ::SafeArrayGetElement(pArray, sourceIndex, &elem);
+                        ::VariantCopy(&elem, &arIn(i, j, k));
                         if ( left )     presult = bfun.eval(presult, &elem);
                         else            presult = bfun.eval(&elem, presult);
                         ::VariantClear(&elem);
                     }
-                    LONG targetIndex[3] = { index[0], index[1], index[2] };
-                    if ( init && left )     targetIndex[axis] += 1;
-                    ::SafeArrayPutElement(retArray, targetIndex, presult);
+                    ::VariantCopy(&arOut(i+adj(1), j+adj(2), k+adj(3)), presult);
                 }
                 ::VariantClear(&result);
             }
         }
-        ret.vt = VT_ARRAY | VT_VARIANT;
-        ret.parray = retArray;
     }
 
         //
@@ -566,17 +514,15 @@ namespace   {
         }
         if ( scan && 0 < vlist.size() )
         {
+            ::VariantClear(&ret);
             SAFEARRAYBOUND bound = { vlist.size(), 0 };
             SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
-            LONG index = 0;
-            for ( auto it = vlist.begin(); it != vlist.end(); ++it, ++index )
-            {
-                ::SafeArrayPutElement(retArray, &index, &*it);
-                ::VariantClear(&*it);
-            }
-            ::VariantClear(&ret);
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = retArray;
+            safearrayRef arOut(&ret);
+            LONG index = 0;
+            for ( auto it = vlist.begin(); it != vlist.end(); ++it, ++index )
+                std::swap(arOut(index), *it);
         }
         else
         {
