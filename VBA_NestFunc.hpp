@@ -18,8 +18,23 @@ VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param
 //bindされたVBA関数を1引数で呼び出す
 VARIANT __stdcall   bind_invoke(VARIANT* bfun, VARIANT* param);
 
-//要素数とLBoundを取得
-void    safeArrayBounds(SAFEARRAY* pArray, UINT dim, SAFEARRAYBOUND bounds[]);
+//--------------------------------------------------------
+class safearrayRef  {
+    SAFEARRAY*      psa;
+    VARTYPE         pvt;
+    std::size_t     dim;
+    std::size_t     elemsize;
+    char*           it;
+    std::size_t     size[3];
+    VARIANT         val_;
+public:
+    safearrayRef(const VARIANT* pv);
+    ~safearrayRef();
+    std::size_t getDim() const;
+    std::size_t getSize(std::size_t i) const;
+    std::size_t getOriginalLBound(std::size_t i) const;
+    VARIANT& operator()(std::size_t i, std::size_t j = 0, std::size_t k = 0);
+};
 
 //--------------------------------------------------------
 class funcExpr_i    {
