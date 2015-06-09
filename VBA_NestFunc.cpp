@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "VBA_NestFunc.hpp"
 
+
 //VBA配列の次元取得
 __int32 __stdcall Dimension(const VARIANT* pv)
 {
@@ -154,8 +155,8 @@ functionExpr::VBCallbackFunc_::VBCallbackFunc_(const VARIANT* bfun) : fun(0)
     VARIANT& elem0 = arRef(0);
     if ( elem0.vt != VT_I4 || elem0.lVal == 0 ) return;
     fun = reinterpret_cast<vbCallbackFunc_t>(elem0.lVal);
-    ::VariantCopy(&elem1, &arRef(1));
-    ::VariantCopy(&elem2, &arRef(2));
+    ::VariantCopyInd(&elem1, &arRef(1));
+    ::VariantCopyInd(&elem2, &arRef(2));
 }
 
 functionExpr::VBCallbackFunc_::~VBCallbackFunc_()
