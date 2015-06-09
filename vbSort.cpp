@@ -65,7 +65,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     {
         index[i] = i;
         ::VariantInit(&VArray[i]);
-        ::VariantCopy(&VArray[i], &arrIn(i));
+        ::VariantCopyInd(&VArray[i], &arrIn(i));
     }
     if ( defaultFlag == 1 ) //1次元昇順
     {
