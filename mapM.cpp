@@ -379,7 +379,7 @@ namespace   {
                 {
                     if ( first_time )
                     {
-                        ::VariantCopy(presult, &arIn(i, j, k));
+                        ::VariantCopyInd(presult, &arIn(i, j, k));
                         first_time = false;
                     }
                     else
@@ -450,14 +450,14 @@ namespace   {
                     if ( first_time )
                     {
                         first_time = false;
-                        ::VariantCopy(presult, &arIn(i, j, k));
+                        ::VariantCopyInd(presult, &arIn(i, j, k));
                     }
                     else
                     {
                         first_time = false;
                         VARIANT elem;
                         ::VariantInit(&elem);
-                        ::VariantCopy(&elem, &arIn(i, j, k));
+                        ::VariantCopyInd(&elem, &arIn(i, j, k));
                         if ( left )     presult = bfun.eval(presult, &elem);
                         else            presult = bfun.eval(&elem, presult);
                         ::VariantClear(&elem);
