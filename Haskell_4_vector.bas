@@ -178,20 +178,28 @@ Public Function vector(data As Variant) As Variant
 End Function
 
 'ベクトルを逆順に並べる
-Public Function reverse(ByRef data As Variant) As Variant
+Public Function reverse(ByRef vec As Variant) As Variant
     Dim ret As Variant
-    Dim i  As Long, j As Long
-
-    ret = data
-    If Dimension(data) = 1 Then
-         i = LBound(data)
-         j = UBound(data)
-        Do While i < j
-            ret(i) = data(j)
-            ret(j) = data(i)
-            i = i + 1
-            j = j - 1
-        Loop
+    Dim i As Long, j As Long
+    If Dimension(vec) = 1 Then
+        i = LBound(vec)
+        j = UBound(vec)
+        If VarType(vec) = VarType(Array()) Then
+            ret = vec
+            Do While i < j
+                swapVariant ret(i), ret(j)
+                i = i + 1
+                j = j - 1
+            Loop
+        Else
+            ReDim ret(LBound(vec) To UBound(vec))
+            Do While i < j
+                ret(i) = vec(j)
+                ret(j) = vec(i)
+                i = i + 1
+                j = j - 1
+            Loop
+        End If
     End If
     reverse = moveVariant(ret)
 End Function
@@ -564,7 +572,7 @@ Function zipR(ByRef m As Variant) As Variant
 
     If 0 < colSize(m) Then ReDim ret(0 To colSize(m) - 1)
     For i = LBound(ret) To UBound(ret) Step 1
-        ret(i) = selectCol(m, i)
+        swapVariant ret(i), selectCol(m, i)
     Next i
     zipR = moveVariant(ret)
 End Function
@@ -576,7 +584,7 @@ Function zipC(ByRef m As Variant) As Variant
 
     If 0 < rowSize(m) Then ReDim ret(0 To rowSize(m) - 1)
     For i = LBound(ret) To UBound(ret) Step 1
-        ret(i) = selectRow(m, i)
+        swapVariant ret(i), selectRow(m, i)
     Next i
     zipC = moveVariant(ret)
 End Function
@@ -601,7 +609,7 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
                 If j <= UBound(vec(i)) Then z(counter) = vec(i)(j)
                 counter = counter + 1
             Next i
-            ret(j) = moveVariant(z)
+            swapVariant ret(j), z
         Next j
     Else
         ReDim ret(0 To sizeof(vec) - 1, 0 To colLen - 1)
