@@ -70,7 +70,7 @@ End Function
 'make_funPointer(func, firstParam)                  1番目の引数を束縛
 'make_funPointer(func, , secondParam)               2番目の引数を束縛
 'make_funPointer(func, firstParam, secondParam)     両方の引数を束縛（遅延評価）
-Function make_funPointer(ByVal func As Long, _
+Function make_funPointer(ByVal func As LongPtr, _
                          Optional ByRef firstParam As Variant, _
                          Optional ByRef secondParam As Variant) As Variant
     make_funPointer = VBA.Array(func, _
@@ -81,7 +81,7 @@ Function make_funPointer(ByVal func As Long, _
 End Function
 
 'ユーザ関数をbindファンクタ化する（2番目の引数にデフォルト値を設定する場合）
-Function make_funPointer_with_2nd_Default(ByVal func As Long, _
+Function make_funPointer_with_2nd_Default(ByVal func As LongPtr, _
                          Optional ByRef firstParam As Variant, _
                          Optional ByRef secondParam As Variant) As Variant
     make_funPointer_with_2nd_Default = VBA.Array(func, _
