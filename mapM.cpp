@@ -82,11 +82,11 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
     SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
     if ( arIn.getDim() == 0 )                      return ret;
     SAFEARRAYBOUND Bounds[3] = {
-                                { arIn.getSize(1), 0 },
-                                { arIn.getSize(2), 0 },
-                                { arIn.getSize(3), 0 } };
+                                { static_cast<ULONG>(arIn.getSize(1)), 0 },
+                                { static_cast<ULONG>(arIn.getSize(2)), 0 },
+                                { static_cast<ULONG>(arIn.getSize(3)), 0 } };
     // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, arIn.getDim(), Bounds);
+    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn.getDim()), Bounds);
     ret.vt = VT_ARRAY | VT_VARIANT;
     ret.parray = retArray;
     safearrayRef arOut(&ret);
@@ -127,11 +127,11 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
         return ret;
     //----------------------------
     SAFEARRAYBOUND minBounds[3] = {
-                        { minV(arIn1.getSize(1), arIn2.getSize(1)), 0 },
-                        { minV(arIn1.getSize(2), arIn2.getSize(2)), 0 },
-                        { minV(arIn1.getSize(3), arIn2.getSize(3)), 0 } };
+                { static_cast<ULONG>(minV(arIn1.getSize(1), arIn2.getSize(1))), 0 },
+                { static_cast<ULONG>(minV(arIn1.getSize(2), arIn2.getSize(2))), 0 },
+                { static_cast<ULONG>(minV(arIn1.getSize(3), arIn2.getSize(3))), 0 } };
     // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, arIn1.getDim(), minBounds);
+    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn1.getDim()), minBounds);
     ret.vt = VT_ARRAY | VT_VARIANT;
     ret.parray = retArray;
     safearrayRef arOut(&ret);
@@ -343,16 +343,16 @@ namespace   {
                         bool const      left    ) //left==true, right == false
     {
         safearrayRef arIn(matrix);
-        __int32 const dim = arIn.getDim();
+        __int32 const dim = static_cast<__int32>(arIn.getDim());
         if ( 0 == dim )                     return;
         if ( axis < 1 || dim < axis )       return;
         int i = 0, j = 0, k = 0;
         int& index1 = (axis == 1) ? j : i;
         int& index2 = (axis == 3) ? j : k;
         int& index = (axis == 1) ? i : (axis == 2)? j: k;
-        const int bound1 = (axis == 1) ? arIn.getSize(2) : arIn.getSize(1);
-        const int bound2 = (axis == 3) ? arIn.getSize(2) : arIn.getSize(3);
-        const int bound = (axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3);
+        const int bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
+        const int bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
+        const int bound = static_cast<int>((axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3));
         // SAFEARRAY作成
         SAFEARRAYBOUND resultBounds[2] = {{bound1, 0}, {bound2, 0}};
         SAFEARRAY* retArray = (dim == 1)? 0 : SafeArrayCreate(VT_VARIANT, dim-1, resultBounds);
@@ -405,21 +405,21 @@ namespace   {
                         bool const      left    ) //left==true, right == false
     {
         safearrayRef arIn(matrix);
-        __int32 const dim = arIn.getDim();
+        __int32 const dim = static_cast<__int32>(arIn.getDim());
         if ( 0 == dim )                         return;
         if ( axis < 1 || dim < axis )           return;
         int i = 0, j = 0, k = 0;
         int& index1 = (axis == 1) ? j : i;
         int& index2 = (axis == 3) ? j : k;
         int& index = (axis == 1) ? i : (axis == 2)? j: k;
-        const int bound1 = (axis == 1) ? arIn.getSize(2) : arIn.getSize(1);
-        const int bound2 = (axis == 3) ? arIn.getSize(2) : arIn.getSize(3);
-        const int bound = (axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3);
+        const int bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
+        const int bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
+        const int bound = static_cast<int>((axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3));
         // SAFEARRAY作成
         {
-            SAFEARRAYBOUND resultBounds[3] = { { arIn.getSize(1), 0 },
-                                               { arIn.getSize(2), 0 },
-                                               { arIn.getSize(3), 0 } };
+            SAFEARRAYBOUND resultBounds[3] = { { static_cast<ULONG>(arIn.getSize(1)), 0 },
+                                               { static_cast<ULONG>(arIn.getSize(2)), 0 },
+                                               { static_cast<ULONG>(arIn.getSize(3)), 0 } };
             if (init)     resultBounds[axis-1].cElements += 1;
             SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds);
             ret.vt = VT_ARRAY | VT_VARIANT;
@@ -515,7 +515,7 @@ namespace   {
         if ( scan && 0 < vlist.size() )
         {
             ::VariantClear(&ret);
-            SAFEARRAYBOUND bound = { vlist.size(), 0 };
+            SAFEARRAYBOUND bound = { static_cast<ULONG>(vlist.size()), 0 };
             SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = retArray;
