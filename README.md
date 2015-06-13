@@ -1,5 +1,5 @@
 # VBA
-VBA用のなんちゃってHaskellモジュール(32bit Office Only)  
+VBA用のなんちゃってHaskellモジュール  
 
 ・関数型プログラミングのサポート  
 　　関数を合成して新しい関数オブジェクトとして返す機能  
@@ -61,7 +61,8 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 	swapVariant = swapVariant  
 
 (mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
-(dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
+(32bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
+(64bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM64.dll)  
 
 以下のbasファイルはVBAのソースコード。
 標準モジュールにそのまま取り込む。  
@@ -75,6 +76,9 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 
 '=============================================================  
+2015/6/13  
+64bit Officeに対応
+
 2015/6/08  
 safearrayRefクラスの導入によるリファクタリング  
 
