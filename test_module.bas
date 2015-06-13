@@ -3,7 +3,7 @@ Attribute VB_Name = "test_module"
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
-Declare Function GetTickCount Lib "Kernel32.dll" () As Long
+Declare PtrSafe Function GetTickCount Lib "Kernel32.dll" () As Long
 
 '***********************************************************************
 '   テスト関数
