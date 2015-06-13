@@ -30,96 +30,96 @@ Option Explicit
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '======================================================
 ' VBA配列の次元取得
-Declare Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
+Declare PtrSafe Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
 'プレースホルダ・オブジェクトの生成
-Declare Function placeholder Lib "mapM.dll" (Optional ByVal n As Long = 0) As Variant
+Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal n As Long = 0) As Variant
 
 'プレースホルダ・オブジェクト判定
-Declare Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
+Declare PtrSafe Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
 
 'bindされていないVBA関数を2引数で呼び出す
-Declare Function unbind_invoke Lib "mapM.dll" ( _
+Declare PtrSafe Function unbind_invoke Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef param1 As Variant, _
         ByRef param2 As Variant) As Variant
 
 ' 配列matrixの各要素elemにCallback関数を適用する
-Declare Function mapF_imple Lib "mapM.dll" ( _
+Declare PtrSafe Function mapF_imple Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant) As Variant
 
 '配列matrix1とmatrix2の各要素に2変数のCallback関数を適用する
-Declare Function zipWith Lib "mapM.dll" ( _
+Declare PtrSafe Function zipWith Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix1 As Variant, _
         ByRef matrix2 As Variant) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
-Declare Function foldl Lib "mapM.dll" ( _
+Declare PtrSafe Function foldl Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
-Declare Function foldr Lib "mapM.dll" ( _
+Declare PtrSafe Function foldr Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
-Declare Function foldl1 Lib "mapM.dll" ( _
+Declare PtrSafe Function foldl1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
-Declare Function foldr1 Lib "mapM.dll" ( _
+Declare PtrSafe Function foldr1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った左scan（初期値指定あり）
-Declare Function scanl Lib "mapM.dll" ( _
+Declare PtrSafe Function scanl Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った右scan（初期値指定あり）
-Declare Function scanr Lib "mapM.dll" ( _
+Declare PtrSafe Function scanr Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
-Declare Function scanl1 Lib "mapM.dll" ( _
+Declare PtrSafe Function scanl1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 3次元までのVBA配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
-Declare Function scanr1 Lib "mapM.dll" ( _
+Declare PtrSafe Function scanr1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
 ' 1次元配列のソートインデックス出力
-Declare Function stdsort Lib "mapM.dll" (ByRef ary As Variant, _
+Declare PtrSafe Function stdsort Lib "mapM.dll" (ByRef ary As Variant, _
                                          ByVal defaultFlag As Long, _
                                          ByRef pComp As Variant) As Variant
 
 ' 述語による検索
-Declare Function find_imple Lib "mapM.dll" ( _
+Declare PtrSafe Function find_imple Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         ByVal def As Long) As Long
 
 '関数適用のループ（+ 終了条件）
-Declare Function repeat_imple Lib "mapM.dll" ( _
+Declare PtrSafe Function repeat_imple Lib "mapM.dll" ( _
                         ByRef init As Variant, _
                     ByRef pred As Variant, _
                 ByRef trans As Variant, _
@@ -128,4 +128,4 @@ Declare Function repeat_imple Lib "mapM.dll" ( _
     ByVal stopCondition As Long) As Variant
 
 'VARIANT変数どうしのスワップ
-Declare Function swapVariant Lib "mapM.dll" (ByRef a As Variant, ByRef b As Variant) As Long
+Declare PtrSafe Function swapVariant Lib "mapM.dll" (ByRef a As Variant, ByRef b As Variant) As Long
