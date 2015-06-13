@@ -53,8 +53,8 @@ safearrayRef::safearrayRef(const VARIANT* pv)
     for (decltype(dim) i = 0; i < dim; ++i)
     {
         LONG ub = 0, lb = 0;
-        ::SafeArrayGetUBound(psa, i+1, &ub);
-        ::SafeArrayGetLBound(psa, i+1, &lb);
+        ::SafeArrayGetUBound(psa, static_cast<UINT>(i+1), &ub);
+        ::SafeArrayGetLBound(psa, static_cast<UINT>(i+1), &lb);
         size[i] = ub - lb + 1;
     }
 }
@@ -77,7 +77,7 @@ std::size_t safearrayRef::getSize(std::size_t i) const
 std::size_t safearrayRef::getOriginalLBound(std::size_t i) const
 {
     LONG lb = 0;
-    ::SafeArrayGetLBound(psa, i, &lb);
+    ::SafeArrayGetLBound(psa, static_cast<UINT>(i), &lb);
     return lb;
 }
 
@@ -152,9 +152,13 @@ functionExpr::VBCallbackFunc_::VBCallbackFunc_(const VARIANT* bfun) : fun(0)
     if ( 1 != arRef.getDim() )         return;
     if ( arRef.getSize(1) < 4 )        return;
     if ( placeholder_num(&arRef(3)) < 0 )   return;
-    VARIANT& elem0 = arRef(0);
-    if ( elem0.vt != VT_I4 || elem0.lVal == 0 ) return;
-    fun = reinterpret_cast<vbCallbackFunc_t>(elem0.lVal);
+    {
+        VARIANT pF;
+        VariantInit(&pF);
+        if ( S_OK != ::VariantChangeType(&pF, &arRef(0), 0, VT_I8))     return;
+        fun = reinterpret_cast<vbCallbackFunc_t>(pF.llVal);
+        VariantClear(&pF);
+    }
     ::VariantCopyInd(&elem1, &arRef(1));
     ::VariantCopyInd(&elem2, &arRef(2));
 }
