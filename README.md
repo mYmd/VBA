@@ -64,7 +64,7 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 (32bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
 (64bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM64.dll)  
 
-以下のbasファイルはVBAのソースコード。
+以下のbasファイルはVBAのソースコード。(Office 2010～)
 標準モジュールにそのまま取り込む。  
   Haskell_0_declare.bas（Declare文のみ）  
   Haskell_1_Core.bas（中心となるモジュール）  
@@ -74,7 +74,8 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
   Haskell_5_sort.bas（ソートとlower_bound等）  
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
-
+2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
+Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
 2015/6/13  
 64bit Officeに対応
