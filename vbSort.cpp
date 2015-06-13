@@ -63,7 +63,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     std::unique_ptr<VARIANT[]>	VArray(new VARIANT[arrIn.getSize(1)]);
     for (std::size_t i = 0; i < arrIn.getSize(1); ++i)
     {
-        index[i] = i;
+        index[i] = static_cast<__int32>(i);
         ::VariantInit(&VArray[i]);
         ::VariantCopyInd(&VArray[i], &arrIn(i));
     }
@@ -84,7 +84,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
             std::sort(index.get(), index.get() + arrIn.getSize(1), functor);
     }
     //-------------------------------------------------------
-    SAFEARRAYBOUND boundRet = { arrIn.getSize(1), 0};   //要素数、LBound
+    SAFEARRAYBOUND boundRet = { static_cast<ULONG>(arrIn.getSize(1)), 0};   //要素数、LBound
     SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
     ret.vt = VT_ARRAY | VT_VARIANT;
     ret.parray = retArray;
@@ -94,7 +94,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     elem.vt = VT_I4;
     for ( std::size_t i = 0; i < arrIn.getSize(1); ++i )
     {
-        elem.lVal = index[i] + arrIn.getOriginalLBound(1);
+        elem.lVal = static_cast<LONG>(index[i] + arrIn.getOriginalLBound(1));
         ::VariantCopy(&arrOut(i), &elem);
     }
     return      ret;
