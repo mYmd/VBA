@@ -1,3 +1,4 @@
+Attribute VB_Name = "Haskell_5_sort"
 'Haskell_5_sort
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
@@ -51,18 +52,18 @@ End Function
 Sub permutate(ByRef vec As Variant, ByRef sindex As Variant)
     Dim i As Long
     Dim ret As Variant
+    If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Sub
+    ReDim ret(LBound(vec) To UBound(vec))
     If VarType(vec) = VarType(Array()) Then
-        ReDim ret(LBound(vec) To UBound(vec))
         For i = LBound(vec) To UBound(vec) Step 1
             swapVariant ret(i), vec(sindex(i))
         Next i
     ElseIf IsObject(vec(LBound(vec))) Then
-        ret = vec
         For i = LBound(vec) To UBound(vec) Step 1
             Set ret(i) = vec(sindex(i))
+            Set vec(sindex(i)) = Nothing
         Next i
     Else
-        ret = vec
         For i = LBound(vec) To UBound(vec) Step 1
             ret(i) = vec(sindex(i))
         Next i
