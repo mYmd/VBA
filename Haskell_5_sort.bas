@@ -1,4 +1,3 @@
-Attribute VB_Name = "Haskell_5_sort"
 'Haskell_5_sort
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
@@ -56,6 +55,11 @@ Sub permutate(ByRef vec As Variant, ByRef sindex As Variant)
         ReDim ret(LBound(vec) To UBound(vec))
         For i = LBound(vec) To UBound(vec) Step 1
             swapVariant ret(i), vec(sindex(i))
+        Next i
+    ElseIf IsObject(vec(LBound(vec))) Then
+        ret = vec
+        For i = LBound(vec) To UBound(vec) Step 1
+            Set ret(i) = vec(sindex(i))
         Next i
     Else
         ret = vec
