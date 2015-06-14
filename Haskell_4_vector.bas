@@ -191,6 +191,14 @@ Public Function reverse(ByRef vec As Variant) As Variant
                 i = i + 1
                 j = j - 1
             Loop
+        ElseIf IsObject(vec(LBound(vec))) Then
+            ReDim ret(LBound(vec) To UBound(vec))
+            Do While i < j
+                Set ret(i) = vec(j)
+                Set ret(j) = vec(i)
+                i = i + 1
+                j = j - 1
+            Loop
         Else
             ReDim ret(LBound(vec) To UBound(vec))
             Do While i < j
