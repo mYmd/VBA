@@ -108,7 +108,7 @@ public:
         ::VariantInit(&val);
         ::VariantCopy(&val, v);
     }
-    ~valueExpr()    {   }
+    ~valueExpr()    { ::VariantClear(&val); }
     VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0)   {   return &val;    }
 };
 
