@@ -51,19 +51,18 @@ class functionExpr : public funcExpr_i    {
     // もしくは
     // Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
     typedef VARIANT (__stdcall *vbCallbackFunc_t)(VARIANT*, VARIANT*);
-    vbCallbackFunc_t  fun;
-    VARIANT         val;
+    vbCallbackFunc_t    fun;
+    VARIANT             val;
     std::unique_ptr<funcExpr_i> left;
     std::unique_ptr<funcExpr_i> right;
 public:
         class VBCallbackFunc_   {
             friend class functionExpr;
             vbCallbackFunc_t    fun;
-            VARIANT             elem1;
-            VARIANT             elem2;
+            VARIANT*            elem1;
+            VARIANT*            elem2;
         public:
             VBCallbackFunc_(const VARIANT* bfun);
-            ~VBCallbackFunc_();
             operator bool() const;
         };
     //---------------------------------
