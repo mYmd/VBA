@@ -101,15 +101,10 @@ funcExpr_i::~funcExpr_i()
 
 //--------------------------------------------------------
 class valueExpr : public funcExpr_i    {
-    VARIANT     val;
+    VARIANT*     val;
 public:
-    valueExpr(VARIANT* v)
-    {
-        ::VariantInit(&val);
-        ::VariantCopyInd(&val, v);
-    }
-    ~valueExpr()    { ::VariantClear(&val); }
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0)   {   return &val;    }
+    valueExpr(VARIANT* v) : val(v)    {    }
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0)   {   return val;    }
 };
 
 //--------------------------------------------------------
@@ -144,10 +139,8 @@ namespace   {
     }
 }
 //-------------------------------------------------------------
-functionExpr::VBCallbackFunc_::VBCallbackFunc_(const VARIANT* bfun) : fun(0)
+functionExpr::VBCallbackFunc_::VBCallbackFunc_(const VARIANT* bfun) : fun(0), elem1(0), elem2(0)
 {
-    ::VariantInit(&elem1);
-    ::VariantInit(&elem2);
     safearrayRef arRef(bfun);
     if ( 1 != arRef.getDim() )         return;
     if ( arRef.getSize(1) < 4 )        return;
@@ -159,14 +152,8 @@ functionExpr::VBCallbackFunc_::VBCallbackFunc_(const VARIANT* bfun) : fun(0)
         fun = reinterpret_cast<vbCallbackFunc_t>(pF.llVal);
         VariantClear(&pF);
     }
-    ::VariantCopyInd(&elem1, &arRef(1));
-    ::VariantCopyInd(&elem2, &arRef(2));
-}
-
-functionExpr::VBCallbackFunc_::~VBCallbackFunc_()
-{
-    ::VariantClear(&elem1);
-    ::VariantClear(&elem2);
+    elem1 = &arRef(1);
+    elem2 = &arRef(2);
 }
 
 functionExpr::VBCallbackFunc_::operator bool() const
@@ -179,32 +166,32 @@ functionExpr::functionExpr(VBCallbackFunc_& callback) : fun(callback.fun)
 {
     ::VariantInit(&val);
     {
-        VBCallbackFunc_ fun1(&callback.elem1);
+        VBCallbackFunc_ fun1(callback.elem1);
         int pn = -1;
         if ( fun1 )
             left.reset(new functionExpr(fun1));
-        else if ( 0 == (pn = placeholder_num(&callback.elem1)) )
+        else if ( 0 == (pn = placeholder_num(callback.elem1)) )
             left.reset(new placeholder0);
         else if ( 1 == pn )
             left.reset(new placeholder1);
         else if ( 2 == pn )
             left.reset(new placeholder2);
         else
-            left.reset(new valueExpr(&callback.elem1));
+            left.reset(new valueExpr(callback.elem1));
     }
     {
-        VBCallbackFunc_ fun2(&callback.elem2);
+        VBCallbackFunc_ fun2(callback.elem2);
         int pn = -1;
         if ( fun2 )
             right.reset(new functionExpr(fun2));
-        else if ( 0 == (pn = placeholder_num(&callback.elem2)) )
+        else if ( 0 == (pn = placeholder_num(callback.elem2)) )
             right.reset(new placeholder0);
         else if ( 1 == pn )
             right.reset(new placeholder1);
         else if ( 2 == pn )
             right.reset(new placeholder2);
         else
-            right.reset(new valueExpr(&callback.elem2));
+            right.reset(new valueExpr(callback.elem2));
     }
 }
 
