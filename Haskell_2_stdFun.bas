@@ -82,6 +82,9 @@ End Function
 '   Function less_equal     述語 less_equal
 '   Function greater        述語 greater
 '   Function greater_equal  述語 greater_equal
+'   Function is_null        述語 is_null
+'   Function is_empty       述語 is_empty
+'   Function is_valid       述語 is_valid
 '********************************************************************
 
 '定数関数
@@ -387,4 +390,28 @@ Function greater_equal(ByRef a As Variant, ByRef b As Variant) As Variant
 End Function
     Function p_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_greater_equal = make_funPointer(AddressOf greater_equal, firstParam, secondParam)
+    End Function
+
+'述語 is_null
+Function is_null(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    is_null = IIf(IsNull(a), 1&, 0&)
+End Function
+    Function p_is_null(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_is_null = make_funPointer(AddressOf is_null, firstParam, secondParam)
+    End Function
+
+'述語 is_empty
+Function is_empty(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    is_empty = IIf(IsEmpty(a), 1&, 0&)
+End Function
+    Function p_is_empty(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_is_empty = make_funPointer(AddressOf is_empty, firstParam, secondParam)
+    End Function
+
+'述語 is_valid
+Function is_valid(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    is_valid = IIf(IsEmpty(a) Or IsNull(a), 0&, 1&)
+End Function
+    Function p_is_valid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_is_valid = make_funPointer(AddressOf is_valid, firstParam, secondParam)
     End Function
