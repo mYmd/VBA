@@ -51,24 +51,31 @@ End Function
 '1次元配列vecの並べ換え   sindexがvecの範囲外もしくは重複があった場合の動作は未定義
 Sub permutate(ByRef vec As Variant, ByRef sindex As Variant)
     Dim i As Long
-    Dim ret As Variant
+    Dim tmp As Variant
     If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Sub
-    ReDim ret(LBound(vec) To UBound(vec))
     If VarType(vec) = VarType(Array()) Then
+        ReDim tmp(LBound(vec) To UBound(vec))
         For i = LBound(vec) To UBound(vec) Step 1
-            swapVariant ret(i), vec(sindex(i))
+            swapVariant tmp(i), vec(sindex(i))
         Next i
+        If swapVariant(tmp, vec) = 0 Then
+            For i = LBound(vec) To UBound(vec) Step 1
+                swapVariant tmp(i), vec(i)
+            Next i
+        End If
     ElseIf IsObject(vec(LBound(vec))) Then
+        tmp = vec
         For i = LBound(vec) To UBound(vec) Step 1
-            Set ret(i) = vec(sindex(i))
-            Set vec(sindex(i)) = Nothing
+            Set vec(i) = Nothing
+            Set vec(i) = tmp(sindex(i))
+            Set tmp(sindex(i)) = Nothing
         Next i
     Else
+        tmp = vec
         For i = LBound(vec) To UBound(vec) Step 1
-            ret(i) = vec(sindex(i))
+            vec(i) = tmp(sindex(i))
         Next i
     End If
-    swapVariant ret, vec
 End Sub
 
 
