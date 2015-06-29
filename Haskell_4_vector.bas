@@ -20,6 +20,7 @@ Option Explicit
     ' Function  tailN               ベクトルの最後のN個
     ' Function  vector              スカラー、配列のベクトル化
     ' Function  reverse             ベクトルを逆順に並べる
+    ' Function  rotate              1次元配列の回転
     ' Function  selectRow           特定行の取得
     ' Function  selectCol           特定列の取得
     ' Function  makeM               配列の作成
@@ -212,6 +213,56 @@ Public Function reverse(ByRef vec As Variant) As Variant
     End If
     reverse = moveVariant(ret)
 End Function
+
+'1次元配列の回転
+'[0,1,2,3,4,5] -> [1,2,3,4,5,0] (r=1) [0,1,2,3,4,5] -> [5,0,1,2,3,4] (r=-1)
+Function rotate(ByRef vec As Variant, ByRef r As Variant) As Variant
+    If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Function
+    Dim rt As Long:     rt = r
+    If rt < 0 Then rt = (1 + (-rt) \ sizeof(vec)) * sizeof(vec) + rt
+    rt = rt Mod sizeof(vec)
+    If rt = 0 Then
+        rotate = vec
+    ElseIf VarType(vec) = VarType(Array()) Then
+        Call rotate_imple_V(vec, LBound(vec) + rt, rotate)
+    ElseIf IsObject(vec(LBound(vec))) Then
+        Call rotate_imple_O(vec, LBound(vec) + rt, rotate)
+    Else
+        Call rotate_imple_L(vec, LBound(vec) + rt, rotate)
+    End If
+End Function
+    Function p_rotate(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_rotate = make_funPointer(AddressOf rotate, firstParam, secondParam)
+    End Function
+
+    '                  ここはByValで
+    Private Sub rotate_imple_V(ByVal vec As Variant, ByVal j As Long, ByRef ret As Variant)
+        ReDim ret(LBound(vec) To UBound(vec))
+        Dim i As Long
+        For i = LBound(vec) To UBound(vec) Step 1
+            If UBound(vec) < j Then j = LBound(vec)
+            swapVariant ret(i), vec(j)
+            j = j + 1
+        Next i
+    End Sub
+    Private Sub rotate_imple_O(ByRef vec As Variant, ByVal j As Long, ByRef ret As Variant)
+        ReDim ret(LBound(vec) To UBound(vec))
+        Dim i As Long
+        For i = LBound(vec) To UBound(vec) Step 1
+            If UBound(vec) < j Then j = LBound(vec)
+            Set ret(i) = vec(j)
+            j = j + 1
+        Next i
+    End Sub
+    Private Sub rotate_imple_L(ByRef vec As Variant, ByVal j As Long, ByRef ret As Variant)
+        ReDim ret(LBound(vec) To UBound(vec))
+        Dim i As Long
+        For i = LBound(vec) To UBound(vec) Step 1
+            If UBound(vec) < j Then j = LBound(vec)
+            ret(i) = vec(j)
+            j = j + 1
+        Next i
+    End Sub
 
 '特定行の取得
 Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
