@@ -87,13 +87,13 @@ Public Function a_cols(ByRef matrix As Variant) As Variant
 End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
+Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If N < 1 Then repeat = VBA.Array(): Exit Function
-    ReDim ret(0 To N - 1)
-    For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
+    If n < 1 Then repeat = VBA.Array(): Exit Function
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1 Step 1:         ret(i) = v:       Next i
     repeat = moveVariant(ret)
 End Function
 
@@ -113,18 +113,18 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 'ベクトルの最初のN個
-Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         headN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         headN = vec
     Else
         lb = LBound(vec)
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         headN = moveVariant(ret)
@@ -135,18 +135,18 @@ End Function
     End Function
 
 'ベクトルの最後のN個
-Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         tailN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         tailN = vec
     Else
-        lb = UBound(vec) - N + 1
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        lb = UBound(vec) - n + 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         tailN = moveVariant(ret)
@@ -542,7 +542,18 @@ End Function
 
 'ベクトルを結合（可変長引数）
 Function catVs(ParamArray vectors() As Variant) As Variant
-    catVs = foldl1(p_catV, VBA.Array(vectors)(0))
+    Dim i As Long
+    Dim tmp As Variant
+    If LBound(vectors) <= UBound(vectors) Then
+        ReDim tmp(LBound(vectors) To UBound(vectors))
+        For i = LBound(vectors) To UBound(vectors)
+            swapVariant vectors(i), tmp(i)
+        Next i
+        catVs = foldl1(p_catV, tmp)
+        For i = LBound(vectors) To UBound(vectors)
+            swapVariant vectors(i), tmp(i)
+        Next i
+    End If
 End Function
 
 '行方向に結合
@@ -634,7 +645,18 @@ End Function
 
 'zip（可変長引数）
 Function zipVs(ParamArray vectors() As Variant) As Variant
-    zipVs = foldl1(p_zip, VBA.Array(vectors)(0))
+    Dim i As Long
+    Dim tmp As Variant
+    If LBound(vectors) <= UBound(vectors) Then
+        ReDim tmp(LBound(vectors) To UBound(vectors))
+        For i = LBound(vectors) To UBound(vectors)
+            swapVariant vectors(i), tmp(i)
+        Next i
+        zipVs = foldl1(p_zip, tmp)
+        For i = LBound(vectors) To UBound(vectors)
+            swapVariant vectors(i), tmp(i)
+        Next i
+    End If
 End Function
 
 '２次元配列の各行ベクトルをzip
