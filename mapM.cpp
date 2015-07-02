@@ -54,11 +54,11 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
 __int32 __stdcall
 swapVariant(VARIANT* a, VARIANT* b)
 {
-	if ( a && b && 0 == (VT_BYREF & a->vt) && 0 == (VT_BYREF & b->vt) )
+	if ( a && b )
 	{
 		std::swap(*a, *b);
-		return 1;
-	}
+        return ( 0 == (VT_BYREF & a->vt) && 0 == (VT_BYREF & b->vt) ) ? 1: 0;
+	}    
 	return 0;
 }
 
