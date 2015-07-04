@@ -38,7 +38,7 @@ Option Explicit
     ' Function  transpose           配列の転置
     ' Function  zip                 ふたつの配列の対応する要素どうしをcatV(ベクトル結合)してジャグ配列を作る
     ' Function  zipVs               可変長引数zip
-    ' Function  unzip               zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+    ' Function  unzip               zipされたジャグ配列をほどいてzip前の1次元配列またはzipC前の2次元配列にする
     ' Function  zipR                2次元配列の各行ベクトルをzip
     ' Function  zipC                2次元配列の各列ベクトルをzip
     ' Function  makeSole            Array(a)作成
@@ -69,11 +69,12 @@ End Function
 
 '配列の全要素数
 Public Function sizeof(ByRef data As Variant) As Long
-    Dim i As Long, d As Long
-    
-    d = Dimension(data)
+    Dim d As Long:  d = Dimension(data)
+    Dim i As Long
     sizeof = 1
-    For i = 1 To d Step 1:        sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i)):    Next i
+    For i = 1 To d Step 1
+        sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i))
+    Next i
 End Function
 
 '全行番号の列挙
@@ -215,7 +216,8 @@ Public Function reverse(ByRef vec As Variant) As Variant
 End Function
 
 '1次元配列の回転
-'[0,1,2,3,4,5] -> [1,2,3,4,5,0] (r=1) [0,1,2,3,4,5] -> [5,0,1,2,3,4] (r=-1)
+'[0,1,2,3,4,5] -> [1,2,3,4,5,0] (r=1)
+'[0,1,2,3,4,5] -> [5,0,1,2,3,4] (r=-1)
 Function rotate(ByRef vec As Variant, ByRef r As Variant) As Variant
     If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Function
     Dim rt As Long:     rt = r
@@ -268,7 +270,6 @@ End Function
 Public Function selectRow(data As Variant, ByRef i As Variant) As Variant
     Dim j     As Long
     Dim ret   As Variant
-
     If i < LBound(data, 1) Or UBound(data, 1) < i Then
         selectRow = VBA.Array()
     Else
@@ -287,7 +288,6 @@ End Function
 Public Function selectCol(data As Variant, ByRef j As Variant) As Variant
     Dim i     As Long
     Dim ret   As Variant
-
     If j < LBound(data, 2) Or UBound(data, 2) < j Then
         selectCol = VBA.Array()
     Else
@@ -305,7 +305,6 @@ End Function
 '配列の作成      makeM(6, 3) => 6行(0,1,2,3,4,5) x 3列(0,1,2)
 Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByRef data As Variant) As Variant
     Dim ret   As Variant
-    
     If IsMissing(c) Then
         If 0 < r Then ReDim ret(0 To r - 1)
     Else
@@ -319,7 +318,6 @@ End Function
 Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
     Dim i    As Long, j As Long, k As Long
     Dim data_2  As Variant
-
     If Dimension(data) = 0 Then
         data_2 = repeat(data, sizeof(matrix))
     Else
@@ -348,7 +346,6 @@ End Sub
 '配列の特定行をデータで埋める
 Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
     Dim j As Long, k As Long
-    
     If Dimension(data) = 0 Then
         For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
             matrix(i, j) = data
@@ -363,21 +360,22 @@ Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Varia
     End If
 End Sub
 
-'((((配列の特定行をデータで埋める))))
-Private Sub fillRow_imple(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant, ByVal rrrr As Long)
-    Dim j As Long, k As Long
-    
-    k = LBound(data, 2)
-    For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-        matrix(i, j) = data(rrrr, k)
-        k = k + 1
-    Next j
-End Sub
+    '((((配列の特定行をデータで埋める))))
+    Private Sub fillRow_imple(ByRef matrix As Variant, _
+                            ByVal i As Long, _
+                        ByRef data As Variant, _
+                    ByVal rrrr As Long)
+        Dim j As Long, k As Long
+        k = LBound(data, 2)
+        For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+            matrix(i, j) = data(rrrr, k)
+            k = k + 1
+        Next j
+    End Sub
 
 '配列の特定列をデータで埋める
 Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant)
     Dim i As Long, k As Long
-    
     If Dimension(data) = 0 Then
         For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
             matrix(i, j) = data
@@ -392,16 +390,18 @@ Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Varia
     End If
 End Sub
 
-'((((配列の特定列をデータで埋める))))
-Private Sub fillCol_imple(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant, ByVal cccc As Long)
-    Dim i As Long, k As Long
-    
-    k = LBound(data, 1)
-    For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-        matrix(i, j) = data(k, cccc)
-        k = k + 1
-    Next i
-End Sub
+    '((((配列の特定列をデータで埋める))))
+    Private Sub fillCol_imple(ByRef matrix As Variant, _
+                            ByVal j As Long, _
+                        ByRef data As Variant, _
+                    ByVal cccc As Long)
+        Dim i As Long, k As Long
+        k = LBound(data, 1)
+        For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+            matrix(i, j) = data(k, cccc)
+            k = k + 1
+        Next i
+    End Sub
 
 '1次元配列の部分配列を作成する
 Public Function subV(vec As Variant, ByRef index As Variant) As Variant
@@ -419,7 +419,6 @@ End Function
 Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
     Dim i As Long, j As Long, counterR As Long, counterC As Long
     Dim ret As Variant
-
     Select Case Dimension(matrix)
     Case 0
         subM = matrix
@@ -433,7 +432,7 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
         Next i
     Case 2
         If IsMissing(rows) Then
-            If IsArray(rows) Then
+            If IsArray(rows) Then   ' 意図的に Array() を与えられた
                 subM = VBA.Array()
                 Exit Function
             Else
@@ -441,7 +440,7 @@ Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional
             End If
         End If
         If IsMissing(cols) Then
-            If IsArray(cols) Then
+            If IsArray(cols) Then   ' 意図的に Array() を与えられた
                 subM = VBA.Array()
                 Exit Function
             Else
@@ -470,7 +469,6 @@ End Function
 Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim indice As Variant, localFlag As Variant
     Dim i As Long, counter As Long, z As Variant
-    
     localFlag = headN(flg, min_fun(sizeof(flg), rowSize(data)))
     indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
     i = 0
@@ -493,7 +491,6 @@ End Function
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim indice As Variant, localFlag As Variant
     Dim i As Long, counter As Long, z As Variant
-    
     localFlag = headN(flg, min_fun(sizeof(flg), colSize(data)))
     indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
     i = 0
@@ -515,7 +512,6 @@ End Function
 Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
-    
     If Dimension(v1) = 1 And Dimension(v2) = 1 Then
         If 0 < sizeof(v1) + sizeof(v2) Then ReDim ret(0 To sizeof(v1) + sizeof(v2) - 1)
         counter = 0
@@ -608,7 +604,6 @@ End Function
 Function transpose(ByRef matrix As Variant) As Variant
     Dim i As Long, j As Long, r As Long, c As Long
     Dim ret As Variant
-    
     Select Case Dimension(matrix)
     Case 0
         transpose = matrix
@@ -661,33 +656,24 @@ End Function
 
 '２次元配列の各行ベクトルをzip
 Function zipR(ByRef m As Variant) As Variant
-    Dim i As Long
-    Dim ret As Variant
-
-    If 0 < colSize(m) Then ReDim ret(0 To colSize(m) - 1)
-    For i = LBound(ret) To UBound(ret) Step 1
-        swapVariant ret(i), selectCol(m, i)
-    Next i
-    zipR = moveVariant(ret)
+    Dim rows As Variant:    rows = a_rows(m)
+    Dim fn As Variant:      fn = p_selectRow:   swap1st fn, m
+    zipR = foldl1(p_zip, mapF(fn, rows))
+    swap1st fn, m
 End Function
 
 '２次元配列の各列ベクトルをzip
 Function zipC(ByRef m As Variant) As Variant
-    Dim i As Long
-    Dim ret As Variant
-
-    If 0 < rowSize(m) Then ReDim ret(0 To rowSize(m) - 1)
-    For i = LBound(ret) To UBound(ret) Step 1
-        swapVariant ret(i), selectRow(m, i)
-    Next i
-    zipC = moveVariant(ret)
+    Dim cols As Variant:    cols = a_cols(m)
+    Dim fn As Variant:      fn = p_selectCol:   swap1st fn, m
+    zipC = foldl1(p_zip, mapF(fn, cols))
+    swap1st fn, m
 End Function
 
-'zipされたジャグ配列をほどいて複数の1次元配列または一つの2次元配列に展開する
+'zipされたジャグ配列をほどいてzip前の1次元配列またはzipC前の2次元配列にする
 Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As Variant
     Dim colLen As Long, i As Long, j As Long, counter As Long
     Dim ret As Variant, z As Variant
-
     unzip = VBA.Array()
     colLen = 0
     For counter = LBound(vec) To UBound(vec) Step 1
