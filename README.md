@@ -77,8 +77,11 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2015/7/05  
+VBAモジュール misc_ratio を追加  
+
 2015/6/13  
-64bit Officeに対応
+64bit Officeに対応  
 
 2015/6/08  
 safearrayRefクラスの導入によるリファクタリング  
