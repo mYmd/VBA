@@ -189,11 +189,16 @@ Sub vbaUnit()
     printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
     printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
     
-    Debug.Print "------- FizzBuzz ------------"
+    Debug.Print "------- FizzBuzz（2通り） ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
               Array(p_mod(, 5), Null, "Buzz"), _
               Array(p_mod(, 3), placeholder, "Fizz"))
     printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)
+    
+    m = p_if_else(, Array(p_mod(, 3), placeholder, "Fizz"))
+    m = p_if_else(, Array(p_mod(, 5), m, "Buzz"))
+    m = p_if_else(, Array(p_mod(, 15), m, "FizzBuzz"))
+    printM mapF(m, iota(1, 100))
 
     Debug.Print "------- zip ------------"
     m = "文字をひとつずつ分離する"
