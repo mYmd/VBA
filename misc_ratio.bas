@@ -19,7 +19,7 @@ Option Explicit
 '   Function bigInt_divide          bigIntの除算
 '   Function bigInt_mod             bigIntのMod
 '   Function bigInt_pow             bigIntのベキ乗
-'   Function bigInt2str             bigIntからStringへの変換（十進表示）
+'   Function bigInt2str             bigIntからStringへの変換（10進表示）
 '   Function str2bigInt             StringからbigIntへの変換
 '   Function bigInt_equal           bigIntの比較 (a = b)
 '   Function bigInt_not_equal       bigIntの比較 (a <> b)
@@ -176,20 +176,21 @@ End Function
     End Function
         
     ' bigIntのベース変換
-    Private Function bigInt_base_change(ByRef bigInt As Variant, ByVal base_N As Variant) As Variant
+    Private Function bigInt_base_change(ByRef bigInt As Variant, ByVal baseN As Long) As Variant
         Dim baseO As Long:  baseO = bigInt_base(bigInt)
-        Dim baseN As Long:  baseN = base_N
         If baseO = baseN Then
             bigInt_base_change = bigInt
         Else
-            Dim init As Variant, ret As Variant, tmp As Variant
+            Dim pos1 As Variant, posN As Variant, ret As Variant, tmp As Variant
             Dim i As Long, N As Long
             N = bigInt_end_pos(bigInt)
-            init = long2bigInt_imple(baseO, baseN)
+            pos1 = long2bigInt_imple(baseO, baseN)
+            posN = pos1
             ret = long2bigInt_imple(bigInt(1), baseN)
             For i = 2 To N Step 1
                 tmp = long2bigInt_imple(bigInt(i), baseN)
-                ret = bigInt_plus(ret, bigInt_mult(tmp, bigInt_pow(init, i - 1)))
+                ret = bigInt_plus(ret, bigInt_mult(tmp, posN))
+                posN = bigInt_mult(pos1, posN)
             Next i
             ret(0) = ret(0) * bigInt_sgn(bigInt)
             swapVariant bigInt_base_change, ret
@@ -263,19 +264,23 @@ End Function
 
 ' bigIntの乗算
 Function bigInt_mult(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
-    Dim ret As Variant, i As Long, j As Long
-    Dim baseN As Long:  baseN = bigInt_base(bigInt1)
-    Dim sb As Long: sb = bigInt_sgn(bigInt1) * bigInt_sgn(bigInt2) * bigInt_base(bigInt1)
-    ReDim ret(0 To UBound(bigInt1) + UBound(bigInt2) - 1)
-    For i = 1 To UBound(bigInt1) Step 1
-        ret(0) = sb
-        If sb = 0 Then Exit For
-        For j = 1 To UBound(bigInt2) Step 1
-            ret(i + j - 1) = ret(i + j - 1) + bigInt1(i) * bigInt2(j)
-        Next j
-        ret = bigInt_normalize(ret, False, baseN)
-    Next i
-    bigInt_mult = bigInt_normalize(ret, True, baseN)
+    If UBound(bigInt2) < UBound(bigInt1) Then
+        bigInt_mult = bigInt_mult(bigInt2, bigInt1)
+    Else
+        Dim ret As Variant, i As Long, j As Long
+        Dim baseN As Long:  baseN = bigInt_base(bigInt1)
+        Dim sb As Long: sb = bigInt_sgn(bigInt1) * bigInt_sgn(bigInt2) * bigInt_base(bigInt1)
+        ReDim ret(0 To UBound(bigInt1) + UBound(bigInt2) - 1)
+        For i = 1 To UBound(bigInt1) Step 1
+            ret(0) = sb
+            If sb = 0 Then Exit For
+            For j = 1 To UBound(bigInt2) Step 1
+                ret(i + j - 1) = ret(i + j - 1) + bigInt1(i) * bigInt2(j)
+            Next j
+            ret = bigInt_normalize(ret, False, baseN)
+        Next i
+        bigInt_mult = bigInt_normalize(ret, True, baseN)
+    End If
 End Function
     Function p_bigInt_mult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_mult = make_funPointer(AddressOf bigInt_mult, firstParam, secondParam)
@@ -357,7 +362,7 @@ End Function
         p_bigInt_pow = make_funPointer(AddressOf bigInt_pow, firstParam, secondParam)
     End Function
 
-' bigIntからStringへの変換（十進表示）
+' bigIntからStringへの変換（10進表示）
 Function bigInt2str(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     If bigInt_base(bigInt) = 10000 Then
         Dim N As Long:  N = bigInt_end_pos(bigInt)
@@ -692,4 +697,3 @@ End Function
     Function p_ratio_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_ratio_greater_equal = make_funPointer(AddressOf ratio_greater_equal, firstParam, secondParam)
     End Function
-    
