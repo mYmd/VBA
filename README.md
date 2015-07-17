@@ -72,11 +72,15 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
   Haskell_3_printM.bas（配列表示）  
   Haskell_4_vector.bas（その他配列操作）  
   Haskell_5_sort.bas（ソートとlower_bound等）  
+  Haskell_6_iterator.bas（イテレータ）  
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2015/7/18  
+VBAモジュール Haskell_6_iterator を追加  
+
 2015/7/05  
 VBAモジュール misc_ratio を追加  
 
