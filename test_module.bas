@@ -3,16 +3,17 @@ Attribute VB_Name = "test_module"
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
-Declare PtrSafe Function GetTickCount Lib "Kernel32.dll" () As Long
+Declare PtrSafe Function GetTickCount Lib "kernel32.dll" () As Long
 
 '***********************************************************************
 '   テスト関数
-'   Sub vbaUnit         基本機能いろいろ
-'   Sub sortTest        型がバラバラで配列も含む配列をソートするテスト
-'   Sub treeTest        型がバラバラで配列も含む木構造のテスト
-'   Sub sortTest2       数を並び替えて可能な最大数を返すテスト
-'   Sub segmentsTest    引数の部分文字列のリストを取り出す
-'   Sub segmentsTest2   ラムダ式使用バージョン
+'   Sub vbaUnit                 基本機能いろいろ
+'   Sub sortTest                型がバラバラで配列も含む配列をソートするテスト
+'   Sub treeTest                型がバラバラで配列も含む木構造のテスト
+'   Sub sortTest2               数を並び替えて可能な最大数を返すテスト
+'   Sub segmentsTest            引数の部分文字列のリストを取り出す
+'   Sub segmentsTest2           ラムダ式使用バージョン
+'   Sub curiouslyRecursiveTest  少しだけ奇妙な再帰
 '***********************************************************************
 
 '2点間の距離
@@ -21,6 +22,13 @@ Function distance(ByRef x As Variant, ByRef y As Variant) As Variant
 End Function
     Function p_distance(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_distance = make_funPointer(AddressOf distance, firstParam, secondParam)
+    End Function
+
+Function distance2(ByRef x As Variant, ByRef y As Variant) As Variant
+    distance2 = ((x(0) - y(0)) ^ 2 + (x(1) - y(1)) ^ 2) ^ 0.5
+End Function
+    Function p_distance2(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_distance2 = make_funPointer(AddressOf distance2, firstParam, secondParam)
     End Function
 
 '乱数
@@ -170,8 +178,8 @@ Sub vbaUnit()
     Debug.Print "------- 円周率を確率的に求める（2通り） ------------"
     N = 9999
     Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)
-    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
+    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), Points)) / N)
+    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
     N = 10
@@ -369,7 +377,7 @@ End Function
 '型がバラバラで配列も含む木構造のテスト (速度的に実用性は無し)
 Sub treeTest()
     Dim nodes As Variant, tree As Variant, N As Long, t As Long
-    Dim Dic As Variant, i As Long
+    Dim DIC As Variant, i As Long
     Debug.Print "==== 型がバラバラで配列も含むキーによる木構造のテスト ===="
     '===============ノードの集合===============
     nodes = Array(makeNode(75676786, "A", p_comp000) _
@@ -401,17 +409,17 @@ Sub treeTest()
     Debug.Print GetTickCount - t & "ms"
     printM mapF(p_getNode(, tree), iota(0, 10))
     
-    Set Dic = CreateObject("Scripting.Dictionary")
+    Set DIC = CreateObject("Scripting.Dictionary")
     t = GetTickCount
     For i = UBound(nodes) To LBound(nodes) Step -1
-        Dic.Item(nodes(i)(0)) = nodes(i)(1)
+        DIC.Item(nodes(i)(0)) = nodes(i)(1)
     Next i
-    Debug.Print GetTickCount - t & "ms  " & Dic.Count & "_Items"
+    Debug.Print GetTickCount - t & "ms  " & DIC.Count & "_Items"
     For i = 0 To 10 Step 1
-        Debug.Print Dic.Item(i);
+        Debug.Print DIC.Item(i);
     Next i
     Debug.Print ""
-    Set Dic = Nothing
+    Set DIC = Nothing
 End Sub
 
 '数を並び替えて可能な最大数を返すテスト
@@ -482,3 +490,27 @@ Sub segmentsTest2()
     printM mapF(p_join(, ""), m)
 End Sub
 
+
+' 少しだけ奇妙な再帰
+Function curiouslyRecursive(ByRef it As Variant, ByRef x As Variant) As Variant
+    If IsArray(x) Then
+        curiouslyRecursive = foldl(p_curiouslyRecursive, it, x)
+    Else
+        curiouslyRecursive = iterator_push_ex(it, x)
+    End If
+End Function
+    Function p_curiouslyRecursive(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_curiouslyRecursive = make_funPointer(AddressOf curiouslyRecursive, firstParam, secondParam)
+    End Function
+
+Sub curiouslyRecursiveTest()
+    Dim arr As Variant
+    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
+    Dim ret As Variant: ret = Array()
+    Dim it As Variant:  it = make_iterator(ret)
+    it = curiouslyRecursive(it, arr)
+    ret = release_iterator(it)
+    ReDim Preserve ret(0 To iterator_pos(it))
+    printS ret
+    printM ret
+End Sub
