@@ -17,6 +17,7 @@ Option Explicit
 '   Function iterator_get       現在のインデックスの位置の 値 を取得する
 '   Function iterator_set       現在のインデックスの位置の 値 を設定する
 '   Function iterator_push      現在のインデックス位置の値を設定してインデックスを進める
+'   Function iterator_push_ex   範囲拡張しながらiterator_push
 '   Function iterator_range     対象配列のインデックス範囲を取得する
 '   Function iterator_check     現在のインデックスが対象配列のインデックス範囲にあるか確認する
 '********************************************************************
@@ -105,6 +106,21 @@ Function iterator_push(ByRef it As Variant, ByRef x As Variant) As Variant
 End Function
     Function p_iterator_push(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_iterator_push = make_funPointer(AddressOf iterator_push, firstParam, secondParam)
+    End Function
+
+' 範囲拡張しながらiterator_push
+Function iterator_push_ex(ByRef it As Variant, ByRef x As Variant) As Variant
+    Dim m As Long: m = max_fun(it(1), 2 * UBound(it(0)) - LBound(it(0)) + 1)
+    If UBound(it(0)) < it(1) Then
+        Dim tmp As Variant
+        swapVariant tmp, it(0)
+        ReDim Preserve tmp(LBound(tmp) To m)
+        swapVariant tmp, it(0)
+    End If
+    iterator_push_ex = iterator_push(it, x)
+End Function
+    Function p_iterator_push_ex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_push_ex = make_funPointer(AddressOf iterator_push_ex, firstParam, secondParam)
     End Function
 
 ' 対象配列のインデックス範囲を取得する
