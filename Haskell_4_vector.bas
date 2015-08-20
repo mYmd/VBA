@@ -88,13 +88,13 @@ Public Function a_cols(ByRef matrix As Variant) As Variant
 End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
+Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If n < 1 Then repeat = VBA.Array(): Exit Function
-    ReDim ret(0 To n - 1)
-    For i = 0 To n - 1 Step 1:         ret(i) = v:       Next i
+    If N < 1 Then repeat = VBA.Array(): Exit Function
+    ReDim ret(0 To N - 1)
+    For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
     repeat = moveVariant(ret)
 End Function
 
@@ -114,18 +114,18 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 'ベクトルの最初のN個
-Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
+Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If n < 1 Then
+    If N < 1 Then
         headN = VBA.Array()
-    ElseIf sizeof(vec) < n Then
+    ElseIf sizeof(vec) < N Then
         headN = vec
     Else
         lb = LBound(vec)
-        ReDim ret(0 To n - 1)
-        For i = 0 To n - 1 Step 1
+        ReDim ret(0 To N - 1)
+        For i = 0 To N - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         headN = moveVariant(ret)
@@ -136,18 +136,18 @@ End Function
     End Function
 
 'ベクトルの最後のN個
-Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
+Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If n < 1 Then
+    If N < 1 Then
         tailN = VBA.Array()
-    ElseIf sizeof(vec) < n Then
+    ElseIf sizeof(vec) < N Then
         tailN = vec
     Else
-        lb = UBound(vec) - n + 1
-        ReDim ret(0 To n - 1)
-        For i = 0 To n - 1 Step 1
+        lb = UBound(vec) - N + 1
+        ReDim ret(0 To N - 1)
+        For i = 0 To N - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         tailN = moveVariant(ret)
@@ -513,12 +513,9 @@ Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
     If Dimension(v1) = 1 And Dimension(v2) = 1 Then
-        If 0 < sizeof(v1) + sizeof(v2) Then ReDim ret(0 To sizeof(v1) + sizeof(v2) - 1)
-        counter = 0
-        For i = LBound(v1) To UBound(v1) Step 1
-            ret(counter) = v1(i)
-            counter = counter + 1
-        Next i
+        ret = v1
+        If 0 < sizeof(v2) Then ReDim Preserve ret(0 To sizeof(v1) + sizeof(v2) - 1)
+        counter = sizeof(v1)
         For i = LBound(v2) To UBound(v2) Step 1
             ret(counter) = v2(i)
             counter = counter + 1
@@ -580,7 +577,6 @@ End Function
 Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
-    
     If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
         catC = VBA.Array()
     Else
