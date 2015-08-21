@@ -84,9 +84,9 @@ Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
     Next j
     For i = SR To ER Step 1
         For j = Sc To EC - 1 Step 1
-            Debug.Print Spc(2 + MaxL(j) - LenW(Trim(tmp(i, j)))); Trim(tmp(i, j));
+            Debug.Print Space(2 + MaxL(j) - LenW(Trim(tmp(i, j)))); Trim(tmp(i, j));
         Next j
-        Debug.Print Spc(2 + MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2))))); Trim(tmp(i, UBound(tmp, 2)))
+        Debug.Print Space(2 + MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2))))); Trim(tmp(i, UBound(tmp, 2)))
     Next i
 End Sub
     
@@ -120,7 +120,7 @@ Private Sub printV(v As Variant, Optional r As Variant)
         ElseIf IsNull(v(i)) = True Then
             Debug.Print "  ";
         Else
-            Debug.Print Spc(2); Trim(v(i));
+            Debug.Print Space(2); Trim(v(i));
         End If
     Next i
     If IsError(v(ER)) = True Then
@@ -132,7 +132,7 @@ Private Sub printV(v As Variant, Optional r As Variant)
     ElseIf IsNull(v(ER)) = True Then
         Debug.Print "  "
     Else
-        Debug.Print Spc(2); Trim(v(ER))
+        Debug.Print Space(2); Trim(v(ER))
     End If
 End Sub
 
@@ -164,4 +164,5 @@ Function dumpFun(ByRef x As Variant) As Variant
         Else
             dumpFun = "*"
         End If
+    End If
 End Function
