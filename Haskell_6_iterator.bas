@@ -18,6 +18,7 @@ Option Explicit
 '   Function iterator_set       現在のインデックスの位置の 値 を設定する
 '   Function iterator_push      現在のインデックス位置の値を設定してインデックスを進める
 '   Function iterator_push_ex   範囲拡張しながらiterator_push
+'   Function iterator_shrink    対象配列のインデックス範囲を現在位置まで切り詰める
 '   Function iterator_range     対象配列のインデックス範囲を取得する
 '   Function iterator_check     現在のインデックスが対象配列のインデックス範囲にあるか確認する
 '********************************************************************
@@ -122,6 +123,15 @@ End Function
     Function p_iterator_push_ex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_iterator_push_ex = make_funPointer(AddressOf iterator_push_ex, firstParam, secondParam)
     End Function
+
+' 対象配列のインデックス範囲を現在位置まで切り詰める
+Function iterator_shrink(ByRef it As Variant) As Variant
+    Dim tmp As Variant
+    swapVariant tmp, it(0)
+    ReDim Preserve tmp(LBound(tmp) To it(1))
+    swapVariant tmp, it(0)
+    swapVariant iterator_shrink, it
+End Function
 
 ' 対象配列のインデックス範囲を取得する
 Function iterator_range(ByRef it As Variant) As Variant
