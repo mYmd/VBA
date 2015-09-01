@@ -490,7 +490,6 @@ Sub segmentsTest2()
     printM mapF(p_join(, ""), m)
 End Sub
 
-
 ' 少しだけ奇妙な再帰
 Function curiouslyRecursive(ByRef it As Variant, ByRef x As Variant) As Variant
     If IsArray(x) Then
@@ -505,12 +504,10 @@ End Function
 
 Sub curiouslyRecursiveTest()
     Dim arr As Variant
-    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
-    Dim ret As Variant: ret = Array()
-    Dim it As Variant:  it = make_iterator(ret)
+    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7, 8, 9)
+    Dim it As Variant:  it = make_iterator(Array())
     it = curiouslyRecursive(it, arr)
-    ret = release_iterator(it)
-    ReDim Preserve ret(0 To iterator_pos(it))
+    Dim ret As Variant: ret = release_iterator(iterator_shrink(it))
     printS ret
     printM ret
 End Sub
