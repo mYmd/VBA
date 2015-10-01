@@ -9,11 +9,8 @@ class compareByVBAfunc   {
     VARIANT*    begin;
     std::shared_ptr<functionExpr> comp;
 public:
-    compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA)
-    {
-        VBCallbackFunc pf(f);
-        if ( pf )   comp.reset(new functionExpr(pf));
-    }
+    compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA), comp(std::make_shared<functionExpr>(f))
+    {    }
     bool valid() const  { return static_cast<bool>(comp);  }
     bool operator ()(__int32 i, __int32 j) const
     {
@@ -59,8 +56,8 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     ::VariantInit(&ret);
     safearrayRef arrIn(array);
     if ( 1 != arrIn.getDim() )          return ret;
-    std::unique_ptr<__int32[]>	index(new __int32[arrIn.getSize(1)]);
-    std::unique_ptr<VARIANT[]>	VArray(new VARIANT[arrIn.getSize(1)]);
+    auto index = std::make_unique<__int32[]>(arrIn.getSize(1));
+    auto VArray = std::make_unique<VARIANT[]>(arrIn.getSize(1));
     for (std::size_t i = 0; i < arrIn.getSize(1); ++i)
     {
         index[i] = static_cast<__int32>(i);
