@@ -14,6 +14,9 @@ Option Explicit
 '   Function ph_0               プレースホルダ
 '   Function ph_1               プレースホルダ
 '   Function ph_2               プレースホルダ
+'   Function yield_0            関数評価時に ph_0 を生成する
+'   Function yield_1            関数評価時に ph_1 を生成する
+'   Function yield_2            関数評価時に ph_2 を生成する
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
 '   Function make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
 '   Function is_bindFun         bindされた関数であることの判定
@@ -21,7 +24,6 @@ Option Explicit
 '   Function bind2nd            2番目の引数を再束縛する
 '   Sub      swap1st            第1引数のswap（大きな変数の場合に使用）
 '   Sub      swap2nd            第2引数のswap（大きな変数の場合に使用）
-'   Function lambdaExpr         ラムダ式の生成
 ' * Function mapF               配列の各要素に関数を適用する
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
@@ -59,6 +61,22 @@ End Function
 Function ph_2() As Variant
     ph_2 = placeholder(2)
 End Function
+
+'関数評価時に ph_0 を生成する
+Function yield_0() As Variant
+    yield_0 = placeholder(800)
+End Function
+
+'関数評価時に ph_1 を生成する
+Function yield_1() As Variant
+    yield_1 = placeholder(801)
+End Function
+
+'関数評価時に ph_2 を生成する
+Function yield_2() As Variant
+    yield_2 = placeholder(802)
+End Function
+
 
     ' Array() が IsMissing = True になることのWorkAround
     Function Is_Missing_(Optional ByRef x As Variant) As Boolean
@@ -146,31 +164,6 @@ End Sub
 Sub swap2nd(ByRef func As Variant, ByRef secondParam As Variant)
     If is_bindFun(func) Then swapVariant func(2), secondParam
 End Sub
-
-'*************************************************************************
-'ラムダ式の生成
-    Private Function bindL0(ByRef funcA As Variant, ByRef firstParam As Variant) As Variant
-        bindL0 = funcA(0)
-    End Function
-    
-    Private Function bindL1(ByRef funcA As Variant, ByRef firstParam As Variant) As Variant
-        bindL1 = bind1st(funcA(0), firstParam)
-    End Function
-    
-    Private Function bindL2(ByRef funcA As Variant, ByRef secondParam As Variant) As Variant
-        bindL2 = bind2nd(funcA(0), secondParam)
-    End Function
-    
-Function lambdaExpr(ByRef func As Variant, ByVal bind12 As Long, ByRef bindPH As Variant) As Variant
-        If bind12 = 1 Then
-            lambdaExpr = make_funPointer(AddressOf bindL1, VBA.Array(func), bindPH)
-        ElseIf bind12 = 2 Then
-            lambdaExpr = make_funPointer(AddressOf bindL2, VBA.Array(func), bindPH)
-        Else
-            lambdaExpr = make_funPointer(AddressOf bindL0, VBA.Array(func), vbEmpty)
-        End If
-End Function
-
 
 '*************************************************************************
 ' 配列の各要素に関数を適用する
@@ -326,3 +319,4 @@ Function generate_while_not(ByVal val As Variant, _
                             Optional ByVal n As Long = -1) As Variant
     generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
 End Function
+
