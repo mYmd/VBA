@@ -12,7 +12,7 @@ namespace   {
     void   fold_imple(  functionExpr&   bfun    ,
                         VARIANT*        init    ,
                         VARIANT*        matrix  ,
-                        __int32         axis    ,
+                        __int32 const   axis    ,
                         VARIANT&        ret     ,
                         bool            left    ); //left==true, right == false
 
@@ -20,7 +20,7 @@ namespace   {
     void   scan_imple(  functionExpr&   bfun    ,
                         VARIANT*        init    ,
                         VARIANT*        matrix  ,
-                        __int32         axis    ,
+                        __int32 const   axis    ,
                         VARIANT&        ret     ,
                         bool            left    ); //left==true, right == false
 
@@ -40,13 +40,9 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    if ( !bfun )    return ret;
-    VBCallbackFunc pf(bfun);
-    if ( pf )
-    {
-        functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( func.isValid() )
         std::swap(ret, *func.eval(param1, param2));
-    }
     return ret;
 }
 
@@ -70,9 +66,8 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !pf )               return ret;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !func.isValid() )       return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
         ::VariantCopy(&ret, func.eval(matrix, matrix));
@@ -106,16 +101,15 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
 
 //**************************************************************************
 
-//配列matrix1とmatrix2の各要素に2変数のCallback（VBCallbackFunc型のVBA関数）を適用する
+//配列matrix1とmatrix2の各要素に2変数のCallback（vbCallbackFunc_t型のVBA関数）を適用する
 VARIANT  __stdcall
 zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
+    functionExpr func(bfun);
     //----------------------------
-    if ( !matrix1 || !matrix2 || !pf )        return ret;
-    functionExpr func(pf);
+    if ( !matrix1 || !matrix2 || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix1->vt ) &&  0 == (VT_ARRAY & matrix2->vt ) )
     {
         ::VariantCopy(&ret, func.eval(matrix1, matrix2));
@@ -158,9 +152,8 @@ foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !init || !pf )        return ret;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !init || !func.isValid() )  return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
         ::VariantCopy(&ret, func.eval(init, matrix));
@@ -176,9 +169,8 @@ foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !init || !pf )                          return ret;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !init || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
         ::VariantCopy(&ret, func.eval(matrix, init));
@@ -194,10 +186,9 @@ foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !pf )                                   return ret;
+    functionExpr func(bfun);
+    if ( !matrix || !func.isValid() )                       return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )                   return *matrix;
-    functionExpr func(pf);
     fold_imple(func, 0, matrix, axis, ret, true);
     return      ret;
 }
@@ -208,10 +199,9 @@ foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !pf )                                   return ret;
+    functionExpr func(bfun);
+    if ( !matrix || !func.isValid() )                       return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )                   return *matrix;
-    functionExpr func(pf);
     fold_imple(func, 0, matrix, axis, ret, false);
     return      ret;
 }
@@ -224,9 +214,8 @@ scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !init || !pf )                          return ret;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !init || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
         ::VariantCopy(&ret, func.eval(init, matrix));
@@ -242,9 +231,8 @@ scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !init || !pf )                          return ret;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !init || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
         ::VariantCopy(&ret, func.eval(matrix, init));
@@ -260,10 +248,9 @@ scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !pf )                                   return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                   return *matrix;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !func.isValid() )                   return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return *matrix;
     scan_imple(func, 0, matrix, axis, ret, true);
     return      ret;
 }
@@ -274,10 +261,9 @@ scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
-    VBCallbackFunc pf(bfun);
-    if ( !matrix || !pf )                                   return ret;
-    if (  0 == (VT_ARRAY & matrix->vt ) )                   return *matrix;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !matrix || !func.isValid() )                   return ret;
+    if (  0 == (VT_ARRAY & matrix->vt ) )               return *matrix;
     scan_imple(func, 0, matrix, axis, ret, false);
     return      ret;
 }
@@ -290,9 +276,8 @@ find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def)
     if ( !bfun || !matrix )                         return def;
     safearrayRef arIn(matrix);
     if ( arIn.getDim() != 1 )                       return def;
-    VBCallbackFunc pf(bfun);
-    if ( !pf )                                      return def;
-    functionExpr func(pf);
+    functionExpr func(bfun);
+    if ( !func.isValid() )                          return def;
     for ( std::size_t i = 0; i <arIn.getSize(1); ++i )
     {
         VARIANT& elem = arIn(i);
@@ -321,11 +306,9 @@ repeat_imple(   VARIANT*        init    ,
     VARIANT ret;
     ::VariantInit(&ret);
     if ( !init || !pred || !trans )                 return ret;
-    VBCallbackFunc ppred(pred);
-    VBCallbackFunc ptrans(trans);
-    if ( !ppred || !ptrans )                        return ret;
-    functionExpr funcP(ppred);
-    functionExpr funcT(ptrans);
+    functionExpr funcP(pred);
+    functionExpr funcT(trans);
+    if ( !funcP.isValid() || !funcT.isValid() )     return ret;
     __int32 i = repeat_imple_0(init, funcP, funcT, maxN, ret, 0 != scan, stopCondition);
     return ret;
 }
@@ -349,10 +332,14 @@ namespace   {
         int i = 0, j = 0, k = 0;
         int& index1 = (axis == 1) ? j : i;
         int& index2 = (axis == 3) ? j : k;
-        int& index = (axis == 1) ? i : (axis == 2)? j: k;
+        int& index =    (axis == 1) ? i
+                    :   (axis == 2) ? j
+                    :   k;
         const int bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
         const int bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
-        const int bound = static_cast<int>((axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3));
+        const int bound  = static_cast<int>( (axis == 1) ?  arIn.getSize(1)
+                                            :(axis == 2 )?  arIn.getSize(2)
+                                            :               arIn.getSize(3) );
         // SAFEARRAY作成
         SAFEARRAYBOUND resultBounds[2] = {{bound1, 0}, {bound2, 0}};
         SAFEARRAY* retArray = (dim == 1)? 0 : SafeArrayCreate(VT_VARIANT, dim-1, resultBounds);
