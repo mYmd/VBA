@@ -78,6 +78,11 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2015/10/01  
+lambdaExpr関数を廃止  
+yield式を追加  
+VS2013の範囲でのC++11化推進  
+
 2015/7/18  
 VBAモジュール Haskell_6_iterator を追加  
 
