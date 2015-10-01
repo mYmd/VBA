@@ -15,9 +15,6 @@ __int32 __stdcall   is_placeholder(const VARIANT* pv);
 //bindされていないVBA関数を2引数で呼び出す
 VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2);
 
-//bindされたVBA関数を1引数で呼び出す
-VARIANT __stdcall   bind_invoke(VARIANT* bfun, VARIANT* param);
-
 //--------------------------------------------------------
 class safearrayRef  {
     SAFEARRAY*      psa;
@@ -37,38 +34,35 @@ public:
 };
 
 //--------------------------------------------------------
+//関数のインタフェース
 class funcExpr_i    {
 public:
     virtual ~funcExpr_i();
+    virtual bool isYielder() const;
     virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) = 0;
 };
 
 //--------------------------------------------------------
+//使用する唯一のVBAコールバック関数型  vbCallbackFunc_t
+//VBAにおけるシグネチャは
+// Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
+// もしくは
+// Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
+using vbCallbackFunc_t = VARIANT (__stdcall * )(VARIANT*, VARIANT*);
+
+namespace{
+    struct VBCallbackStruct;
+}
+//
 class functionExpr : public funcExpr_i    {
-    //使用する唯一のVBAコールバック関数型  vbCallbackFunc_t
-    //VBAにおけるシグネチャは
-    // Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
-    // もしくは
-    // Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
-    typedef VARIANT (__stdcall *vbCallbackFunc_t)(VARIANT*, VARIANT*);
     vbCallbackFunc_t    fun;
     VARIANT             val;
     std::unique_ptr<funcExpr_i> left;
     std::unique_ptr<funcExpr_i> right;
 public:
-        class VBCallbackFunc_   {
-            friend class functionExpr;
-            vbCallbackFunc_t    fun;
-            VARIANT*            elem1;
-            VARIANT*            elem2;
-        public:
-            VBCallbackFunc_(const VARIANT* bfun);
-            operator bool() const;
-        };
-    //---------------------------------
-    functionExpr(VBCallbackFunc_&);
+    functionExpr(const VARIANT*);
+    functionExpr(const VBCallbackStruct&);
     ~functionExpr();
     VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0);
+    bool isValid() const;
 };
-
-typedef functionExpr::VBCallbackFunc_   VBCallbackFunc;
