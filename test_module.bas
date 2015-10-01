@@ -12,7 +12,7 @@ Declare PtrSafe Function GetTickCount Lib "kernel32.dll" () As Long
 '   Sub treeTest                型がバラバラで配列も含む木構造のテスト
 '   Sub sortTest2               数を並び替えて可能な最大数を返すテスト
 '   Sub segmentsTest            引数の部分文字列のリストを取り出す
-'   Sub segmentsTest2           ラムダ式使用バージョン
+'   Sub segmentsTest2           yield式使用バージョン
 '   Sub curiouslyRecursiveTest  少しだけ奇妙な再帰
 '***********************************************************************
 
@@ -150,7 +150,7 @@ End Function
 
 'テスト関数
 Sub vbaUnit()
-    Dim N As Long
+    Dim n As Long
     Dim Points As Variant, m As Variant, z As Variant, pred As Variant
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
@@ -176,26 +176,26 @@ Sub vbaUnit()
     Debug.Print foldr(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- 円周率を確率的に求める（2通り） ------------"
-    N = 9999
-    Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), Points)) / N)
-    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
+    n = 9999
+    Points = zip(mapF(p_rnd(, 1), repeat(0, n)), mapF(p_rnd(, 1), repeat(0, n)))
+    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), Points)) / n)
+    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), n) / n)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
-    N = 10
+    n = 10
     init = 0.1: r = 3.754
-    printM scanl_Funs(init, repeat(p_Logistic(, r), N))
+    printM scanl_Funs(init, repeat(p_Logistic(, r), n))
          'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) に相当
-    printM scanr_Funs(init, repeat(p_Logistic(, r), N))
+    printM scanr_Funs(init, repeat(p_Logistic(, r), n))
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
 
     Debug.Print "------- フィボナッチ数列（5通り） ------------"
-    N = 15
-    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
-    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
-    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
+    n = 15
+    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
+    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
+    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), n), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), n), 1)(0)
     
     Debug.Print "------- FizzBuzz（2通り） ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
@@ -376,7 +376,7 @@ End Function
 
 '型がバラバラで配列も含む木構造のテスト (速度的に実用性は無し)
 Sub treeTest()
-    Dim nodes As Variant, tree As Variant, N As Long, t As Long
+    Dim nodes As Variant, tree As Variant, n As Long, t As Long
     Dim DIC As Variant, i As Long
     Debug.Print "==== 型がバラバラで配列も含むキーによる木構造のテスト ===="
     '===============ノードの集合===============
@@ -401,9 +401,9 @@ Sub treeTest()
     Debug.Print "iota(1, 8) => ";
     printM getNode(iota(1, 8), tree)
     '==========================================================
-    N = 10000
-    Debug.Print "==== 0～" & N & " ランダム整数キー ===="
-    nodes = zipWith(p_makeNode0, mapF(p_getCLng(p_rnd(0)), repeat(N, N)), iota(1, N))
+    n = 10000
+    Debug.Print "==== 0～" & n & " ランダム整数キー ===="
+    nodes = zipWith(p_makeNode0, mapF(p_getCLng(p_rnd(0)), repeat(n, n)), iota(1, n))
     t = GetTickCount
     tree = foldr(p_insertNode, Empty, nodes)
     Debug.Print GetTickCount - t & "ms"
@@ -471,24 +471,24 @@ Sub segmentsTest()
     printM mapF(p_join(, ""), m)
 End Sub
 
-
 '引数の部分文字列のリストを取り出す「関数プログラミング実践入門」の問題
-'ラムダ式 lambdaExprによって、アドホックな関数 consMap を使用しなくて済むようにした
+'アドホックな関数 consMap を使用しなくて済むようにした
 Sub segmentsTest2()
     Debug.Print "==== 引数の部分文字列のリストを取り出すHaskell関数 ===="
     Debug.Print "    segments :: [a] -> [[a]]"
     Debug.Print "    segments = foldr (++) [] . scanr (\a b -> [a] : map (a:) b) []"
-    Debug.Print "==== segmentsTest2（ラムダ式バージョン） ===="
+    Debug.Print "==== segmentsTest2 ===="
     Dim a As Variant, f As Variant, m As Variant
-    
+
     a = Array("A", "B", "C", "D", "E")
     Debug.Print "これをfoldrする"
-    Debug.Print "scanr(p_cons(p_makeSole, p_Mapf(lambdaExpr(p_cons, 1, ph_1), ph_2))"
-    f = p_cons(p_makeSole, p_mapF(lambdaExpr(p_cons, 1, ph_1), ph_2))
+    Debug.Print "scanr(p_cons(p_makeSole, p_mapF(p_cons(ph_1, yield_1), ph_2))"
+    f = p_cons(p_makeSole, p_mapF(p_cons(ph_1, yield_1), ph_2))
     m = foldr(p_catV, Array(), scanr(f, Array(), a))
     Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") を展開する"
     printM mapF(p_join(, ""), m)
 End Sub
+
 
 ' 少しだけ奇妙な再帰
 Function curiouslyRecursive(ByRef it As Variant, ByRef x As Variant) As Variant
@@ -504,10 +504,79 @@ End Function
 
 Sub curiouslyRecursiveTest()
     Dim arr As Variant
-    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7, 8, 9)
+    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
     Dim it As Variant:  it = make_iterator(Array())
     it = curiouslyRecursive(it, arr)
-    Dim ret As Variant: ret = release_iterator(iterator_shrink(it))
+    Dim ret As Variant: ret = release_iterator(it)
+    ReDim Preserve ret(0 To iterator_pos(it))
     printS ret
     printM ret
 End Sub
+
+
+'C - 友達の友達
+'http://abc016.contest.atcoder.jp/tasks/abc016_3
+'出力例
+Sub test_friendsFriend()
+    Dim inArr As Variant
+    inArr = VBA.Array(VBA.Array(3, 2), _
+                      VBA.Array(1, 2), _
+                      VBA.Array(2, 3))
+    printM friendsFriend(inArr)   '  1  0  1
+
+    inArr = VBA.Array(VBA.Array(3, 3), _
+                      VBA.Array(1, 2), _
+                      VBA.Array(1, 3), _
+                      VBA.Array(2, 3))
+    printM friendsFriend(inArr)   '  0  0  0
+
+    inArr = VBA.Array(VBA.Array(8, 12), _
+                      VBA.Array(1, 6), _
+                      VBA.Array(1, 7), _
+                      VBA.Array(1, 8), _
+                      VBA.Array(2, 5), _
+                      VBA.Array(2, 6), _
+                      VBA.Array(3, 5), _
+                      VBA.Array(3, 6), _
+                      VBA.Array(4, 5), _
+                      VBA.Array(4, 8), _
+                      VBA.Array(5, 6), _
+                      VBA.Array(5, 7), _
+                      VBA.Array(7, 8))
+    printM friendsFriend(inArr)   '  4  4  4  5  2  3  4  2
+End Sub
+
+'友達の友達関数
+Function friendsFriend(ByRef inArr As Variant)
+    Dim fMatrix As Variant
+    '友達マトリクス(IDは1始まりだが配列インデックスとして0始まりに変更)
+    fMatrix = makeM(inArr(0)(0), inArr(0)(0), 0)
+    Dim i As Long
+    For i = LBound(inArr) + 1 To UBound(inArr) Step 1
+        fMatrix(inArr(i)(0) - 1, inArr(i)(1) - 1) = 1
+        fMatrix(inArr(i)(1) - 1, inArr(i)(0) - 1) = 1
+    Next i
+    '各ユーザの友達集合
+    Dim myFriends As Variant
+    myFriends = mapF(p_rowMax, mapF(p_filterR(fMatrix), zipR(fMatrix)))
+    '直接の友達を除外
+    myFriends = zipWith(p_sumOfLess, zipR(fMatrix), myFriends)
+    '自分自身を除外
+    friendsFriend = mapF(p_minus(, 1), myFriends)
+End Function
+
+'2次元行列の行方向の最大値
+Private Function rowMax(ByRef matrix As Variant, ByRef dummy As Variant) As Variant
+    rowMax = foldl1(p_max, matrix, 1)
+End Function
+    Function p_rowMax(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_rowMax = make_funPointer(AddressOf rowMax, firstParam, secondParam)
+    End Function
+
+'ふたつの1次元行列a,bの各要素について(aの値 < bの値)の個数
+Private Function sumOfLess(ByRef a As Variant, ByRef b As Variant) As Variant
+    sumOfLess = foldl1(p_plus, zipWith(p_less, a, b))
+End Function
+    Function p_sumOfLess(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_sumOfLess = make_funPointer(AddressOf sumOfLess, firstParam, secondParam)
+    End Function
