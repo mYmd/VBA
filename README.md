@@ -13,25 +13,8 @@ VBA用のなんちゃってHaskellモジュール
 ・汎用的なソート関数  
 　　ユーザー定義の比較関数を渡してソートできる  
 
-
-以下は利用事例  
-・円周率πを確率的に求めるコードがループなしの3行で書ける。  
-    N = 10000  
-    Points = zip(mapF(p_rnd(, 1), repeat(0, N)), mapF(p_rnd(, 1), repeat(0, N)))  
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance(, Array(0, 0)), Points)) / N)  
-
-・FizzBuzz は２行くらい  
-m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), Array(p_mod(, 5), Null, "Buzz"), Array(p_mod(, 3), placeholder, "Fizz"))  
-printM foldl1(p_replaceNull, product_set(p_if_else, iota(1, 100), m), 2)  
-
-・素数列の生成は 次の2.3.を繰り返し適用することで得られる（効率は考慮外）  
-1. m = Array(2, 3, 5)  '初期  
-2. z = iota(2, m(UBound(m)) ^ 2)  
-3. m = filterR(z, mapF(p_isPrime(, m), z))  
-
-・単純なニュートン法による方程式の求根は、(x1, f(x)) から (x2, f(x2)) を出力する１ステップを  
-表す関数を作り、繰り返し適用する(関数合成 foldl_Funs)ことで求める  
-foldl_Funs(初期値, repeat(p_Newton_Raphson(, Array(f, df/dx)), 回数))  
+VBAHaskellの紹介　その1　（最初はmapF）  
+[http://qiita.com/mmYYmmdd/items/c731edf943acc0a0ebe9]  
 
 ///////////////////////////////////////////////////////////////////////////////  
 '=============================================================  
