@@ -104,7 +104,7 @@ Function make_funPointer_with_2nd_Default(ByVal func As LongPtr, _
                          Optional ByRef secondParam As Variant) As Variant
     make_funPointer_with_2nd_Default = VBA.Array(func, _
                                  IIf(Is_Missing_(firstParam), placeholder, firstParam), _
-                                 secondParam, _
+                                 IIf(Is_Missing_(secondParam), Array(), secondParam), _
                                  placeholder _
                                 )
 End Function
