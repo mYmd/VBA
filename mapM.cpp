@@ -74,16 +74,15 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
         return ret;
     }
     safearrayRef arIn(matrix);
-    SAFEARRAY* pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
+    auto pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
     if ( arIn.getDim() == 0 )                      return ret;
-    SAFEARRAYBOUND Bounds[3] = {
-                                { static_cast<ULONG>(arIn.getSize(1)), 0 },
-                                { static_cast<ULONG>(arIn.getSize(2)), 0 },
-                                { static_cast<ULONG>(arIn.getSize(3)), 0 } };
+    std::array<SAFEARRAYBOUND, 3> Bounds;
+    Bounds[0] = { static_cast<ULONG>(arIn.getSize(1)), 0 };
+    Bounds[1] = { static_cast<ULONG>(arIn.getSize(2)), 0 };
+    Bounds[2] = { static_cast<ULONG>(arIn.getSize(3)), 0 };
     // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn.getDim()), Bounds);
     ret.vt = VT_ARRAY | VT_VARIANT;
-    ret.parray = retArray;
+    ret.parray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn.getDim()), Bounds.data());
     safearrayRef arOut(&ret);
     for ( ULONG i = 0; i < Bounds[0].cElements; ++i )
     {
@@ -91,7 +90,7 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
         {
             for ( ULONG k = 0; k < Bounds[2].cElements; ++k )
             {
-                VARIANT& elem = arIn(i, j, k);
+                auto& elem = arIn(i, j, k);
                 ::VariantCopy(&arOut(i, j, k), func.eval(&elem, &elem));
             }
         }
@@ -120,14 +119,13 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
     if ( 0 == arIn1.getDim() || 0 == arIn2.getDim() || arIn1.getDim() != arIn2.getDim() )
         return ret;
     //----------------------------
-    SAFEARRAYBOUND minBounds[3] = {
-                { static_cast<ULONG>(minV(arIn1.getSize(1), arIn2.getSize(1))), 0 },
-                { static_cast<ULONG>(minV(arIn1.getSize(2), arIn2.getSize(2))), 0 },
-                { static_cast<ULONG>(minV(arIn1.getSize(3), arIn2.getSize(3))), 0 } };
+    std::array<SAFEARRAYBOUND, 3> minBounds;
+    minBounds[0] = { static_cast<ULONG>(minV(arIn1.getSize(1), arIn2.getSize(1))), 0 };
+    minBounds[1] = { static_cast<ULONG>(minV(arIn1.getSize(2), arIn2.getSize(2))), 0 };
+    minBounds[2] = { static_cast<ULONG>(minV(arIn1.getSize(3), arIn2.getSize(3))), 0 };
     // SAFEARRAY作成
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn1.getDim()), minBounds);
     ret.vt = VT_ARRAY | VT_VARIANT;
-    ret.parray = retArray;
+    ret.parray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn1.getDim()), minBounds.data());
     safearrayRef arOut(&ret);
     for ( ULONG i = 0; i < minBounds[0].cElements; ++i )
     {
@@ -135,8 +133,8 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
         {
             for ( ULONG k = 0; k < minBounds[2].cElements; ++k )
             {
-                VARIANT& elem1 = arIn1(i, j, k);
-                VARIANT& elem2 = arIn2(i, j, k);
+                auto& elem1 = arIn1(i, j, k);
+                auto& elem2 = arIn2(i, j, k);
                 ::VariantCopy(&arOut(i, j, k), func.eval(&elem1, &elem2));
             }
         }
@@ -280,7 +278,7 @@ find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def)
     if ( !func.isValid() )                          return def;
     for ( std::size_t i = 0; i <arIn.getSize(1); ++i )
     {
-        VARIANT& elem = arIn(i);
+        auto& elem = arIn(i);
         VARIANT ret;
         ::VariantInit(&ret);
         ::VariantChangeType(&ret, func.eval(&elem, &elem), 0, VT_I4);
@@ -309,7 +307,7 @@ repeat_imple(   VARIANT*        init    ,
     functionExpr funcP(pred);
     functionExpr funcT(trans);
     if ( !funcP.isValid() || !funcT.isValid() )     return ret;
-    __int32 i = repeat_imple_0(init, funcP, funcT, maxN, ret, 0 != scan, stopCondition);
+    auto i = repeat_imple_0(init, funcP, funcT, maxN, ret, 0 != scan, stopCondition);
     return ret;
 }
 
@@ -326,27 +324,28 @@ namespace   {
                         bool const      left    ) //left==true, right == false
     {
         safearrayRef arIn(matrix);
-        __int32 const dim = static_cast<__int32>(arIn.getDim());
+        auto const dim = static_cast<__int32>(arIn.getDim());
         if ( 0 == dim )                     return;
         if ( axis < 1 || dim < axis )       return;
         int i = 0, j = 0, k = 0;
-        int& index1 = (axis == 1) ? j : i;
-        int& index2 = (axis == 3) ? j : k;
-        int& index =    (axis == 1) ? i
-                    :   (axis == 2) ? j
-                    :   k;
-        const int bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
-        const int bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
-        const int bound  = static_cast<int>( (axis == 1) ?  arIn.getSize(1)
+        auto& index1 = (axis == 1) ? j : i;
+        auto& index2 = (axis == 3) ? j : k;
+        auto& index =    (axis == 1) ? i
+                     :   (axis == 2) ? j
+                     :   k;
+        auto const bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
+        auto const bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
+        auto const bound  = static_cast<int>((axis == 1) ?  arIn.getSize(1)
                                             :(axis == 2 )?  arIn.getSize(2)
                                             :               arIn.getSize(3) );
         // SAFEARRAY作成
-        SAFEARRAYBOUND resultBounds[2] = {{bound1, 0}, {bound2, 0}};
-        SAFEARRAY* retArray = (dim == 1)? 0 : SafeArrayCreate(VT_VARIANT, dim-1, resultBounds);
+        std::array<SAFEARRAYBOUND, 2> resultBounds;
+        resultBounds[0] = {bound1, 0};
+        resultBounds[1] = {bound2, 0};
         if ( 1 != dim )
         {
             ret.vt = VT_ARRAY | VT_VARIANT;
-            ret.parray = retArray;
+            ret.parray = ::SafeArrayCreate(VT_VARIANT, dim-1, resultBounds.data());
         }
         safearrayRef arOut(&ret);
         for ( index1 = 0; index1 < bound1; ++index1 )
@@ -354,9 +353,9 @@ namespace   {
             for ( index2 = 0; index2 < bound2; ++index2 )
             {
                 VARIANT result;
-                VARIANT* presult = &result;
+                auto presult = &result;
                 ::VariantInit(presult);
-                bool first_time = true;
+                auto first_time = true;
                 if ( init )
                 {
                     ::VariantCopy(presult, init);
@@ -371,14 +370,13 @@ namespace   {
                     }
                     else
                     {
-                        VARIANT& elem = arIn(i, j, k);
-                        if ( left )     presult = bfun.eval(presult, &elem);
-                        else            presult = bfun.eval(&elem, presult);
+                        presult = left ? bfun.eval(presult, &arIn(i, j, k)):
+                                         bfun.eval(&arIn(i, j, k), presult);
                     }
                 }
                 if ( 1 == dim ) VariantCopy(&ret, presult);
                 else            VariantCopy(&arOut(index1, index2), presult);
-                VariantClear(presult);
+                ::VariantClear(presult);
             }
         }
     }
@@ -392,23 +390,24 @@ namespace   {
                         bool const      left    ) //left==true, right == false
     {
         safearrayRef arIn(matrix);
-        __int32 const dim = static_cast<__int32>(arIn.getDim());
+        auto const dim = static_cast<__int32>(arIn.getDim());
         if ( 0 == dim )                         return;
         if ( axis < 1 || dim < axis )           return;
         int i = 0, j = 0, k = 0;
         int& index1 = (axis == 1) ? j : i;
         int& index2 = (axis == 3) ? j : k;
         int& index = (axis == 1) ? i : (axis == 2)? j: k;
-        const int bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
-        const int bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
-        const int bound = static_cast<int>((axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3));
+        auto const bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
+        auto const bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
+        auto const bound = static_cast<int>((axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3));
         // SAFEARRAY作成
         {
-            SAFEARRAYBOUND resultBounds[3] = { { static_cast<ULONG>(arIn.getSize(1)), 0 },
-                                               { static_cast<ULONG>(arIn.getSize(2)), 0 },
-                                               { static_cast<ULONG>(arIn.getSize(3)), 0 } };
+            std::array<SAFEARRAYBOUND, 3> resultBounds;
+            resultBounds[0] = { static_cast<ULONG>(arIn.getSize(1)), 0 };
+            resultBounds[1] = { static_cast<ULONG>(arIn.getSize(2)), 0 };
+            resultBounds[2] = { static_cast<ULONG>(arIn.getSize(3)), 0 };
             if (init)     resultBounds[axis-1].cElements += 1;
-            SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds);
+            auto retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds.data());
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = retArray;
         }
@@ -419,9 +418,9 @@ namespace   {
             for ( index2 = 0; index2 < bound2; ++index2 )
             {
                 VARIANT result;
-                VARIANT* presult = &result;
+                auto presult = &result;
                 ::VariantInit(presult);
-                bool first_time = true;
+                auto first_time = true;
                 if ( init )
                 {
                     ::VariantCopy(presult, init);
@@ -445,8 +444,8 @@ namespace   {
                         VARIANT elem;
                         ::VariantInit(&elem);
                         ::VariantCopyInd(&elem, &arIn(i, j, k));
-                        if ( left )     presult = bfun.eval(presult, &elem);
-                        else            presult = bfun.eval(&elem, presult);
+                        presult = left ? bfun.eval(presult, &elem):
+                                         bfun.eval(&elem, presult);
                         ::VariantClear(&elem);
                     }
                     ::VariantCopy(&arOut(i+adj(1), j+adj(2), k+adj(3)), presult);
@@ -474,7 +473,7 @@ namespace   {
         ::VariantInit(&zero);
         ::VariantInit(&check);
         ::VariantCopy(&ret, init);
-        VARIANT* pret = &ret;
+        auto pret = &ret;
         std::list<VARIANT> vlist;
         if ( scan )
         {
@@ -503,9 +502,8 @@ namespace   {
         {
             ::VariantClear(&ret);
             SAFEARRAYBOUND bound = { static_cast<ULONG>(vlist.size()), 0 };
-            SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
             ret.vt = VT_ARRAY | VT_VARIANT;
-            ret.parray = retArray;
+            ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
             safearrayRef arOut(&ret);
             LONG index = 0;
             for ( auto it = vlist.begin(); it != vlist.end(); ++it, ++index )
