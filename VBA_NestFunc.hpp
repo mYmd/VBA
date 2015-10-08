@@ -2,6 +2,7 @@
 //Copyright (c) 2015 mmYYmmdd
 #include "OAIdl.h"      //wtypes.h
 #include <memory>
+#include <array>
 
 //VBA配列の次元取得
 __int32 __stdcall   Dimension(const VARIANT* pv);
@@ -22,8 +23,8 @@ class safearrayRef  {
     std::size_t     dim;
     std::size_t     elemsize;
     char*           it;
-    std::size_t     size[3];
     VARIANT         val_;
+    std::array<std::size_t, 3>  size;
 public:
     safearrayRef(const VARIANT* pv);
     ~safearrayRef();
