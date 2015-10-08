@@ -33,13 +33,14 @@ __int32 __stdcall is_placeholder(const VARIANT* pv)
 
 //===================================================================
 safearrayRef::safearrayRef(const VARIANT* pv)
-    :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr)//, size{1,1,1}
+    :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr), size({1, 1, 1})
 {
     ::VariantInit(&val_);
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
     psa = (0 == (VT_BYREF & pv->vt))? pv->parray: *pv->pparray;
     if (!psa)                                       return;
-    SafeArrayAccessData(psa, reinterpret_cast<void**>(&it));
+    //このAPIのせいでreinterpret_cast
+    ::SafeArrayAccessData(psa, reinterpret_cast<void**>(&it));
     dim = SafeArrayGetDim(psa);
     if (!it || 3 < dim)
     {
@@ -49,7 +50,6 @@ safearrayRef::safearrayRef(const VARIANT* pv)
     elemsize = SafeArrayGetElemsize(psa);
     SafeArrayGetVartype(psa, &pvt);
     val_.vt = pvt | VT_BYREF;   //ここ
-    size[0] = size[1] = size[2] = 1;
     for (decltype(dim) i = 0; i < dim; ++i)
     {
         LONG ub = 0, lb = 0;
@@ -158,13 +158,14 @@ namespace   {   //util
     //プレースホルダの種類
     int placeholder_num(const VARIANT* pv)
     {   return ( pv && (pv->vt == VT_ERROR) ) ?  pv->scode :  -1;   }
-    //---------------------------------------------------------------------------------
+    //------------------------------------------------------------------
     struct VBCallbackStruct   {
         vbCallbackFunc_t    fun;
         VARIANT*            elem1;
         VARIANT*            elem2;
         VBCallbackStruct(const VARIANT* bfun);
     };
+    //------------------------------------------------------------------
     VBCallbackStruct::VBCallbackStruct(const VARIANT* bfun) : fun(nullptr), elem1(nullptr), elem2(nullptr)
     {
         safearrayRef arRef(bfun);
@@ -189,11 +190,12 @@ namespace   {   //util
         else
             switch (pn = placeholder_num(elem))
             {
-            case -1:    return std::make_unique<valueExpr>(elem);
             case 0:     return std::make_unique<placeholder0>();
             case 1:     return std::make_unique<placeholder1>();
             case 2:     return std::make_unique<placeholder2>();
-            default:    return std::make_unique<yielder>(pn % 10);
+            case 800: case 801: case 802:
+                        return std::make_unique<yielder>(pn % 10);
+            default:    return std::make_unique<valueExpr>(elem);
             }
     };
 }
@@ -230,15 +232,15 @@ VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) // = 0
         arOut(0).llVal = reinterpret_cast<decltype(arOut(0).llVal)>(fun);
         ::VariantCopy(&arOut(1), left->eval(x, y, left_right? left_right : 1));
         ::VariantCopy(&arOut(2), right->eval(x, y, left_right? left_right : 2));
-        VARIANT tmp = placeholder(0);
+        auto tmp = placeholder(0);
         ::VariantCopy(&arOut(3), &tmp);
         ::VariantClear(&val);   //計算した後でクリアしなければダメ
         std::swap(val, ret);
     }
     else if ( fun )
     {
-        VARIANT tmp = fun(  left->eval(x, y, left_right? left_right : 1),
-                           right->eval(x, y, left_right? left_right : 2)    );
+        auto tmp = fun(  left->eval(x, y, left_right? left_right : 1),
+                        right->eval(x, y, left_right? left_right : 2)    );
         ::VariantClear(&val);   //計算した後でクリアしなければダメ
         std::swap(val, tmp);
     }
@@ -249,4 +251,3 @@ bool functionExpr::isValid() const
 {
     return fun != nullptr;
 }
-
