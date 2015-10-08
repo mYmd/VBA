@@ -82,9 +82,8 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     }
     //-------------------------------------------------------
     SAFEARRAYBOUND boundRet = { static_cast<ULONG>(arrIn.getSize(1)), 0};   //要素数、LBound
-    SAFEARRAY* retArray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
     ret.vt = VT_ARRAY | VT_VARIANT;
-    ret.parray = retArray;
+    ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
     safearrayRef arrOut(&ret);
     VARIANT elem;
     ::VariantInit(&elem);
