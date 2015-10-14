@@ -22,28 +22,9 @@ VBAHaskellの紹介　その1　（最初はmapF）
 ・C++ソースは４ファイル  
 mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp  
 をdllとしてコンパイル＆ビルド  
-以下の関数をdefファイル等でエクスポート  
+エクスポートする関数はdefファイルで定義  
 
-	Dimension = Dimension  
-	placeholder = placeholder  
-	is_placeholder = is_placeholder  
-	unbind_invoke = unbind_invoke  
-	mapF_imple = mapF_imple  
-	zipWith = zipWith  
-	foldl = foldl  
-	foldr = foldr  
-	foldl1 = foldl1  
-	foldr1 = foldr1  
-	scanl = scanl  
-	scanr = scanr  
-	scanl1 = scanl1  
-	scanr1 = scanr1  
-	stdsort = stdsort  
-	find_imple = find_imple  
-	repeat_imple = repeat_imple  
-	swapVariant = swapVariant  
-
-(mapF.defおよびDeclare宣言はdll名をmapM.dllとする前提にしている)  
+(Declare宣言はdll名をmapM.dllとする前提にしている)  
 (32bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
 (64bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM64.dll)  
 
@@ -56,11 +37,15 @@ mapM.cppとvbSort.cppとVBA_NestFunc.hppとVBA_NestFunc.cpp
   Haskell_4_vector.bas（その他配列操作）  
   Haskell_5_sort.bas（ソートとlower_bound等）  
   Haskell_6_iterator.bas（イテレータ）  
+  misc_random.bas（乱数）  
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2015/10/14  
+乱数モジュールを追加  
+
 2015/10/01  
 lambdaExpr関数を廃止  
 yield式を追加  
