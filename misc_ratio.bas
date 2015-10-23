@@ -198,65 +198,95 @@ End Function
         End If
     End Function
     
-    
-' bigIntの加算
 Function bigInt_plus(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
-    Dim ret As Variant, i As Long
-    Dim baseN As Long
-    baseN = bigInt_base(bigInt1):   If baseN = 0 Then baseN = bigInt_base(bigInt2)
-    If bigInt_sgn(bigInt1) = 0 Then
-        bigInt_plus = bigInt2
-    ElseIf bigInt_sgn(bigInt2) = 0 Then
-        bigInt_plus = bigInt1
-    ElseIf bigInt_sgn(bigInt1) = bigInt_sgn(bigInt2) Then
-        ReDim ret(0 To 1 + max_fun(bigInt_end_pos(bigInt1), bigInt_end_pos(bigInt2)))
-        For i = 1 To bigInt_end_pos(bigInt1) Step 1
-            ret(i) = bigInt1(i)
-        Next i
-        For i = 1 To bigInt_end_pos(bigInt2) Step 1
-            ret(i) = ret(i) + bigInt2(i)
-        Next i
-        ret(0) = bigInt1(0)
-        bigInt_plus = bigInt_normalize(ret, True, baseN)
-    ElseIf bigInt_abs_less(bigInt1, bigInt2) = 1 Then
-        ReDim ret(0 To 1 + max_fun(bigInt_end_pos(bigInt1), bigInt_end_pos(bigInt2)))
-        For i = 1 To bigInt_end_pos(bigInt2) Step 1
-            ret(i) = bigInt2(i)
-        Next i
-        For i = 1 To bigInt_end_pos(bigInt1) Step 1
-            ret(i) = ret(i) - bigInt1(i)
-            If ret(i) < 0 Then
-                ret(i) = ret(i) + baseN
-                ret(i + 1) = ret(i + 1) - 1
-            End If
-        Next i
-        ret(0) = bigInt2(0)
-        bigInt_plus = bigInt_normalize(ret, True, baseN)
+    If IsNumeric(bigInt1) Then
+        If VarType(bigInt1) = vbDouble Then
+            bigInt_plus = bigInt_plus_inple1(double2bigInt(bigInt1), bigInt2)
+        Else
+            bigInt_plus = bigInt_plus_inple1(long2bigInt(bigInt1), bigInt2)
+        End If
     Else
-        ReDim ret(0 To 1 + max_fun(bigInt_end_pos(bigInt1), bigInt_end_pos(bigInt2)))
-        For i = 1 To bigInt_end_pos(bigInt1) Step 1
-            ret(i) = bigInt1(i)
-        Next i
-        For i = 1 To bigInt_end_pos(bigInt2) Step 1
-            ret(i) = ret(i) - bigInt2(i)
-            If ret(i) < 0 Then
-                ret(i) = ret(i) + baseN
-                ret(i + 1) = ret(i + 1) - 1
-            End If
-        Next i
-        ret(0) = bigInt1(0)
-        bigInt_plus = bigInt_normalize(ret, True, baseN)
+        bigInt_plus = bigInt_plus_inple1(bigInt1, bigInt2)
     End If
 End Function
     Function p_bigInt_plus(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_plus = make_funPointer(AddressOf bigInt_plus, firstParam, secondParam)
     End Function
+    
+    Private Function bigInt_plus_inple1(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
+        If IsNumeric(bigInt2) Then
+            If VarType(bigInt2) = vbDouble Then
+                bigInt_plus_inple1 = bigInt_plus_inple2(bigInt1, double2bigInt(bigInt2))
+            Else
+                bigInt_plus_inple1 = bigInt_plus_inple2(bigInt1, long2bigInt(bigInt2))
+            End If
+        Else
+            bigInt_plus_inple1 = bigInt_plus_inple2(bigInt1, bigInt2)
+        End If
+    End Function
+    
+    Private Function bigInt_plus_inple2(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
+        Dim ret As Variant, i As Long
+        Dim baseN As Long
+        baseN = bigInt_base(bigInt1):   If baseN = 0 Then baseN = bigInt_base(bigInt2)
+        If bigInt_sgn(bigInt1) = 0 Then
+            bigInt_plus_inple2 = bigInt2
+        ElseIf bigInt_sgn(bigInt2) = 0 Then
+            bigInt_plus_inple2 = bigInt1
+        ElseIf bigInt_sgn(bigInt1) = bigInt_sgn(bigInt2) Then
+            ReDim ret(0 To 1 + max_fun(bigInt_end_pos(bigInt1), bigInt_end_pos(bigInt2)))
+            For i = 1 To bigInt_end_pos(bigInt1) Step 1
+                ret(i) = bigInt1(i)
+            Next i
+            For i = 1 To bigInt_end_pos(bigInt2) Step 1
+                ret(i) = ret(i) + bigInt2(i)
+            Next i
+            ret(0) = bigInt1(0)
+            bigInt_plus_inple2 = bigInt_normalize(ret, True, baseN)
+        ElseIf bigInt_abs_less(bigInt1, bigInt2) = 1 Then
+            ReDim ret(0 To 1 + max_fun(bigInt_end_pos(bigInt1), bigInt_end_pos(bigInt2)))
+            For i = 1 To bigInt_end_pos(bigInt2) Step 1
+                ret(i) = bigInt2(i)
+            Next i
+            For i = 1 To bigInt_end_pos(bigInt1) Step 1
+                ret(i) = ret(i) - bigInt1(i)
+                If ret(i) < 0 Then
+                    ret(i) = ret(i) + baseN
+                    ret(i + 1) = ret(i + 1) - 1
+                End If
+            Next i
+            ret(0) = bigInt2(0)
+            bigInt_plus_inple2 = bigInt_normalize(ret, True, baseN)
+        Else
+            ReDim ret(0 To 1 + max_fun(bigInt_end_pos(bigInt1), bigInt_end_pos(bigInt2)))
+            For i = 1 To bigInt_end_pos(bigInt1) Step 1
+                ret(i) = bigInt1(i)
+            Next i
+            For i = 1 To bigInt_end_pos(bigInt2) Step 1
+                ret(i) = ret(i) - bigInt2(i)
+                If ret(i) < 0 Then
+                    ret(i) = ret(i) + baseN
+                    ret(i + 1) = ret(i + 1) - 1
+                End If
+            Next i
+            ret(0) = bigInt1(0)
+            bigInt_plus_inple2 = bigInt_normalize(ret, True, baseN)
+        End If
+    End Function
 
 ' bigIntの減算
 Function bigInt_minus(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
     Dim tmp2 As Variant
-    tmp2 = bigInt2
-    tmp2(0) = -bigInt2(0)
+    If IsNumeric(bigInt2) Then
+        If VarType(bigInt2) = vbDouble Then
+            tmp2 = double2bigInt(bigInt2)
+        Else
+            tmp2 = long2bigInt(bigInt2)
+        End If
+    Else
+        tmp2 = bigInt2
+    End If
+    tmp2(0) = -tmp2(0)
     bigInt_minus = bigInt_plus(bigInt1, tmp2)
 End Function
     Function p_bigInt_minus(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -265,26 +295,50 @@ End Function
 
 ' bigIntの乗算
 Function bigInt_mult(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
-    If UBound(bigInt2) < UBound(bigInt1) Then
-        bigInt_mult = bigInt_mult(bigInt2, bigInt1)
+    If IsNumeric(bigInt1) Then
+        If VarType(bigInt1) = vbDouble Then
+            bigInt_mult = bigInt_mult_imple1(double2bigInt(bigInt1), bigInt2)
+        Else
+            bigInt_mult = bigInt_mult_imple1(long2bigInt(bigInt1), bigInt2)
+        End If
     Else
-        Dim ret As Variant, i As Long, j As Long
-        Dim baseN As Long:  baseN = bigInt_base(bigInt1)
-        Dim sb As Long: sb = bigInt_sgn(bigInt1) * bigInt_sgn(bigInt2) * bigInt_base(bigInt1)
-        ReDim ret(0 To UBound(bigInt1) + UBound(bigInt2) - 1)
-        For i = 1 To UBound(bigInt1) Step 1
-            ret(0) = sb
-            If sb = 0 Then Exit For
-            For j = 1 To UBound(bigInt2) Step 1
-                ret(i + j - 1) = ret(i + j - 1) + bigInt1(i) * bigInt2(j)
-            Next j
-            ret = bigInt_normalize(ret, False, baseN)
-        Next i
-        bigInt_mult = bigInt_normalize(ret, True, baseN)
+        bigInt_mult = bigInt_mult_imple1(bigInt1, bigInt2)
     End If
 End Function
     Function p_bigInt_mult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_mult = make_funPointer(AddressOf bigInt_mult, firstParam, secondParam)
+    End Function
+
+    Private Function bigInt_mult_imple1(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
+    If IsNumeric(bigInt2) Then
+        If VarType(bigInt2) = vbDouble Then
+            bigInt_mult_imple1 = bigInt_mult_imple2(bigInt1, double2bigInt(bigInt2))
+        Else
+            bigInt_mult_imple1 = bigInt_mult_imple2(bigInt1, long2bigInt(bigInt2))
+        End If
+    Else
+        bigInt_mult_imple1 = bigInt_mult_imple2(bigInt1, bigInt2)
+    End If
+    End Function
+
+    Private Function bigInt_mult_imple2(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
+        If UBound(bigInt2) < UBound(bigInt1) Then
+            bigInt_mult_imple2 = bigInt_mult_imple2(bigInt2, bigInt1)
+        Else
+            Dim ret As Variant, i As Long, j As Long
+            Dim baseN As Long:  baseN = bigInt_base(bigInt1)
+            Dim sb As Long: sb = bigInt_sgn(bigInt1) * bigInt_sgn(bigInt2) * bigInt_base(bigInt1)
+            ReDim ret(0 To UBound(bigInt1) + UBound(bigInt2) - 1)
+            For i = 1 To UBound(bigInt1) Step 1
+                ret(0) = sb
+                If sb = 0 Then Exit For
+                For j = 1 To UBound(bigInt2) Step 1
+                    ret(i + j - 1) = ret(i + j - 1) + bigInt1(i) * bigInt2(j)
+                Next j
+                ret = bigInt_normalize(ret, False, baseN)
+            Next i
+            bigInt_mult_imple2 = bigInt_normalize(ret, True, baseN)
+        End If
     End Function
 
 
@@ -306,29 +360,53 @@ End Function
     
 ' bigIntの除算（商とMod）
 Function bigInt_divide_mod(ByRef bigIntT As Variant, ByRef bigIntB As Variant) As Variant
-    Dim logR As Double
-    Dim copyT As Variant:   copyT = bigInt_abs(bigIntT)
-    Dim copyB As Variant:   copyB = bigInt_abs(bigIntB)
-    Dim baseN As Long:  baseN = bigInt_base(bigIntB)
-    Dim logB As Double: logB = bigInt_log(copyB, baseN)
-    logR = bigInt_log(copyT) - logB
-    Dim div As Variant
-    div = log2bigInt(logR, baseN)
-    Dim tmp As Variant: tmp = copyT
-    Do While Not bigInt_abs_less(tmp, copyB)
-        tmp = bigInt_minus(copyT, bigInt_mult(copyB, div))
-        If bigInt_sgn(tmp) = 0 Then Exit Do
-        logR = bigInt_log(tmp) - logB
-        If logR < 0 Then Exit Do
-        div = bigInt_plus(div, log2bigInt(logR, baseN))
-    Loop
-    Dim ret As Variant: ReDim ret(0 To 1)
-    swapVariant ret(0), div
-    swapVariant ret(1), tmp
-    swapVariant bigInt_divide_mod, ret
+    If IsNumeric(bigIntT) Then
+        If VarType(bigIntT) = vbDouble Then
+            bigInt_divide_mod = bigInt_divide_mod_imple1(double2bigInt(bigIntT), bigIntB)
+        Else
+            bigInt_divide_mod = bigInt_divide_mod_imple1(long2bigInt(bigIntT), bigIntB)
+        End If
+    Else
+        bigInt_divide_mod = bigInt_divide_mod_imple1(bigIntT, bigIntB)
+    End If
 End Function
     Function p_bigInt_divide_mod(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_divide_mod = make_funPointer(AddressOf bigInt_divide_mod, firstParam, secondParam)
+    End Function
+
+    Private Function bigInt_divide_mod_imple1(ByRef bigIntT As Variant, ByRef bigIntB As Variant) As Variant
+    If IsNumeric(bigIntB) Then
+        If VarType(bigIntB) = vbDouble Then
+            bigInt_divide_mod_imple1 = bigInt_divide_mod_imple2(bigIntT, double2bigInt(bigIntB))
+        Else
+            bigInt_divide_mod_imple1 = bigInt_divide_mod_imple2(bigIntT, long2bigInt(bigIntB))
+        End If
+    Else
+        bigInt_divide_mod_imple1 = bigInt_divide_mod_imple2(bigIntT, bigIntB)
+    End If
+    End Function
+
+    Private Function bigInt_divide_mod_imple2(ByRef bigIntT As Variant, ByRef bigIntB As Variant) As Variant
+        Dim logR As Double
+        Dim copyT As Variant:   copyT = bigInt_abs(bigIntT)
+        Dim copyB As Variant:   copyB = bigInt_abs(bigIntB)
+        Dim baseN As Long:  baseN = bigInt_base(bigIntB)
+        Dim logB As Double: logB = bigInt_log(copyB, baseN)
+        logR = bigInt_log(copyT) - logB
+        Dim div As Variant
+        div = log2bigInt(logR, baseN)
+        Dim tmp As Variant: tmp = copyT
+        Do While Not bigInt_abs_less(tmp, copyB)
+            tmp = bigInt_minus(copyT, bigInt_mult(copyB, div))
+            If bigInt_sgn(tmp) = 0 Then Exit Do
+            logR = bigInt_log(tmp) - logB
+            If logR < 0 Then Exit Do
+            div = bigInt_plus(div, log2bigInt(logR, baseN))
+        Loop
+        Dim ret As Variant: ReDim ret(0 To 1)
+        swapVariant ret(0), div
+        swapVariant ret(1), tmp
+        swapVariant bigInt_divide_mod_imple2, ret
     End Function
 
 ' bigIntの除算
@@ -349,8 +427,17 @@ End Function
 
 ' bigIntのベキ乗
 Function bigInt_pow(ByRef bigInt As Variant, ByRef nv As Variant) As Variant
-    Dim ret As Variant:     ret = long2bigInt_imple(1, bigInt_base(bigInt))
-    Dim xx As Variant:      xx = bigInt
+    Dim xx As Variant
+    If IsNumeric(bigInt) Then
+        If VarType(bigInt) = vbDouble Then
+            xx = double2bigInt(bigInt)
+        Else
+            xx = long2bigInt(bigInt)
+        End If
+    Else
+        xx = bigInt
+    End If
+    Dim ret As Variant:     ret = long2bigInt_imple(1, bigInt_base(xx))
     Dim N As Long:          N = nv
     Do While 0 < N
         If (1 = N Mod 2) Then ret = bigInt_mult(ret, xx)
@@ -443,20 +530,44 @@ End Function
 
 ' bigIntの比較  (a < b)
 Function bigInt_less(ByRef a As Variant, ByRef b As Variant) As Variant
-    If bigInt_sgn(b) < bigInt_sgn(a) Then
-        bigInt_less = 0
-    ElseIf bigInt_sgn(a) < bigInt_sgn(b) Then
-        bigInt_less = 1
-    ElseIf bigInt_sgn(a) = 0 Then
-        bigInt_less = 0
-    ElseIf 0 < bigInt_sgn(a) Then
-        bigInt_less = bigInt_abs_less(a, b)
+    If IsNumeric(a) Then
+        If VarType(a) = vbDouble Then
+            bigInt_less = bigInt_less_imple1(double2bigInt(a), b)
+        Else
+            bigInt_less = bigInt_less_imple1(long2bigInt(a), b)
+        End If
     Else
-        bigInt_less = bigInt_abs_less(b, a)
+        bigInt_less = bigInt_less_imple1(a, b)
     End If
 End Function
     Function p_bigInt_less(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_less = make_funPointer(AddressOf bigInt_less, firstParam, secondParam)
+    End Function
+
+    Private Function bigInt_less_imple1(ByRef a As Variant, ByRef b As Variant) As Variant
+    If IsNumeric(b) Then
+        If VarType(b) = vbDouble Then
+            bigInt_less_imple1 = bigInt_less_imple2(a, double2bigInt(b))
+        Else
+            bigInt_less_imple1 = bigInt_less_imple2(a, long2bigInt(b))
+        End If
+    Else
+        bigInt_less_imple1 = bigInt_less_imple2(a, b)
+    End If
+    End Function
+
+    Private Function bigInt_less_imple2(ByRef a As Variant, ByRef b As Variant) As Variant
+        If bigInt_sgn(b) < bigInt_sgn(a) Then
+            bigInt_less_imple2 = 0
+        ElseIf bigInt_sgn(a) < bigInt_sgn(b) Then
+            bigInt_less_imple2 = 1
+        ElseIf bigInt_sgn(a) = 0 Then
+            bigInt_less_imple2 = 0
+        ElseIf 0 < bigInt_sgn(a) Then
+            bigInt_less_imple2 = bigInt_abs_less(a, b)
+        Else
+            bigInt_less_imple2 = bigInt_abs_less(b, a)
+        End If
     End Function
 
 ' bigIntの比較  (a <= b)
@@ -485,18 +596,41 @@ End Function
 
 '最大公約数
 Function bigInt_gcd(ByRef a As Variant, ByRef b As Variant) As Variant
-    If bigInt_sgn(a) = 0 Then
-        bigInt_gcd = long2bigInt(1)
-    ElseIf bigInt_sgn(b) = 0 Then
-        bigInt_gcd = bigInt_abs(a)
+    If IsNumeric(a) Then
+        If VarType(a) = vbDouble Then
+            bigInt_gcd = bigInt_gcd_imple1(double2bigInt(a), b)
+        Else
+            bigInt_gcd = bigInt_gcd_imple1(long2bigInt(a), b)
+        End If
     Else
-        bigInt_gcd = bigInt_gcd(b, bigInt_mod(bigInt_abs(a), bigInt_abs(b)))
+        bigInt_gcd = bigInt_gcd_imple1(a, b)
     End If
 End Function
     Function p_bigInt_gcd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_gcd = make_funPointer(AddressOf bigInt_gcd, firstParam, secondParam)
     End Function
 
+    Private Function bigInt_gcd_imple1(ByRef a As Variant, ByRef b As Variant) As Variant
+    If IsNumeric(b) Then
+        If VarType(b) = vbDouble Then
+            bigInt_gcd_imple1 = bigInt_gcd_imple2(a, double2bigInt(b))
+        Else
+            bigInt_gcd_imple1 = bigInt_gcd_imple2(a, long2bigInt(b))
+        End If
+    Else
+        bigInt_gcd_imple1 = bigInt_gcd_imple2(a, b)
+    End If
+    End Function
+    
+    Private Function bigInt_gcd_imple2(ByRef a As Variant, ByRef b As Variant) As Variant
+        If bigInt_sgn(a) = 0 Then
+            bigInt_gcd_imple2 = long2bigInt(1)
+        ElseIf bigInt_sgn(b) = 0 Then
+            bigInt_gcd_imple2 = bigInt_abs(a)
+        Else
+            bigInt_gcd_imple2 = bigInt_gcd(b, bigInt_mod(bigInt_abs(a), bigInt_abs(b)))
+        End If
+    End Function
 
 
 '**************************************************************
