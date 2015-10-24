@@ -41,6 +41,9 @@ VBAHaskellの紹介　その1　（最初はmapF）
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2015/10/24  
+make_funPointer_with_3_parametersを追加  
+
 2015/10/14  
 乱数モジュールを追加  
 
