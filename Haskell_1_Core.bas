@@ -19,6 +19,7 @@ Option Explicit
 '   Function yield_2            関数評価時に ph_2 を生成する
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
 '   Function make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
+'   Function make_funPointer_with_3_parameters 3つのパラメータを持つ関数
 '   Function is_bindFun         bindされた関数であることの判定
 '   Function bind1st            1番目の引数を再束縛する
 '   Function bind2nd            2番目の引数を再束縛する
@@ -42,8 +43,8 @@ Option Explicit
 '***********************************************************************************
 
 'sourceのVARIANT変数をtargetのVARIANTへmoveする
-Function moveVariant(ByRef Source As Variant) As Variant
-    swapVariant moveVariant, Source
+Function moveVariant(ByRef source As Variant) As Variant
+    swapVariant moveVariant, source
 End Function
 '***********************************************************************************
 
@@ -107,6 +108,38 @@ Function make_funPointer_with_2nd_Default(ByVal func As LongPtr, _
                                  secondParam, _
                                  placeholder _
                                 )
+End Function
+
+'ユーザ関数をbindファンクタ化する（3つのパラメータを持つ関数）
+Function make_funPointer_with_3_parameters(ByVal func1 As LongPtr, _
+                                        ByVal func2 As LongPtr, _
+                                    ByVal func3 As LongPtr, _
+                            ByRef firstParam As Variant, _
+                            ByRef secondParam As Variant, _
+                            ByRef thirdParam As Variant) As Variant
+    If Is_Missing_(firstParam) Or is_placeholder(firstParam) Then
+        make_funPointer_with_3_parameters = _
+            VBA.Array(func1, _
+                      IIf(Is_Missing_(firstParam), placeholder, firstParam), _
+                      VBA.Array(secondParam, thirdParam), _
+                      placeholder _
+                     )
+    ElseIf Is_Missing_(secondParam) Or is_placeholder(secondParam) Then
+        make_funPointer_with_3_parameters = _
+            VBA.Array(func2, VBA.Array(firstParam, thirdParam), _
+                      IIf(Is_Missing_(secondParam), placeholder, secondParam), _
+                      placeholder _
+                     )
+    ElseIf Is_Missing_(thirdParam) Or is_placeholder(thirdParam) Then
+        make_funPointer_with_3_parameters = _
+            VBA.Array(func3, _
+                      VBA.Array(firstParam, secondParam), _
+                      IIf(Is_Missing_(thirdParam), placeholder, thirdParam), _
+                      placeholder _
+                     )
+    Else
+        make_funPointer_with_3_parameters = Empty
+    End If
 End Function
 
 'bindされた関数であることの判定
@@ -292,30 +325,30 @@ End Function
 Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
-                      Optional ByVal n As Long = -1) As Variant
-    repeat_while = repeat_imple(val, pred, fun, n, 0, 0)
+                      Optional ByVal N As Long = -1) As Variant
+    repeat_while = repeat_imple(val, pred, fun, N, 0, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用
 Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
-                          Optional ByVal n As Long = -1) As Variant
-    repeat_while_not = repeat_imple(val, pred, fun, n, 0, 1)
+                          Optional ByVal N As Long = -1) As Variant
+    repeat_while_not = repeat_imple(val, pred, fun, N, 0, 1)
 End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用の履歴を生成
 Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
-                        Optional ByVal n As Long = -1) As Variant
-    generate_while = repeat_imple(val, pred, fun, n, 1, 0)
+                        Optional ByVal N As Long = -1) As Variant
+    generate_while = repeat_imple(val, pred, fun, N, 1, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用の履歴を生成
 Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
-                            Optional ByVal n As Long = -1) As Variant
-    generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
+                            Optional ByVal N As Long = -1) As Variant
+    generate_while_not = repeat_imple(val, pred, fun, N, 1, 1)
 End Function
