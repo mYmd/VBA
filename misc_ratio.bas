@@ -395,17 +395,22 @@ End Function
         logR = bigInt_log(copyT) - logB
         Dim div As Variant
         div = log2bigInt(logR, baseN)
-        Dim tmp As Variant: tmp = copyT
-        Do While Not bigInt_abs_less(tmp, copyB)
-            tmp = bigInt_minus(copyT, bigInt_mult(copyB, div))
-            If bigInt_sgn(tmp) = 0 Then Exit Do
-            logR = bigInt_log(tmp) - logB
+        Dim modd As Variant: modd = copyT
+        Do While Not bigInt_abs_less(modd, copyB)
+            modd = bigInt_minus(copyT, bigInt_mult(copyB, div))
+            If bigInt_sgn(modd) = 0 Then Exit Do
+            If bigInt_sgn(modd) < 0 Then
+                div = bigInt_minus(div, 1)
+                modd = bigInt_minus(copyT, bigInt_mult(copyB, div))
+                If bigInt_sgn(modd) = 0 Then Exit Do
+            End If
+            logR = bigInt_log(modd) - logB
             If logR < 0 Then Exit Do
             div = bigInt_plus(div, log2bigInt(logR, baseN))
         Loop
         Dim ret As Variant: ReDim ret(0 To 1)
         swapVariant ret(0), div
-        swapVariant ret(1), tmp
+        swapVariant ret(1), modd
         swapVariant bigInt_divide_mod_imple2, ret
     End Function
 
