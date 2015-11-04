@@ -111,7 +111,7 @@ End Function
 Function bigInt_log(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     Dim baseN As Long:  baseN = bigInt_base(bigInt)
     Dim ret As Double
-    ret = 0#
+    ret = -1.01E-14
     If 0 <> bigInt_sgn(bigInt) Then
         Dim i As Long
         For i = 1 To UBound(bigInt) Step 1
@@ -264,6 +264,12 @@ End Function
             Next i
             For i = 1 To bigInt_end_pos(bigInt2) Step 1
                 ret(i) = ret(i) - bigInt2(i)
+                If ret(i) < 0 Then
+                    ret(i) = ret(i) + baseN
+                    ret(i + 1) = ret(i + 1) - 1
+                End If
+            Next i
+            For i = i To UBound(ret) - 1 Step 1
                 If ret(i) < 0 Then
                     ret(i) = ret(i) + baseN
                     ret(i + 1) = ret(i + 1) - 1
