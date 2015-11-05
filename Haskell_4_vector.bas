@@ -9,9 +9,6 @@ Option Explicit
 '     mapF や zipWith の引数として使える。
 '     p_Function : 裸の関数ポインタ、p_Function(a) : 第１引数を束縛、p_Function(, b) : 第２引数を束縛
 '====================================================================================================
-    ' Function  rowSize             配列の行数
-    ' Function  colSize             配列の列数
-    ' Function  sizeof              配列の全要素数
     ' Function  a_rows              全行番号の列挙
     ' Function  a_cols              全列番号の列挙
     ' Function  repeat              N個の値を並べる
@@ -46,36 +43,6 @@ Option Explicit
     ' Function  cons                配列の先頭に要素を追加
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
-
-'配列の行数
-Public Function rowSize(ByRef data As Variant) As Long
-    Select Case Dimension(data)
-    Case 0
-        rowSize = 0
-    Case Else
-        rowSize = 1 + UBound(data) - LBound(data)
-    End Select
-End Function
-
-'配列の列数
-Public Function colSize(ByRef data As Variant) As Long
-    Select Case Dimension(data)
-    Case 0, 1
-        colSize = 0
-    Case Else
-        colSize = 1 + UBound(data, 2) - LBound(data, 2)
-    End Select
-End Function
-
-'配列の全要素数
-Public Function sizeof(ByRef data As Variant) As Long
-    Dim d As Long:  d = Dimension(data)
-    Dim i As Long
-    sizeof = 1
-    For i = 1 To d Step 1
-        sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i))
-    Next i
-End Function
 
 '全行番号の列挙
 Public Function a_rows(ByRef matrix As Variant) As Variant
