@@ -50,6 +50,9 @@ End Function
 
 '********************************************************************
 '     ファンクタ等
+'   Function rowSize        配列の行数
+'   Function colSize        配列の列数
+'   Function sizeof         配列の全要素数
 '   Function p_constant     定数関数
 '   Function p_true         定数関数(true)
 '   Function p_false        定数関数(false)
@@ -86,6 +89,49 @@ End Function
 '   Function is_empty       述語 is_empty
 '   Function is_valid       述語 is_valid
 '********************************************************************
+
+'配列の行数
+Public Function rowSize(ByRef data As Variant) As Long
+    Select Case Dimension(data)
+    Case 0
+        rowSize = 0
+    Case Else
+        rowSize = 1 + UBound(data) - LBound(data)
+    End Select
+End Function
+
+'配列の列数
+Public Function colSize(ByRef data As Variant) As Long
+    Select Case Dimension(data)
+    Case 0, 1
+        colSize = 0
+    Case Else
+        colSize = 1 + UBound(data, 2) - LBound(data, 2)
+    End Select
+End Function
+
+'配列の全要素数
+Public Function sizeof(ByRef data As Variant) As Long
+    Dim d As Long:  d = Dimension(data)
+    Dim i As Long
+    sizeof = 1
+    For i = 1 To d Step 1
+        sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i))
+    Next i
+End Function
+    
+    Public Function p_sizeof(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_sizeof = make_funPointer_with_2nd_Default(AddressOf sizeof_, firstParam, secondParam)
+    End Function
+    Private Function sizeof_(ByRef data As Variant, Optional ByRef d As Variant) As Variant
+        If IsMissing(d) Then
+            sizeof_ = sizeof(data)
+        ElseIf d = 1 Then
+            sizeof_ = rowSize(data)
+        ElseIf d = 2 Then
+            sizeof_ = colSize(data)
+        End If
+    End Function
 
 '定数関数
 Function p_constant(ByRef x As Variant) As Variant
@@ -275,16 +321,16 @@ End Function
     End Function
     
 'Left
-Function str_left(ByRef st As Variant, ByRef length As Variant) As Variant
-    str_left = Left(st, length)
+Function str_left(ByRef st As Variant, ByRef Length As Variant) As Variant
+    str_left = left(st, Length)
 End Function
     Function p_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_left = make_funPointer(AddressOf str_left, firstParam, secondParam)
     End Function
     
 'Right
-Function str_right(ByRef st As Variant, ByRef length As Variant) As Variant
-    str_right = Right(st, length)
+Function str_right(ByRef st As Variant, ByRef Length As Variant) As Variant
+    str_right = right(st, Length)
 End Function
     Function p_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_right = make_funPointer(AddressOf str_right, firstParam, secondParam)
