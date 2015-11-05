@@ -28,6 +28,8 @@ Option Explicit
 '   Function bigInt_less_equal      bigIntの比較 (a <= b)
 '   Function bigInt_greater         bigIntの比較 (a > b)
 '   Function bigInt_greater_equal   bigIntの比較 (a >= b)
+'   Function bigInt_min             bigIntのmin
+'   Function bigInt_max             bigIntのmax
 '   Function bigInt_gcd             最大公約数
 '**************************************************************
 Private Const int_15 As Long = 2 ^ 15
@@ -463,7 +465,9 @@ End Function
 
 ' bigIntからStringへの変換（10進表示）
 Function bigInt2str(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
-    If bigInt_base(bigInt) = 10000 Then
+    If IsNumeric(bigInt) Then
+        bigInt2str = Str(bigInt)
+    ElseIf bigInt_base(bigInt) = 10000 Then
         Dim N As Long:  N = bigInt_end_pos(bigInt)
         Dim i As Long
         Dim ret As String
@@ -542,7 +546,9 @@ End Function
 ' bigIntの比較  (a < b)
 Function bigInt_less(ByRef a As Variant, ByRef b As Variant) As Variant
     If IsNumeric(a) Then
-        If VarType(a) = vbDouble Then
+        If IsNumeric(b) Then
+            bigInt_less = (a < b)
+        ElseIf VarType(a) = vbDouble Then
             bigInt_less = bigInt_less_imple1(double2bigInt(a), b)
         Else
             bigInt_less = bigInt_less_imple1(long2bigInt(a), b)
@@ -603,6 +609,22 @@ Function bigInt_greater_equal(ByRef a As Variant, ByRef b As Variant) As Variant
 End Function
     Function p_bigInt_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_bigInt_greater_equal = make_funPointer(AddressOf bigInt_greater_equal, firstParam, secondParam)
+    End Function
+
+' bigIntのmin
+Function bigInt_min(ByRef a As Variant, ByRef b As Variant) As Variant
+    bigInt_min = IIf(bigInt_less(a, b), a, b)
+End Function
+    Function p_bigInt_min(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_bigInt_min = make_funPointer(AddressOf bigInt_min, firstParam, secondParam)
+    End Function
+
+' bigIntのmax
+Function bigInt_max(ByRef a As Variant, ByRef b As Variant) As Variant
+    bigInt_max = IIf(bigInt_less(a, b), b, a)
+End Function
+    Function p_bigInt_max(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_bigInt_max = make_funPointer(AddressOf bigInt_max, firstParam, secondParam)
     End Function
 
 '最大公約数
