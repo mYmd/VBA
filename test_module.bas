@@ -32,11 +32,11 @@ End Function
     End Function
 
 '乱数
-Function vbRand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
-    vbRand = (to_ - from_) * Rnd() + from_
+Function u_real_rand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
+    u_real_rand = (to_ - from_) * Rnd() + from_
 End Function
     Function p_rnd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_rnd = make_funPointer(AddressOf vbRand, firstParam, secondParam)
+        p_rnd = make_funPointer(AddressOf u_real_rand, firstParam, secondParam)
     End Function
 
 '=======================================================================
@@ -150,7 +150,7 @@ End Function
 
 'テスト関数
 Sub vbaUnit()
-    Dim n As Long
+    Dim N As Long
     Dim Points As Variant, m As Variant, z As Variant, pred As Variant
     Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
     Dim init As Double, r As Double
@@ -176,26 +176,26 @@ Sub vbaUnit()
     Debug.Print foldr(p_minus, 0, iota(1, 100))
     
     Debug.Print "------- 円周率を確率的に求める（2通り） ------------"
-    n = 9999
-    Points = zip(mapF(p_rnd(, 1), repeat(0, n)), mapF(p_rnd(, 1), repeat(0, n)))
-    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), Points)) / n)
-    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), n) / n)
+    N = 9999
+    Points = zip(uniform_real_dist(N, 0, 1), uniform_real_dist(N, 0, 1))
+    printM Array("π≒", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), Points)) / N)
+    printM Array("π≒", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), N) / N)
     
     Debug.Print "------- ロジスティック漸化式 ------------"
-    n = 10
+    N = 10
     init = 0.1: r = 3.754
-    printM scanl_Funs(init, repeat(p_Logistic(, r), n))
+    printM scanl_Funs(init, repeat(p_Logistic(, r), N))
          'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) に相当
-    printM scanr_Funs(init, repeat(p_Logistic(, r), n))
+    printM scanr_Funs(init, repeat(p_Logistic(, r), N))
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
 
     Debug.Print "------- フィボナッチ数列（5通り） ------------"
-    n = 15
-    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
-    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
-    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), n), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), n), 1)(0)
+    N = 15
+    printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
+    printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, N)), 1)(0)
+    printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), N)), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), N), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), N), 1)(0)
     
     Debug.Print "------- FizzBuzz（2通り） ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
@@ -221,7 +221,7 @@ Sub vbaUnit()
     printM unzip(m, 2)
 
     Debug.Print "------- ソート ------------"
-    m = mapF(p_getCLng(p_rnd(, 30)), repeat(10, 30))
+    m = uniform_int_dist(30, 10, 30)
     Debug.Print "ソート前"
     printM m
     Debug.Print "昇順ソート"
@@ -254,7 +254,7 @@ Sub vbaUnit()
 
     Debug.Print "------- 条件によるFind ------------"
     Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.9超 29.99未満のものを探す"
-    Points = mapF(p_rnd(0), repeat(100, 10000))
+    Points = uniform_real_dist(10000, 0#, 100#)
     pred = p_mult(p_greater(, 29.9), p_less(, 29.99))
     m = find_pred(pred, Points)
     If (IsNull(m)) Then Debug.Print "なし" Else Debug.Print Points(m) & " (index=" & m & ")"
@@ -376,7 +376,7 @@ End Function
 
 '型がバラバラで配列も含む木構造のテスト (速度的に実用性は無し)
 Sub treeTest()
-    Dim nodes As Variant, tree As Variant, n As Long, t As Long
+    Dim nodes As Variant, tree As Variant, N As Long, t As Long
     Dim DIC As Variant, i As Long
     Debug.Print "==== 型がバラバラで配列も含むキーによる木構造のテスト ===="
     '===============ノードの集合===============
@@ -401,9 +401,9 @@ Sub treeTest()
     Debug.Print "iota(1, 8) => ";
     printM getNode(iota(1, 8), tree)
     '==========================================================
-    n = 10000
-    Debug.Print "==== 0～" & n & " ランダム整数キー ===="
-    nodes = zipWith(p_makeNode0, mapF(p_getCLng(p_rnd(0)), repeat(n, n)), iota(1, n))
+    N = 10000
+    Debug.Print "==== 0～" & N & " ランダム整数キー ===="
+    nodes = zipWith(p_makeNode0, uniform_int_dist(N, 0, N), iota(1, N))
     t = GetTickCount
     tree = foldr(p_insertNode, Empty, nodes)
     Debug.Print GetTickCount - t & "ms"
@@ -428,7 +428,7 @@ Sub sortTest2()
     
     Debug.Print "==== 数を並び替えて可能な最大数を返すテスト ===="
     Debug.Print "1～99 の整数乱数を20個作る"
-    arr = mapF(p_getCLng(p_rnd(, 99)), repeat(0, 20))
+    arr = uniform_int_dist(20, 0, 99)
     printM arr
     Debug.Print ""
     '--------------------
