@@ -33,7 +33,7 @@ End Function
 
 '乱数
 Function u_real_rand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
-    u_real_rand = (to_ - from_) * Rnd() + from_
+    u_real_rand = uniform_real_dist(0, from_, to_)
 End Function
     Function p_rnd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_rnd = make_funPointer(AddressOf u_real_rand, firstParam, secondParam)
