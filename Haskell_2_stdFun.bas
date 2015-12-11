@@ -274,7 +274,11 @@ End Function
 
 '多項式　（係数は高次->低次）
 Function poly(ByRef x As Variant, ByRef coef As Variant) As Variant
-    poly = foldr1(p_plus, zipWith(p_mult, coef, scanr(p_mult, 1, repeat(x, sizeof(coef) - 1))))
+    poly = 0#
+    Dim i As Long
+    For i = LBound(coef) To UBound(coef) Step 1
+        poly = poly * x + coef(i)
+    Next i
 End Function
     Function p_poly(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_poly = make_funPointer(AddressOf poly, firstParam, secondParam)
