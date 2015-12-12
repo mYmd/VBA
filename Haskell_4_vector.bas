@@ -1,4 +1,3 @@
-Attribute VB_Name = "Haskell_4_vector"
 'Haskell_4_vector
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
@@ -24,6 +23,7 @@ Option Explicit
     ' Sub       fillM               配列をデータで埋める
     ' Sub       fillRow             配列の特定行をデータで埋める
     ' Sub       fillCol             配列の特定列をデータで埋める
+    ' Sub       fillPattern         1次元配列を他の1次元配列の繰り返しで埋める（回数指定可）
     ' Function  subV                1次元配列の部分配列を作成する
     ' Function  subM                配列の部分配列を作成する
     ' Function  filterR             ベクトル・配列の（行の）フィルタリング
@@ -55,13 +55,13 @@ Public Function a_cols(ByRef matrix As Variant) As Variant
 End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
+Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If N < 1 Then repeat = VBA.Array(): Exit Function
-    ReDim ret(0 To N - 1)
-    For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
+    If n < 1 Then repeat = VBA.Array(): Exit Function
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1 Step 1:         ret(i) = v:       Next i
     repeat = moveVariant(ret)
 End Function
 
@@ -81,18 +81,18 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 'ベクトルの最初のN個
-Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         headN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         headN = vec
     Else
         lb = LBound(vec)
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         headN = moveVariant(ret)
@@ -103,18 +103,18 @@ End Function
     End Function
 
 'ベクトルの最後のN個
-Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         tailN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         tailN = vec
     Else
-        lb = UBound(vec) - N + 1
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        lb = UBound(vec) - n + 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         tailN = moveVariant(ret)
@@ -370,8 +370,26 @@ End Sub
         Next i
     End Sub
 
+'1次元配列を他の1次元配列の繰り返しで埋める（回数指定可）
+Sub fillPattern(ByRef vec As Variant, ByRef pattern As Variant, Optional ByVal counter As Long = -1)
+    Dim ubm As Long:    ubm = UBound(vec)
+    Dim ubp As Long:    ubp = UBound(pattern)
+    Dim lbp As Long:    lbp = LBound(pattern)
+    Dim i As Long:  i = LBound(vec)
+    Dim k As Long:  k = LBound(pattern)
+    Do While i <= ubm And counter <> 0
+        vec(i) = pattern(k)
+        i = i + 1
+        k = k + 1
+        If ubp < k Then
+            k = lbp
+            counter = counter - 1
+        End If
+    Loop
+End Sub
+
 '1次元配列の部分配列を作成する
-Public Function subV(vec As Variant, ByRef index As Variant) As Variant
+Public Function subV(ByRef vec As Variant, ByRef index As Variant) As Variant
     Dim fn As Variant
     fn = p_getNth
     swap2nd fn, vec
@@ -383,7 +401,7 @@ End Function
     End Function
 
 '配列の部分配列を作成する
-Public Function subM(matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
+Public Function subM(ByRef matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
     Dim i As Long, j As Long, counterR As Long, counterC As Long
     Dim ret As Variant
     Select Case Dimension(matrix)
