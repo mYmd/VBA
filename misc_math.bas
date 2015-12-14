@@ -8,6 +8,7 @@ Option Explicit
 
 ' Function  sin_fun(p_sin)      Sin
 ' Function  cos_fun(p_con)      Cos
+' Function  pow_fun(p_pow)      Pow
 ' Function  integral_simpson    シンプソン法による数値積分
 '********************************************************************
 
@@ -27,19 +28,26 @@ End Function
         p_cos = make_funPointer(AddressOf cos_fun, firstParam, secondParam)
     End Function
 
+' Pow
+Function pow_fun(ByRef x As Variant, ByRef y As Variant) As Variant
+    pow_fun = x ^ y
+End Function
+    Function p_pow(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_pow = make_funPointer(AddressOf pow_fun, firstParam, secondParam)
+    End Function
+
 ' シンプソン法による数値積分
 Function integral_simpson(ByRef fun As Variant, _
                             ByVal begin_ As Double, _
                             ByVal end_ As Double, _
                             ByVal n As Long) As Double
-    Dim i As Long
-    Dim timesN As Variant
     Dim xs As Variant, ys As Variant
-    ReDim timesN(0 To 2 * n)
-    Call fillPattern(timesN, Array(2, 4))
-    timesN(0) = 1
-    timesN(2 * n) = 1
-    xs = mapF(p_plus(begin_), mapF(p_mult((end_ - begin_) / 2 / n), iota(0, 2 * n)))
+    xs = mapF(p_poly(, Array((end_ - begin_) / 2 / n, begin_)), iota(0, 2 * n))
     ys = mapF(fun, xs)
-    integral_simpson = foldl1(p_plus, zipWith(p_mult, timesN, ys)) * (end_ - begin_) / n / 6
+    Dim constants As Variant
+    ReDim constants(0 To 2 * n)
+    Call fillPattern(constants, Array(2, 4))
+    constants(0) = 1
+    constants(2 * n) = 1
+    integral_simpson = foldl1(p_plus, zipWith(p_mult, constants, ys)) * (end_ - begin_) / n / 6
 End Function
