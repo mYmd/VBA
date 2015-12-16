@@ -3,7 +3,6 @@
 #include "stdafx.h"
 #include "VBA_NestFunc.hpp"
 
-
 //VBA配列の次元取得
 __int32 __stdcall Dimension(const VARIANT* pv)
 {
@@ -58,6 +57,7 @@ safearrayRef::safearrayRef(const VARIANT* pv)
         size[i] = ub - lb + 1;
     }
 }
+
 safearrayRef::~safearrayRef()
 {
     if(psa)     SafeArrayUnaccessData(psa);
@@ -96,9 +96,6 @@ VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k)
 }
 
 //===================================================================
-funcExpr_i::~funcExpr_i()
-{   }
-
 bool funcExpr_i::isYielder() const
 {
     return false;
@@ -109,7 +106,10 @@ bool funcExpr_i::isYielder() const
 class valueExpr : public funcExpr_i    {
     VARIANT*     val;
 public:
-    valueExpr(VARIANT* v) : val(v)    {    }
+    explicit valueExpr(VARIANT* v) : val(v)    {    }
+    valueExpr(valueExpr const&) = delete;
+    valueExpr(valueExpr&&) = delete;
+    ~valueExpr() = default;
     VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0)   {   return val;    }
 };
 
@@ -117,7 +117,7 @@ public:
 //指定された引数を返すプレースホルダ
 class placeholder0 : public funcExpr_i    {
 public:
-    ~placeholder0()  {   }
+    ~placeholder0() = default;
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
     {
         return      ( left_right == 1 )?  x
@@ -129,7 +129,7 @@ public:
 //常に第1引数を返すプレースホルダ
 class placeholder1 : public funcExpr_i    {
 public:
-    ~placeholder1()  {   }
+    ~placeholder1() = default;
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
     {   return x;   }
 };
@@ -137,7 +137,7 @@ public:
 //常に第2引数を返すプレースホルダ
 class placeholder2 : public funcExpr_i    {
 public:
-    ~placeholder2()  {   }
+    ~placeholder2() = default;
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
     {   return y;   }
 };
@@ -146,8 +146,10 @@ public:
 class yielder : public funcExpr_i    {
     VARIANT     val;
 public:
-    yielder(__int32 n) : val(placeholder(n))     {   }
-    ~yielder()  {   }
+    explicit yielder(__int32 n) : val(placeholder(n))     {   }
+    yielder(yielder const&) = delete;
+    yielder(yielder&&) = delete;
+    ~yielder() = default;
     bool isYielder() const
     {   return true;    }
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
@@ -164,6 +166,9 @@ namespace   {   //util
         VARIANT*            elem1;
         VARIANT*            elem2;
         VBCallbackStruct(const VARIANT* bfun);
+        ~VBCallbackStruct() = default;
+        VBCallbackStruct(VBCallbackStruct const&) = delete;
+        VBCallbackStruct(VBCallbackStruct&&) = delete;
     };
     //------------------------------------------------------------------
     VBCallbackStruct::VBCallbackStruct(const VARIANT* bfun) : fun(nullptr), elem1(nullptr), elem2(nullptr)
