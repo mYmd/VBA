@@ -11,6 +11,9 @@ class compareByVBAfunc   {
 public:
     compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA), comp(std::make_shared<functionExpr>(f))
     {    }
+    compareByVBAfunc(compareByVBAfunc const&) = default;
+    compareByVBAfunc(compareByVBAfunc&&) = delete;
+    ~compareByVBAfunc() = default;
     bool valid() const  { return static_cast<bool>(comp);  }
     bool operator ()(__int32 i, __int32 j) const
     {
@@ -22,7 +25,10 @@ public:
 class compFunctor  {
     VARIANT*    begin;
 public:
-    compFunctor(VARIANT* pA) : begin(pA) { }
+    explicit compFunctor(VARIANT* pA) : begin(pA) { }
+    compFunctor(compFunctor const&) = default;
+    compFunctor(compFunctor&&) = delete;
+    ~compFunctor() = default;
     bool operator ()(__int32 i, __int32 j) const
     {
         return VARCMP_LT == VarCmp(begin + i, begin + j, LANG_JAPANESE, 0);
@@ -33,7 +39,10 @@ public:
 class compDictionaryFunctor  {
     VARIANT*    begin;
 public:
-    compDictionaryFunctor(VARIANT* pA) : begin(pA) { }
+    explicit compDictionaryFunctor(VARIANT* pA) : begin(pA) { }
+    compDictionaryFunctor(compDictionaryFunctor const&) = default;
+    compDictionaryFunctor(compDictionaryFunctor&&) = delete;
+    ~compDictionaryFunctor() = default;
     bool operator ()(__int32 i, __int32 j) const
     {
         safearrayRef arr1(begin + i);
