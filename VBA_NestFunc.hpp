@@ -18,7 +18,7 @@ VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param
 
 //--------------------------------------------------------
 class safearrayRef  {
-    SAFEARRAY*      psa;
+    SAFEARRAY*      psa; 
     VARTYPE         pvt;
     std::size_t     dim;
     std::size_t     elemsize;
@@ -26,8 +26,10 @@ class safearrayRef  {
     VARIANT         val_;
     std::array<std::size_t, 3>  size;
 public:
-    safearrayRef(const VARIANT* pv);
+    explicit safearrayRef(const VARIANT* pv);
     ~safearrayRef();
+    safearrayRef(safearrayRef const&) = delete;
+    safearrayRef(safearrayRef&&) = delete;
     std::size_t getDim() const;
     std::size_t getSize(std::size_t i) const;
     std::size_t getOriginalLBound(std::size_t i) const;
@@ -38,7 +40,7 @@ public:
 //関数のインタフェース
 class funcExpr_i    {
 public:
-    virtual ~funcExpr_i();
+    virtual ~funcExpr_i() = default;
     virtual bool isYielder() const;
     virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) = 0;
 };
@@ -61,8 +63,10 @@ class functionExpr : public funcExpr_i    {
     std::unique_ptr<funcExpr_i> left;
     std::unique_ptr<funcExpr_i> right;
 public:
-    functionExpr(const VARIANT*);
-    functionExpr(const VBCallbackStruct&);
+    explicit functionExpr(const VARIANT*);
+    explicit functionExpr(const VBCallbackStruct&);
+    functionExpr(functionExpr const&) = delete;
+    functionExpr(functionExpr&&) = delete;
     ~functionExpr();
     VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0);
     bool isValid() const;
