@@ -37,6 +37,7 @@ VBAHaskellの紹介　その1　（最初はmapF）
   Haskell_6_iterator.bas（イテレータ）  
   misc_random.bas（乱数）  
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
+  misc_*.bas（test_moduleで使用）  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
