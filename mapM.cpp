@@ -76,10 +76,13 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
     safearrayRef arIn(matrix);
     auto pArray = ( 0 == (VT_BYREF & matrix->vt) )?  (matrix->parray): (*matrix->pparray);
     if ( arIn.getDim() == 0 )                      return ret;
-    std::array<SAFEARRAYBOUND, 3> Bounds;
-    Bounds[0] = { static_cast<ULONG>(arIn.getSize(1)), 0 };
-    Bounds[1] = { static_cast<ULONG>(arIn.getSize(2)), 0 };
-    Bounds[2] = { static_cast<ULONG>(arIn.getSize(3)), 0 };
+    std::array<SAFEARRAYBOUND, 3>   Bounds  {
+                                {
+                                    { static_cast<ULONG>(arIn.getSize(1)), 0 },
+                                    { static_cast<ULONG>(arIn.getSize(2)), 0 },
+                                    { static_cast<ULONG>(arIn.getSize(3)), 0 }
+                                }
+                            };
     // SAFEARRAY作成
     ret.vt = VT_ARRAY | VT_VARIANT;
     ret.parray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn.getDim()), Bounds.data());
@@ -119,10 +122,13 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
     if ( 0 == arIn1.getDim() || 0 == arIn2.getDim() || arIn1.getDim() != arIn2.getDim() )
         return ret;
     //----------------------------
-    std::array<SAFEARRAYBOUND, 3> minBounds;
-    minBounds[0] = { static_cast<ULONG>(minV(arIn1.getSize(1), arIn2.getSize(1))), 0 };
-    minBounds[1] = { static_cast<ULONG>(minV(arIn1.getSize(2), arIn2.getSize(2))), 0 };
-    minBounds[2] = { static_cast<ULONG>(minV(arIn1.getSize(3), arIn2.getSize(3))), 0 };
+    std::array<SAFEARRAYBOUND, 3>   minBounds{
+                    {
+                        { static_cast<ULONG>(minV(arIn1.getSize(1), arIn2.getSize(1))), 0 },
+                        { static_cast<ULONG>(minV(arIn1.getSize(2), arIn2.getSize(2))), 0 },
+                        { static_cast<ULONG>(minV(arIn1.getSize(3), arIn2.getSize(3))), 0 }
+                    }
+                };
     // SAFEARRAY作成
     ret.vt = VT_ARRAY | VT_VARIANT;
     ret.parray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn1.getDim()), minBounds.data());
@@ -339,9 +345,7 @@ namespace   {
                                             :(axis == 2 )?  arIn.getSize(2)
                                             :               arIn.getSize(3) );
         // SAFEARRAY作成
-        std::array<SAFEARRAYBOUND, 2> resultBounds;
-        resultBounds[0] = {bound1, 0};
-        resultBounds[1] = {bound2, 0};
+        std::array<SAFEARRAYBOUND, 2> resultBounds{ { {bound1, 0},{bound2, 0} } };
         if ( 1 != dim )
         {
             ret.vt = VT_ARRAY | VT_VARIANT;
@@ -402,10 +406,13 @@ namespace   {
         auto const bound = static_cast<int>((axis == 1) ? arIn.getSize(1): (axis == 2 )? arIn.getSize(2): arIn.getSize(3));
         // SAFEARRAY作成
         {
-            std::array<SAFEARRAYBOUND, 3> resultBounds;
-            resultBounds[0] = { static_cast<ULONG>(arIn.getSize(1)), 0 };
-            resultBounds[1] = { static_cast<ULONG>(arIn.getSize(2)), 0 };
-            resultBounds[2] = { static_cast<ULONG>(arIn.getSize(3)), 0 };
+            std::array<SAFEARRAYBOUND, 3> resultBounds{
+                            {
+                                { static_cast<ULONG>(arIn.getSize(1)), 0 },
+                                { static_cast<ULONG>(arIn.getSize(2)), 0 },
+                                { static_cast<ULONG>(arIn.getSize(3)), 0 }
+                            }
+                        };
             if (init)     resultBounds[axis-1].cElements += 1;
             auto retArray = ::SafeArrayCreate(VT_VARIANT, dim, resultBounds.data());
             ret.vt = VT_ARRAY | VT_VARIANT;
