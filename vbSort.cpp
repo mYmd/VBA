@@ -6,15 +6,14 @@
 
 //比較関数
 class compareByVBAfunc   {
-    VARIANT*    begin;
-    std::shared_ptr<functionExpr> comp;
+    VARIANT*        begin;
+    functionExpr*   comp;
 public:
-    compareByVBAfunc(VARIANT* pA, VARIANT* f) : begin(pA), comp(std::make_shared<functionExpr>(f))
-    {    }
+    compareByVBAfunc(VARIANT* pA, functionExpr& f) : begin(pA), comp(&f)    {    }
     compareByVBAfunc(compareByVBAfunc const&) = default;
     compareByVBAfunc(compareByVBAfunc&&) = delete;
     ~compareByVBAfunc() = default;
-    bool valid() const  { return static_cast<bool>(comp);  }
+    bool valid() const  { return comp != nullptr;  }
     bool operator ()(__int32 i, __int32 j) const
     {
         return comp->eval(begin + i, begin + j)->lVal ? true: false;
@@ -85,7 +84,8 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     }
     else if ( pComp )
     {
-        compareByVBAfunc functor(VArray.get(), pComp);
+        functionExpr comp(pComp);
+        compareByVBAfunc functor(VArray.get(), comp);
         if ( functor.valid() )
             std::sort(index.get(), index.get() + arrIn.getSize(1), functor);
     }
@@ -99,7 +99,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     elem.vt = VT_I4;
     for ( std::size_t i = 0; i < arrIn.getSize(1); ++i )
     {
-        elem.lVal = static_cast<LONG>(index[i] + arrIn.getOriginalLBound(1));
+        elem.lVal = static_cast<decltype(elem.lVal)>(index[i] + arrIn.getOriginalLBound(1));
         ::VariantCopy(&arrOut(i), &elem);
     }
     return      ret;
