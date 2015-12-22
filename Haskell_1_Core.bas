@@ -280,7 +280,7 @@ Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Varian
             ret(k) = unbind_invoke(z, params(LBound(params)), params(1 + LBound(params)))
             k = k + 1
         Next z
-        applyFun2by2 = ret
+        swapVariant applyFun2by2, ret
     End If
 End Function
     Function p_applyFun2by2(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
