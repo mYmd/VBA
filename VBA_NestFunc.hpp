@@ -5,16 +5,16 @@
 #include <array>
 
 //VBA配列の次元取得
-__int32 __stdcall   Dimension(const VARIANT* pv);
+__int32 __stdcall   Dimension(const VARIANT* pv) noexcept;
 
 //プレースホルダの生成
-VARIANT __stdcall   placeholder(__int32);
+VARIANT __stdcall   placeholder(__int32) noexcept;
 
 //プレースホルダの判定
-__int32 __stdcall   is_placeholder(const VARIANT* pv);
+__int32 __stdcall   is_placeholder(const VARIANT* pv) noexcept;
 
 //bindされていないVBA関数を2引数で呼び出す
-VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2);
+VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept;
 
 //--------------------------------------------------------
 class safearrayRef  {
@@ -26,14 +26,14 @@ class safearrayRef  {
     VARIANT         val_;
     std::array<std::size_t, 3>  size;
 public:
-    explicit safearrayRef(const VARIANT* pv);
+    explicit safearrayRef(const VARIANT* pv) noexcept;
     ~safearrayRef();
     safearrayRef(safearrayRef const&) = delete;
     safearrayRef(safearrayRef&&) = delete;
-    std::size_t getDim() const;
-    std::size_t getSize(std::size_t i) const;
-    std::size_t getOriginalLBound(std::size_t i) const;
-    VARIANT& operator()(std::size_t i, std::size_t j = 0, std::size_t k = 0);
+    std::size_t getDim() const noexcept;
+    std::size_t getSize(std::size_t i) const noexcept;
+    std::size_t getOriginalLBound(std::size_t i) const noexcept;
+    VARIANT& operator()(std::size_t i, std::size_t j = 0, std::size_t k = 0) noexcept;
 };
 
 //--------------------------------------------------------
@@ -41,7 +41,7 @@ public:
 class funcExpr_i    {
 public:
     virtual ~funcExpr_i() = default;
-    virtual bool isYielder() const;
+    virtual bool isYielder() const noexcept;
     virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) = 0;
 };
 
@@ -63,11 +63,11 @@ class functionExpr : public funcExpr_i    {
     std::unique_ptr<funcExpr_i> left;
     std::unique_ptr<funcExpr_i> right;
 public:
-    explicit functionExpr(const VARIANT*);
-    explicit functionExpr(const VBCallbackStruct&);
+    explicit functionExpr(const VARIANT*) noexcept;
+    explicit functionExpr(const VBCallbackStruct&) noexcept;
     functionExpr(functionExpr const&) = delete;
     functionExpr(functionExpr&&) = delete;
     ~functionExpr();
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0);
-    bool isValid() const;
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept;
+    bool isValid() const noexcept;
 };
