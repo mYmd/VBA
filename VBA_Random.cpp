@@ -10,7 +10,7 @@ namespace{
 
 // 乱数 seed を指定してランダマイズ
 // seed省略時もしくは整数として評価できないときは seed_gen による
-__int32 __stdcall seed_Engine(VARIANT* seed)
+__int32 __stdcall seed_Engine(VARIANT* seed) noexcept
 {
     VARIANT tmp;
     ::VariantInit(&tmp);
@@ -31,13 +31,13 @@ __int32 __stdcall seed_Engine(VARIANT* seed)
 namespace   {
     //共通サブルーチン
     template <typename DIST, typename F>
-    VARIANT dist_imple(__int32 N, DIST&& dist, F&& fun)
+    VARIANT dist_imple(__int32 N, DIST dist, F fun) noexcept
     {
         VARIANT ret;
         ::VariantInit(&ret);
         if ( N < 1 )
         {
-            std::forward<F>(fun)(ret, std::forward<DIST>(dist)(d_engine));
+            fun(ret, dist(d_engine));
         }
         else
         {
@@ -48,7 +48,7 @@ namespace   {
             for ( int i = 0; i < N; ++i )
             {
                 ::VariantInit(&arOut(i));
-                std::forward<F>(fun)(arOut(i), std::forward<DIST>(dist)(d_engine));
+                fun(arOut(i), dist(d_engine));
             }
         }
         return ret;
@@ -56,7 +56,7 @@ namespace   {
 }
 
 // N 個の一様整数乱数を生成  範囲[from, to]を指定 
-VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to)
+VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to) noexcept
 {
     return
         dist_imple( N,
@@ -66,7 +66,7 @@ VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to)
 }
 
 // N 個の一様実乱数を生成  範囲[from, to]を指定
-VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to)
+VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to) noexcept
 {
     return
         dist_imple( N,
@@ -76,7 +76,7 @@ VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to)
 }
 
 // N 個の正規分布実乱数を生成  平均 mean と標準偏差 stddev を指定
-VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev)
+VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev) noexcept
 {
     return
         dist_imple( N,
@@ -86,7 +86,7 @@ VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev)
 }
 
 // N 個のベルヌーイ分布乱数を生成  確率 prob を指定
-VARIANT __stdcall bernoulli_dist(__int32 N, double prob)
+VARIANT __stdcall bernoulli_dist(__int32 N, double prob) noexcept
 {
     return
         dist_imple( N,
