@@ -11,68 +11,41 @@ Option Explicit
 
 'デバッグウィンドウに配列のサイズを表示する
 Sub printS(ByRef m As Variant)
-Dim mes$, i%, total&
-    If VarType(m) = 0 Then Debug.Print " vbEmpty:": Exit Sub
+    If IsEmpty(m) Then Debug.Print " vbEmpty:": Exit Sub
     If Dimension(m) = 0 Then Debug.Print " Scalar": Exit Sub
-    mes = "": total = 1
+    Dim expr As String, i As Long, total As Long
+    expr = "": total = 1
     For i = 1 To Dimension(m) Step 1
-        mes = mes & "[Dim" & i & "]: " & LBound(m, i) & " -> " & UBound(m, i) & "  "
+        expr = expr & "[Dim" & i & "]: " & LBound(m, i) & " -> " & UBound(m, i) & "  "
         total = total * (1 + UBound(m, i) - LBound(m, i))
     Next i
-    mes = mes & ": Total Size = " & total
-    Debug.Print mes
+    expr = expr & ": Total Size = " & total
+    Debug.Print expr
 End Sub
 
 'デバッグウィンドウに２次元配列を表示する
-Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
-    Dim SR&, ER&, Sc&, EC&, i&, j&, MaxL%(), tmp() As Variant, Msg$
-    
-    If Dimension(m) = 0 Then Debug.Print m: Exit Sub
-    If LBound(m) > UBound(m) Then Debug.Print "#Empty Matrix#": Exit Sub
-    If Dimension(m) = 1 Then printV m, r: Exit Sub
-    If Dimension(m) > 2 Then Stop: Exit Sub
-    If IsMissing(r) = True Then
-        SR = LBound(m, 1): ER = UBound(m, 1)
-    Else
-        If r = 0 Then
-            Debug.Print "#Empty Matrix#"
-            Exit Sub
-        End If
-        If r > 0 Then
-            SR = LBound(m, 1)
-            ER = SR + r - 1
-        Else
-            SR = UBound(m, 1) + r + 1
-            ER = UBound(m, 1)
-        End If
-    End If
-    If IsMissing(c) = True Then
-        Sc = LBound(m, 2): EC = UBound(m, 2)
-    Else
-        If c = 0 Then
-            Debug.Print "#Empty Matrix#"
-            Exit Sub
-        End If
-        If c > 0 Then
-            Sc = LBound(m, 2)
-            EC = Sc + c - 1
-        Else
-            Sc = UBound(m, 2) + c + 1
-            EC = UBound(m, 2)
-        End If
-    End If
-    If SR < LBound(m, 1) Then SR = LBound(m, 1)
-    If ER > UBound(m, 1) Then ER = UBound(m, 1)
-    If Sc < LBound(m, 2) Then Sc = LBound(m, 2)
-    If EC > UBound(m, 2) Then EC = UBound(m, 2)
-    If (100000 < (ER - SR + 1) * (EC - Sc + 1)) Then
-        Msg = "サイズ超過。縦*横 <=100000以内"
-        i = MsgBox(Msg, vbOKOnly, "サイズ超過")
+Sub printM(ByRef m As Variant, Optional ByVal r As Variant, Optional ByVal c As Variant)
+    If Dimension(m) = 0 Then Debug.Print m:                     Exit Sub
+    If UBound(m) < LBound(m) Then Debug.Print "#Empty Matrix#": Exit Sub
+    If Dimension(m) = 1 Then printV m, r:                       Exit Sub
+    If 2 < Dimension(m) Then Debug.Print "#Dimension Error#":   Exit Sub
+    '-----------------------------------------
+    Dim SR As Long, ER As Long
+    Dim SC As Long, EC As Long
+    Call get_start_end(m, IIf(IsMissing(r), rowSize(m), r), 1, SR, ER)
+    Call get_start_end(m, IIf(IsMissing(c), colSize(m), c), 2, SC, EC)
+    If (ER < SR) Or (EC < SC) Then
+        Debug.Print "#Empty Matrix#"
         Exit Sub
     End If
-    ReDim MaxL(Sc To EC)
-    ReDim tmp(SR To ER, Sc To EC)
-    For j = Sc To EC Step 1
+    Dim i As Long, j As Long
+    If (100000 < (ER - SR + 1) * (EC - SC + 1)) Then
+        i = MsgBox("サイズ超過。縦*横 <=100000以内", vbOKOnly, "サイズ超過")
+        Exit Sub
+    End If
+    Dim MaxL() As Long:     ReDim MaxL(SC To EC)
+    Dim tmp() As Variant:   ReDim tmp(SR To ER, SC To EC)
+    For j = SC To EC Step 1
         For i = SR To ER Step 1
             tmp(i, j) = m(i, j)
             If IsError(m(i, j)) = True Then tmp(i, j) = "Error!"
@@ -83,70 +56,91 @@ Sub printM(ByRef m As Variant, Optional r As Variant, Optional c As Variant)
         Next i
     Next j
     For i = SR To ER Step 1
-        For j = Sc To EC - 1 Step 1
+        For j = SC To EC - 1 Step 1
             Debug.Print Space(2 + MaxL(j) - LenW(Trim(tmp(i, j)))); Trim(tmp(i, j));
         Next j
         Debug.Print Space(2 + MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2))))); Trim(tmp(i, UBound(tmp, 2)))
     Next i
 End Sub
     
-'デバッグウィンドウにベクトルを表示する
-Private Sub printV(v As Variant, Optional r As Variant)
-    Dim SR&, ER&, i&, Msg$
-    
-    If Dimension(v) = 0 Then Debug.Print v: Exit Sub
-    If Dimension(v) = 2 Then printM v, r: Exit Sub
-    If LBound(v) > UBound(v) Then Debug.Print "#Empty Vector#": Exit Sub
-    If IsMissing(r) = True Then
-        SR = LBound(v): ER = UBound(v)
-    Else
-        If r = 0 Then Debug.Print "#Empty Vector#": Exit Sub
-        If r > 0 Then SR = LBound(v): ER = SR + r - 1 Else SR = UBound(v) + r + 1: ER = UBound(v)
-    End If
-    If SR < LBound(v) Then SR = LBound(v)
-    If ER > UBound(v) Then ER = UBound(v)
-    If (10000 < ER - SR + 1) Then
-        Msg = "サイズ超過。長さ 10000個以内。"
-        i = MsgBox(Msg, vbOKOnly, "サイズ超過")
-        Exit Sub
-    End If
-    For i = SR To ER - 1 Step 1
-        If IsError(v(i)) = True Then
-            Debug.Print "  Error!";
-        ElseIf IsArray(v(i)) = True Then
-            Debug.Print "  [" & i & "]";
-        ElseIf IsEmpty(v(i)) = True Then
-            Debug.Print "  ";
-        ElseIf IsNull(v(i)) = True Then
-            Debug.Print "  ";
-        Else
-            Debug.Print Space(2); Trim(v(i));
+    'デバッグウィンドウにベクトルを表示する
+    Private Sub printV(ByRef v As Variant, Optional ByVal r As Variant)
+        If Dimension(v) = 0 Then Debug.Print v:                     Exit Sub
+        If Dimension(v) = 2 Then printM v, r:                       Exit Sub
+        If LBound(v) > UBound(v) Then Debug.Print "#Empty Vector#": Exit Sub
+        '-----------------------------------------
+        Dim SR As Long, ER As Long
+        Call get_start_end(v, IIf(IsMissing(r), sizeof(v), r), 1, SR, ER)
+        If ER < SR Then
+            Debug.Print "#Empty Vector#"
+            Exit Sub
         End If
-    Next i
-    If IsError(v(ER)) = True Then
-        Debug.Print "  Error!"
-    ElseIf IsArray(v(ER)) = True Then
-        Debug.Print "  [" & ER & "]"
-    ElseIf IsEmpty(v(ER)) = True Then
-        Debug.Print "  "
-    ElseIf IsNull(v(ER)) = True Then
-        Debug.Print "  "
-    Else
-        Debug.Print Space(2); Trim(v(ER))
-    End If
-End Sub
+        Dim i As Long
+        If (10000 < ER - SR + 1) Then
+            i = MsgBox("サイズ超過。長さ 10000個以内。", vbOKOnly, "サイズ超過")
+            Exit Sub
+        End If
+        For i = SR To ER - 1 Step 1
+            If IsError(v(i)) = True Then
+                Debug.Print "  Error!";
+            ElseIf IsArray(v(i)) = True Then
+                Debug.Print "  [" & i & "]";
+            ElseIf IsEmpty(v(i)) = True Then
+                Debug.Print "  ";
+            ElseIf IsNull(v(i)) = True Then
+                Debug.Print "  ";
+            Else
+                Debug.Print Space(2); Trim(v(i));
+            End If
+        Next i
+        If IsError(v(ER)) = True Then
+            Debug.Print "  Error!"
+        ElseIf IsArray(v(ER)) = True Then
+            Debug.Print "  [" & ER & "]"
+        ElseIf IsEmpty(v(ER)) = True Then
+            Debug.Print "  "
+        ElseIf IsNull(v(ER)) = True Then
+            Debug.Print "  "
+        Else
+            Debug.Print Space(2); Trim(v(ER))
+        End If
+    End Sub
 
-Private Function LenW(ByRef s As String) As Long
-    LenW = LenB(StrConv(s, vbFromUnicode))
-End Function
+    Private Function LenW(ByRef s As String) As Long
+        LenW = LenB(StrConv(s, vbFromUnicode))
+    End Function
+
+    Private Sub get_start_end(ByRef m As Variant, _
+                              ByVal length As Long, _
+                              ByVal dimen As Long, _
+                              ByRef start_ As Long, _
+                              ByRef end_ As Long)
+        If length > 0 Then
+            start_ = LBound(m, dimen)
+            end_ = start_ + length - 1
+            If UBound(m, dimen) < end_ Then end_ = UBound(m, dimen)
+        Else
+            start_ = UBound(m, dimen) + length + 1
+            end_ = UBound(m, dimen)
+            If start_ < LBound(m, dimen) Then start_ = LBound(m, dimen)
+        End If
+    End Sub
 
 'ネストした関数を文字列化
-Function dumpFun(ByRef x As Variant) As Variant
+Function dumpFun(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As Variant
     If is_bindFun(x) Then
-        dumpFun = "F" & (x(0) Mod 10000) & "(" & dumpFun(x(1)) & ", " & dumpFun(x(2)) & ")"
+        dumpFun = "F" & (x(0) Mod 10000) & _
+                  "(" & dumpFun(x(1), IIf(OneTwo = 0, 1, OneTwo)) & _
+                  ", " & dumpFun(x(2), IIf(OneTwo = 0, 2, OneTwo)) & ")"
     ElseIf is_placeholder(x) Then
-        If x = placeholder Then
-            dumpFun = "_"
+        If x = placeholder(0) Then
+            If OneTwo = 1 Then
+                dumpFun = "_1"
+            ElseIf OneTwo = 2 Then
+                dumpFun = "_2"
+            Else
+                dumpFun = "_"
+            End If
         ElseIf x = placeholder(1) Then
             dumpFun = "_1"
         ElseIf x = placeholder(2) Then
