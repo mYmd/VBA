@@ -14,7 +14,7 @@ namespace   {
                         VARIANT*        matrix  ,
                         __int32 const   axis    ,
                         VARIANT&        ret     ,
-                        bool            left    ); //left==true, right == false
+                        bool            left    ) noexcept; //left==true, right == false
 
     //scanl と scanr と scanl1 と scanr1 の共通処理
     void   scan_imple(  functionExpr&   bfun    ,
@@ -22,7 +22,7 @@ namespace   {
                         VARIANT*        matrix  ,
                         __int32 const   axis    ,
                         VARIANT&        ret     ,
-                        bool            left    ); //left==true, right == false
+                        bool            left    ) noexcept; //left==true, right == false
 
     //repeat_while と repeat_while_not と generate_while と generate_while_not の共通処理
     __int32 repeat_imple_0( VARIANT*        init    ,
@@ -31,12 +31,12 @@ namespace   {
                             __int32         maxN    ,
                             VARIANT&        ret     ,
                             bool            scan    ,
-                            __int32         stopCondition);
+                            __int32         stopCondition) noexcept;
 }   // namespace
 
 //bindされていないVBA関数を2引数で呼び出す
 VARIANT  __stdcall
-unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
+unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -48,7 +48,7 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2)
 
 //VARIANT変数のswap
 __int32 __stdcall
-swapVariant(VARIANT* a, VARIANT* b)
+swapVariant(VARIANT* a, VARIANT* b) noexcept
 {
 	if ( a && b )
 	{
@@ -62,7 +62,7 @@ swapVariant(VARIANT* a, VARIANT* b)
 
 //配列matrixの各要素にVBA関数を適用する
 VARIANT  __stdcall
-mapF_imple(VARIANT* bfun, VARIANT* matrix)
+mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -105,7 +105,7 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix)
 
 //配列matrix1とmatrix2の各要素に2変数のCallback（vbCallbackFunc_t型のVBA関数）を適用する
 VARIANT  __stdcall
-zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
+zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -152,7 +152,7 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2)
 
 //3次元までのVBA配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
 VARIANT  __stdcall
-foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
+foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -169,7 +169,7 @@ foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
 VARIANT  __stdcall
-foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
+foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -186,7 +186,7 @@ foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
 VARIANT  __stdcall
-foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
+foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -199,7 +199,7 @@ foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
 VARIANT  __stdcall
-foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
+foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -214,7 +214,7 @@ foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った左scan（初期値指定あり）
 VARIANT  __stdcall
-scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
+scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -231,7 +231,7 @@ scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った右scan（初期値指定あり）
 VARIANT  __stdcall
-scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
+scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -248,7 +248,7 @@ scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
 VARIANT  __stdcall
-scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
+scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -261,7 +261,7 @@ scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 
 //3次元までのVBA配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
 VARIANT  __stdcall
-scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
+scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
@@ -275,7 +275,7 @@ scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis)
 //**************************************************************************
 //述語による1次元配列からの検索
 __int32  __stdcall
-find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def)
+find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def) noexcept
 {
     if ( !bfun || !matrix )                         return def;
     safearrayRef arIn(matrix);
@@ -305,7 +305,7 @@ repeat_imple(   VARIANT*        init    ,
                 VARIANT*        trans   ,
                 __int32         maxN    ,
                 __int32         scan    ,
-                __int32         stopCondition)
+                __int32         stopCondition) noexcept
 {
     VARIANT ret;
     ::VariantInit(&ret);
@@ -327,7 +327,7 @@ namespace   {
                         VARIANT*        matrix  ,
                         __int32 const   axis    ,
                         VARIANT&        ret     ,
-                        bool const      left    ) //left==true, right == false
+                        bool const      left    )  noexcept //left==true, right == false
     {
         safearrayRef arIn(matrix);
         auto const dim = static_cast<__int32>(arIn.getDim());
@@ -391,7 +391,7 @@ namespace   {
                         VARIANT*        matrix  ,
                         __int32 const   axis    ,
                         VARIANT&        ret     ,
-                        bool const      left    ) //left==true, right == false
+                        bool const      left    ) noexcept //left==true, right == false
     {
         safearrayRef arIn(matrix);
         auto const dim = static_cast<__int32>(arIn.getDim());
@@ -473,7 +473,7 @@ namespace   {
                             __int32         maxN    ,
                             VARIANT&        ret     ,
                             bool            scan    ,
-                            __int32         stopCondition)
+                            __int32         stopCondition) noexcept
     {
         VARIANT zero, check;
         ::VariantClear(&ret);
@@ -522,5 +522,5 @@ namespace   {
         }
         return count;
     }
-	
+
 }   // namespace
