@@ -4,7 +4,7 @@
 #include "VBA_NestFunc.hpp"
 
 //VBA配列の次元取得
-__int32 __stdcall Dimension(const VARIANT* pv)
+__int32 __stdcall Dimension(const VARIANT* pv) noexcept
 {
 	if ( !pv || 0 == (VT_ARRAY & pv->vt ) )
 		return	0;
@@ -15,7 +15,7 @@ __int32 __stdcall Dimension(const VARIANT* pv)
 }
 
 //プレースホルダの生成
-VARIANT __stdcall placeholder(__int32 n)
+VARIANT __stdcall placeholder(__int32 n) noexcept
 {
     VARIANT ret;
     ::VariantInit(&ret);
@@ -25,13 +25,13 @@ VARIANT __stdcall placeholder(__int32 n)
 }
 
 //プレースホルダの判定
-__int32 __stdcall is_placeholder(const VARIANT* pv)
+__int32 __stdcall is_placeholder(const VARIANT* pv) noexcept
 {
     return ( pv && (pv->vt == VT_ERROR) && 0 <= pv->scode && pv->scode <= 2 ) ? 1 : 0;
 }
 
 //===================================================================
-safearrayRef::safearrayRef(const VARIANT* pv)
+safearrayRef::safearrayRef(const VARIANT* pv) noexcept
     :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr), size({1, 1, 1})
 {
     ::VariantInit(&val_);
@@ -64,24 +64,24 @@ safearrayRef::~safearrayRef()
     VariantClear(&val_);
 }
 
-std::size_t safearrayRef::getDim() const
+std::size_t safearrayRef::getDim() const noexcept
 {
     return dim;
 }
 
-std::size_t safearrayRef::getSize(std::size_t i) const
+std::size_t safearrayRef::getSize(std::size_t i) const noexcept
 {
     return size[i-1];
 }
 
-std::size_t safearrayRef::getOriginalLBound(std::size_t i) const
+std::size_t safearrayRef::getOriginalLBound(std::size_t i) const noexcept
 {
     LONG lb = 0;
     ::SafeArrayGetLBound(psa, static_cast<UINT>(i), &lb);
     return lb;
 }
 
-VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k)
+VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k) noexcept
 {
     auto distance = size[0]*size[1]*k + size[0]*j + i;
     if ( pvt == VT_VARIANT)
@@ -96,7 +96,7 @@ VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k)
 }
 
 //===================================================================
-bool funcExpr_i::isYielder() const
+bool funcExpr_i::isYielder() const noexcept
 {
     return false;
 }
@@ -110,7 +110,7 @@ public:
     valueExpr(valueExpr const&) = delete;
     valueExpr(valueExpr&&) = delete;
     ~valueExpr() = default;
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0)   {   return val;    }
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept   {   return val;    }
 };
 
 //--------------------------------------------------------
@@ -118,7 +118,7 @@ public:
 class placeholder0 : public funcExpr_i    {
 public:
     ~placeholder0() = default;
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
     {
         return      ( left_right == 1 )?  x
                 :   ( left_right == 2 )?  y
@@ -130,7 +130,7 @@ public:
 class placeholder1 : public funcExpr_i    {
 public:
     ~placeholder1() = default;
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
     {   return x;   }
 };
 
@@ -138,7 +138,7 @@ public:
 class placeholder2 : public funcExpr_i    {
 public:
     ~placeholder2() = default;
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
     {   return y;   }
 };
 
@@ -146,32 +146,32 @@ public:
 class yielder : public funcExpr_i    {
     VARIANT     val;
 public:
-    explicit yielder(__int32 n) : val(placeholder(n))     {   }
+    explicit yielder(__int32 n) noexcept : val(placeholder(n))     {   }
     yielder(yielder const&) = delete;
     yielder(yielder&&) = delete;
     ~yielder() = default;
-    bool isYielder() const
+    bool isYielder() const noexcept
     {   return true;    }
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0)
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
     {   return &val;    }
 };
 //-------------------------------------------------------------
 namespace   {   //util
     //プレースホルダの種類
-    int placeholder_num(const VARIANT* pv)
+    int placeholder_num(const VARIANT* pv) noexcept
     {   return ( pv && (pv->vt == VT_ERROR) ) ?  pv->scode :  -1;   }
     //------------------------------------------------------------------
     struct VBCallbackStruct   {
         vbCallbackFunc_t    fun;
         VARIANT*            elem1;
         VARIANT*            elem2;
-        VBCallbackStruct(const VARIANT* bfun);
+        VBCallbackStruct(const VARIANT* bfun) noexcept;
         ~VBCallbackStruct() = default;
         VBCallbackStruct(VBCallbackStruct const&) = delete;
         VBCallbackStruct(VBCallbackStruct&&) = delete;
     };
     //------------------------------------------------------------------
-    VBCallbackStruct::VBCallbackStruct(const VARIANT* bfun) : fun(nullptr), elem1(nullptr), elem2(nullptr)
+    VBCallbackStruct::VBCallbackStruct(const VARIANT* bfun) noexcept : fun(nullptr), elem1(nullptr), elem2(nullptr)
     {
         safearrayRef arRef(bfun);
         if ( 1 != arRef.getDim() )         return;
@@ -186,7 +186,7 @@ namespace   {   //util
         elem2 = &arRef(2);
     }
     //
-    auto functionExpr_imple(VARIANT* elem) ->std::unique_ptr<funcExpr_i>
+    auto functionExpr_imple(VARIANT* elem) noexcept ->std::unique_ptr<funcExpr_i>
     {
         VBCallbackStruct callback(elem);
         int pn = -1;
@@ -207,10 +207,10 @@ namespace   {   //util
 
 //--------------------------------------------------------
 
-functionExpr::functionExpr(const VARIANT* bfun) : functionExpr(VBCallbackStruct(bfun))
+functionExpr::functionExpr(const VARIANT* bfun) noexcept : functionExpr(VBCallbackStruct(bfun))
 {   }
 
-functionExpr::functionExpr(const VBCallbackStruct& callback) : fun(callback.fun)
+functionExpr::functionExpr(const VBCallbackStruct& callback) noexcept : fun(callback.fun)
 {
     ::VariantInit(&val);
     if ( !fun )     return;
@@ -223,7 +223,7 @@ functionExpr::~functionExpr()
     ::VariantClear(&val);
 }
 
-VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) // = 0
+VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) noexcept // = 0
 {
     if ( left->isYielder() || right->isYielder() )
     {
@@ -252,7 +252,7 @@ VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) // = 0
     return &val;
 }
 
-bool functionExpr::isValid() const
+bool functionExpr::isValid() const noexcept
 {
     return fun != nullptr;
 }
