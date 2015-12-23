@@ -9,12 +9,12 @@ class compareByVBAfunc   {
     VARIANT*        begin;
     functionExpr*   comp;
 public:
-    compareByVBAfunc(VARIANT* pA, functionExpr& f) : begin(pA), comp(&f)    {    }
+    compareByVBAfunc(VARIANT* pA, functionExpr& f) noexcept : begin(pA), comp(&f)    {    }
     compareByVBAfunc(compareByVBAfunc const&) = default;
     compareByVBAfunc(compareByVBAfunc&&) = delete;
     ~compareByVBAfunc() = default;
-    bool valid() const  { return comp != nullptr;  }
-    bool operator ()(__int32 i, __int32 j) const
+    bool valid() const noexcept { return comp != nullptr;  }
+    bool operator ()(__int32 i, __int32 j) const noexcept
     {
         return comp->eval(begin + i, begin + j)->lVal ? true: false;
     }
@@ -24,11 +24,11 @@ public:
 class compFunctor  {
     VARIANT*    begin;
 public:
-    explicit compFunctor(VARIANT* pA) : begin(pA) { }
+    explicit compFunctor(VARIANT* pA) noexcept : begin(pA) { }
     compFunctor(compFunctor const&) = default;
     compFunctor(compFunctor&&) = delete;
     ~compFunctor() = default;
-    bool operator ()(__int32 i, __int32 j) const
+    bool operator ()(__int32 i, __int32 j) const noexcept
     {
         return VARCMP_LT == VarCmp(begin + i, begin + j, LANG_JAPANESE, 0);
     }
@@ -38,11 +38,11 @@ public:
 class compDictionaryFunctor  {
     VARIANT*    begin;
 public:
-    explicit compDictionaryFunctor(VARIANT* pA) : begin(pA) { }
+    explicit compDictionaryFunctor(VARIANT* pA) noexcept : begin(pA) { }
     compDictionaryFunctor(compDictionaryFunctor const&) = default;
     compDictionaryFunctor(compDictionaryFunctor&&) = delete;
     ~compDictionaryFunctor() = default;
-    bool operator ()(__int32 i, __int32 j) const
+    bool operator ()(__int32 i, __int32 j) const noexcept
     {
         safearrayRef arr1(begin + i);
         safearrayRef arr2(begin + j);
@@ -58,7 +58,7 @@ public:
     }
 };
 
-VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
+VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp) noexcept
 {
     VARIANT      ret;
     ::VariantInit(&ret);
