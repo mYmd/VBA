@@ -10,7 +10,7 @@ namespace{
 
 // 乱数 seed を指定してランダマイズ
 // seed省略時もしくは整数として評価できないときは seed_gen による
-__int32 __stdcall seed_Engine(VARIANT* seed) noexcept
+__int32 __stdcall seed_Engine(VARIANT* seed)
 {
     VARIANT tmp;
     ::VariantInit(&tmp);
@@ -31,7 +31,7 @@ __int32 __stdcall seed_Engine(VARIANT* seed) noexcept
 namespace   {
     //共通サブルーチン
     template <typename DIST, typename F>
-    VARIANT dist_imple(__int32 N, DIST dist, F fun) noexcept
+    VARIANT dist_imple(__int32 N, DIST dist, F fun)
     {
         VARIANT ret;
         ::VariantInit(&ret);
@@ -56,7 +56,7 @@ namespace   {
 }
 
 // N 個の一様整数乱数を生成  範囲[from, to]を指定 
-VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to) noexcept
+VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to)
 {
     return
         dist_imple( N,
@@ -66,7 +66,7 @@ VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to) noexcept
 }
 
 // N 個の一様実乱数を生成  範囲[from, to]を指定
-VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to) noexcept
+VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to)
 {
     return
         dist_imple( N,
@@ -76,7 +76,7 @@ VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to) noexcept
 }
 
 // N 個の正規分布実乱数を生成  平均 mean と標準偏差 stddev を指定
-VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev) noexcept
+VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev)
 {
     return
         dist_imple( N,
@@ -86,7 +86,7 @@ VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev) noexcept
 }
 
 // N 個のベルヌーイ分布乱数を生成  確率 prob を指定
-VARIANT __stdcall bernoulli_dist(__int32 N, double prob) noexcept
+VARIANT __stdcall bernoulli_dist(__int32 N, double prob)
 {
     return
         dist_imple( N,
