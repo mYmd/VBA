@@ -28,10 +28,10 @@ namespace   {
     __int32 repeat_imple_0( VARIANT*        init    ,
                             functionExpr&   pred    ,
                             functionExpr&   trans   ,
-                            __int32         maxN    ,
+                            __int32 const   maxN    ,
                             VARIANT&        ret     ,
-                            bool            scan    ,
-                            __int32         stopCondition) noexcept;
+                            bool const      scan    ,
+                            bool const      stopCondition);
 }   // namespace
 
 //bindされていないVBA関数を2引数で呼び出す
@@ -305,7 +305,7 @@ repeat_imple(   VARIANT*        init    ,
                 VARIANT*        trans   ,
                 __int32         maxN    ,
                 __int32         scan    ,
-                __int32         stopCondition) noexcept
+                __int32         stopCondition)
 {
     VARIANT ret;
     ::VariantInit(&ret);
@@ -313,7 +313,7 @@ repeat_imple(   VARIANT*        init    ,
     functionExpr funcP(pred);
     functionExpr funcT(trans);
     if ( !funcP.isValid() || !funcT.isValid() )     return ret;
-    auto i = repeat_imple_0(init, funcP, funcT, maxN, ret, 0 != scan, stopCondition);
+    auto i = repeat_imple_0(init, funcP, funcT, maxN, ret, 0 != scan, 0 != stopCondition);
     return ret;
 }
 
@@ -462,18 +462,14 @@ namespace   {
         }
     }
 
-        //
-        inline bool stopCheck(__int32 a, __int32 b)
-        {   return ( a == 0 && b == 0 ) || ( a!= 0 && b != 0 ); }
-    
     //repeat_while と repeat_while_not と generate_while と generate_while_not の共通処理
     __int32 repeat_imple_0( VARIANT*        init    ,
                             functionExpr&   pred    ,
                             functionExpr&   trans   ,
-                            __int32         maxN    ,
+                            __int32 const   maxN    ,
                             VARIANT&        ret     ,
-                            bool            scan    ,
-                            __int32         stopCondition) noexcept
+                            bool const      scan    ,
+                            bool const      stopCondition)
     {
         VARIANT zero, check;
         ::VariantClear(&ret);
@@ -491,7 +487,7 @@ namespace   {
         while ( maxN < 0 || count < maxN )
         {
             ::VariantChangeType(&check, pred.eval(pret, pret), 0, VT_I4);
-            if ( stopCheck(check.lVal, stopCondition) )
+            if ( (check.lVal != 0) == stopCondition )
             {
                 ::VariantClear(&check);
                 break;
