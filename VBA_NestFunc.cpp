@@ -40,7 +40,7 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
     if (!psa)                                       return;
     //このAPIのせいでreinterpret_cast
     ::SafeArrayAccessData(psa, reinterpret_cast<void**>(&it));
-    dim = SafeArrayGetDim(psa);
+    dim = ::SafeArrayGetDim(psa);
     if (!it || 3 < dim)
     {
         dim = 0;
@@ -178,7 +178,7 @@ namespace   {   //util
         if ( arRef.getSize(1) < 4 )        return;
         if ( placeholder_num(&arRef(3)) < 0 )   return;
         VARIANT pF;
-        VariantInit(&pF);
+        ::VariantInit(&pF);
         if ( S_OK != ::VariantChangeType(&pF, &arRef(0), 0, VT_I8))     return;
         fun = reinterpret_cast<vbCallbackFunc_t>(pF.llVal);
         VariantClear(&pF);
@@ -190,18 +190,22 @@ namespace   {   //util
     {
         VBCallbackStruct callback(elem);
         int pn = -1;
-        if ( callback.fun )
-            return std::make_unique<functionExpr>(callback);
-        else
-            switch (pn = placeholder_num(elem))
-            {
-            case 0:     return std::make_unique<placeholder0>();
-            case 1:     return std::make_unique<placeholder1>();
-            case 2:     return std::make_unique<placeholder2>();
-            case 800: case 801: case 802:
-                        return std::make_unique<yielder>(pn % 10);
-            default:    return std::make_unique<valueExpr>(elem);
-            }
+        try {
+            if ( callback.fun )
+                return std::make_unique<functionExpr>(callback);
+            else
+                switch (pn = placeholder_num(elem))
+                {
+                case 0:     return std::make_unique<placeholder0>();
+                case 1:     return std::make_unique<placeholder1>();
+                case 2:     return std::make_unique<placeholder2>();
+                case 800: case 801: case 802:
+                            return std::make_unique<yielder>(pn % 10);
+                default:    return std::make_unique<valueExpr>(elem);
+                }
+        } catch (...)   {
+            return std::unique_ptr<valueExpr>(nullptr);
+        }
     };
 }
 
