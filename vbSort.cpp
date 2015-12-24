@@ -58,7 +58,7 @@ public:
     }
 };
 
-VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp) noexcept
+VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
 {
     VARIANT      ret;
     ::VariantInit(&ret);
