@@ -5,11 +5,13 @@ Option Explicit
 
 '********************************************************************
 '   要素アクセス
-' Function firstArg           1番目の引数
-' Function secondArg          2番目の引数
-' Function getNth             N番目の配列要素取得
-' Sub      setNth             N番目の配列要素設定
-' Function setNth_move        N番目の配列要素設定
+' Function  firstArg        1番目の引数
+' Function  secondArg       2番目の引数
+' Function  getNth          N番目の配列要素取得
+' Sub       setNth          N番目の配列要素設定
+' Function  setNth_move     N番目の配列要素設定
+' Function  swap_many       複数（可変長）の変数をswapしてひとつのジャグ配列にする
+' Sub       swapback_many   ジャグ配列から複数（可変長）の変数にswap back
 '********************************************************************
 '1番目の引数
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
@@ -47,6 +49,30 @@ End Function
     Function p_setNth_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_setNth_move = make_funPointer(AddressOf setNth_move, firstParam, secondParam)
     End Function
+
+' 複数の変数をswapしてひとつのジャグ配列にする
+Function swap_many(ParamArray m() As Variant) As Variant
+    If LBound(m) <= UBound(m) Then
+        Dim ret As Variant
+        ReDim ret(0 To UBound(m) - LBound(m))
+        Dim i As Long, k As Long: k = 0
+        For i = LBound(m) To UBound(m) Step 1
+            swapVariant m(i), ret(k)
+            k = k + 1
+        Next i
+    End If
+    swapVariant swap_many, ret
+End Function
+
+' ジャグ配列から複数（可変長）の変数にswap back
+Sub swapback_many(ByRef m As Variant, ParamArray ret() As Variant)
+    Dim i As Long, k As Long: k = LBound(ret)
+    For i = LBound(m) To UBound(m) Step 1
+        swapVariant m(i), ret(k)
+        k = k + 1
+    Next i
+    m = Empty
+End Sub
 
 '********************************************************************
 '     ファンクタ等
@@ -325,16 +351,16 @@ End Function
     End Function
     
 'Left
-Function str_left(ByRef st As Variant, ByRef Length As Variant) As Variant
-    str_left = left(st, Length)
+Function str_left(ByRef st As Variant, ByRef length As Variant) As Variant
+    str_left = left(st, length)
 End Function
     Function p_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_left = make_funPointer(AddressOf str_left, firstParam, secondParam)
     End Function
     
 'Right
-Function str_right(ByRef st As Variant, ByRef Length As Variant) As Variant
-    str_right = right(st, Length)
+Function str_right(ByRef st As Variant, ByRef length As Variant) As Variant
+    str_right = right(st, length)
 End Function
     Function p_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_right = make_funPointer(AddressOf str_right, firstParam, secondParam)
