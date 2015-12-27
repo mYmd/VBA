@@ -46,7 +46,7 @@ public:
     {
         safearrayRef arr1(begin + i);
         safearrayRef arr2(begin + j);
-        if ( arr1.getDim() == 1 || arr2.getDim() == 1 )     return false;
+        if ( arr1.getDim() != 1 || arr2.getDim() != 1 )     return false;
         for ( ULONG k = 0; k < arr1.getSize(1) && k < arr2.getSize(1); ++k )
         {
             if ( VARCMP_LT == VarCmp(&arr1(k), &arr2(k), LANG_JAPANESE, 0) )
