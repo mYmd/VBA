@@ -66,11 +66,21 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     if ( 1 != arrIn.getDim() )          return ret;
     auto index = std::make_unique<__int32[]>(arrIn.getSize(1));
     auto VArray = std::make_unique<VARIANT[]>(arrIn.getSize(1));
+    auto refFlag = std::make_unique<bool[]>(arrIn.getSize(1));
     for (std::size_t i = 0; i < arrIn.getSize(1); ++i)
     {
         index[i] = static_cast<__int32>(i);
         ::VariantInit(&VArray[i]);
-        ::VariantCopyInd(&VArray[i], &arrIn(i));
+        if ( VT_BYREF & arrIn(i).vt )
+        {
+            refFlag[i] = true;
+            ::VariantCopyInd(&VArray[i], &arrIn(i)); 
+        }
+        else
+        {
+            refFlag[i] = false;
+            VArray[i] = arrIn(i);
+        }
     }
     if ( defaultFlag == 1 ) //1次元昇順
     {
@@ -101,6 +111,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     {
         elem.lVal = static_cast<decltype(elem.lVal)>(index[i] + arrIn.getOriginalLBound(1));
         ::VariantCopy(&arrOut(i), &elem);
+        if ( refFlag[i] )   ::VariantClear(&VArray[i]);
     }
     return      ret;
 }
