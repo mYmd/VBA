@@ -17,7 +17,8 @@ Option Explicit
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
 'key_columns は2次元配列の場合のキー列指定 Array(0,2,4)
-'実際にソートする場合は、permutate(配列, sortIndex) とするかもしくはsubM(配列, sortIndex) を取る
+' 対象配列を実際にソートする場合は、permutate(配列, sortIndex) とするか、
+' もしくはsubV(配列, sortIndex) を取る
 Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
@@ -54,15 +55,18 @@ End Function
         p_sortIndex_pred = make_funPointer(AddressOf sortIndex_pred, firstParam, secondParam)
     End Function
 
-'1次元配列vecの並べ換え   sindexがvecの範囲外もしくは重複があった場合の動作は未定義
-Sub permutate(ByRef vec As Variant, ByRef sindex As Variant)
+' 1次元配列 vec の並べ換え
+' s_index は sortIndex 関数、もしくは sortIndex_pred 関数の返り値を想定
+' s_index に vec の範囲外の値もしくは重複があった場合の動作は未定義
+' subV/subM 関数を使うより速いはず
+Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
     Dim i As Long
     Dim tmp As Variant
     If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Sub
     If VarType(vec) = VarType(Array()) Then
         ReDim tmp(LBound(vec) To UBound(vec))
         For i = LBound(vec) To UBound(vec) Step 1
-            swapVariant tmp(i), vec(sindex(i))
+            swapVariant tmp(i), vec(s_index(i))
         Next i
         If swapVariant(tmp, vec) = 0 Then
             For i = LBound(vec) To UBound(vec) Step 1
@@ -73,13 +77,13 @@ Sub permutate(ByRef vec As Variant, ByRef sindex As Variant)
         tmp = vec
         For i = LBound(vec) To UBound(vec) Step 1
             Set vec(i) = Nothing
-            Set vec(i) = tmp(sindex(i))
-            Set tmp(sindex(i)) = Nothing
+            Set vec(i) = tmp(s_index(i))
+            Set tmp(s_index(i)) = Nothing
         Next i
     Else
         tmp = vec
         For i = LBound(vec) To UBound(vec) Step 1
-            vec(i) = tmp(sindex(i))
+            vec(i) = tmp(s_index(i))
         Next i
     End If
 End Sub
