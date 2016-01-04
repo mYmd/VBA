@@ -60,13 +60,15 @@ End Function
 ' s_index に vec の範囲外の値もしくは重複があった場合の動作は未定義
 ' subV/subM 関数を使うより速いはず
 Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
-    Dim i As Long
-    Dim tmp As Variant
+    Dim i As Long, k As Long
+    k = LBound(vec)
     If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Sub
+    Dim tmp As Variant
     If VarType(vec) = VarType(Array()) Then
         ReDim tmp(LBound(vec) To UBound(vec))
-        For i = LBound(vec) To UBound(vec) Step 1
-            swapVariant tmp(i), vec(s_index(i))
+        For i = LBound(s_index) To UBound(s_index) Step 1
+            swapVariant tmp(k), vec(s_index(i))
+            k = k + 1
         Next i
         If swapVariant(tmp, vec) = 0 Then
             For i = LBound(vec) To UBound(vec) Step 1
@@ -75,15 +77,17 @@ Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
         End If
     ElseIf IsObject(vec(LBound(vec))) Then
         tmp = vec
-        For i = LBound(vec) To UBound(vec) Step 1
-            Set vec(i) = Nothing
-            Set vec(i) = tmp(s_index(i))
+        For i = LBound(s_index) To UBound(s_index) Step 1
+            Set vec(k) = Nothing
+            Set vec(k) = tmp(s_index(i))
             Set tmp(s_index(i)) = Nothing
+            k = k + 1
         Next i
     Else
         tmp = vec
-        For i = LBound(vec) To UBound(vec) Step 1
-            vec(i) = tmp(s_index(i))
+        For i = LBound(s_index) To UBound(s_index) Step 1
+            vec(k) = tmp(s_index(i))
+            k = k + 1
         Next i
     End If
 End Sub
