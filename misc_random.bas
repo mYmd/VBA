@@ -76,7 +76,11 @@ Function discrete_dist(ByRef N As Variant, ByRef probs As Variant) As Variant
     Dim segments As Variant, distribution As Variant
     segments = scanl1(p_plus, probs)
     distribution = uniform_real_dist(N, 0#, segments(UBound(segments)))
-    discrete_dist = foldl1(p_plus, product_set(p_less, segments, distribution), 1)
+    If 0 < N Then
+        discrete_dist = foldl1(p_plus, product_set(p_less, segments, distribution), 1)
+    Else
+        discrete_dist = foldl1(p_plus, mapF(p_less(, distribution), segments))
+    End If
 End Function
     Function p_discrete_dist(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_discrete_dist = make_funPointer(AddressOf discrete_dist, firstParam, secondParam)
