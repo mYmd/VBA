@@ -11,7 +11,8 @@ Option Explicit
 ' Function  normal_dist         正規分布          (個数, 平均, 標準偏差)
 ' Function  bernoulli_dist      Bernoulli分布     (個数, 発生確率)
 ' Function  discrete_dist       離散分布          (個数, 発生比率配列)
-' Function  random_shaffle      配列の要素をランダムに並び替える。
+' Function  random_iota         iotaのランダム版
+' Function  random_shaffle      配列の要素をランダムに並び替えた配列を出力
 '********************************************************************
 
 Declare PtrSafe Function seed_Engine Lib "mapM.dll" _
@@ -86,15 +87,25 @@ End Function
         p_discrete_dist = make_funPointer(AddressOf discrete_dist, firstParam, secondParam)
     End Function
 
-' 配列の要素をランダムに並び替える。
+' iotaのランダム版（from_iからto_iまでの自然数をランダムに並べたベクトル）
+Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
+    Dim i As Long: i = from_i
+    If from_i > to_i Then from_i = to_i: to_i = i
+    Dim ret As Variant
+    ret = sortIndex(uniform_real_dist(1 + to_i - from_i, 0#, 1#))
+    If from_i <> 0 Then
+        For i = LBound(ret) To UBound(ret) Step 1
+            ret(i) = ret(i) + from_i
+        Next i
+    End If
+    swapVariant random_iota, ret
+End Function
+
+' 配列の要素をランダムに並び替えた配列を出力
 Function random_shaffle(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
-    Dim index As Variant
-    index = sortIndex(uniform_real_dist(sizeof(vec), 0, 1))
-    If 0 <> LBound(vec) Then index = mapF(p_plus(LBound(vec)), index)
     random_shaffle = vec
-    permutate random_shaffle, index
+    permutate random_shaffle, random_iota(LBound(vec), UBound(vec))
 End Function
     Function p_random_shaffle(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_random_shaffle = make_funPointer(AddressOf random_shaffle, firstParam, secondParam)
     End Function
-    
