@@ -12,7 +12,7 @@ Option Explicit
 ' Function  bernoulli_dist      Bernoulli分布     (個数, 発生確率)
 ' Function  discrete_dist       離散分布          (個数, 発生比率配列)
 ' Function  random_iota         iotaのランダム版
-' Function  random_shaffle      配列の要素をランダムに並び替えた配列を出力
+' Function  random_shuffle      配列の要素をランダムに並び替えた配列を出力
 '********************************************************************
 
 Declare PtrSafe Function seed_Engine Lib "mapM.dll" _
@@ -102,10 +102,10 @@ Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 ' 配列の要素をランダムに並び替えた配列を出力
-Function random_shaffle(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
-    random_shaffle = vec
-    permutate random_shaffle, random_iota(LBound(vec), UBound(vec))
+Function random_shuffle(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
+    random_shuffle = vec
+    permutate random_shuffle, random_iota(LBound(vec), UBound(vec))
 End Function
-    Function p_random_shaffle(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_random_shaffle = make_funPointer(AddressOf random_shaffle, firstParam, secondParam)
+    Function p_random_shuffle(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_random_shuffle = make_funPointer(AddressOf random_shuffle, firstParam, secondParam)
     End Function
