@@ -7,11 +7,16 @@ Option Explicit
 '   要素アクセス
 ' Function  firstArg        1番目の引数
 ' Function  secondArg       2番目の引数
-' Function  getNth          N番目の配列要素取得
-' Sub       setNth          N番目の配列要素設定
-' Function  setNth_move     N番目の配列要素設定
+' Function  getNth          N番目の配列要素取得（LBoundを無視した絶対位置）
+' Function  getNth_b        N番目の配列要素取得（LBound基準）
+' Sub       setNth          N番目の配列要素設定（LBoundを無視した絶対位置）
+' Sub       setNth_b        N番目の配列要素設定（LBound基準）
+' Function  setNth_move     N番目の配列要素設定（LBoundを無視した絶対位置）
+' Function  setNth_b_move   N番目の配列要素設定（LBound基準）
 ' Function  swap_many       複数（可変長）の変数をswapしてひとつのジャグ配列にする
 ' Sub       swapback_many   ジャグ配列から複数（可変長）の変数にswap back
+'　-----------------------------------------------------------------
+'     ファンクタ等　～
 '********************************************************************
 '1番目の引数
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
@@ -29,7 +34,7 @@ End Function
         p_secondArg = make_funPointer(AddressOf secondArg, firstParam, secondParam)
     End Function
 
-'N番目の配列要素取得
+'N番目の配列要素取得（LBoundを無視した絶対位置）
 Function getNth(ByRef index As Variant, ByRef matrix As Variant) As Variant
     getNth = matrix(index)
 End Function
@@ -37,9 +42,34 @@ End Function
         p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
     End Function
 
-'N番目の配列要素設定  (index, value)
+'N番目の配列要素取得（LBound基準）
+'index < 0 の場合は後ろから取得
+Function getNth_b(ByRef index As Variant, ByRef matrix As Variant) As Variant
+    If 0 <= index Then
+        getNth_b = matrix(index + LBound(matrix))
+    Else
+        getNth_b = matrix(UBound(matrix) + 1 + index)
+    End If
+End Function
+    Function p_getNth_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_getNth_b = make_funPointer(AddressOf getNth_b, firstParam, secondParam)
+    End Function
+
+'N番目の配列要素設定  (index, value)（LBoundを無視した絶対位置）
 Sub setNth(ByRef index_value As Variant, ByRef matrix As Variant)
-    matrix(index_value(LBound(index_value))) = index_value(1 + LBound(index_value))
+    matrix(index_value(LBound(index_value))) = index_value(UBound(index_value))
+End Sub
+
+'N番目の配列要素設定  (index, value)（LBound基準）
+'index < 0 の場合は後ろに設定
+Sub setNth_b(ByRef index_value As Variant, ByRef matrix As Variant)
+    If 0 <= index_value(LBound(index_value)) Then
+        matrix(index_value(LBound(index_value)) + LBound(matrix)) = _
+                        index_value(UBound(index_value))
+    Else
+        matrix(index_value(LBound(index_value)) + 1 + UBound(matrix)) = _
+                        index_value(UBound(index_value))
+    End If
 End Sub
 
 Function setNth_move(ByRef index_value As Variant, ByRef matrix As Variant) As Variant
@@ -48,6 +78,14 @@ Function setNth_move(ByRef index_value As Variant, ByRef matrix As Variant) As V
 End Function
     Function p_setNth_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_setNth_move = make_funPointer(AddressOf setNth_move, firstParam, secondParam)
+    End Function
+
+Function setNth_b_move(ByRef index_value As Variant, ByRef matrix As Variant) As Variant
+    Call setNth_b(index_value, matrix)
+    setNth_b_move = moveVariant(matrix)
+End Function
+    Function p_setNth_b_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_setNth_b_move = make_funPointer(AddressOf setNth_b_move, firstParam, secondParam)
     End Function
 
 ' 複数の変数をswapしてひとつのジャグ配列にする
