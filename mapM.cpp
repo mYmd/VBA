@@ -58,7 +58,7 @@ swapVariant(VARIANT* a, VARIANT* b) noexcept
 	return 0;
 }
 
-//AafeArrayのLBoundを変更
+//SafeArrayのLBoundを変更
 void __stdcall changeLBound(VARIANT* pv, __int32 b)
 {
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
