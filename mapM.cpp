@@ -58,6 +58,16 @@ swapVariant(VARIANT* a, VARIANT* b) noexcept
 	return 0;
 }
 
+//AafeArrayのLBoundを変更
+void __stdcall changeLBound(VARIANT* pv, __int32 b)
+{
+    if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
+    auto psa = (0 == (VT_BYREF & pv->vt))? pv->parray: *pv->pparray;
+    auto dim = ::SafeArrayGetDim(psa);
+    for ( decltype(dim) i = 0; i < dim; ++i )
+        psa->rgsabound[i].lLbound = b;
+}
+
 ////************************************************************************************
 
 //配列matrixの各要素にVBA関数を適用する
