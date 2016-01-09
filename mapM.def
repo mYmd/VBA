@@ -23,6 +23,7 @@ EXPORTS
 	find_imple = find_imple
 	repeat_imple = repeat_imple
 	swapVariant = swapVariant
+	changeLBound = changeLBound
 
 	seed_Engine = seed_Engine
 	uniform_int_dist = uniform_int_dist
