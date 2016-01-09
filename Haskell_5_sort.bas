@@ -13,6 +13,8 @@ Option Explicit
     ' Function  upper_bound_pred    ソート済み配列からのキーの検索（std::upper_boundと同じ）
     ' Function  equal_range         ソート済み配列からのキーの検索（std::equal_rangeと同じ）
     ' Function  equal_range_pred    ソート済み配列からのキーの検索（std::equal_rangeと同じ）
+    ' Function  partition_points    ソート済み配列から条件によって区分化されている位置の一覧を得る
+    ' Function  partition_points_pred
 '====================================================================================================
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
@@ -185,3 +187,29 @@ End Function
     Public Function p_equal_range_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_equal_range_pred = make_funPointer(AddressOf equal_range_pred, firstParam, secondParam)
     End Function
+
+'ソート済み配列から条件によって区分化されている位置の一覧を得る
+Function partition_points(ByRef vec As Variant) As Variant
+    partition_points = partition_points_pred(vec, p_less)
+End Function
+
+Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As Variant
+    Dim ret As Variant
+    ret = makeM(sizeof(vec))
+    Dim rPos As Long: rPos = LBound(vec)
+    Dim wPos As Long: wPos = 0
+    Dim upperBound As Long
+    Dim value_pred As Variant: value_pred = makeM(2)
+    swapVariant value_pred(1), pred
+    Do While rPos <= UBound(vec)
+        ret(wPos) = rPos
+        value_pred(0) = vec(rPos)
+        upperBound = upper_bound_pred(vec, value_pred)
+        If UBound(vec) < upperBound Then Exit Do
+        rPos = upperBound
+        wPos = wPos + 1
+    Loop
+    swapVariant value_pred(1), pred
+    ReDim Preserve ret(0 To wPos)
+    swapVariant partition_points_pred, ret
+End Function
