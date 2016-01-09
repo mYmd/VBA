@@ -91,14 +91,10 @@ End Function
 Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
     Dim i As Long: i = from_i
     If from_i > to_i Then from_i = to_i: to_i = i
-    Dim ret As Variant
-    ret = sortIndex(uniform_real_dist(1 + to_i - from_i, 0#, 1#))
-    If from_i <> 0 Then
-        For i = LBound(ret) To UBound(ret) Step 1
-            ret(i) = ret(i) + from_i
-        Next i
-    End If
-    swapVariant random_iota, ret
+    Dim dist As Variant
+    dist = uniform_real_dist(1 + to_i - from_i, 0#, 1#)
+    changeLBound dist, from_i
+    random_iota = sortIndex(dist)
 End Function
 
 ' 配列の要素をランダムに並び替えた配列を出力
