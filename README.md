@@ -42,6 +42,10 @@ VBAHaskellの紹介　その1　（最初はmapF）
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2016/1/9  
+C++APIにchangeLBoundを追加（SafeArrayのLBoundを変更する関数）  
+mapM.defとHaskell_0_declare.basにそれを反映  
+
 2015/12/24  
 大半の関数をnoexceptとする  
 （エラーが出るコンパイラでは削除もしくはマクロでの対応が必要）  
