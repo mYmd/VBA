@@ -89,11 +89,9 @@ End Function
 
 ' iotaのランダム版（from_iからto_iまでの自然数をランダムに並べたベクトル）
 Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
-    Dim i As Long: i = from_i
-    If from_i > to_i Then from_i = to_i: to_i = i
     Dim dist As Variant
-    dist = uniform_real_dist(1 + to_i - from_i, 0#, 1#)
-    changeLBound dist, from_i
+    dist = uniform_real_dist(1 + Abs(to_i - from_i), 0#, 1#)
+    Call changeLBound(dist, min_fun(from_i, to_i))
     random_iota = sortIndex(dist)
 End Function
 
