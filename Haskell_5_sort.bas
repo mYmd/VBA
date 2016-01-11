@@ -7,6 +7,7 @@ Option Explicit
     ' Function  sortIndex           昇順ソート後のインデックス配列
     ' Function  sortIndex_pred      任意の比較関数によるソート後のインデックス配列
     ' Sub       permutate           1次元配列の並べ換え
+    ' Sub       permutate_back      permutate で並べ換えられた1次元配列を元の順列に戻す
     ' Function  lower_bound         ソート済み配列からのキーの検索（std::lower_boundと同じ）
     ' Function  lower_bound_pred    ソート済み配列からのキーの検索（std::lower_boundと同じ）
     ' Function  upper_bound         ソート済み配列からのキーの検索（std::upper_boundと同じ）
@@ -62,9 +63,9 @@ End Function
 ' s_index に vec の範囲外の値もしくは重複があった場合の動作は未定義
 ' subV/subM 関数を使うより速いはず
 Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
-    Dim i As Long, k As Long
-    k = LBound(vec)
-    If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Sub
+    If Dimension(vec) <> 1 Or Dimension(s_index) <> 1 Then Exit Sub
+    If rowSize(vec) = 0 Or rowSize(vec) <> rowSize(s_index) Then Exit Sub
+    Dim i As Long, k As Long:    k = LBound(vec)
     Dim tmp As Variant
     If VarType(vec) = VarType(Array()) Then
         ReDim tmp(LBound(vec) To UBound(vec))
@@ -94,28 +95,19 @@ Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
     End If
 End Sub
 
+' permutate で並べ換えられた1次元配列を元の順列に戻す
+Sub permutate_back(ByRef vec As Variant, ByRef s_index As Variant)
+    Dim k As Long:          k = LBound(vec)
+    Dim index2() As Long:   ReDim index2(LBound(vec) To UBound(vec))
+    Dim z As Variant
+    For Each z In s_index
+        index2(z) = k
+        k = k + 1
+    Next z
+    permutate vec, index2
+End Sub
 
-    Private Function lower_bound_imple(ByRef matrix As Variant, _
-                                       ByRef val As Variant, _
-                                       ByRef comp As Variant, _
-                                       ByVal begin_ As Long, _
-                                       ByVal end_ As Long) As Long
-        Dim mid_ As Long
-        If end_ - begin_ < 8 Then
-            Do While unbind_invoke(comp, matrix(begin_), val) 'And begin_ < end_
-                begin_ = begin_ + 1
-                If end_ <= begin_ Then Exit Do
-            Loop
-            lower_bound_imple = begin_
-        Else
-            mid_ = begin_ + CLng((end_ - begin_) / 2)
-            If unbind_invoke(comp, matrix(mid_), val) Then
-                lower_bound_imple = lower_bound_imple(matrix, val, comp, mid_, end_)
-            Else
-                lower_bound_imple = lower_bound_imple(matrix, val, comp, begin_, mid_)
-            End If
-        End If
-    End Function
+    'Private Function lower_bound_imple
 'ソート済み配列からのキーの検索（std::lower_boundと同じ）
 Function lower_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
     lower_bound = lower_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
@@ -134,27 +126,7 @@ End Function
         p_lower_bound_pred = make_funPointer(AddressOf lower_bound_pred, firstParam, secondParam)
     End Function
 
-    Private Function upper_bound_imple(ByRef matrix As Variant, _
-                                       ByRef val As Variant, _
-                                       ByRef comp As Variant, _
-                                       ByVal begin_ As Long, _
-                                       ByVal end_ As Long) As Long
-        Dim mid_ As Long
-        If end_ - begin_ < 8 Then
-            Do While 0 = unbind_invoke(comp, val, matrix(begin_)) 'And begin_ < end_
-                begin_ = begin_ + 1
-                If end_ <= begin_ Then Exit Do
-            Loop
-            upper_bound_imple = begin_
-        Else
-            mid_ = begin_ + CLng((end_ - begin_) / 2)
-            If unbind_invoke(comp, val, matrix(mid_)) Then
-                upper_bound_imple = upper_bound_imple(matrix, val, comp, begin_, mid_)
-            Else
-                upper_bound_imple = upper_bound_imple(matrix, val, comp, mid_, end_)
-            End If
-        End If
-    End Function
+    'Private Function upper_bound_imple
 'ソート済み配列からのキーの検索（std::upper_boundと同じ）
 Function upper_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
     upper_bound = upper_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
@@ -196,11 +168,11 @@ End Function
 Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As Variant
     Dim ret As Variant
     ret = makeM(sizeof(vec))
-    Dim rPos As Long: rPos = LBound(vec)
-    Dim wPos As Long: wPos = 0
+    Dim rPos As Long:   rPos = LBound(vec)
+    Dim wPos As Long:   wPos = 0
     Dim upperBound As Long
-    Dim value_pred As Variant: value_pred = makeM(2)
-    swapVariant value_pred(1), pred
+    Dim value_pred(0 To 1)  As Variant
+    value_pred(1) = moveVariant(pred)
     Do While rPos <= UBound(vec)
         ret(wPos) = rPos
         value_pred(0) = vec(rPos)
@@ -209,7 +181,53 @@ Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As V
         rPos = upperBound
         wPos = wPos + 1
     Loop
-    swapVariant value_pred(1), pred
+    pred = moveVariant(value_pred(1))
     ReDim Preserve ret(0 To wPos)
     swapVariant partition_points_pred, ret
 End Function
+
+'#####################
+Private Function lower_bound_imple(ByRef matrix As Variant, _
+                                   ByRef val As Variant, _
+                                   ByRef comp As Variant, _
+                                   ByVal begin_ As Long, _
+                                   ByVal end_ As Long) As Long
+    Dim mid_ As Long
+    If end_ - begin_ < 8 Then
+        Do While unbind_invoke(comp, matrix(begin_), val) 'And begin_ < end_
+            begin_ = begin_ + 1
+            If end_ <= begin_ Then Exit Do
+        Loop
+        lower_bound_imple = begin_
+    Else
+        mid_ = begin_ + CLng((end_ - begin_) / 2)
+        If unbind_invoke(comp, matrix(mid_), val) Then
+            lower_bound_imple = lower_bound_imple(matrix, val, comp, mid_, end_)
+        Else
+            lower_bound_imple = lower_bound_imple(matrix, val, comp, begin_, mid_)
+        End If
+    End If
+End Function
+
+Private Function upper_bound_imple(ByRef matrix As Variant, _
+                                   ByRef val As Variant, _
+                                   ByRef comp As Variant, _
+                                   ByVal begin_ As Long, _
+                                   ByVal end_ As Long) As Long
+    Dim mid_ As Long
+    If end_ - begin_ < 8 Then
+        Do While 0 = unbind_invoke(comp, val, matrix(begin_)) 'And begin_ < end_
+            begin_ = begin_ + 1
+            If end_ <= begin_ Then Exit Do
+        Loop
+        upper_bound_imple = begin_
+    Else
+        mid_ = begin_ + CLng((end_ - begin_) / 2)
+        If unbind_invoke(comp, val, matrix(mid_)) Then
+            upper_bound_imple = upper_bound_imple(matrix, val, comp, begin_, mid_)
+        Else
+            upper_bound_imple = upper_bound_imple(matrix, val, comp, mid_, end_)
+        End If
+    End If
+End Function
+'#####################
