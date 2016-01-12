@@ -14,6 +14,7 @@ Option Explicit
 '   Function iterator_step      インデックスの進行方向を取得する(1, -1)
 '   Function iterator_advance   指しているインデックスを進める
 '   Function iterator_moveTo    インデックスを任意の位置に動かす
+'   Function iterator_moveTo_b  インデックスを任意の位置に動かす（対象配列のLBound基準）
 '   Function iterator_get       現在のインデックスの位置の 値 を取得する
 '   Function iterator_set       現在のインデックスの位置の 値 を設定する
 '   Function iterator_push      現在のインデックス位置の値を設定してインデックスを進める
@@ -82,6 +83,19 @@ Function iterator_moveTo(ByRef it As Variant, ByRef pos As Variant) As Variant
 End Function
     Function p_iterator_moveTo(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_iterator_moveTo = make_funPointer(AddressOf iterator_moveTo, firstParam, secondParam)
+    End Function
+
+' インデックスを任意の位置に動かす（対象配列のLBound基準）
+Function iterator_moveTo_b(ByRef it As Variant, ByRef pos As Variant) As Variant
+    If 0 <= pos Then
+        it(1) = pos + LBound(it(0))
+    Else
+        it(1) = UBound(it(0)) + 1 + pos
+    End If
+    swapVariant iterator_moveTo_b, it
+End Function
+    Function p_iterator_moveTo_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_moveTo_b = make_funPointer(AddressOf iterator_moveTo_b, firstParam, secondParam)
     End Function
 
 ' 現在のインデックスの位置の 値 を取得する
