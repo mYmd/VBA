@@ -13,8 +13,8 @@ Option Explicit
 ' Sub       setNth_b        N番目の配列要素設定（LBound基準）
 ' Function  setNth_move     N番目の配列要素設定（LBoundを無視した絶対位置）
 ' Function  setNth_b_move   N番目の配列要素設定（LBound基準）
-' Function  swap_many       複数（可変長）の変数をswapしてひとつのジャグ配列にする
-' Sub       swapback_many   ジャグ配列から複数（可変長）の変数にswap back
+' Function  move_many       複数（可変長）の変数をmoveしてひとつのジャグ配列にする
+' Sub       move_back       ジャグ配列から複数（可変長）の変数にmove back
 '　-----------------------------------------------------------------
 '     ファンクタ等　～
 '********************************************************************
@@ -88,8 +88,8 @@ End Function
         p_setNth_b_move = make_funPointer(AddressOf setNth_b_move, firstParam, secondParam)
     End Function
 
-' 複数の変数をswapしてひとつのジャグ配列にする
-Function swap_many(ParamArray m() As Variant) As Variant
+' 複数の変数をmoveしてひとつのジャグ配列にする
+Function move_many(ParamArray m() As Variant) As Variant
     If LBound(m) <= UBound(m) Then
         Dim ret As Variant
         ReDim ret(0 To UBound(m) - LBound(m))
@@ -99,11 +99,11 @@ Function swap_many(ParamArray m() As Variant) As Variant
             k = k + 1
         Next i
     End If
-    swapVariant swap_many, ret
+    swapVariant move_many, ret
 End Function
 
-' ジャグ配列から複数（可変長）の変数にswap back
-Sub swapback_many(ByRef m As Variant, ParamArray ret() As Variant)
+' ジャグ配列から複数（可変長）の変数にmove back
+Sub move_back(ByRef m As Variant, ParamArray ret() As Variant)
     Dim i As Long, k As Long: k = LBound(ret)
     For i = LBound(m) To UBound(m) Step 1
         swapVariant m(i), ret(k)
