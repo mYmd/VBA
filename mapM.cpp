@@ -80,7 +80,7 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
     if ( !matrix || !func.isValid() )       return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
-        ::VariantCopy(&ret, func.eval(matrix, matrix));
+        std::swap(ret, *func.eval(matrix, matrix));
         return ret;
     }
     safearrayRef arIn(matrix);
@@ -104,7 +104,7 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
             for ( ULONG k = 0; k < Bounds[2].cElements; ++k )
             {
                 auto& elem = arIn(i, j, k);
-                ::VariantCopy(&arOut(i, j, k), func.eval(&elem, &elem));
+                std::swap(arOut(i, j, k), *func.eval(&elem, &elem));
             }
         }
     }
@@ -124,7 +124,7 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
     if ( !matrix1 || !matrix2 || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix1->vt ) &&  0 == (VT_ARRAY & matrix2->vt ) )
     {
-        ::VariantCopy(&ret, func.eval(matrix1, matrix2));
+        std::swap(ret, *func.eval(matrix1, matrix2));
         return ret;
     }
     safearrayRef arIn1(matrix1);
@@ -151,7 +151,7 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
             {
                 auto& elem1 = arIn1(i, j, k);
                 auto& elem2 = arIn2(i, j, k);
-                ::VariantCopy(&arOut(i, j, k), func.eval(&elem1, &elem2));
+                std::swap(arOut(i, j, k), *func.eval(&elem1, &elem2));
             }
         }
     }
@@ -170,7 +170,7 @@ foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     if ( !matrix || !init || !func.isValid() )  return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
-        ::VariantCopy(&ret, func.eval(init, matrix));
+        std::swap(ret, *func.eval(init, matrix));
         return ret;
     }
     fold_imple(func, init, matrix, axis, ret, true);
@@ -187,7 +187,7 @@ foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     if ( !matrix || !init || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
-        ::VariantCopy(&ret, func.eval(matrix, init));
+        std::swap(ret, *func.eval(matrix, init));
         return ret;
     }
     fold_imple(func, init, matrix, axis, ret, false);
@@ -232,7 +232,7 @@ scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     if ( !matrix || !init || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
-        ::VariantCopy(&ret, func.eval(init, matrix));
+        std::swap(ret, *func.eval(init, matrix));
         return ret;
     }
     scan_imple(func, init, matrix, axis, ret, true);
@@ -249,7 +249,7 @@ scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     if ( !matrix || !init || !func.isValid() )      return ret;
     if (  0 == (VT_ARRAY & matrix->vt ) )
     {
-        ::VariantCopy(&ret, func.eval(matrix, init));
+        std::swap(ret, *func.eval(matrix, init));
         return ret;
     }
     scan_imple(func, init, matrix, axis, ret, false);
@@ -367,30 +367,50 @@ namespace   {
             for ( index2 = 0; index2 < bound2; ++index2 )
             {
                 VARIANT result;
-                auto presult = &result;
-                ::VariantInit(presult);
+                ::VariantInit(&result);
+                VARIANT* presult = nullptr;
                 auto first_time = true;
                 if ( init )
                 {
-                    ::VariantCopy(presult, init);
+                    presult = init;
                     first_time = false;
                 }
+                auto initial_state = true;
                 for (index = left? 0: bound - 1; left? index < bound: 0 <= index; index += (left? 1: -1))
                 {
                     if ( first_time )
                     {
-                        ::VariantCopyInd(presult, &arIn(i, j, k));
+                        presult = &arIn(i, j, k);
+                        if ( presult->vt & VT_BYREF )
+                        {
+                            ::VariantCopyInd(&result, presult);
+                            presult = &result;
+                            initial_state = false;
+                        }
                         first_time = false;
                     }
                     else
                     {
                         presult = left ? bfun.eval(presult, &arIn(i, j, k)):
                                          bfun.eval(&arIn(i, j, k), presult);
+                        initial_state = false;
                     }
                 }
-                if ( 1 == dim ) VariantCopy(&ret, presult);
-                else            VariantCopy(&arOut(index1, index2), presult);
-                ::VariantClear(presult);
+                if ( 1 == dim )
+                {
+                    if ( initial_state )
+                        VariantCopy(&ret, presult);
+                    else
+                        std::swap(ret, *presult);
+                }
+                else
+                {
+                    if ( initial_state )
+                        VariantCopy(&arOut(index1, index2), presult);
+                    else
+                        std::swap(arOut(index1, index2), *presult);
+                }
+                ::VariantClear(&result);
             }
         }
     }
@@ -435,12 +455,12 @@ namespace   {
             for ( index2 = 0; index2 < bound2; ++index2 )
             {
                 VARIANT result;
-                auto presult = &result;
-                ::VariantInit(presult);
+                ::VariantInit(&result);
+                VARIANT* presult = nullptr;
                 auto first_time = true;
                 if ( init )
                 {
-                    ::VariantCopy(presult, init);
+                    presult = init;
                     index = left ? 0 : bound;
                     ::VariantCopy(&arOut(i, j, k), presult);
                     first_time = false;
@@ -453,21 +473,21 @@ namespace   {
                     if ( first_time )
                     {
                         first_time = false;
-                        ::VariantCopyInd(presult, &arIn(i, j, k));
+                        presult = &arIn(i, j, k);
+                        if ( presult->vt & VT_BYREF )
+                        {
+                            ::VariantCopyInd(&result, presult);
+                            presult = &result;
+                        }
                     }
                     else
                     {
                         first_time = false;
-                        VARIANT elem;
-                        ::VariantInit(&elem);
-                        ::VariantCopyInd(&elem, &arIn(i, j, k));
-                        presult = left ? bfun.eval(presult, &elem):
-                                         bfun.eval(&elem, presult);
-                        ::VariantClear(&elem);
+                        presult = left ? bfun.eval(presult, &arIn(i, j, k)):
+                                         bfun.eval(&arIn(i, j, k), presult);
                     }
                     ::VariantCopy(&arOut(i+adj(1), j+adj(2), k+adj(3)), presult);
                 }
-                ::VariantClear(&result);
             }
         }
     }
