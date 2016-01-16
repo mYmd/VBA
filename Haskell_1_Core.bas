@@ -26,6 +26,7 @@ Option Explicit
 '   Sub      swap1st            第1引数のswap（大きな変数の場合に使用）
 '   Sub      swap2nd            第2引数のswap（大きな変数の場合に使用）
 ' * Function mapF               配列の各要素に関数を適用する
+'   Function mapF_swap          mapF(fun(a), m) または mapF(fun(, a), m)の構文糖
 '   Function applyFun           関数適用関数
 '   Function setParam           関数に引数を代入
 '   Function foldl_Funs         関数合成（foldl）
@@ -207,6 +208,36 @@ End Function
         p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam)
     End Function
 
+' mapF(fun(a), m) または mapF(fun(, a), m)の構文糖
+' ただしaはmoveされ、処理後戻される。大きな配列のコピーが避けられる。
+' パターン1  mapF_swap(fun, a, m)      -> mapF(fun(a), m)
+' パターン2  mapF_swap(fun, , b, m)    -> mapF(fun(, b), m)
+' パターン3  mapF_swap(fun, a, , m)    -> mapF(fun(a), m)    （パターン1と同じ）
+' パターン4  mapF_swap(fun, a, b, m)   -> mapF(fun(a, b), m) （禁止）
+Function mapF_swap(ByRef fun As Variant, _
+                        Optional ByRef x As Variant, _
+                        Optional ByRef y As Variant, _
+                        Optional ByRef z As Variant) As Variant
+    If Is_Missing_(z) Then          ' パターン1
+        swap1st fun, x
+        mapF_swap = mapF(fun, y)
+        swap1st fun, x
+    Else
+        If Is_Missing_(x) Then      ' パターン2
+            swap2nd fun, y
+            mapF_swap = mapF(fun, z)
+            swap2nd fun, y
+        ElseIf Is_Missing_(y) Then  ' パターン3
+            swap1st fun, x
+            mapF_swap = mapF(fun, z)
+            swap1st fun, x
+        Else                        ' パターン4
+            '
+        End If
+    End If
+End Function
+
+
 '*************************************************************************
 '関数適用関数  1引数に対して関数を適用する   関数はBind式
 '1. applyFun(x     ,  Null          )     ->  x
@@ -325,30 +356,30 @@ End Function
 Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
-                      Optional ByVal N As Long = -1) As Variant
-    repeat_while = repeat_imple(val, pred, fun, N, 0, 0)
+                      Optional ByVal n As Long = -1) As Variant
+    repeat_while = repeat_imple(val, pred, fun, n, 0, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用
 Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
-                          Optional ByVal N As Long = -1) As Variant
-    repeat_while_not = repeat_imple(val, pred, fun, N, 0, 1)
+                          Optional ByVal n As Long = -1) As Variant
+    repeat_while_not = repeat_imple(val, pred, fun, n, 0, 1)
 End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用の履歴を生成
 Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
-                        Optional ByVal N As Long = -1) As Variant
-    generate_while = repeat_imple(val, pred, fun, N, 1, 0)
+                        Optional ByVal n As Long = -1) As Variant
+    generate_while = repeat_imple(val, pred, fun, n, 1, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用の履歴を生成
 Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
-                            Optional ByVal N As Long = -1) As Variant
-    generate_while_not = repeat_imple(val, pred, fun, N, 1, 1)
+                            Optional ByVal n As Long = -1) As Variant
+    generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
 End Function
