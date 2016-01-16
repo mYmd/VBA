@@ -26,7 +26,9 @@ Option Explicit
     ' Sub       fillCol             配列の特定列をデータで埋める
     ' Sub       fillPattern         1次元配列を他の1次元配列の繰り返しで埋める（回数指定可）
     ' Function  subV                1次元配列の部分配列を作成する
+    ' Function  subV_if            　〃（範囲外のインデックスに対してEmptyが入る）
     ' Function  subM                配列の部分配列を作成する
+    ' Function  subM_if            　〃（範囲外のインデックスに対してEmptyが入る）
     ' Function  filterR             ベクトル・配列の（行の）フィルタリング
     ' Function  filterC             ベクトル・配列の（列の）フィルタリング
     ' Function  catV                ベクトルを結合
@@ -56,13 +58,13 @@ Public Function a_cols(ByRef matrix As Variant) As Variant
 End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal N As Long) As Variant
+Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
     Dim ret As Variant
     Dim i As Long
     
-    If N < 1 Then repeat = VBA.Array(): Exit Function
-    ReDim ret(0 To N - 1)
-    For i = 0 To N - 1 Step 1:         ret(i) = v:       Next i
+    If n < 1 Then repeat = VBA.Array(): Exit Function
+    ReDim ret(0 To n - 1)
+    For i = 0 To n - 1 Step 1:         ret(i) = v:       Next i
     repeat = moveVariant(ret)
 End Function
 
@@ -82,18 +84,18 @@ Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
 End Function
 
 'ベクトルの最初のN個
-Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         headN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         headN = vec
     Else
         lb = LBound(vec)
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         headN = moveVariant(ret)
@@ -104,18 +106,18 @@ End Function
     End Function
 
 'ベクトルの最後のN個
-Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
+Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
     
-    If N < 1 Then
+    If n < 1 Then
         tailN = VBA.Array()
-    ElseIf sizeof(vec) < N Then
+    ElseIf sizeof(vec) < n Then
         tailN = vec
     Else
-        lb = UBound(vec) - N + 1
-        ReDim ret(0 To N - 1)
-        For i = 0 To N - 1 Step 1
+        lb = UBound(vec) - n + 1
+        ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
             ret(i) = vec(i + lb)
         Next i
         tailN = moveVariant(ret)
@@ -398,64 +400,103 @@ End Sub
 
 '1次元配列の部分配列を作成する
 Public Function subV(ByRef vec As Variant, ByRef index As Variant) As Variant
-    Dim fn As Variant
-    fn = p_getNth
-    swap2nd fn, vec
-    subV = mapF(fn, index)
-    swap2nd fn, vec
+    subV = mapF_swap(p_getNth, , vec, index)
+    changeLBound subV, LBound(vec)
 End Function
     Public Function p_subV(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subV = make_funPointer(AddressOf subV, firstParam, secondParam)
     End Function
 
+'1次元配列の部分配列を作成する（範囲外のインデックスに対してEmptyが入る）
+Public Function subV_if(ByRef vec As Variant, ByRef index As Variant) As Variant
+    subV_if = mapF_swap(p_getNth_if, , vec, index)
+    changeLBound subV_if, LBound(vec)
+End Function
+    Public Function p_subV_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_subV_if = make_funPointer(AddressOf subV_if, firstParam, secondParam)
+    End Function
+    Private Function getNth_if(ByRef index As Variant, ByRef matrix As Variant) As Variant
+        If LBound(matrix) <= index And index <= UBound(matrix) Then
+            getNth_if = matrix(index)
+        End If
+    End Function
+    Private Function p_getNth_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_getNth_if = make_funPointer(AddressOf getNth_if, firstParam, secondParam)
+    End Function
+
 '配列の部分配列を作成する
 Public Function subM(ByRef matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
-    Dim i As Long, j As Long, counterR As Long, counterC As Long
-    Dim ret As Variant
-    Select Case Dimension(matrix)
-    Case 0
-        subM = matrix
-        Exit Function
-    Case 1
-        counterR = LBound(matrix, 1)
-        If 0 < sizeof(rows) Then ReDim ret(counterR To counterR - 1 + sizeof(rows))
-        For i = LBound(rows) To UBound(rows) Step 1
-            ret(counterR) = matrix(rows(i))
-            counterR = counterR + 1
-        Next i
-    Case 2
-        If IsMissing(rows) Then
-            If IsArray(rows) Then   ' 意図的に Array() を与えられた
-                subM = VBA.Array()
-                Exit Function
-            Else
-                rows = a_rows(matrix)
-            End If
-        End If
-        If IsMissing(cols) Then
-            If IsArray(cols) Then   ' 意図的に Array() を与えられた
-                subM = VBA.Array()
-                Exit Function
-            Else
-                cols = a_cols(matrix)
-            End If
-        End If
-        counterR = LBound(matrix, 1)
-        counterC = LBound(matrix, 2)
-        If 0 < sizeof(rows) And 0 < sizeof(cols) Then
-            ReDim ret(counterR To counterR - 1 + sizeof(rows), counterC To counterC - 1 + sizeof(cols))
-        End If
-        For i = LBound(rows) To UBound(rows) Step 1
-            counterC = LBound(matrix, 2)
-            For j = LBound(cols) To UBound(cols) Step 1
-                ret(counterR, counterC) = matrix(rows(i), cols(j))
-                counterC = counterC + 1
-            Next j
-            counterR = counterR + 1
-        Next i
-    End Select
-    subM = moveVariant(ret)
+    subM = subM_imple(matrix, False, rows, cols)
 End Function
+
+'配列の部分配列を作成する（範囲外のインデックスに対してEmptyが入る）
+Public Function subM_if(ByRef matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
+    subM_if = subM_imple(matrix, True, rows, cols)
+End Function
+
+    Private Function subM_imple(ByRef matrix As Variant, _
+                                ByVal isif As Boolean, _
+                                Optional ByRef rows As Variant, _
+                                Optional ByRef cols As Variant) As Variant
+        Dim ret As Variant
+        Select Case Dimension(matrix)
+        Case 0
+            ret = matrix
+        Case 1
+            If isif Then
+                ret = subV_if(matrix, rows)
+            Else
+                ret = subV(matrix, rows)
+            End If
+        Case 2
+            If IsMissing(rows) Then
+                If IsArray(rows) Then   ' 意図的に Array() を与えられたケース
+                    subM_imple = VBA.Array()
+                    Exit Function
+                Else
+                    rows = a_rows(matrix)
+                End If
+            End If
+            If IsMissing(cols) Then
+                If IsArray(cols) Then   ' 意図的に Array() を与えられたケース
+                    subM_imple = VBA.Array()
+                    Exit Function
+                Else
+                    cols = a_cols(matrix)
+                End If
+            End If
+            Dim i As Long, j As Long, counterR As Long, counterC As Long
+            counterR = LBound(matrix, 1)
+            counterC = LBound(matrix, 2)
+            If 0 < sizeof(rows) And 0 < sizeof(cols) Then
+                ReDim ret(counterR To counterR - 1 + sizeof(rows), counterC To counterC - 1 + sizeof(cols))
+            End If
+            If isif Then
+                For i = LBound(rows) To UBound(rows) Step 1
+                    counterC = LBound(matrix, 2)
+                    If LBound(matrix, 1) <= rows(i) And rows(i) <= UBound(matrix, 1) Then
+                        For j = LBound(cols) To UBound(cols) Step 1
+                            If LBound(matrix, 2) <= cols(j) And cols(j) <= UBound(matrix, 2) Then
+                                ret(counterR, counterC) = matrix(rows(i), cols(j))
+                            End If
+                            counterC = counterC + 1
+                        Next j
+                    End If
+                    counterR = counterR + 1
+                Next i
+            Else
+                For i = LBound(rows) To UBound(rows) Step 1
+                    counterC = LBound(matrix, 2)
+                    For j = LBound(cols) To UBound(cols) Step 1
+                        ret(counterR, counterC) = matrix(rows(i), cols(j))
+                        counterC = counterC + 1
+                    Next j
+                    counterR = counterR + 1
+                Next i
+            End If
+        End Select
+        subM_imple = moveVariant(ret)
+    End Function
 
 'ベクトル・配列の（行の）フィルタリング
 'Flgは 0/1
