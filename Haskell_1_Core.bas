@@ -45,6 +45,10 @@ Option Explicit
 '   Function foldl1_zipWith     zipWithをfoldl1する
 '   Function foldr_zipWith      zipWithをfoldrする
 '   Function foldr1_zipWith     zipWithをfoldr1する
+'   Function scanl_zipWith      zipWithをscanlする
+'   Function scanr_zipWith      zipWithをscanrする
+'   Function scanl1_zipWith     zipWithをscanl1する
+'   Function scanr1_zipWith     zipWithをscanr1する
 '***********************************************************************************
 
 'sourceのVARIANT変数をtargetのVARIANTへmoveする
@@ -399,17 +403,6 @@ Function foldl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As
     End If
 End Function
 
-' zipWithをfoldl1する
-Function foldl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
-    If LBound(vec) < UBound(vec) Then
-        foldl1_zipWith = zipWith(fun, vec(LBound(vec)), vec(LBound(vec) + 1))
-        Dim i As Long
-        For i = LBound(vec) + 2 To UBound(vec) Step 1
-            foldl1_zipWith = zipWith(fun, foldl1_zipWith, vec(i))
-        Next i
-    End If
-End Function
-
 ' zipWithをfoldrする
 Function foldr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
     If LBound(vec) <= UBound(vec) Then
@@ -417,6 +410,17 @@ Function foldr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As
         Dim i As Long
         For i = UBound(vec) - 1 To LBound(vec) Step -1
             foldr_zipWith = zipWith(fun, vec(i), foldr_zipWith)
+        Next i
+    End If
+End Function
+
+' zipWithをfoldl1する
+Function foldl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
+    If LBound(vec) < UBound(vec) Then
+        foldl1_zipWith = zipWith(fun, vec(LBound(vec)), vec(LBound(vec) + 1))
+        Dim i As Long
+        For i = LBound(vec) + 2 To UBound(vec) Step 1
+            foldl1_zipWith = zipWith(fun, foldl1_zipWith, vec(i))
         Next i
     End If
 End Function
@@ -430,4 +434,52 @@ Function foldr1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
             foldr1_zipWith = zipWith(fun, vec(i), foldr1_zipWith)
         Next i
     End If
+End Function
+
+' zipWithをscanlする
+Function scanl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
+    Dim ret As Variant: ret = makeM(1 + sizeof(vec))
+    Dim i As Long, k As Long: k = 0
+    ret(k) = init
+    For i = LBound(vec) To UBound(vec) Step 1
+        k = k + 1
+        ret(k) = zipWith(fun, ret(k - 1), vec(i))
+    Next i
+    scanl_zipWith = moveVariant(ret)
+End Function
+
+' zipWithをscanrする
+Function scanr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
+    Dim ret As Variant: ret = makeM(1 + sizeof(vec))
+    Dim i As Long, k As Long: k = UBound(ret)
+    ret(k) = init
+    For i = UBound(vec) To LBound(vec) Step -1
+        k = k - 1
+        ret(k) = zipWith(fun, vec(i), ret(k + 1))
+    Next i
+    scanr_zipWith = moveVariant(ret)
+End Function
+
+' zipWithをscanl1する
+Function scanl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
+    Dim ret As Variant: ret = makeM(sizeof(vec))
+    Dim i As Long, k As Long: k = 0
+    ret(k) = vec(LBound(vec))
+    For i = LBound(vec) + 1 To UBound(vec) Step 1
+        k = k + 1
+        ret(k) = zipWith(fun, ret(k - 1), vec(i))
+    Next i
+    scanl1_zipWith = moveVariant(ret)
+End Function
+
+' zipWithをscanr1する
+Function scanr1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
+    Dim ret As Variant: ret = makeM(sizeof(vec))
+    Dim i As Long, k As Long: k = UBound(ret)
+    ret(k) = vec(UBound(vec))
+    For i = UBound(vec) - 1 To LBound(vec) Step -1
+        k = k - 1
+        ret(k) = zipWith(fun, vec(i), ret(k + 1))
+    Next i
+    scanr1_zipWith = moveVariant(ret)
 End Function
