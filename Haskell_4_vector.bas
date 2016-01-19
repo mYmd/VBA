@@ -12,7 +12,11 @@ Option Explicit
     ' Function  a_rows              全行番号の列挙
     ' Function  a_cols              全列番号の列挙
     ' Function  repeat              N個の値を並べる
-    ' Function  iota                自然数の連続データまたは同一のスカラーを繰り返したベクトルを返す
+    ' Function  iota                自然数の連続データ（正順・逆順）
+    ' Function  a__a                自然数列 [from, to]
+    ' Function  a__o                自然数列 [from, to)
+    ' Function  o__a                自然数列 (from, to]
+    ' Function  o__o                自然数列 (from, to)
     ' Function  headN               ベクトルの最初のN個
     ' Function  tailN               ベクトルの最後のN個
     ' Function  vector              スカラー、配列のベクトル化
@@ -48,40 +52,119 @@ Option Explicit
 '====================================================================================================
 
 '全行番号の列挙
-Public Function a_rows(ByRef matrix As Variant) As Variant
+Public Function a_rows(ByRef matrix As Variant, Optional ByRef dummy As Variant) As Variant
     a_rows = iota(LBound(matrix, 1), UBound(matrix, 1))
 End Function
+    Public Function p_a_rows(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_a_rows = make_funPointer(AddressOf a_rows, firstParam, secondParam)
+    End Function
 
 '全列番号の列挙
-Public Function a_cols(ByRef matrix As Variant) As Variant
+Public Function a_cols(ByRef matrix As Variant, Optional ByRef dummy As Variant) As Variant
     a_cols = iota(LBound(matrix, 2), UBound(matrix, 2))
 End Function
+    Public Function p_a_cols(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_a_cols = make_funPointer(AddressOf a_cols, firstParam, secondParam)
+    End Function
 
 'N個の値を並べる
-Public Function repeat(ByRef v As Variant, ByVal n As Long) As Variant
-    Dim ret As Variant
-    Dim i As Long
-    
-    If n < 1 Then repeat = VBA.Array(): Exit Function
-    ReDim ret(0 To n - 1)
-    For i = 0 To n - 1 Step 1:         ret(i) = v:       Next i
-    repeat = moveVariant(ret)
+Public Function repeat(ByRef v As Variant, ByRef n As Variant) As Variant
+    If n < 1 Then
+        repeat = VBA.Array()
+    Else
+        Dim i As Long
+        Dim ret As Variant: ReDim ret(0 To n - 1)
+        For i = 0 To n - 1 Step 1
+            ret(i) = v
+        Next i
+        repeat = moveVariant(ret)
+    End If
 End Function
+    Public Function p_repeat(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_repeat = make_funPointer(AddressOf repeat, firstParam, secondParam)
+    End Function
 
-'from_iからto_iまでの自然数を並べたベクトルを返す
-Public Function iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
-    Dim ret   As Variant
-    Dim i As Long, k As Long, s_t_e_p As Long
-    
-    ReDim ret(0 To IIf(from_i < to_i, to_i - from_i, from_i - to_i))
-    s_t_e_p = IIf(from_i < to_i, 1, -1)
-    k = 0
+' fromからtoまでの自然数を並べたベクトルを返す
+' 両端入り。from <= to では昇順、from > to では逆順
+Public Function iota(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+    Dim i As Long, k As Long:   k = 0
+    Dim ret As Variant:         ReDim ret(0 To VBA.Abs(to_i - from_i))
+    Dim s_t_e_p As Long:        s_t_e_p = IIf(from_i < to_i, 1, -1)
     For i = from_i To to_i Step s_t_e_p
         ret(k) = i
         k = k + 1
     Next i
     iota = moveVariant(ret)
 End Function
+    Public Function p_iota(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iota = make_funPointer(AddressOf iota, firstParam, secondParam)
+    End Function
+
+' 自然数列 [from, to]
+Public Function a__a(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+    If from_i <= to_i Then
+        a__a = iota(from_i, to_i)
+    Else
+        a__a = VBA.Array()
+    End If
+End Function
+    Public Function p_a__a(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_a__a = make_funPointer(AddressOf a__a, firstParam, secondParam)
+    End Function
+
+' 自然数列 [from, to)
+Public Function a__o(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+    If from_i < to_i Then
+        Dim i As Long, k As Long:   k = 0
+        Dim ret As Variant:         ReDim ret(0 To to_i - from_i - 1)
+        For i = from_i To to_i - 1 Step 1
+            ret(k) = i
+            k = k + 1
+        Next i
+        a__o = moveVariant(ret)
+    Else
+        a__o = VBA.Array()
+    End If
+End Function
+    Public Function p_a__o(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_a__o = make_funPointer(AddressOf a__o, firstParam, secondParam)
+    End Function
+
+' 自然数列 (from, to]
+Public Function o__a(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+    If from_i < to_i Then
+        Dim i As Long, k As Long:   k = 0
+        Dim ret As Variant:         ReDim ret(0 To to_i - from_i - 1)
+        For i = from_i + 1 To to_i Step 1
+            ret(k) = i
+            k = k + 1
+        Next i
+        o__a = moveVariant(ret)
+    Else
+        o__a = VBA.Array()
+    End If
+End Function
+    Public Function p_o__a(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_o__a = make_funPointer(AddressOf o__a, firstParam, secondParam)
+    End Function
+
+' 自然数列 (from, to)
+Public Function o__o(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+    If from_i + 1 < to_i Then
+        Dim i As Long, k As Long:   k = 0
+        Dim ret As Variant:         ReDim ret(0 To to_i - from_i - 2)
+        For i = from_i + 1 To to_i - 1 Step 1
+            ret(k) = i
+            k = k + 1
+        Next i
+        o__o = moveVariant(ret)
+    Else
+        o__o = VBA.Array()
+    End If
+End Function
+    Public Function p_o__o(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_o__o = make_funPointer(AddressOf o__o, firstParam, secondParam)
+    End Function
 
 'ベクトルの最初のN個
 Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
@@ -587,13 +670,16 @@ End Function
 Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
-    
-    If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or colSize(matrix1) <> colSize(matrix2) Then
+    If Dimension(matrix1) < 1 Or Dimension(matrix2) < 1 Then
         catR = VBA.Array()
+    ElseIf Dimension(matrix1) = 1 Then
+        catR = catR(makeM(1, rowSize(matrix1), matrix1), matrix2)
+    ElseIf Dimension(matrix2) = 1 Then
+        catR = catR(matrix1, makeM(1, rowSize(matrix2), matrix2))
+    ElseIf colSize(matrix1) <> colSize(matrix2) Then
+        catR = Array()
     Else
-        If 0 < rowSize(matrix1) + rowSize(matrix2) And 0 < colSize(matrix1) Then
-            ReDim ret(0 To rowSize(matrix1) + rowSize(matrix2) - 1, 0 To colSize(matrix1) - 1)
-        End If
+        ret = makeM(rowSize(matrix1) + rowSize(matrix2), colSize(matrix1))
         counter = 0
         For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
             Call fillRow_imple(ret, counter, matrix1, i)
@@ -606,17 +692,24 @@ Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
         catR = moveVariant(ret)
     End If
 End Function
+    Function p_catR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_catR = make_funPointer(AddressOf catR, firstParam, secondParam)
+    End Function
 
 '列方向に結合
 Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
-    If Dimension(matrix1) <> 2 Or Dimension(matrix2) <> 2 Or rowSize(matrix1) <> rowSize(matrix2) Then
+    If Dimension(matrix1) < 1 Or Dimension(matrix2) < 1 Then
+        catC = VBA.Array()
+    ElseIf Dimension(matrix1) = 1 Then
+        catC = catC(makeM(rowSize(matrix1), 1, matrix1), matrix2)
+    ElseIf Dimension(matrix2) = 1 Then
+        catC = catC(matrix1, makeM(rowSize(matrix2), 1, matrix2))
+    ElseIf rowSize(matrix1) <> rowSize(matrix2) Then
         catC = VBA.Array()
     Else
-        If 0 < rowSize(matrix1) And 0 < colSize(matrix1) + colSize(matrix2) Then
-            ReDim ret(0 To rowSize(matrix1) - 1, 0 To colSize(matrix1) + colSize(matrix2) - 1)
-        End If
+        ret = makeM(rowSize(matrix1), colSize(matrix1) + colSize(matrix2))
         counter = 0
         For i = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
             Call fillCol_imple(ret, counter, matrix1, i)
@@ -629,6 +722,9 @@ Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
         catC = moveVariant(ret)
     End If
 End Function
+    Function p_catC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_catC = make_funPointer(AddressOf catC, firstParam, secondParam)
+    End Function
 
 '配列の行/列の転置
 Function transpose(ByRef matrix As Variant) As Variant
@@ -765,7 +861,7 @@ End Function
 Function cons(ByRef a As Variant, ByRef v As Variant) As Variant
     cons = catV(Array(a), v)
 End Function
-Public Function p_cons(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    Public Function p_cons(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
     End Function
 
