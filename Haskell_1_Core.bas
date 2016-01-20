@@ -347,13 +347,11 @@ End Function
         p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam)
     End Function
 
-'1次元配列から条件に合致するものを検索(最初にヒットしたインデックスまたはNullを返す)
+'1次元配列から条件に合致するものを検索(最初にヒットしたインデックスを返す)
+'1次元配列以外であれば返り値はEmpty、無かった場合は UBound + 1 を返す
 Function find_pred(ByRef pred As Variant, ByRef vec As Variant) As Variant
     If Dimension(vec) = 1 Then
         find_pred = find_imple(pred, vec, UBound(vec) + 1)
-        If find_pred = UBound(vec) + 1 Then find_pred = Null
-    Else
-        find_pred = Null
     End If
 End Function
     Function p_find_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
