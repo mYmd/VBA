@@ -257,7 +257,7 @@ Sub vbaUnit()
     Points = uniform_real_dist(10000, 0#, 100#)
     pred = p_mult(p_greater(, 29.9), p_less(, 29.99))
     m = find_pred(pred, Points)
-    If (IsNull(m)) Then Debug.Print "なし" Else Debug.Print Points(m) & " (index=" & m & ")"
+    If UBound(points) < m Then Debug.Print "なし" Else Debug.Print points(m) & " (index=" & m & ")"
 End Sub
 
 
