@@ -21,14 +21,20 @@ Option Explicit
     ' Function  tailN               ベクトルの最後のN個
     ' Function  vector              スカラー、配列のベクトル化
     ' Function  reverse             ベクトルを逆順に並べる
-    ' Function  rotate              1次元配列の回転
+    ' Sub       rotate              1次元配列の回転
+    ' Function  rotation            rotateした配列を返す
+    ' Function  rotate_move         rotateしてmoveして返す
     ' Function  selectRow           特定行の取得
     ' Function  selectCol           特定列の取得
     ' Function  makeM               配列の作成
     ' Sub       fillM               配列をデータで埋める
+    ' Function  fillM_move          fillMしてmoveして返す
     ' Sub       fillRow             配列の特定行をデータで埋める
+    ' Function  fillRow_move        fillRowしてmoveして返す
     ' Sub       fillCol             配列の特定列をデータで埋める
+    ' Function  fillCol_move        fillColしてmoveして返す
     ' Sub       fillPattern         1次元配列を他の1次元配列の繰り返しで埋める（回数指定可）
+    ' Function  fillPattern_move    fillPatternしてmoveして返す
     ' Function  subV                1次元配列の部分配列を作成する
     ' Function  subV_if            　〃（範囲外のインデックスに対してEmptyが入る）
     ' Function  subM                配列の部分配列を作成する
@@ -271,52 +277,81 @@ End Function
 '1次元配列の回転
 '[0,1,2,3,4,5] -> [1,2,3,4,5,0] (r=1)
 '[0,1,2,3,4,5] -> [5,0,1,2,3,4] (r=-1)
-Function rotate(ByRef vec As Variant, ByRef R As Variant) As Variant
-    If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Function
-    Dim rt As Long:     rt = R
-    If rt < 0 Then rt = (1 + (-rt) \ sizeof(vec)) * sizeof(vec) + rt
-    rt = rt Mod sizeof(vec)
-    If rt = 0 Then
-        rotate = vec
+Sub rotate(ByRef vec As Variant, ByVal shift As Long)
+    If Dimension(vec) <> 1 Or sizeof(vec) = 0 Then Exit Sub
+    If shift < 0 Then shift = (1 + (-shift) \ sizeof(vec)) * sizeof(vec) + shift
+    shift = shift Mod sizeof(vec)
+    If shift = 0 Then
+        '
     ElseIf VarType(vec) = VarType(Array()) Then
-        Call rotate_imple_V(vec, LBound(vec) + rt, rotate)
+        Call rotate_imple_V(vec, LBound(vec) + shift)
     ElseIf IsObject(vec(LBound(vec))) Then
-        Call rotate_imple_O(vec, LBound(vec) + rt, rotate)
+        Call rotate_imple_O(vec, LBound(vec) + shift)
     Else
-        Call rotate_imple_L(vec, LBound(vec) + rt, rotate)
+        Call rotate_imple_L(vec, LBound(vec) + shift)
     End If
+End Sub
+
+'1次元配列を回転した配列
+Function rotation(ByRef vec As Variant, ByRef shift As Variant) As Variant
+    Dim tmp As Variant
+    tmp = vec
+    rotation = rotate_move(tmp, shift)
 End Function
-    Function p_rotate(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_rotate = make_funPointer(AddressOf rotate, firstParam, secondParam)
+    Function p_rotation(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_rotation = make_funPointer(AddressOf rotation, firstParam, secondParam)
     End Function
 
-    '                  ここはByValで
-    Private Sub rotate_imple_V(ByVal vec As Variant, ByVal j As Long, ByRef ret As Variant)
-        ReDim ret(LBound(vec) To UBound(vec))
-        Dim i As Long
-        For i = LBound(vec) To UBound(vec) Step 1
-            If UBound(vec) < j Then j = LBound(vec)
-            swapVariant ret(i), vec(j)
-            j = j + 1
+'rotationしてmoveして返す
+Function rotate_move(ByRef vec As Variant, ByRef shift As Variant) As Variant
+    rotate vec, shift
+    rotate_move = moveVariant(vec)
+End Function
+    Function p_rotate_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_rotate_move = make_funPointer(AddressOf rotate_move, firstParam, secondParam)
+    End Function
+    '----------------
+    Private Sub rotate_imple_V(ByRef vec As Variant, ByVal const_j As Long)
+        Dim tmp As Variant:     Dim i As Long
+        Dim k As Long:          k = LBound(vec)
+        ReDim tmp(LBound(vec) To UBound(vec))
+        For i = const_j To UBound(vec) Step 1
+            swapVariant tmp(k), vec(i)
+            k = k + 1
         Next i
+        For i = LBound(vec) To const_j - 1 Step 1
+            swapVariant tmp(k), vec(i)
+            k = k + 1
+        Next i
+        vec = moveVariant(tmp)
     End Sub
-    Private Sub rotate_imple_O(ByRef vec As Variant, ByVal j As Long, ByRef ret As Variant)
-        ReDim ret(LBound(vec) To UBound(vec))
-        Dim i As Long
-        For i = LBound(vec) To UBound(vec) Step 1
-            If UBound(vec) < j Then j = LBound(vec)
-            Set ret(i) = vec(j)
-            j = j + 1
+    Private Sub rotate_imple_O(ByRef vec As Variant, ByVal const_j As Long)
+        Dim tmp As Variant:     Dim i As Long
+        Dim k As Long:          k = LBound(vec)
+        ReDim tmp(LBound(vec) To UBound(vec))
+        For i = const_j To UBound(vec) Step 1
+            Set tmp(k) = vec(i)
+            k = k + 1
         Next i
+        For i = LBound(vec) To const_j - 1 Step 1
+            Set tmp(k) = vec(i)
+            k = k + 1
+        Next i
+        vec = moveVariant(tmp)
     End Sub
-    Private Sub rotate_imple_L(ByRef vec As Variant, ByVal j As Long, ByRef ret As Variant)
-        ReDim ret(LBound(vec) To UBound(vec))
-        Dim i As Long
-        For i = LBound(vec) To UBound(vec) Step 1
-            If UBound(vec) < j Then j = LBound(vec)
-            ret(i) = vec(j)
-            j = j + 1
+    Private Sub rotate_imple_L(ByRef vec As Variant, ByVal const_j As Long)
+        Dim tmp As Variant:     Dim i As Long
+        Dim k As Long:          k = LBound(vec)
+        ReDim tmp(LBound(vec) To UBound(vec))
+        For i = const_j To UBound(vec) Step 1
+            tmp(k) = vec(i)
+            k = k + 1
         Next i
+        For i = LBound(vec) To const_j - 1 Step 1
+            tmp(k) = vec(i)
+            k = k + 1
+        Next i
+        vec = moveVariant(tmp)
     End Sub
 
 '特定行の取得
@@ -403,6 +438,12 @@ Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
     If swapFlag Then swapVariant data_2, data
 End Sub
 
+'配列をデータで埋めてmoveして返す
+Public Function fillM_move(ByRef matrix As Variant, ByRef data As Variant) As Variant
+    Call fillM(matrix, data)
+    fillM_move = moveVariant(matrix)
+End Function
+
 '配列の特定行をデータで埋める
 Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
     Dim j As Long, k As Long
@@ -418,7 +459,14 @@ Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Varia
             If UBound(data) < k Then Exit For
         Next j
     End If
+
 End Sub
+
+'配列の特定行をデータで埋めてmoveして返す
+Public Function fillRow_move(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
+    Call fillRow(matrix, i, data)
+    fillRow_move = moveVariant(matrix)
+End Function
 
     '((((配列の特定行をデータで埋める))))
     Private Sub fillRow_imple(ByRef matrix As Variant, _
@@ -450,6 +498,12 @@ Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Varia
     End If
 End Sub
 
+'配列の特定列をデータで埋めてmoveして返す
+Public Function fillCol_move(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
+    Call fillCol(matrix, j, data)
+    fillCol_move = moveVariant(matrix)
+End Function
+    
     '((((配列の特定列をデータで埋める))))
     Private Sub fillCol_imple(ByRef matrix As Variant, _
                             ByVal j As Long, _
@@ -480,6 +534,12 @@ Sub fillPattern(ByRef vec As Variant, ByRef pattern As Variant, Optional ByVal c
         End If
     Loop
 End Sub
+
+'1次元配列を他の1次元配列の繰り返しで埋めてmoveして返す
+Public Function fillPattern_move(ByRef vec As Variant, ByRef pattern As Variant, Optional ByVal counter As Long = -1) As Variant
+    fillPattern vec, pattern, counter
+    fillPattern_move = moveVariant(vec)
+End Function
 
 '1次元配列の部分配列を作成する
 Public Function subV(ByRef vec As Variant, ByRef index As Variant) As Variant
@@ -858,8 +918,8 @@ End Function
     End Function
 
 ' 配列の先頭に要素を追加
-Function cons(ByRef a As Variant, ByRef v As Variant) As Variant
-    cons = catV(Array(a), v)
+Function cons(ByRef a As Variant, ByRef vec As Variant) As Variant
+    cons = catV(Array(a), vec)
 End Function
     Public Function p_cons(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
@@ -868,7 +928,7 @@ End Function
 'ベクトルの直積に関数を適用した行列を作る
 Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
     Dim z As Variant, k As Long
-    Dim ret As Variant:     ReDim ret(0 To rowSize(a) - 1, 0 To rowSize(b) - 1)
+    Dim ret As Variant:     ReDim ret(LBound(a) To UBound(a), LBound(b) To UBound(b))
     If rowSize(a) < rowSize(b) Then
         k = LBound(a)
         For Each z In a
