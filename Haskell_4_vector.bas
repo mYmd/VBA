@@ -4,7 +4,7 @@ Attribute VB_Name = "Haskell_4_vector"
 Option Explicit
 
 '====================================================================================================
-' すべてのPublicなFunctionは副作用なし
+' *_move系以外のPublicなFunctionは副作用なし
 ' 大多数のFunction に対して付随している p_Function は関数ポインタ。
 '     mapF や zipWith の引数として使える。
 '     p_Function : 裸の関数ポインタ、p_Function(a) : 第１引数を束縛、p_Function(, b) : 第２引数を束縛
