@@ -92,7 +92,7 @@ End Function
 
 ' fromからtoまでの自然数を並べたベクトルを返す
 ' 両端入り。from <= to では昇順、from > to では逆順
-Public Function iota(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+Public Function iota(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     Dim i As Long, k As Long:   k = 0
     Dim ret As Variant:         ReDim ret(0 To VBA.Abs(to_i - from_i))
     Dim s_t_e_p As Long:        s_t_e_p = IIf(from_i < to_i, 1, -1)
@@ -107,7 +107,7 @@ End Function
     End Function
 
 ' 自然数列 [from, to]
-Public Function a__a(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+Public Function a__a(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i <= to_i Then
         a__a = iota(from_i, to_i)
     Else
@@ -119,7 +119,7 @@ End Function
     End Function
 
 ' 自然数列 [from, to)
-Public Function a__o(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+Public Function a__o(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i < to_i Then
         Dim i As Long, k As Long:   k = 0
         Dim ret As Variant:         ReDim ret(0 To to_i - from_i - 1)
@@ -137,7 +137,7 @@ End Function
     End Function
 
 ' 自然数列 (from, to]
-Public Function o__a(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+Public Function o__a(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i < to_i Then
         Dim i As Long, k As Long:   k = 0
         Dim ret As Variant:         ReDim ret(0 To to_i - from_i - 1)
@@ -155,7 +155,7 @@ End Function
     End Function
 
 ' 自然数列 (from, to)
-Public Function o__o(ByVal from_i As Variant, ByVal to_i As Variant) As Variant
+Public Function o__o(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i + 1 < to_i Then
         Dim i As Long, k As Long:   k = 0
         Dim ret As Variant:         ReDim ret(0 To to_i - from_i - 2)
