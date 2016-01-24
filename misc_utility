@@ -10,8 +10,8 @@ Option Explicit
 '   Function  p_foldr1                      1次元配列のfoldr1
 '   Function  p_scanl1                      1次元配列のscanl1
 '   Function  p_scanr1                      1次元配列のscanr1
-'   Function  subM_R_a__o                   subM(m, a__o(begin, end)) の構文糖
-'   Function  subM_C_a__o                   subM(m, , a__o(begin, end)) の構文糖
+'   Function  subM_R                        subM(m, 行範囲) の構文糖
+'   Function  subM_C                        subM(m, , 列範囲) の構文糖
 '  -----------------------------------------------------------------------------
 '   Function  group_by_partition_points     partition_points によるGROUP-BY
 '   Function  summaryUnit                   個々の集計行範囲の処理
@@ -52,40 +52,40 @@ Public Function p_scanr1(Optional ByRef firstParam As Variant, Optional ByRef se
     p_scanr1 = make_funPointer(AddressOf scanr1_v, firstParam, secondParam)
 End Function
 
-' subM(m, a__o(begin, end)) の構文糖
-Public Function subM_R_a__o(ByRef m As Variant, ByRef a___o As Variant) As Variant
-    subM_R_a__o = subM(m, a__o(getNth_b(0, a___o), getNth_b(-1, a___o)))
+' subM(m, 行範囲) の構文糖
+Public Function subM_R(ByRef m As Variant, ByRef rRange As Variant) As Variant
+    subM_R = subM(m, rRange)
 End Function
-    Public Function p_subM_R_a__o(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_subM_R_a__o = make_funPointer(AddressOf subM_R_a__o, firstParam, secondParam)
+    Public Function p_subM_R(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_subM_R = make_funPointer(AddressOf subM_R, firstParam, secondParam)
     End Function
 
-' subM(m, , a__o(begin, end)) の構文糖
-Public Function subM_C_a__o(ByRef m As Variant, ByRef a___o As Variant) As Variant
-    subM_C_a__o = subM(m, , a__o(getNth_b(0, a___o), getNth_b(-1, a___o)))
+' subM(m, , 列範囲) の構文糖
+Public Function subM_C(ByRef m As Variant, ByRef cRange As Variant) As Variant
+    subM_C = subM(m, , cRange)
 End Function
-    Public Function p_subM_C_a__o(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_subM_C_a__o = make_funPointer(AddressOf subM_C_a__o, firstParam, secondParam)
+    Public Function p_subM_C(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
     End Function
 
 ' partition_points によるGROUP-BY
-' m       : 対象配列（2次元配列またはJAG配列）
-' pp      : partition_points （集計する行範囲を区切る行番号の集合）
-' strFuns : 列ごとに指定された集計関数（を表す文字列 : str2SummaryFun 関数でマッピング）
-' 例）group_by_partition_points(m, pp, "%top%count%sum%average")
+' m         : 対象配列（2次元配列またはJAG配列）
+' pp        : partition_points （集計する行範囲を区切る行番号の集合）
+' strFuns   : 列ごとの集計関数を表す文字列
+' my_str2Fun: 文字列から集計関数へのマッピング関数（str2SummaryFunがデフォルト）
+' 例）group_by_partition_points(m, pp, "%t%c%s%a%min%max")
 Public Function group_by_partition_points(ByRef m As Variant, _
                                           ByRef pp As Variant, _
                                           ByVal strFuns As String, _
                                  Optional ByVal my_str2Fun As Variant) As Variant
     If left(strFuns, 1) = "%" Then strFuns = right(strFuns, Len(strFuns) - 1)
-    Dim str2funs_translator As Variant
-    str2funs_translator = IIf(IsMissing(my_str2Fun), p_str2SummaryFun, my_str2Fun)
+    If IsMissing(my_str2Fun) Then my_str2Fun = p_str2SummaryFun     'デフォルトの
     Dim funs As Variant
-    funs = mapF(str2funs_translator, Split(strFuns, "%"))
+    funs = mapF(my_str2Fun, Split(strFuns, "%"))
     Dim intervals As Variant
-    intervals = zip(pp, setNth_b_move(-1, UBound(m, 1) + 1, rotation(pp, 1)))
+    intervals = zipWith(p_a__o, pp, setNth_b_move(-1, UBound(m, 1) + 1, rotation(pp, 1)))
     Dim ranges As Variant
-    ranges = mapF_swap(p_subM_R_a__o, m, intervals)
+    ranges = mapF_swap(p_subM_R, m, intervals)
     group_by_partition_points = unzip(mapF(p_summaryUnit(, funs), ranges), 2)
 End Function
     
