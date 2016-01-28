@@ -107,7 +107,6 @@ Sub permutate_back(ByRef vec As Variant, ByRef s_index As Variant)
     permutate vec, index2
 End Sub
 
-    'Private Function lower_bound_imple
 'ソート済み配列からのキーの検索（std::lower_boundと同じ）
 Function lower_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
     lower_bound = lower_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
@@ -116,17 +115,13 @@ End Function
         p_lower_bound = make_funPointer(AddressOf lower_bound, firstParam, secondParam)
     End Function
 
-Function lower_bound_pred(ByRef matrix As Variant, ByRef val_pred As Variant) As Variant
+Function lower_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
     lower_bound_pred = lower_bound_imple(matrix, _
-                                         val_pred(LBound(val_pred)), _
-                                         val_pred(1 + LBound(val_pred)), _
+                                         val, _
+                                         pred, _
                                          LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
-    Public Function p_lower_bound_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_lower_bound_pred = make_funPointer(AddressOf lower_bound_pred, firstParam, secondParam)
-    End Function
 
-    'Private Function upper_bound_imple
 'ソート済み配列からのキーの検索（std::upper_boundと同じ）
 Function upper_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
     upper_bound = upper_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
@@ -135,15 +130,12 @@ End Function
         p_upper_bound = make_funPointer(AddressOf upper_bound, firstParam, secondParam)
     End Function
 
-Function upper_bound_pred(ByRef matrix As Variant, ByRef val_pred As Variant) As Variant
+Function upper_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
     upper_bound_pred = upper_bound_imple(matrix, _
-                                         val_pred(LBound(val_pred)), _
-                                         val_pred(1 + LBound(val_pred)), _
+                                         val, _
+                                         pred, _
                                          LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
-    Public Function p_upper_bound_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_upper_bound_pred = make_funPointer(AddressOf upper_bound_pred, firstParam, secondParam)
-    End Function
 
 'ソート済み配列からのキーの検索（std::equal_rangeと同じ）
 Function equal_range(ByRef matrix As Variant, ByRef val As Variant) As Variant
@@ -153,12 +145,9 @@ End Function
         p_equal_range = make_funPointer(AddressOf equal_range, firstParam, secondParam)
     End Function
 
-Function equal_range_pred(ByRef matrix As Variant, ByRef val_pred As Variant) As Variant
-    equal_range_pred = VBA.Array(lower_bound_pred(matrix, val_pred), upper_bound_pred(matrix, val_pred))
+Function equal_range_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
+    equal_range_pred = VBA.Array(lower_bound_pred(matrix, val, pred), upper_bound_pred(matrix, val, pred))
 End Function
-    Public Function p_equal_range_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_equal_range_pred = make_funPointer(AddressOf equal_range_pred, firstParam, secondParam)
-    End Function
 
 'ソート済み配列から条件によって区分化されている位置の一覧を得る
 Function partition_points(ByRef vec As Variant) As Variant
@@ -170,18 +159,12 @@ Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As V
     ret = makeM(sizeof(vec))
     Dim rPos As Long:   rPos = LBound(vec)
     Dim wPos As Long:   wPos = 0
-    Dim upperBound As Long
-    Dim value_pred(0 To 1)  As Variant
-    value_pred(1) = moveVariant(pred)
-    Do While rPos <= UBound(vec)
+    Do
         ret(wPos) = rPos
-        value_pred(0) = vec(rPos)
-        upperBound = upper_bound_pred(vec, value_pred)
-        If UBound(vec) < upperBound Then Exit Do
-        rPos = upperBound
+        If UBound(vec) < rPos Then Exit Do
+        rPos = upper_bound_pred(vec, vec(rPos), pred)
         wPos = wPos + 1
     Loop
-    pred = moveVariant(value_pred(1))
     ReDim Preserve ret(0 To wPos)
     swapVariant partition_points_pred, ret
 End Function
@@ -230,4 +213,4 @@ Private Function upper_bound_imple(ByRef matrix As Variant, _
         End If
     End If
 End Function
-'#####################
+'####################
