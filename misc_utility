@@ -12,6 +12,9 @@ Option Explicit
 '   Function  p_scanr1                      1次元配列のscanr1
 '   Function  subM_R                        subM(m, 行範囲) の構文糖
 '   Function  subM_C                        subM(m, , 列範囲) の構文糖
+'   Function  adjacent_op                   1次元配列vecの隣接する要素間で2項操作
+'   Function  equal_all                     1次元配列の全要素の等値比較
+'   Function  equal_all_pred                〃　述語バージョン
 '  -----------------------------------------------------------------------------
 '   Function  group_by_partition_points     partition_points によるGROUP-BY
 '   Function  summaryUnit                   個々の集計行範囲の処理
@@ -68,6 +71,36 @@ End Function
         p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
     End Function
 
+' 1次元配列vecの隣接する要素間で2項操作opを行う
+' 出力列の要素数は元の要素数 - 1   (LBound = 0)
+Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Variant
+    If is_bindFun(op) Then
+        adjacent_op = zipWith(op, vec, tailN(vec, sizeof(vec) - 1))
+    End If
+End Function
+    Public Function p_adjacent_op(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_adjacent_op = make_funPointer(AddressOf adjacent_op, firstParam, secondParam)
+    End Function
+
+' 1次元配列の全要素の等値比較
+Public Function equal_all(ByRef a As Variant, ByRef b As Variant) As Variant
+    equal_all = equal_all_pred(p_equal, a, b)
+End Function
+    Public Function p_equal_all(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_equal_all = make_funPointer(AddressOf equal_all, firstParam, secondParam)
+    End Function
+
+' 1次元配列の全要素の等値比較（述語バージョン）
+Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
+    If sizeof(a) = sizeof(b) Then
+        equal_all_pred = IIf(sizeof(a) <= find_pred(p_equal(0), zipWith(pred, a, b)), _
+                             1, _
+                             0)
+    Else
+        equal_all_pred = 0
+    End If
+End Function
+
 ' partition_points によるGROUP-BY
 ' m         : 対象配列（2次元配列またはJAG配列）
 ' pp        : partition_points （集計する行範囲を区切る行番号の集合）
@@ -83,7 +116,7 @@ Public Function group_by_partition_points(ByRef m As Variant, _
     Dim funs As Variant
     funs = mapF(my_str2Fun, Split(strFuns, "%"))
     Dim intervals As Variant
-    intervals = zipWith(p_a__o, pp, setNth_b_move(-1, UBound(m, 1) + 1, rotation(pp, 1)))
+    intervals = adjacent_op(p_a__o, pp)
     Dim ranges As Variant
     ranges = mapF_swap(p_subM_R, m, intervals)
     group_by_partition_points = unzip(mapF(p_summaryUnit(, funs), ranges), 2)
