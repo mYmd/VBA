@@ -164,8 +164,8 @@ End Function
 Public Sub rowWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
     Dim i As Long
     For i = 0 To min_fun(rowSize(matrix), sizeof(funcs)) - 1 Step 1
-        If is_bindFun(getNth_b(i, funcs)) Then
-            Call fillRow_b(matrix, i, mapF(getNth_b(i, funcs), selectRow_b(matrix, i)))
+        If is_bindFun(getNth_b(funcs, i)) Then
+            Call fillRow_b(matrix, i, mapF(getNth_b(funcs, i), selectRow_b(matrix, i)))
         End If
     Next i
 End Sub
@@ -183,8 +183,8 @@ End Function
 Public Sub columnWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
     Dim j As Long
     For j = 0 To min_fun(colSize(matrix), sizeof(funcs)) - 1 Step 1
-        If is_bindFun(getNth_b(j, funcs)) Then
-            Call fillCol_b(matrix, j, mapF(getNth_b(j, funcs), selectCol_b(matrix, j)))
+        If is_bindFun(getNth_b(funcs, j)) Then
+            Call fillCol_b(matrix, j, mapF(getNth_b(funcs, j), selectCol_b(matrix, j)))
         End If
     Next j
 End Sub
@@ -246,9 +246,9 @@ End Function
 Public Function str2SummaryFun(ByRef s As Variant, Optional ByRef other As Variant) As Variant
     Select Case StrConv(s, vbNarrow + vbLowerCase)
         Case "t", "tp", "top"
-            str2SummaryFun = p_getNth_b(0)
+            str2SummaryFun = p_getNth_b(, 0)
         Case "b", "btm", "bottom"
-            str2SummaryFun = p_getNth_b(-1)
+            str2SummaryFun = p_getNth_b(, -1)
         Case "c", "cnt", "count"
             str2SummaryFun = p_sizeof()
         Case "s", "sum", "計"
@@ -322,3 +322,4 @@ End Function
     Private Function p_summaryUnit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_summaryUnit = make_funPointer(AddressOf summaryUnit, firstParam, secondParam)
     End Function
+    
