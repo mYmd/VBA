@@ -34,8 +34,8 @@ End Function
     End Function
 
 'N番目の配列要素取得（LBoundを無視した絶対位置）
-Function getNth(ByRef index As Variant, ByRef matrix As Variant) As Variant
-    getNth = matrix(index)
+Function getNth(ByRef vec As Variant, ByRef index As Variant) As Variant
+    getNth = vec(index)
 End Function
     Function p_getNth(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
@@ -43,35 +43,35 @@ End Function
 
 'N番目の配列要素取得（LBound基準）
 'index < 0 の場合は後ろから取得
-Function getNth_b(ByRef index As Variant, ByRef matrix As Variant) As Variant
+Function getNth_b(ByRef vec As Variant, ByRef index As Variant) As Variant
     If 0 <= index Then
-        getNth_b = matrix(index + LBound(matrix))
+        getNth_b = vec(index + LBound(vec))
     Else
-        getNth_b = matrix(UBound(matrix) + 1 + index)
+        getNth_b = vec(UBound(vec) + 1 + index)
     End If
 End Function
     Function p_getNth_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_getNth_b = make_funPointer(AddressOf getNth_b, firstParam, secondParam)
     End Function
 
-'N番目の配列要素設定  (index, value)（LBound基準）
+'N番目の配列要素設定（LBound基準）
 'index < 0 の場合は後ろに設定
-Sub setNth_b(ByVal index As Long, ByRef value As Variant, ByRef matrix As Variant)
+Sub setNth_b(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     If 0 <= index Then
-        matrix(index + LBound(matrix)) = value
+        vec(index + LBound(vec)) = value
     Else
-        matrix(index + 1 + UBound(matrix)) = value
+        vec(index + 1 + UBound(vec)) = value
     End If
 End Sub
 
-Function setNth_move(ByVal index As Long, ByRef value As Variant, ByRef matrix As Variant)
-    matrix(index) = value
-    setNth_move = moveVariant(matrix)
+Function setNth_move(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
+    vec(index) = value
+    setNth_move = moveVariant(vec)
 End Function
 
-Function setNth_b_move(ByVal index As Long, ByRef value As Variant, ByRef matrix As Variant)
-    Call setNth_b(index, value, matrix)
-    setNth_b_move = moveVariant(matrix)
+Function setNth_b_move(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
+    Call setNth_b(vec, index, value)
+    setNth_b_move = moveVariant(vec)
 End Function
 
 ' 複数の変数をmoveしてひとつのジャグ配列にする
