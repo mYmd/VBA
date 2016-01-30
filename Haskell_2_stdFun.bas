@@ -119,12 +119,14 @@ End Sub
 '   Function poly           多項式
 '   Function min_fun        min
 '   Function max_fun        max
-'   Function getCLng        CLng（整数化）
-'   Function cStr_fun       CStr（文字列化）
+'   Function CLng_          CLng（整数化）
+'   Function CDbl_          CDbl（実数化）
+'   Function CStr_          CStr（文字列化）
 '   Function str_len        Len
 '   Function str_left       Left
 '   Function str_right      Right
 '   Function str_mid        Mid
+'   Function str_cat        文字列結合
 '   Function splitFun       Split
 '   Function joinFun        Join
 '   Function gcm            gcm
@@ -351,19 +353,32 @@ End Function
     End Function
     
 'CLng
-Function getCLng(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
-    getCLng = CLng(a)
+Function CLng_(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    CLng_ = 0
+    If IsNumeric(a) Then CLng_ = CLng(a)
+    If IsDate(a) Then CLng_ = CLng(DateValue(a))
 End Function
-    Function p_getCLng(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_getCLng = make_funPointer(AddressOf getCLng, firstParam, secondParam)
+    Function p_CLng(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_CLng = make_funPointer(AddressOf CLng_, firstParam, secondParam)
+    End Function
+
+'CDbl
+Function CDbl_(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    CDbl_ = 0
+    If IsNumeric(a) Then CDbl_ = CDbl(a)
+    If IsDate(a) Then CDbl_ = CDbl(DateValue(a))
+End Function
+    Function p_CDbl(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_CDbl = make_funPointer(AddressOf CDbl_, firstParam, secondParam)
     End Function
 
 'CStr
-Function cStr_fun(ByRef v As Variant, Optional ByRef dummy As Variant) As Variant
-    cStr_fun = CStr(v)
+Function CStr_(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    CStr_ = ""
+    If Not IsArray(a) And Not IsObject(a) And Not IsNull(a) Then CStr_ = CStr(a)
 End Function
-    Function p_cStr(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_cStr = make_funPointer(AddressOf cStr_fun, firstParam, secondParam)
+    Function p_CStr(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_CStr = make_funPointer(AddressOf CStr_, firstParam, secondParam)
     End Function
 
 'Len
@@ -371,7 +386,7 @@ Function str_len(ByRef st As Variant, Optional ByRef dummy As Variant) As Varian
     str_len = Len(st)
 End Function
     Function p_len(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_getCLng = make_funPointer(AddressOf str_len, firstParam, secondParam)
+        p_len = make_funPointer(AddressOf str_len, firstParam, secondParam)
     End Function
     
 'Left
@@ -396,6 +411,14 @@ Function str_mid(ByRef st As Variant, ByRef begin_end As Variant) As Variant
 End Function
     Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
+    End Function
+
+'文字列結合
+Function str_cat(ByRef s1 As Variant, ByRef s2 As Variant) As Variant
+    str_cat = CStr_(s1) & CStr_(s2)
+End Function
+    Function p_str_cat(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_str_cat = make_funPointer(AddressOf str_cat, firstParam, secondParam)
     End Function
 
 'Split
