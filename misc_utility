@@ -7,6 +7,7 @@ Option Explicit
 '   ユーティリティ
 '*********************************************************************************
 '   Function  p_typename                データ型名
+'   Function  p_format                  Format関数
 '   Function  p_foldl1                  1次元配列のfoldl1
 '   Function  p_foldr1                  1次元配列のfoldr1
 '   Function  p_scanl1                  1次元配列のscanl1
@@ -42,6 +43,14 @@ Option Explicit
     End Function
 Public Function p_typename(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_typename = make_funPointer(AddressOf typename_, firstParam, secondParam)
+End Function
+
+' Format関数
+    Private Function format_(ByRef expr As Variant, ByRef fmt As Variant) As Variant
+        format_ = Format(expr, fmt)
+    End Function
+Public Function p_format(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_format = make_funPointer(AddressOf format_, firstParam, secondParam)
 End Function
 
 ' 1次元配列限定の foldl1 (p_foldl1 のみPublic)
