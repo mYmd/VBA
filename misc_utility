@@ -101,6 +101,9 @@ Public Function selectRow_b(ByRef matrix As Variant, ByRef i As Variant) As Vari
         selectRow_b = selectRow(matrix, i + 1 + UBound(matrix, 1))
     End If
 End Function
+    Public Function p_selectRow_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_selectRow_b = make_funPointer(AddressOf selectRow_b, firstParam, secondParam)
+    End Function
 
 '特定列の取得（LBound基準）
 'index < 0 の場合は後ろから取得
@@ -111,6 +114,9 @@ Public Function selectCol_b(ByRef matrix As Variant, ByRef j As Variant) As Vari
         selectCol_b = selectCol(matrix, j + 1 + UBound(matrix, 2))
     End If
 End Function
+    Public Function p_selectCol_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_selectCol_b = make_funPointer(AddressOf selectCol_b, firstParam, secondParam)
+    End Function
 
 '配列の特定行をデータで埋める（LBound基準）
 Public Sub fillRow_b(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
@@ -315,45 +321,4 @@ End Function
     End Function
     Private Function p_summaryUnit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_summaryUnit = make_funPointer(AddressOf summaryUnit, firstParam, secondParam)
-    End Function
-
-'******************************************************************************
-'
-Public Function stat_median(ByRef m As Variant, Optional ByRef pred As Variant) As Variant
-    Dim s As Variant
-    If IsMissing(pred) Then
-        s = sortIndex(m)
-    Else
-        s = sortIndex_pred(m, pred)
-    End If
-    Dim size_ As Long:      size_ = sizeof(m)
-    If size_ Mod 2 = 1 Then
-        stat_median = m(getNth_b((size_ - 1) / 2, s))
-    Else
-        stat_median = (m(getNth_b(-1 + size_ / 2, s)) + m(getNth_b(size_ / 2, s))) / 2#
-    End If
-End Function
-    Public Function p_stat_median(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_stat_median = make_funPointer(AddressOf stat_median, firstParam, secondParam)
-    End Function
-
-Public Function stat_mode(ByRef m As Variant, Optional ByRef pred As Variant) As Variant
-    Dim s As Variant
-    Dim pp As Variant
-    If IsMissing(pred) Then
-        s = sortIndex(m)
-        permutate m, s
-        pp = partition_points(m)
-    Else
-        s = sortIndex_pred(m, pred)
-        permutate m, s
-        pp = partition_points_pred(m, pred)
-    End If
-    permutate_back m, s
-    Dim intervals As Variant
-    intervals = adjacent_op(p_minus, pp)
-    stat_mode = filterR(pp, mapF(p_equal(foldl1(p_min, intervals))))
-End Function
-    Public Function p_stat_mode(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_stat_mode = make_funPointer(AddressOf stat_mode, firstParam, secondParam)
     End Function
