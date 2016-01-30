@@ -6,22 +6,43 @@ Option Explicit
 '*********************************************************************************
 '   ユーティリティ
 '*********************************************************************************
-'   Function  p_foldl1                      1次元配列のfoldl1
-'   Function  p_foldr1                      1次元配列のfoldr1
-'   Function  p_scanl1                      1次元配列のscanl1
-'   Function  p_scanr1                      1次元配列のscanr1
-'   Function  subM_R                        subM(m, 行範囲) の構文糖
-'   Function  subM_C                        subM(m, , 列範囲) の構文糖
-'   Function  adjacent_op                   1次元配列vecの隣接する要素間で2項操作
-'   Function  equal_all                     1次元配列の全要素の等値比較
-'   Function  equal_all_pred                〃　述語バージョン
+'   Function  p_typename                データ型名
+'   Function  p_foldl1                  1次元配列のfoldl1
+'   Function  p_foldr1                  1次元配列のfoldr1
+'   Function  p_scanl1                  1次元配列のscanl1
+'   Function  p_scanr1                  1次元配列のscanr1
+'   Function  subM_R                    subM(m, 行範囲) の構文糖
+'   Function  subM_C                    subM(m, , 列範囲) の構文糖
+'   Function  selectRow_b               LBound基準のselectRow
+'   Function  selectCol_b               LBound基準のselectCol
+'   Sub       fillRow_b                 LBound基準のfillRow
+'   Function  fillRow_b_move            LBound基準のfillRow_move
+'   Sub       fillCol_b                 LBound基準のfillCol
+'   Function  fillCol_b_move            LBound基準のfillCol_move
+'  -----------------------------------------------------------------------------
+'   Function  adjacent_op               1次元配列vecの隣接する要素間で2項操作
+'   Sub       rowWise_change            2次元配列の行ごとに関数適用
+'   Function  rowWise_change_move       〃moveして返す
+'   Sub       columnWise_change         2次元配列の列ごとに関数適用
+'   Function  colomnWise_change_move    〃moveして返す
+'   Function  equal_all                 1次元配列の全要素の等値比較
+'   Function  equal_all_pred            〃　述語バージョン
+'  -----------------------------------------------------------------------------
+'   Function  splitStr2Funs             delimiterで区切られた文字列を関数列へマッピング
+'   Function  str2SummaryFun            文字列から集計関数へ変換
+'   Function  str2ConvertFun            文字列から型変換関数へ変換
 '  -----------------------------------------------------------------------------
 '   Function  group_by_partition_points     partition_points によるGROUP-BY
-'   Function  summaryUnit                   個々の集計行範囲の処理
-'   Function  str2SummaryFun                集計関数を表す文字列を関数列に変換
-'  -----------------------------------------------------------------------------
 '
 '*********************************************************************************
+
+' データ型名
+    Public Function typename_(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
+        typename_ = TypeName(x)
+    End Function
+Public Function p_typename(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_typename = make_funPointer(AddressOf typename_, firstParam, secondParam)
+End Function
 
 ' 1次元配列限定の foldl1 (p_foldl1 のみPublic)
     Private Function foldl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
@@ -71,6 +92,57 @@ End Function
         p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
     End Function
 
+'特定行の取得（LBound基準）
+'index < 0 の場合は後ろから取得
+Public Function selectRow_b(ByRef matrix As Variant, ByRef i As Variant) As Variant
+    If 0 <= i Then
+        selectRow_b = selectRow(matrix, i + LBound(matrix, 1))
+    Else
+        selectRow_b = selectRow(matrix, i + 1 + UBound(matrix, 1))
+    End If
+End Function
+
+'特定列の取得（LBound基準）
+'index < 0 の場合は後ろから取得
+Public Function selectCol_b(ByRef matrix As Variant, ByRef j As Variant) As Variant
+    If 0 <= j Then
+        selectCol_b = selectCol(matrix, j + LBound(matrix, 2))
+    Else
+        selectCol_b = selectCol(matrix, j + 1 + UBound(matrix, 2))
+    End If
+End Function
+
+'配列の特定行をデータで埋める（LBound基準）
+Public Sub fillRow_b(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
+    If 0 <= i Then
+        Call fillRow(matrix, i + LBound(matrix, 1), data)
+    Else
+        Call fillRow(matrix, i + 1 + UBound(matrix, 1), data)
+    End If
+End Sub
+
+'配列の特定行をデータで埋めてmoveして返す（LBound基準）
+Public Function fillRow_b_move(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
+    Call fillRow_b(matrix, i, data)
+    fillRow_b_move = moveVariant(matrix)
+End Function
+
+'配列の特定列をデータで埋める（LBound基準）
+Public Sub fillCol_b(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant)
+    If 0 <= j Then
+        Call fillCol(matrix, j + LBound(matrix, 2), data)
+    Else
+        Call fillCol(matrix, j + 1 + UBound(matrix, 2), data)
+    End If
+End Sub
+
+'配列の特定列をデータで埋めてmoveして返す（LBound基準）
+Public Function fillCol_b_move(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
+    Call fillCol_b(matrix, j, data)
+    fillCol_b_move = moveVariant(matrix)
+End Function
+
+'*********************************************************************************
 ' 1次元配列vecの隣接する要素間で2項操作opを行う
 ' 出力列の要素数は元の要素数 - 1   (LBound = 0)
 Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Variant
@@ -80,6 +152,44 @@ Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Varian
 End Function
     Public Function p_adjacent_op(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_adjacent_op = make_funPointer(AddressOf adjacent_op, firstParam, secondParam)
+    End Function
+
+' 2次元配列の行ごとに関数適用
+Public Sub rowWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
+    Dim i As Long
+    For i = 0 To min_fun(rowSize(matrix), sizeof(funcs)) - 1 Step 1
+        If is_bindFun(getNth_b(i, funcs)) Then
+            Call fillRow_b(matrix, i, mapF(getNth_b(i, funcs), selectRow_b(matrix, i)))
+        End If
+    Next i
+End Sub
+
+' 2次元配列の行ごとに関数適用しmoveして返す
+Public Function rowWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
+    Call rowWise_change(matrix, funcs)
+    rowWise_change_move = moveVariant(matrix)
+End Function
+    Public Function p_rowWise_change_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_rowWise_change_move = make_funPointer(AddressOf rowWise_change_move, firstParam, secondParam)
+    End Function
+
+' 2次元配列の列ごとに関数適用
+Public Sub columnWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
+    Dim j As Long
+    For j = 0 To min_fun(colSize(matrix), sizeof(funcs)) - 1 Step 1
+        If is_bindFun(getNth_b(j, funcs)) Then
+            Call fillCol_b(matrix, j, mapF(getNth_b(j, funcs), selectCol_b(matrix, j)))
+        End If
+    Next j
+End Sub
+
+' 2次元配列の列ごとに関数適用しmoveして返す
+Public Function colomnWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
+    Call colomnWise_change(matrix, funcs)
+    colomnWise_change_move = moveVariant(matrix)
+End Function
+    Public Function p_colomnWise_change_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_colomnWise_change_move = make_funPointer(AddressOf colomnWise_change_move, firstParam, secondParam)
     End Function
 
 ' 1次元配列の全要素の等値比較
@@ -101,40 +211,25 @@ Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef 
     End If
 End Function
 
-' partition_points によるGROUP-BY
-' m         : 対象配列（2次元配列またはJAG配列）
-' pp        : partition_points （集計する行範囲を区切る行番号の集合）
-' strFuns   : 列ごとの集計関数を表す文字列
-' my_str2Fun: 文字列から集計関数へのマッピング関数（str2SummaryFunがデフォルト）
-' 例）group_by_partition_points(m, pp, "%t%c%s%a%min%max")
-Public Function group_by_partition_points(ByRef m As Variant, _
-                                          ByRef pp As Variant, _
-                                          ByVal strFuns As String, _
-                                 Optional ByVal my_str2Fun As Variant) As Variant
-    If left(strFuns, 1) = "%" Then strFuns = right(strFuns, Len(strFuns) - 1)
-    If IsMissing(my_str2Fun) Then my_str2Fun = p_str2SummaryFun     'デフォルトの
-    Dim funs As Variant
-    funs = mapF(my_str2Fun, Split(strFuns, "%"))
-    Dim intervals As Variant
-    intervals = adjacent_op(p_a__o, pp)
-    Dim ranges As Variant
-    ranges = mapF_swap(p_subM_R, m, intervals)
-    group_by_partition_points = unzip(mapF(p_summaryUnit(, funs), ranges), 2)
+'******************************************************************************
+' delimiterで区切られた文字列を関数列へマッピング
+' strFuns   : 関数を表す文字列
+' my_str2Fun: 文字列から関数へのマッピング関数
+' delimiter : strFunsの区切り文字
+' 例）%f%d%s%n → Array(f, d, s, n)
+'******************************************************************************
+Public Function splitStr2Funs(ByVal strFuns As String, _
+                              ByRef my_str2Fun As Variant, _
+                              ByVal delimiter As String) As Variant
+    If left(strFuns, Len(delimiter)) = delimiter Then
+        strFuns = right(strFuns, Len(strFuns) - Len(delimiter))
+    End If
+    splitStr2Funs = mapF(my_str2Fun, Split(strFuns, delimiter))
 End Function
-    
-' 個々の集計行範囲の処理
-Public Function summaryUnit(ByRef m As Variant, ByRef funs As Variant) As Variant
-    Select Case Dimension(m)
-        Case 1: summaryUnit = zipWith(p_applyFun, unzip(m, 1), funs)
-        Case 2: summaryUnit = zipWith(p_applyFun, zipR(m), funs)
-    End Select
-End Function
-    Public Function p_summaryUnit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_summaryUnit = make_funPointer(AddressOf summaryUnit, firstParam, secondParam)
-    End Function
 
-' 集計関数を表す文字列（%の後に書いて繋げる）を関数列に変換
-' 独自の変換関数を書くときはCase Else の中でこの関数を呼び出す形にするといいかも
+' （splitStr2Funs の対象関数）
+' 文字列から集計関数へ変換
+' 独自の変換関数を書くときはそのCase Else の中でこの関数を呼び出す形にするといいかも
 ' %t %tp  %top      : 先頭
 ' %b %btm %bottom   : 末尾
 ' %c %cnt %count    : 個数
@@ -158,10 +253,107 @@ Public Function str2SummaryFun(ByRef s As Variant, Optional ByRef other As Varia
             str2SummaryFun = p_foldl1(p_max(yield_1, yield_2))
         Case "min"
             str2SummaryFun = p_foldl1(p_min(yield_1, yield_2))
-        Case Else
+        Case ""
             str2SummaryFun = p_constant(other)
+        Case Else
+            str2SummaryFun = p_constant(s)
     End Select
 End Function
     Public Function p_str2SummaryFun(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_str2SummaryFun = make_funPointer(AddressOf str2SummaryFun, firstParam, secondParam)
+    End Function
+
+' （splitStr2Funs の対象関数）
+' 文字列から型変換関数へ変換
+' 独自の変換関数を書くときはそのCase Else の中でこの関数を呼び出す形にするといいかも
+' %d   : 整数化
+' %f   : 実数化
+' %s   : 文字列化
+Public Function str2ConvertFun(ByRef s As Variant, ByRef dummy As Variant) As Variant
+    Select Case StrConv(s, vbNarrow + vbLowerCase)
+    Case "d"
+        str2ConvertFun = p_CLng(p_replaceNull(, 0))
+    Case "f"
+        str2ConvertFun = p_CDbl(p_replaceNull(, 0))
+    Case "s"
+        str2ConvertFun = p_CStr(p_replaceNull(, ""))
+    Case Else
+        str2ConvertFun = Empty
+    End Select
+End Function
+    Public Function p_str2ConvertFun(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_str2ConvertFun = make_funPointer(AddressOf str2ConvertFun, firstParam, secondParam)
+    End Function
+
+'******************************************************************************
+' partition_points によるGROUP-BY
+' matrix    : 対象配列（2次元配列またはジャグ配列）
+' pp        : partition_points （集計する行範囲を区切る行番号の集合）
+' strFuns   : 列ごとの集計関数を表す文字列
+' my_str2Fun: 文字列から集計関数へのマッピング関数（str2SummaryFunがデフォルト）
+' 例）group_by_partition_points(matrix, pp, "%t%c%s%a%min%max")
+'******************************************************************************
+Public Function group_by_partition_points(ByRef matrix As Variant, _
+                                          ByRef pp As Variant, _
+                                          ByRef strFuns As String, _
+                                 Optional ByVal my_str2Fun As Variant) As Variant
+    If IsMissing(my_str2Fun) Then my_str2Fun = p_str2SummaryFun(, "-")    'デフォルトの
+    Dim funs As Variant
+    funs = splitStr2Funs(strFuns, my_str2Fun, "%")
+    Dim intervals As Variant
+    intervals = adjacent_op(p_a__o, pp)
+    Dim ranges As Variant
+    ranges = mapF_swap(p_subM_R, matrix, intervals)
+    group_by_partition_points = unzip(mapF_swap(p_summaryUnit, , funs, ranges), 2)
+End Function
+    ' 個々の集計行範囲の処理
+    Private Function summaryUnit(ByRef matrix As Variant, ByRef funs As Variant) As Variant
+        Select Case Dimension(matrix)
+            Case 1: summaryUnit = zipWith(p_applyFun, unzip(matrix, 1), funs)
+            Case 2: summaryUnit = zipWith(p_applyFun, zipR(matrix), funs)
+        End Select
+    End Function
+    Private Function p_summaryUnit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_summaryUnit = make_funPointer(AddressOf summaryUnit, firstParam, secondParam)
+    End Function
+
+'******************************************************************************
+'
+Public Function stat_median(ByRef m As Variant, Optional ByRef pred As Variant) As Variant
+    Dim s As Variant
+    If IsMissing(pred) Then
+        s = sortIndex(m)
+    Else
+        s = sortIndex_pred(m, pred)
+    End If
+    Dim size_ As Long:      size_ = sizeof(m)
+    If size_ Mod 2 = 1 Then
+        stat_median = m(getNth_b((size_ - 1) / 2, s))
+    Else
+        stat_median = (m(getNth_b(-1 + size_ / 2, s)) + m(getNth_b(size_ / 2, s))) / 2#
+    End If
+End Function
+    Public Function p_stat_median(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_stat_median = make_funPointer(AddressOf stat_median, firstParam, secondParam)
+    End Function
+
+Public Function stat_mode(ByRef m As Variant, Optional ByRef pred As Variant) As Variant
+    Dim s As Variant
+    Dim pp As Variant
+    If IsMissing(pred) Then
+        s = sortIndex(m)
+        permutate m, s
+        pp = partition_points(m)
+    Else
+        s = sortIndex_pred(m, pred)
+        permutate m, s
+        pp = partition_points_pred(m, pred)
+    End If
+    permutate_back m, s
+    Dim intervals As Variant
+    intervals = adjacent_op(p_minus, pp)
+    stat_mode = filterR(pp, mapF(p_equal(foldl1(p_min, intervals))))
+End Function
+    Public Function p_stat_mode(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_stat_mode = make_funPointer(AddressOf stat_mode, firstParam, secondParam)
     End Function
