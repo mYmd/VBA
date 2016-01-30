@@ -193,7 +193,7 @@ Sub vbaUnit()
     printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
     printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
     printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
-    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(1), p_plus(p_getNth(0), p_getNth(1))), n), 1)(0)
+    printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(, 1), p_plus(p_getNth(, 0), p_getNth(, 1))), n), 1)(0)
     printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), n), 1)(0)
     
     Debug.Print "------- FizzBuzz（2通り） ------------"
