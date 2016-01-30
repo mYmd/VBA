@@ -459,7 +459,6 @@ Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Varia
             If UBound(data) < k Then Exit For
         Next j
     End If
-
 End Sub
 
 '配列の特定行をデータで埋めてmoveして返す
@@ -543,7 +542,7 @@ End Function
 
 '1次元配列の部分配列を作成する
 Public Function subV(ByRef vec As Variant, ByRef index As Variant) As Variant
-    subV = mapF_swap(p_getNth, , vec, index)
+    subV = mapF_swap(p_getNth, vec, , index)
     changeLBound subV, LBound(vec)
 End Function
     Public Function p_subV(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -552,15 +551,15 @@ End Function
 
 '1次元配列の部分配列を作成する（範囲外のインデックスに対してEmptyが入る）
 Public Function subV_if(ByRef vec As Variant, ByRef index As Variant) As Variant
-    subV_if = mapF_swap(p_getNth_if, , vec, index)
+    subV_if = mapF_swap(p_getNth_if, vec, , index)
     changeLBound subV_if, LBound(vec)
 End Function
     Public Function p_subV_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subV_if = make_funPointer(AddressOf subV_if, firstParam, secondParam)
     End Function
-    Private Function getNth_if(ByRef index As Variant, ByRef matrix As Variant) As Variant
-        If LBound(matrix) <= index And index <= UBound(matrix) Then
-            getNth_if = matrix(index)
+    Private Function getNth_if(ByRef vec As Variant, ByRef index As Variant) As Variant
+        If LBound(vec) <= index And index <= UBound(vec) Then
+            getNth_if = vec(index)
         End If
     End Function
     Private Function p_getNth_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
