@@ -200,7 +200,7 @@ End Sub
 
 ' 2次元配列の列ごとに関数適用しmoveして返す
 Public Function colomnWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
-    Call colomnWise_change(matrix, funcs)
+    Call columnWise_change(matrix, funcs)
     colomnWise_change_move = moveVariant(matrix)
 End Function
     Public Function p_colomnWise_change_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -281,20 +281,28 @@ End Function
 ' （splitStr2Funs の対象関数）
 ' 文字列から型変換関数へ変換
 ' 独自の変換関数を書くときはそのCase Else の中でこの関数を呼び出す形にするといいかも
+' %s*  : Format( ,*)
 ' %d   : 整数化
 ' %f   : 実数化
 ' %s   : 文字列化
 Public Function str2ConvertFun(ByRef s As Variant, ByRef dummy As Variant) As Variant
-    Select Case StrConv(s, vbNarrow + vbLowerCase)
-    Case "d"
-        str2ConvertFun = p_CLng(p_replaceNull(, 0))
-    Case "f"
-        str2ConvertFun = p_CDbl(p_replaceNull(, 0))
-    Case "s"
-        str2ConvertFun = p_CStr(p_replaceNull(, ""))
-    Case Else
-        str2ConvertFun = Empty
-    End Select
+    Dim expr As String: expr = StrConv(s, vbNarrow + vbLowerCase)
+    If left(expr, 1) = "s" Then
+        If expr = "s" Then
+            str2ConvertFun = p_CStr
+        Else
+            str2ConvertFun = p_format(, right(s, Len(s) - 1))
+        End If
+    Else
+        Select Case expr
+        Case "d"
+            str2ConvertFun = p_CLng
+        Case "f"
+            str2ConvertFun = p_CDbl
+        Case Else
+            str2ConvertFun = Empty
+        End Select
+    End If
 End Function
     Public Function p_str2ConvertFun(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_str2ConvertFun = make_funPointer(AddressOf str2ConvertFun, firstParam, secondParam)
@@ -331,4 +339,3 @@ End Function
     Private Function p_summaryUnit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_summaryUnit = make_funPointer(AddressOf summaryUnit, firstParam, secondParam)
     End Function
-    
