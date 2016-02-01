@@ -6,7 +6,7 @@ Option Explicit
 '*********************************************************************************
 '   ユーティリティ
 '*********************************************************************************
-'   Function  p__n                      getNth_b(, n)の構文糖
+'   Function  p__n                      p_getNth_b(, n)の構文糖
 '   Function  p_typename                データ型名
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
@@ -42,7 +42,7 @@ Option Explicit
 '
 '*********************************************************************************
 
-' getNth_b(, n)の構文糖
+' p_getNth_b(, n)の構文糖
 Public Function p__n(ByVal n As Long) As Variant
     p__n = p_getNth_b(, n)
 End Function
