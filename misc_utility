@@ -6,14 +6,19 @@ Option Explicit
 '*********************************************************************************
 '   ユーティリティ
 '*********************************************************************************
+'   Function  p__n                      getNth_b(, n)の構文糖
 '   Function  p_typename                データ型名
 '   Function  p_format                  Format関数
+'   Function  p_InStr                   InStr関数
+'   Function  p_InStrRev                InStrRev関数
 '   Function  p_foldl1                  1次元配列のfoldl1
 '   Function  p_foldr1                  1次元配列のfoldr1
 '   Function  p_scanl1                  1次元配列のscanl1
 '   Function  p_scanr1                  1次元配列のscanr1
 '   Function  subM_R                    subM(m, 行範囲) の構文糖
+'   Function  subM_R_b                  〃（LBound基準）
 '   Function  subM_C                    subM(m, , 列範囲) の構文糖
+'   Function  subM_C_b                  〃（LBound基準）
 '   Function  selectRow_b               LBound基準のselectRow
 '   Function  selectCol_b               LBound基準のselectCol
 '   Sub       fillRow_b                 LBound基準のfillRow
@@ -37,8 +42,13 @@ Option Explicit
 '
 '*********************************************************************************
 
+' getNth_b(, n)の構文糖
+Public Function p__n(ByVal n As Long) As Variant
+    p__n = getNth_b(, n)
+End Function
+
 ' データ型名
-    Public Function typename_(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
+    Private Function typename_(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
         typename_ = TypeName(x)
     End Function
 Public Function p_typename(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -52,6 +62,25 @@ End Function
 Public Function p_format(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_format = make_funPointer(AddressOf format_, firstParam, secondParam)
 End Function
+
+' InStr関数
+     Function InStr_(ByRef s As Variant, ByRef expr As Variant) As Variant
+        InStr_ = InStr(s, expr)
+        If IsNull(InStr_) Then InStr_ = 0
+    End Function
+Public Function p_InStr(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_InStr = make_funPointer(AddressOf InStr_, firstParam, secondParam)
+End Function
+
+' InStrRev関数
+    Private Function InStrRev_(ByRef s As Variant, ByRef expr As Variant) As Variant
+        InStrRev_ = InStrRev(s, expr)
+        If IsNull(InStrRev_) Then InStrRev_ = 0
+    End Function
+Public Function p_InStrRev(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_InStrRev = make_funPointer(AddressOf InStrRev_, firstParam, secondParam)
+End Function
+
 
 ' 1次元配列限定の foldl1 (p_foldl1 のみPublic)
     Private Function foldl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
@@ -93,12 +122,40 @@ End Function
         p_subM_R = make_funPointer(AddressOf subM_R, firstParam, secondParam)
     End Function
 
+' subM(m, 行範囲) の構文糖（LBound基準）
+Public Function subM_R_b(ByRef m As Variant, ByRef rRange As Variant) As Variant
+    If LBound(m, 1) = 0 Then
+        subM_R_b = subM(m, rRange)
+    Else
+        Dim range_b As Variant
+        range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 1)), p_plus(1 + UBound(m, 1)))), rRange)
+        subM_R_b = subM(m, range_b)
+    End If
+End Function
+    Public Function p_subM_R_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_subM_R_b = make_funPointer(AddressOf subM_R_b, firstParam, secondParam)
+    End Function
+
 ' subM(m, , 列範囲) の構文糖
 Public Function subM_C(ByRef m As Variant, ByRef cRange As Variant) As Variant
     subM_C = subM(m, , cRange)
 End Function
     Public Function p_subM_C(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
+    End Function
+
+' subM(m, , 列範囲) の構文糖（LBound基準）
+Public Function subM_C_b(ByRef m As Variant, ByRef cRange As Variant) As Variant
+    If LBound(m, 2) = 0 Then
+        subM_C_b = subM(m, , cRange)
+    Else
+        Dim range_b As Variant
+        range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 2)), p_plus(1 + UBound(m, 2)))), cRange)
+        subM_C_b = subM(m, , range_b)
+    End If
+End Function
+    Public Function p_subM_C_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_subM_C_b = make_funPointer(AddressOf subM_C_b, firstParam, secondParam)
     End Function
 
 '特定行の取得（LBound基準）
