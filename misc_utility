@@ -44,7 +44,7 @@ Option Explicit
 
 ' getNth_b(, n)の構文糖
 Public Function p__n(ByVal n As Long) As Variant
-    p__n = getNth_b(, n)
+    p__n = p_getNth_b(, n)
 End Function
 
 ' データ型名
