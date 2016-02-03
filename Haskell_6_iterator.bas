@@ -8,10 +8,8 @@ Option Explicit
 '   イテレータの生成は配列の moveがデフォルトなので注意
 '====================================================================
 '   Function make_iterator      1次元配列からイテレータの生成
-'   Function reverse_iterator   1次元配列から逆順イテレータの生成
 '   Function release_iterator   イテレータの配列部分を戻して自身は解放
 '   Function iterator_pos       現在のインデックス位置を取得する
-'   Function iterator_step      インデックスの進行方向を取得する(1, -1)
 '   Function iterator_advance   指しているインデックスを進める
 '   Function iterator_moveTo    インデックスを任意の位置に動かす
 '   Function iterator_moveTo_b  インデックスを任意の位置に動かす（対象配列のLBound基準）
@@ -19,7 +17,7 @@ Option Explicit
 '   Function iterator_set       現在のインデックスの位置の 値 を設定する
 '   Function iterator_push      現在のインデックス位置の値を設定してインデックスを進める
 '   Function iterator_push_ex   範囲拡張しながらiterator_push
-'   Function iterator_shrink    対象配列のインデックス範囲を現在位置まで切り詰める
+'   Function iterator_shrink    対象配列のインデックス範囲を書込済み位置まで切り詰める
 '   Function iterator_range     対象配列のインデックス範囲を取得する
 '   Function iterator_check     現在のインデックスが対象配列のインデックス範囲にあるか確認する
 '********************************************************************
@@ -27,29 +25,16 @@ Option Explicit
 ' 1次元配列からイテレータの生成(move=trueがデフォルト)
 Function make_iterator(ByRef vec As Variant, Optional ByVal move As Boolean = True) As Variant
     If Dimension(vec) = 1 Then
-        Dim ret As Variant: ret = VBA.Array(Empty, Empty, Empty)
+        Dim ret As Variant: ret = makeM(4)
         If move Then
             swapVariant ret(0), vec
         Else
             ret(0) = vec
         End If
-        ret(1) = LBound(ret(0))
-        ret(2) = 1
+        ret(1) = LBound(ret(0))     ' 現在位置
+        ret(2) = ret(1) - 1         ' 書き込み済み位置
         swapVariant make_iterator, ret
-    Else
-        make_iterator = Empty
     End If
-End Function
-
-' 1次元配列から逆順イテレータの生成(move=trueがデフォルト)
-Function reverse_iterator(ByRef vec As Variant, Optional ByVal move As Boolean = True) As Variant
-    Dim ret As Variant
-    ret = make_iterator(vec, move)
-    If IsArray(ret) Then
-        ret(1) = UBound(ret(0))
-        ret(2) = -1
-    End If
-    swapVariant reverse_iterator, ret
 End Function
 
 ' イテレータの配列部分を戻して自身は解放
@@ -62,14 +47,9 @@ Function iterator_pos(ByRef it As Variant) As Long
     iterator_pos = it(1)
 End Function
 
-' インデックスの進行方向を取得する(1, -1)
-Function iterator_step(ByRef it As Variant) As Long
-    iterator_step = it(2)
-End Function
-
 ' 指しているインデックスを進める
 Function iterator_advance(ByRef it As Variant, Optional ByRef dummy As Variant) As Variant
-    it(1) = it(1) + it(2)
+    it(1) = it(1) + 1
     swapVariant iterator_advance, it
 End Function
     Function p_iterator_advance(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -109,6 +89,7 @@ End Function
 ' 現在のインデックスの位置の 値 を設定する
 Function iterator_set(ByRef it As Variant, ByRef x As Variant) As Variant
     it(0)(it(1)) = x
+    If it(2) < it(1) Then it(2) = it(1)
     swapVariant iterator_set, it
 End Function
     Function p_iterator_set(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -138,11 +119,15 @@ End Function
         p_iterator_push_ex = make_funPointer(AddressOf iterator_push_ex, firstParam, secondParam)
     End Function
 
-' 対象配列のインデックス範囲を現在位置まで切り詰める
+' 対象配列のインデックス範囲を書込済み位置まで切り詰める
 Function iterator_shrink(ByRef it As Variant) As Variant
     Dim tmp As Variant
     swapVariant tmp, it(0)
-    ReDim Preserve tmp(LBound(tmp) To it(1))
+    If LBound(tmp) <= it(2) Then
+        ReDim Preserve tmp(LBound(tmp) To it(2))
+    Else
+        tmp = Array()
+    End If
     swapVariant tmp, it(0)
     swapVariant iterator_shrink, it
 End Function
