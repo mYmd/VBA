@@ -7,19 +7,23 @@ Option Explicit
 '   イテレータ
 '   イテレータの生成は配列の moveがデフォルトなので注意
 '====================================================================
-'   Function make_iterator      1次元配列からイテレータの生成
-'   Function release_iterator   イテレータの配列部分を戻して自身は解放
-'   Function iterator_pos       現在のインデックス位置を取得する
-'   Function iterator_advance   指しているインデックスを進める
-'   Function iterator_moveTo    インデックスを任意の位置に動かす
-'   Function iterator_moveTo_b  インデックスを任意の位置に動かす（対象配列のLBound基準）
-'   Function iterator_get       現在のインデックスの位置の 値 を取得する
-'   Function iterator_set       現在のインデックスの位置の 値 を設定する
-'   Function iterator_push      現在のインデックス位置の値を設定してインデックスを進める
-'   Function iterator_push_ex   範囲拡張しながらiterator_push
-'   Function iterator_shrink    対象配列のインデックス範囲を書込済み位置まで切り詰める
-'   Function iterator_range     対象配列のインデックス範囲を取得する
-'   Function iterator_check     現在のインデックスが対象配列のインデックス範囲にあるか確認する
+'   Function make_iterator          1次元配列からイテレータの生成
+'   Function release_iterator       イテレータの配列部分を戻して自身は解放
+'   Function iterator_pos           現在のインデックス位置を取得する
+'   Function iterator_advance       指しているインデックスを進める
+'   Function iterator_moveTo        インデックスを任意の位置に動かす
+'   Function iterator_moveTo_b      インデックスを任意の位置に動かす（対象配列のLBound基準）
+'   Function iterator_get           現在のインデックスの位置の 値 を取得する
+'   Function iterator_get_move      〃 move版
+'   Function iterator_set           現在のインデックスの位置の 値 を設定する
+'   Function iterator_set_move      〃 move版
+'   Function iterator_push          現在のインデックス位置の値を設定してインデックスを進める
+'   Function iterator_push_move     〃 move版
+'   Function iterator_push_ex       範囲拡張しながらiterator_push
+'   Function iterator_push_ex_move  〃 move版
+'   Function iterator_shrink        対象配列のインデックス範囲を書込済み位置まで切り詰める
+'   Function iterator_range         対象配列のインデックス範囲を取得する
+'   Function iterator_check         現在のインデックスが対象配列のインデックス範囲にあるか確認する
 '********************************************************************
 
 ' 1次元配列からイテレータの生成(move=trueがデフォルト)
@@ -86,14 +90,31 @@ End Function
         p_iterator_get = make_funPointer(AddressOf iterator_get, firstParam, secondParam)
     End Function
 
+' iterator_get move版
+Function iterator_get_move(ByRef it As Variant) As Variant
+    iterator_get_move = moveVariant(it(0)(it(1)))
+End Function
+    Function p_iterator_get_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_get_move = make_funPointer(AddressOf iterator_get_move, firstParam, secondParam)
+    End Function
+
 ' 現在のインデックスの位置の 値 を設定する
 Function iterator_set(ByRef it As Variant, ByRef x As Variant) As Variant
-    it(0)(it(1)) = x
-    If it(2) < it(1) Then it(2) = it(1)
-    swapVariant iterator_set, it
+    Dim tmp  As Variant:    tmp = x
+    iterator_set = iterator_set_move(it, tmp)
 End Function
     Function p_iterator_set(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_iterator_set = make_funPointer(AddressOf iterator_set, firstParam, secondParam)
+    End Function
+
+' iterator_set move版
+Function iterator_set_move(ByRef it As Variant, ByRef x As Variant) As Variant
+    it(0)(it(1)) = moveVariant(x)
+    If it(2) < it(1) Then it(2) = it(1)
+    swapVariant iterator_set_move, it
+End Function
+    Function p_iterator_set_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_set_move = make_funPointer(AddressOf iterator_set_move, firstParam, secondParam)
     End Function
 
 ' 現在のインデックス位置の値を設定してインデックスを進める
@@ -104,8 +125,25 @@ End Function
         p_iterator_push = make_funPointer(AddressOf iterator_push, firstParam, secondParam)
     End Function
 
+' iterator_push move版
+Function iterator_push_move(ByRef it As Variant, ByRef x As Variant) As Variant
+    iterator_push_move = iterator_advance(iterator_set_move(it, x))
+End Function
+    Function p_iterator_push_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_push_move = make_funPointer(AddressOf iterator_push_move, firstParam, secondParam)
+    End Function
+
 ' 範囲拡張しながらiterator_push
 Function iterator_push_ex(ByRef it As Variant, ByRef x As Variant) As Variant
+    Dim tmp As Variant:     tmp = x
+    iterator_push_ex = iterator_push_move(it, tmp)
+End Function
+    Function p_iterator_push_ex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_push_ex = make_funPointer(AddressOf iterator_push_ex, firstParam, secondParam)
+    End Function
+
+' iterator_push_ex move版
+Function iterator_push_ex_move(ByRef it As Variant, ByRef x As Variant) As Variant
     Dim m As Long: m = max_fun(it(1), 2 * UBound(it(0)) - LBound(it(0)) + 1)
     If UBound(it(0)) < it(1) Then
         Dim tmp As Variant
@@ -113,10 +151,10 @@ Function iterator_push_ex(ByRef it As Variant, ByRef x As Variant) As Variant
         ReDim Preserve tmp(LBound(tmp) To m)
         swapVariant tmp, it(0)
     End If
-    iterator_push_ex = iterator_push(it, x)
+    iterator_push_ex_move = iterator_push_move(it, x)
 End Function
-    Function p_iterator_push_ex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_iterator_push_ex = make_funPointer(AddressOf iterator_push_ex, firstParam, secondParam)
+    Function p_iterator_push_ex_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_iterator_push_ex_move = make_funPointer(AddressOf iterator_push_ex_move, firstParam, secondParam)
     End Function
 
 ' 対象配列のインデックス範囲を書込済み位置まで切り詰める
