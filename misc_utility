@@ -11,6 +11,9 @@ Option Explicit
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
 '   Function  p_InStrRev                InStrRev関数
+'   Function  cutoff_left               文字列の左側 n 文字切落
+'   Function  cutoff_right              文字列の右側 n 文字切落
+'   Function  separate_string           文字列の左右分離
 '   Function  p_foldl1                  1次元配列のfoldl1
 '   Function  p_foldr1                  1次元配列のfoldr1
 '   Function  p_scanl1                  1次元配列のscanl1
@@ -39,7 +42,8 @@ Option Explicit
 '   Function  str2ConvertFun            文字列から型変換関数へ変換
 '  -----------------------------------------------------------------------------
 '   Function  group_by_partition_points     partition_points によるGROUP-BY
-'
+'  -----------------------------------------------------------------------------
+'   Function  csv2Vector                    csvファイルの1行を配列に分割
 '*********************************************************************************
 
 ' p_getNth_b(, n)の構文糖
@@ -81,6 +85,33 @@ Public Function p_InStrRev(Optional ByRef firstParam As Variant, Optional ByRef 
     p_InStrRev = make_funPointer(AddressOf InStrRev_, firstParam, secondParam)
 End Function
 
+' 文字列の左側 n 文字切落
+Function cutoff_left(ByRef expr As Variant, ByRef n As Variant) As Variant
+    cutoff_left = right(expr, max_fun(0, Len(expr) - n))
+End Function
+    Function p_cutoff_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_cutoff_left = make_funPointer(AddressOf cutoff_left, firstParam, secondParam)
+    End Function
+
+' 文字列の右側 n 文字切落
+Function cutoff_right(ByRef expr As Variant, ByRef n As Variant) As Variant
+    cutoff_right = left(expr, max_fun(0, Len(expr) - n))
+End Function
+    Function p_cutoff_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_cutoff_right = make_funPointer(AddressOf cutoff_right, firstParam, secondParam)
+    End Function
+
+' 文字列の左右分離
+Function separate_string(ByRef expr As Variant, ByRef n As Variant) As Variant
+    If 0 < n Then
+        separate_string = VBA.Array(left(expr, n), cutoff_left(expr, n))
+    Else
+        separate_string = VBA.Array(cutoff_right(expr, -n), right(expr, -n))
+    End If
+End Function
+    Function p_separate_string(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_separate_string = make_funPointer(AddressOf separate_string, firstParam, secondParam)
+    End Function
 
 ' 1次元配列限定の foldl1 (p_foldl1 のみPublic)
     Private Function foldl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
@@ -395,4 +426,37 @@ End Function
     End Function
     Private Function p_summaryUnit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_summaryUnit = make_funPointer(AddressOf summaryUnit, firstParam, secondParam)
+    End Function
+
+'******************************************************************************
+' csvファイルの1行を配列に分割
+' expr      csvファイルの1行
+' delim     区切り文字（省略時はカンマ）
+'******************************************************************************
+Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) As Variant
+    Dim delim As String
+    delim = IIf(VarType(delimiter) = vbString, delimiter, ",")
+    Dim line_s As String
+    line_s = Replace(expr, """""", vbBack)      ' ""  -> vbBack Chr(8)
+    Dim i As Long
+    Dim inQuotationFlag As Boolean: inQuotationFlag = False
+    For i = 1 To Len(line_s) Step 1
+        If Mid(line_s, i, 1) = """" Then
+            inQuotationFlag = Not inQuotationFlag
+        End If
+        If Mid(line_s, i, 1) = delim Then
+            If Not inQuotationFlag Then
+                Mid(line_s, i, 1) = Chr(0)
+            End If
+        End If
+    Next i
+    line_s = Replace(line_s, """", "")      ' " 消去
+    line_s = Replace(line_s, vbBack, """")  ' vbBack -> "
+    line_s = Replace(line_s, "\\t", vbLf)   ' \\t -> vbLf   Chr(10)
+    line_s = Replace(line_s, "\t", vbTab)   ' \t  -> vbTab  Chr(9)
+    line_s = Replace(line_s, vbLf, "\t")    ' vbLf   -> \\t
+    csv2Vector = Split(line_s, Chr(0))
+End Function
+    Public Function p_csv2Vector(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_csv2Vector = make_funPointer_with_2nd_Default(AddressOf csv2Vector, firstParam, secondParam)
     End Function
