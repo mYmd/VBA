@@ -421,17 +421,17 @@ Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
     Select Case Dimension(matrix)
     Case 1
         For i = LBound(matrix) To UBound(matrix) Step 1
+            If UBound(data_2) < k Then Exit For
             matrix(i) = data_2(k)
             k = k + stepN
-            If UBound(data_2) < k Then Exit For
         Next i
     Case 2
         For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
             If UBound(data_2) < k Then Exit For
             For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+                If UBound(data_2) < k Then Exit For
                 matrix(i, j) = data_2(k)
                 k = k + stepN
-                If UBound(data_2) < k Then Exit For
             Next j
         Next i
     End Select
@@ -454,9 +454,9 @@ Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Varia
     ElseIf Dimension(data) = 1 Then
         k = LBound(data)
         For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+            If UBound(data) < k Then Exit For
             matrix(i, j) = data(k)
             k = k + 1
-            If UBound(data) < k Then Exit For
         Next j
     End If
 End Sub
@@ -490,9 +490,9 @@ Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Varia
     ElseIf Dimension(data) = 1 Then
         k = LBound(data)
         For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+            If UBound(data) < k Then Exit For
             matrix(i, j) = data(k)
             k = k + 1
-            If UBound(data) < k Then Exit For
         Next i
     End If
 End Sub
