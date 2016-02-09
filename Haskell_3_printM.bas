@@ -58,9 +58,17 @@ Sub printM(ByRef m As Variant, Optional ByVal R As Variant, Optional ByVal c As 
     Next j
     For i = SR To ER Step 1
         For j = SC To EC - 1 Step 1
-            Debug.Print Space(2 + MaxL(j) - LenW(Trim(tmp(i, j)))); Trim(tmp(i, j));
+            If VarType(tmp(i, j)) = vbString Then
+                Debug.Print Space(2); Trim(tmp(i, j)); Space(MaxL(j) - LenW(Trim(tmp(i, j))));
+            Else
+                Debug.Print Space(2 + MaxL(j) - LenW(Trim(tmp(i, j)))); Trim(tmp(i, j));
+            End If
         Next j
-        Debug.Print Space(2 + MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2))))); Trim(tmp(i, UBound(tmp, 2)))
+        If VarType(tmp(i, UBound(tmp, 2))) = vbString Then
+            Debug.Print Space(2); Trim(tmp(i, UBound(tmp, 2))); Space(MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2)))))
+        Else
+            Debug.Print Space(2 + MaxL(UBound(tmp, 2)) - LenW(Trim(tmp(i, UBound(tmp, 2))))); Trim(tmp(i, UBound(tmp, 2)))
+        End If
     Next i
 End Sub
     
