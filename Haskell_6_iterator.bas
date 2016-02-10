@@ -136,7 +136,7 @@ End Function
 ' 範囲拡張しながらiterator_push
 Function iterator_push_ex(ByRef it As Variant, ByRef x As Variant) As Variant
     Dim tmp As Variant:     tmp = x
-    iterator_push_ex = iterator_push_move(it, tmp)
+    iterator_push_ex = iterator_push_ex_move(it, tmp)
 End Function
     Function p_iterator_push_ex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_iterator_push_ex = make_funPointer(AddressOf iterator_push_ex, firstParam, secondParam)
