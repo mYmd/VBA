@@ -7,6 +7,7 @@ Option Explicit
 '   ユーティリティ
 '*********************************************************************************
 '   Function  p__n                      p_getNth_b(, n)の構文糖
+'   Function  p_try                     IIf(pred(a), a, b) または IIf(Not pred(a), a, b) の構文糖
 '   Function  p_typename                データ型名
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
@@ -49,6 +50,17 @@ Option Explicit
 ' p_getNth_b(, n)の構文糖
 Public Function p__n(ByVal n As Long) As Variant
     p__n = p_getNth_b(, n)
+End Function
+
+' IIf(pred(a), a, b) または IIf(Not pred(a), a, b) の構文糖
+' p_try(pred, True)   : IIf(pred(a), a, b)      を意味する2変数関数
+' p_try(pred, False)  : IIf(Not pred(a), a, b)  を意味する2変数関数
+Public Function p_try(ByRef pred As Variant, Optional ByVal b As Boolean = True) As Variant
+    If b Then
+        p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, ph_1, Empty)), ph_2)
+    Else
+        p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, ph_1)), ph_2)
+    End If
 End Function
 
 ' データ型名
