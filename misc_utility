@@ -7,11 +7,13 @@ Option Explicit
 '   ユーティリティ
 '*********************************************************************************
 '   Function  p__n                      p_getNth_b(, n)の構文糖
-'   Function  p_try                     IIf(pred(a), a, b) または IIf(Not pred(a), a, b) の構文糖
+'   Function  p_try                     IIf(pred(a), a', b')
+'   Function  p_try_not                 IIf(Not pred(a), a', b')の構文糖
 '   Function  p_typename                データ型名
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
 '   Function  p_InStrRev                InStrRev関数
+'   Function  p_StrConv                 StrConv関数
 '   Function  cutoff_left               文字列の左側 n 文字切落
 '   Function  cutoff_right              文字列の右側 n 文字切落
 '   Function  separate_string           文字列の左右分離
@@ -52,14 +54,39 @@ Public Function p__n(ByVal n As Long) As Variant
     p__n = p_getNth_b(, n)
 End Function
 
-' IIf(pred(a), a, b) または IIf(Not pred(a), a, b) の構文糖
-' p_try(pred, True)   : IIf(pred(a), a, b)      を意味する2変数関数
-' p_try(pred, False)  : IIf(Not pred(a), a, b)  を意味する2変数関数
-Public Function p_try(ByRef pred As Variant, Optional ByVal b As Boolean = True) As Variant
-    If b Then
-        p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, ph_1, Empty)), ph_2)
+' IIf(pred(a), a', b')の構文糖
+Public Function p_try(ByRef pred As Variant, _
+                        Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
+    If IsMissing(f1) Then
+        If IsMissing(f2) Then
+            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, ph_1, Empty)), ph_2)
+        Else
+            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, ph_1, Empty)), f2)
+        End If
     Else
-        p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, ph_1)), ph_2)
+        If IsMissing(f2) Then
+            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, f1, Empty)), ph_2)
+        Else
+            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, f1, Empty)), f2)
+        End If
+    End If
+End Function
+
+' IIf(Not pred(a), a', b')の構文糖
+Public Function p_try_not(ByRef pred As Variant, _
+                        Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
+    If IsMissing(f1) Then
+        If IsMissing(f2) Then
+            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, ph_1)), ph_2)
+        Else
+            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, ph_1)), f2)
+        End If
+    Else
+        If IsMissing(f2) Then
+            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, f1)), ph_2)
+        Else
+            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, f1)), f2)
+        End If
     End If
 End Function
 
@@ -80,7 +107,7 @@ Public Function p_format(Optional ByRef firstParam As Variant, Optional ByRef se
 End Function
 
 ' InStr関数
-     Function InStr_(ByRef s As Variant, ByRef expr As Variant) As Variant
+     Private Function InStr_(ByRef s As Variant, ByRef expr As Variant) As Variant
         InStr_ = InStr(s, expr)
         If IsNull(InStr_) Then InStr_ = 0
     End Function
@@ -95,6 +122,14 @@ End Function
     End Function
 Public Function p_InStrRev(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_InStrRev = make_funPointer(AddressOf InStrRev_, firstParam, secondParam)
+End Function
+
+' StrConv関数
+     Private Function StrConv_(ByRef s As Variant, ByRef expr As Variant) As Variant
+        StrConv_ = StrConv(s, expr)
+     End Function
+Public Function p_StrConv(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_StrConv = make_funPointer(AddressOf StrConv_, firstParam, secondParam)
 End Function
 
 ' 文字列の左側 n 文字切落
@@ -471,4 +506,70 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
 End Function
     Public Function p_csv2Vector(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_csv2Vector = make_funPointer_with_2nd_Default(AddressOf csv2Vector, firstParam, secondParam)
+    End Function
+
+
+'******************************************************************************
+Sub testpp()
+    Dim m As Variant, pp As Variant, g As Variant
+    m = makeM(300, 6, uniform_int_dist(300 * 6, 1, 15))
+    m = subM(m, sortIndex(m))
+    pp = partition_points(selectCol(m, 0))
+    g = group_by_partition_points(m, pp, "%t%c%s%a%min%max")
+    With Sheets("Sheet5")
+        .[A2:M302].ClearContents
+        m2sheet m, .[a2]
+        m2sheet g, .[H2]
+    End With
+    m = makeM(6, 4, uniform_int_dist(4 * 6, 1, 15))
+    Call columnWise_change(m, splitStr2Funs("%%s%%", p_str2ConvertFun, "%"))
+    'printM mapF(p_typename, m)
+End Sub
+'******************************************************************************
+
+Public Function trimSplit(ByRef expr As Variant, ByRef delimiter As Variant) As Variant
+    trimSplit = Split(expr, delimiter)
+    trimSplit = filterR(trimSplit, mapF(p_len, trimSplit))
+End Function
+    Public Function p_trimSplit(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_trimSplit = make_funPointer(AddressOf trimSplit, firstParam, secondParam)
+    End Function
+
+Public Function stat_median(ByRef m As Variant, Optional ByRef pred As Variant) As Variant
+    Dim s As Variant
+    If IsMissing(pred) Then
+        s = sortIndex(m)
+    Else
+        s = sortIndex_pred(m, pred)
+    End If
+    Dim size_ As Long:      size_ = sizeof(m)
+    If size_ Mod 2 = 1 Then
+        stat_median = m(getNth_b(s, (size_ - 1) / 2))
+    Else
+        stat_median = (m(getNth_b(s, -1 + size_ / 2)) + m(getNth_b(s, size_ / 2))) / 2#
+    End If
+End Function
+    Public Function p_stat_median(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_stat_median = make_funPointer(AddressOf stat_median, firstParam, secondParam)
+    End Function
+
+Public Function stat_mode(ByRef m As Variant, Optional ByRef pred As Variant) As Variant
+    Dim s As Variant
+    Dim pp As Variant
+    If IsMissing(pred) Then
+        s = sortIndex(m)
+        permutate m, s
+        pp = partition_points(m)
+    Else
+        s = sortIndex_pred(m, pred)
+        permutate m, s
+        pp = partition_points_pred(m, pred)
+    End If
+    permutate_back m, s
+    Dim intervals As Variant
+    intervals = adjacent_op(p_minus, pp)
+    stat_mode = filterR(pp, mapF(p_equal(foldl1(p_min, intervals))))
+End Function
+    Public Function p_stat_mode(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_stat_mode = make_funPointer(AddressOf stat_mode, firstParam, secondParam)
     End Function
