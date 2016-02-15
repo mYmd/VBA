@@ -9,6 +9,7 @@ Option Explicit
 '   Function  p__n                      p_getNth_b(, n)の構文糖
 '   Function  p_try                     IIf(pred(a), a', b')
 '   Function  p_try_not                 IIf(Not pred(a), a', b')の構文糖
+'   Function  p_try_less                p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) の構文糖
 '   Function  p_typename                データ型名
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
@@ -57,17 +58,18 @@ End Function
 ' IIf(pred(a), a', b')の構文糖
 Public Function p_try(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
+    Dim xval As Variant:    xval = VBA.Array(Empty, Null)
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, ph_1, Empty)), ph_2)
+            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, ph_1, xval)), ph_2)
         Else
-            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, ph_1, Empty)), f2)
+            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, ph_1, xval)), f2)
         End If
     Else
         If IsMissing(f2) Then
-            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, f1, Empty)), ph_2)
+            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, f1, xval)), ph_2)
         Else
-            p_try = p_replaceEmpty(p_if_else(, VBA.Array(pred, f1, Empty)), f2)
+            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, f1, xval)), f2)
         End If
     End If
 End Function
@@ -75,19 +77,41 @@ End Function
 ' IIf(Not pred(a), a', b')の構文糖
 Public Function p_try_not(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
+    Dim xval As Variant:    xval = VBA.Array(Empty, Null)
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, ph_1)), ph_2)
+            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, ph_1)), ph_2)
         Else
-            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, ph_1)), f2)
+            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, ph_1)), f2)
         End If
     Else
         If IsMissing(f2) Then
-            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, f1)), ph_2)
+            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, f1)), ph_2)
         Else
-            p_try_not = p_replaceEmpty(p_if_else(, VBA.Array(pred, Empty, f1)), f2)
+            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, f1)), f2)
         End If
     End If
+End Function
+    
+    Private Function replace_e_n(ByRef x As Variant, ByRef alt As Variant) As Variant
+        If sizeof(x) = 2 Then
+            If IsEmpty(x(LBound(x))) And IsNull(x(UBound(x))) Then
+                replace_e_n = alt
+            Else
+                replace_e_n = x
+            End If
+        Else
+            replace_e_n = x
+        End If
+    End Function
+    Private Function p_replace_e_n(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_replace_e_n = make_funPointer(AddressOf replace_e_n, firstParam, secondParam)
+    End Function
+
+' p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) の構文糖
+' equal_range の値を subV_if に代入するとき等に便利
+Public Function p_try_less()
+    p_try_less = p_try(p_less(p__n(0), p__n(1)), p__n(0), Null)
 End Function
 
 ' データ型名
