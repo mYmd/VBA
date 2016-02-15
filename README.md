@@ -15,6 +15,9 @@ VBA用の疑似Haskellモジュール
 
 VBAHaskellの紹介　その1　（最初はmapF）  
 [http://qiita.com/mmYYmmdd/items/c731edf943acc0a0ebe9]  
+  
+関数リファレンス  
+http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm  
 
 ///////////////////////////////////////////////////////////////////////////////  
 '=============================================================  
