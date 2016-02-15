@@ -94,7 +94,7 @@ Public Function p_try_not(ByRef pred As Variant, _
 End Function
     
     Private Function replace_e_n(ByRef x As Variant, ByRef alt As Variant) As Variant
-        If sizeof(x) = 2 Then
+        If Dimension(x) = 1 And sizeof(x) = 2 Then
             If IsEmpty(x(LBound(x))) And IsNull(x(UBound(x))) Then
                 replace_e_n = alt
             Else
