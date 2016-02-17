@@ -11,6 +11,7 @@ Option Explicit
 '   Function  p_try_not                 IIf(Not pred(a), a', b')の構文糖
 '   Function  p_try_less                p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) の構文糖
 '   Function  p_typename                データ型名
+'   Function  p_isNumeric               IsNumeric関数
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
 '   Function  p_InStrRev                InStrRev関数
@@ -58,18 +59,17 @@ End Function
 ' IIf(pred(a), a', b')の構文糖
 Public Function p_try(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
-    Dim xval As Variant:    xval = VBA.Array(Empty, Null)
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, ph_1, xval)), ph_2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(ph_1), 0)), ph_2)
         Else
-            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, ph_1, xval)), f2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(ph_1), 0)), f2)
         End If
     Else
         If IsMissing(f2) Then
-            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, f1, xval)), ph_2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)), ph_2)
         Else
-            p_try = p_replace_e_n(p_if_else(, VBA.Array(pred, f1, xval)), f2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)), f2)
         End If
     End If
 End Function
@@ -77,35 +77,30 @@ End Function
 ' IIf(Not pred(a), a', b')の構文糖
 Public Function p_try_not(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
-    Dim xval As Variant:    xval = VBA.Array(Empty, Null)
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, ph_1)), ph_2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(ph_1))), ph_2)
         Else
-            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, ph_1)), f2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(ph_1))), f2)
         End If
     Else
         If IsMissing(f2) Then
-            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, f1)), ph_2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))), ph_2)
         Else
-            p_try_not = p_replace_e_n(p_if_else(, VBA.Array(pred, xval, f1)), f2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))), f2)
         End If
     End If
 End Function
     
-    Private Function replace_e_n(ByRef x As Variant, ByRef alt As Variant) As Variant
-        If Dimension(x) = 1 And sizeof(x) = 2 Then
-            If IsEmpty(x(LBound(x))) And IsNull(x(UBound(x))) Then
-                replace_e_n = alt
-            Else
-                replace_e_n = x
-            End If
+    Private Function replace_0(ByRef x As Variant, ByRef alt As Variant) As Variant
+        If IsNumeric(x) Then
+            replace_0 = alt
         Else
-            replace_e_n = x
+            replace_0 = x(0)
         End If
     End Function
-    Private Function p_replace_e_n(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_replace_e_n = make_funPointer(AddressOf replace_e_n, firstParam, secondParam)
+    Private Function p_replace_0(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_replace_0 = make_funPointer(AddressOf replace_0, firstParam, secondParam)
     End Function
 
 ' p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) の構文糖
@@ -120,6 +115,14 @@ End Function
     End Function
 Public Function p_typename(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_typename = make_funPointer(AddressOf typename_, firstParam, secondParam)
+End Function
+
+' IsNumeric関数
+        Private Function IsNumeric_(ByRef expr As Variant, Optional ByRef dummy As Variant) As Variant
+            IsNumeric_ = IIf(IsNumeric(expr) And Not IsEmpty(expr) And VarType(expr) <> vbString, 1&, 0&)
+        End Function
+Public Function p_isNumeric(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_isNumeric = make_funPointer(AddressOf IsNumeric_, firstParam, secondParam)
 End Function
 
 ' Format関数
@@ -218,7 +221,11 @@ End Function
 
 ' subM(m, 行範囲) の構文糖
 Public Function subM_R(ByRef m As Variant, ByRef rRange As Variant) As Variant
-    subM_R = subM(m, rRange)
+    If IsArray(rRange) Then
+        subM_R = subM(m, rRange)
+    Else
+        subM_R = subM(m, VBA.Array(rRange))
+    End If
 End Function
     Public Function p_subM_R(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subM_R = make_funPointer(AddressOf subM_R, firstParam, secondParam)
@@ -226,13 +233,9 @@ End Function
 
 ' subM(m, 行範囲) の構文糖（LBound基準）
 Public Function subM_R_b(ByRef m As Variant, ByRef rRange As Variant) As Variant
-    If LBound(m, 1) = 0 Then
-        subM_R_b = subM(m, rRange)
-    Else
-        Dim range_b As Variant
-        range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 1)), p_plus(1 + UBound(m, 1)))), rRange)
-        subM_R_b = subM(m, range_b)
-    End If
+    Dim range_b As Variant
+    range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 1)), p_plus(1 + UBound(m, 1)))), rRange)
+    subM_R_b = subM_R(m, range_b)
 End Function
     Public Function p_subM_R_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subM_R_b = make_funPointer(AddressOf subM_R_b, firstParam, secondParam)
@@ -240,7 +243,11 @@ End Function
 
 ' subM(m, , 列範囲) の構文糖
 Public Function subM_C(ByRef m As Variant, ByRef cRange As Variant) As Variant
-    subM_C = subM(m, , cRange)
+    If IsArray(cRange) Then
+        subM_C = subM(m, , cRange)
+    Else
+        subM_C = subM(m, , VBA.Array(cRange))
+    End If
 End Function
     Public Function p_subM_C(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
@@ -248,13 +255,9 @@ End Function
 
 ' subM(m, , 列範囲) の構文糖（LBound基準）
 Public Function subM_C_b(ByRef m As Variant, ByRef cRange As Variant) As Variant
-    If LBound(m, 2) = 0 Then
-        subM_C_b = subM(m, , cRange)
-    Else
-        Dim range_b As Variant
-        range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 2)), p_plus(1 + UBound(m, 2)))), cRange)
-        subM_C_b = subM(m, , range_b)
-    End If
+    Dim range_b As Variant
+    range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 2)), p_plus(1 + UBound(m, 2)))), cRange)
+    subM_C_b = subM_C(m, range_b)
 End Function
     Public Function p_subM_C_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_subM_C_b = make_funPointer(AddressOf subM_C_b, firstParam, secondParam)
