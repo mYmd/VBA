@@ -43,7 +43,7 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
     dim = ::SafeArrayGetDim(psa);
     if (!it || 3 < dim)
     {
-        dim = 0;
+        size[0] = 0;
         return;
     }
     elemsize = SafeArrayGetElemsize(psa);
