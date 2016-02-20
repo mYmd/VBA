@@ -396,19 +396,22 @@ namespace   {
                         initial_state = false;
                     }
                 }
-                if ( 1 == dim )
+                if ( presult )
                 {
-                    if ( initial_state )
-                        VariantCopy(&ret, presult);
+                    if ( 1 == dim )
+                    {
+                        if ( initial_state )
+                            VariantCopy(&ret, presult);
+                        else
+                            std::swap(ret, *presult);
+                    }
                     else
-                        std::swap(ret, *presult);
-                }
-                else
-                {
-                    if ( initial_state )
-                        VariantCopy(&arOut(index1, index2), presult);
-                    else
-                        std::swap(arOut(index1, index2), *presult);
+                    {
+                        if ( initial_state )
+                            VariantCopy(&arOut(index1, index2), presult);
+                        else
+                            std::swap(arOut(index1, index2), *presult);
+                    }
                 }
                 ::VariantClear(&result);
             }
