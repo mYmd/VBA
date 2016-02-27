@@ -49,16 +49,16 @@ End Function
     End Function
 
 'ロジスティック写像   (Xn, r)->Xn+1
-Function Logistic(ByRef x As Variant, ByRef R As Variant) As Variant
-    Logistic = R * x * (1 - x)
+Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
+    Logistic = r * x * (1 - x)
 End Function
     Function p_Logistic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_Logistic = make_funPointer(AddressOf Logistic, firstParam, secondParam)
     End Function
 
 '円／球
-Function circle_(ByRef point As Variant, ByRef R As Variant) As Variant
-    circle_ = VBA.Array(point, R)
+Function circle_(ByRef point As Variant, ByRef r As Variant) As Variant
+    circle_ = VBA.Array(point, r)
 End Function
     Function p_circle(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_circle = make_funPointer(AddressOf circle_, firstParam, secondParam)
@@ -82,35 +82,35 @@ End Function
     End Function
 
 '内積inner product
-Function innerProduct(ByRef a As Variant, ByRef b As Variant) As Variant
-    innerProduct = foldl1(p_plus, zipWith(p_mult, a, b))
+Function innerProduct_(ByRef a As Variant, ByRef b As Variant) As Variant
+    innerProduct_ = foldl1(p_plus, zipWith(p_mult, a, b))
 End Function
-    Function p_innerProduct(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_innerProduct = make_funPointer(AddressOf innerProduct, firstParam, secondParam)
+    Function p_innerProduct_(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_innerProduct_ = make_funPointer(AddressOf innerProduct_, firstParam, secondParam)
     End Function
 
 '行列積
-Function matrixMult(ByRef a As Variant, ByRef b As Variant) As Variant
-    matrixMult = product_set(p_innerProduct, mapF(p_selectRow(a), a_rows(a)), mapF(p_selectCol(b), a_cols(b)))
+Function matrixMult_(ByRef a As Variant, ByRef b As Variant) As Variant
+    matrixMult_ = product_set(p_innerProduct_, zipC(a), zipR(b))
 End Function
-    Function p_matrixMult(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_matrixMult = make_funPointer(AddressOf matrixMult, firstParam, secondParam)
+    Function p_matrixMult_(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_matrixMult_ = make_funPointer(AddressOf matrixMult_, firstParam, secondParam)
     End Function
 
 '素数判定(val：判定対象の自然数、pm : 既存の素数列, valはpmの最大数の2乗を超えないこと)
-Function isPrime(ByRef val As Variant, ByRef pm As Variant) As Variant
+Function isPrime_(ByRef val As Variant, ByRef pm As Variant) As Variant
     Dim z As Variant
     For Each z In pm
         If val < z * z Then Exit For
         If val Mod z = 0 Then
-            isPrime = 0
+            isPrime_ = 0
             Exit Function
         End If
     Next z
-    isPrime = 1
+    isPrime_ = 1
 End Function
-    Function p_isPrime(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_isPrime = make_funPointer(AddressOf isPrime, firstParam, secondParam)
+    Function p_isPrime_(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_isPrime_ = make_funPointer(AddressOf isPrime_, firstParam, secondParam)
     End Function
 
 'ニュートン法による求根の１ステップ　：　x1 から x2 を出力する
@@ -150,9 +150,7 @@ End Function
 'テスト関数
 Sub vbaUnit()
     Dim n As Long
-    Dim points As Variant, m As Variant, z As Variant, pred As Variant
-    Dim N100 As Variant, m3 As Variant, m5 As Variant, m15 As Variant
-    Dim init As Double, R As Double
+    Dim points As Variant, m As Variant, z As Variant
     
     Debug.Print "------- mapF ----------"
     Debug.Print "mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))"
@@ -182,10 +180,11 @@ Sub vbaUnit()
     
     Debug.Print "------- ロジスティック漸化式 ------------"
     n = 10
-    init = 0.1: R = 3.754
-    printM scanl_Funs(init, repeat(p_Logistic(, R), n))
+    Dim init As Double, r As Double
+    init = 0.1: r = 3.754
+    printM scanl_Funs(init, repeat(p_Logistic(, r), n))
          'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) に相当
-    printM scanr_Funs(init, repeat(p_Logistic(, R), n))
+    printM scanr_Funs(init, repeat(p_Logistic(, r), n))
          'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) に相当
 
     Debug.Print "------- フィボナッチ数列（5通り） ------------"
@@ -196,7 +195,7 @@ Sub vbaUnit()
     printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(, 1), p_plus(p_getNth(, 0), p_getNth(, 1))), n), 1)(0)
     printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), n), 1)(0)
     
-    Debug.Print "------- FizzBuzz（2通り） ------------"
+    Debug.Print "------- FizzBuzz（3通り） ------------"
     m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
               Array(p_mod(, 5), Null, "Buzz"), _
               Array(p_mod(, 3), placeholder, "Fizz"))
@@ -206,6 +205,9 @@ Sub vbaUnit()
     m = p_if_else(, Array(p_mod(, 5), m, "Buzz"))
     m = p_if_else(, Array(p_mod(, 15), m, "FizzBuzz"))
     printM mapF(m, iota(1, 100))
+    
+    printM mapF(p_try(p_mod(, 15), p_try(p_mod(, 5), p_try(p_mod(, 3), , "Fizz"), "Buzz"), "FizzBuzz"), _
+                iota(1, 100))
 
     Debug.Print "------- zip ------------"
     m = "文字をひとつずつ分離する"
@@ -229,18 +231,18 @@ Sub vbaUnit()
     printM subM(m, sortIndex_pred(m, p_compareSS))
     
     Debug.Print "------- 行列積 ------------"
-    printM matrixMult(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
+    printM matrixMult_(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
 
     Debug.Print "------- 素数列（[2,3,5]からの生成を3回適用） ------------"
     m = Array(2, 3, 5)
     z = iota(2, m(UBound(m)) ^ 2)
-        m = filterR(z, mapF(p_isPrime(, m), z))
+        m = filterR(z, mapF(p_isPrime_(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
     z = iota(2, m(UBound(m)) ^ 2)
-        m = filterR(z, mapF(p_isPrime(, m), z))
+        m = filterR(z, mapF(p_isPrime_(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
     z = iota(2, m(UBound(m)) ^ 2)
-        m = filterR(z, mapF(p_isPrime(, m), z))
+        m = filterR(z, mapF(p_isPrime_(, m), z))
         printM catVs(headN(m, 5), Array("・・・"), tailN(m, 5))
 
     Debug.Print "------- 単純なNewton法による多項式の根（2通り） ------------"
@@ -254,8 +256,8 @@ Sub vbaUnit()
     Debug.Print "------- 条件によるFind ------------"
     Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 29.9超 29.99未満のものを探す"
     points = uniform_real_dist(10000, 0#, 100#)
-    pred = p_mult(p_greater(, 29.9), p_less(, 29.99))
-    m = find_pred(pred, points)
+    z = p_mult(p_greater(, 29.9), p_less(, 29.99))
+    m = find_pred(z, points)
     If UBound(points) < m Then Debug.Print "なし" Else Debug.Print points(m) & " (index=" & m & ")"
 End Sub
 
@@ -423,12 +425,12 @@ End Sub
 
 '数を並び替えて可能な最大数を返すテスト
 Sub sortTest2()
-    Dim comp4 As Variant, arr As Variant, tmp As Variant, result As Variant
+    Dim comp4 As Variant, Arr As Variant, tmp As Variant, result As Variant
     
     Debug.Print "==== 数を並び替えて可能な最大数を返すテスト ===="
     Debug.Print "1～99 の整数乱数を20個作る"
-    arr = uniform_int_dist(20, 0, 99)
-    printM arr
+    Arr = uniform_int_dist(20, 0, 99)
+    printM Arr
     Debug.Print ""
     '--------------------
     comp4 = p_less(p_CLng(p_str_cat(ph_1, ph_2)), p_CLng(p_str_cat(ph_2, ph_1)))
@@ -436,7 +438,7 @@ Sub sortTest2()
     Debug.Print "  p_less(p_CLng(p_str_cat(ph_1, ph_2)), p_CLng(p_str_cat(ph_2, ph_1)))"
     Debug.Print ""
     '--------------------
-    tmp = mapF(p_CStr, arr)    ' 文字列化
+    tmp = mapF(p_CStr, Arr)    ' 文字列化
     Debug.Print "比較関数でソート（逆順）"
     result = subM(tmp, reverse(sortIndex_pred(tmp, comp4)))
     printM result
@@ -502,10 +504,10 @@ End Function
     End Function
 
 Sub curiouslyRecursiveTest()
-    Dim arr As Variant
-    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
+    Dim Arr As Variant
+    Arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
     Dim it As Variant:  it = make_iterator(Array())
-    it = curiouslyRecursive(it, arr)
+    it = curiouslyRecursive(it, Arr)
     Dim ret As Variant: ret = release_iterator(it)
     ReDim Preserve ret(0 To iterator_pos(it))
     printS ret
