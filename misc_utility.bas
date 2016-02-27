@@ -38,7 +38,7 @@ Option Explicit
 '   Sub       rowWise_change            2次元配列の行ごとに関数適用
 '   Function  rowWise_change_move       〃moveして返す
 '   Sub       columnWise_change         2次元配列の列ごとに関数適用
-'   Function  colomnWise_change_move    〃moveして返す
+'   Function  columnWise_change_move    〃moveして返す
 '   Function  equal_all                 1次元配列の全要素の等値比較
 '   Function  equal_all_pred            〃　述語バージョン
 '  -----------------------------------------------------------------------------
@@ -361,12 +361,12 @@ Public Sub columnWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
 End Sub
 
 ' 2次元配列の列ごとに関数適用しmoveして返す
-Public Function colomnWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
+Public Function columnWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
     Call columnWise_change(matrix, funcs)
-    colomnWise_change_move = moveVariant(matrix)
+    columnWise_change_move = moveVariant(matrix)
 End Function
-    Public Function p_colomnWise_change_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_colomnWise_change_move = make_funPointer(AddressOf colomnWise_change_move, firstParam, secondParam)
+    Public Function p_columnWise_change_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_columnWise_change_move = make_funPointer(AddressOf columnWise_change_move, firstParam, secondParam)
     End Function
 
 ' 1次元配列の全要素の等値比較
