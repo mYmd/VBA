@@ -206,7 +206,7 @@ End Function
 'ソート済み配列から条件によって区分化されている位置の一覧を得る
 Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As Variant
     Dim ret As Variant
-    ret = makeM(sizeof(vec))
+    ret = makeM(sizeof(vec) + 1)
     Dim rPos As Long:   rPos = LBound(vec)
     Dim wPos As Long:   wPos = 0
     Do
