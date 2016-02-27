@@ -323,8 +323,14 @@ End Function
 ' 1次元配列vecの隣接する要素間で2項操作opを行う
 ' 出力列の要素数は元の要素数 - 1   (LBound = 0)
 Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Variant
-    If is_bindFun(op) Then
-        adjacent_op = zipWith(op, vec, tailN(vec, sizeof(vec) - 1))
+    adjacent_op = VBA.Array()
+    If is_bindFun(op) And Dimension(vec) = 1 Then
+        Dim ret As Variant, i As Long, lb As Long: lb = LBound(vec)
+        ret = makeM(sizeof(vec) - 1)
+        For i = 0 To sizeof(vec) - 2 Step 1
+            ret(i) = unbind_invoke(op, vec(lb + i), vec(lb + i + 1))
+        Next i
+        swapVariant adjacent_op, ret
     End If
 End Function
     Public Function p_adjacent_op(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
