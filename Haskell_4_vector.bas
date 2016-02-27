@@ -409,6 +409,7 @@ End Function
 '配列の作成      makeM(6, 3) => 6行(0,1,2,3,4,5) x 3列(0,1,2)
 Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByRef data As Variant) As Variant
     Dim ret   As Variant
+    ret = VBA.Array()
     If IsMissing(c) Then
         If 0 < r Then ReDim ret(0 To r - 1)
     Else
