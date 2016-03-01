@@ -55,7 +55,7 @@ End Function
 
 ' 正規分布 : (個数N, [平均,標準偏差])
     Private Function normal_dist_(ByRef N As Variant, ByRef meandev As Variant) As Variant
-        normal_dist_ = normal_dist(N, fromto(LBound(meandev)), fromto(UBound(meandev)))
+        normal_dist_ = normal_dist(N, meandev(LBound(meandev)), meandev(UBound(meandev)))
     End Function
 Function p_normal_dist(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_normal_dist = make_funPointer(AddressOf normal_dist_, firstParam, secondParam)
