@@ -59,7 +59,7 @@ Option Explicit
 
 '全行番号の列挙
 Public Function a_rows(ByRef matrix As Variant, Optional ByRef dummy As Variant) As Variant
-    a_rows = iota(LBound(matrix, 1), UBound(matrix, 1))
+    a_rows = a__a(LBound(matrix, 1), UBound(matrix, 1))
 End Function
     Public Function p_a_rows(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_a_rows = make_funPointer(AddressOf a_rows, firstParam, secondParam)
@@ -67,7 +67,11 @@ End Function
 
 '全列番号の列挙
 Public Function a_cols(ByRef matrix As Variant, Optional ByRef dummy As Variant) As Variant
-    a_cols = iota(LBound(matrix, 2), UBound(matrix, 2))
+    If 2 <= Dimension(matrix) Then
+        a_cols = iota(LBound(matrix, 2), UBound(matrix, 2))
+    Else
+        a_cols = VBA.Array()
+    End If
 End Function
     Public Function p_a_cols(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_a_cols = make_funPointer(AddressOf a_cols, firstParam, secondParam)
@@ -236,7 +240,6 @@ End Function
 Public Function vector(data As Variant) As Variant
     Dim i As Long, j As Long, counter As Long
     Dim ret   As Variant
-    
     Select Case Dimension(data)
     Case 0
         vector = VBA.Array(data)
@@ -372,16 +375,17 @@ End Function
 
 '特定行の取得
 Public Function selectRow(ByRef matrix As Variant, ByRef i As Variant) As Variant
-    If i < LBound(matrix, 1) Or UBound(matrix, 1) < i Then
-        selectRow = VBA.Array()
-    Else
-        Dim j     As Long
-        Dim ret   As Variant
-        ReDim ret(LBound(matrix, 2) To UBound(matrix, 2))
-        For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-            ret(j) = matrix(i, j)
-        Next j
-        selectRow = moveVariant(ret)
+    selectRow = VBA.Array()
+    If Dimension(matrix) = 2 Then
+        If LBound(matrix, 1) <= i And i <= UBound(matrix, 1) Then
+            Dim j     As Long
+            Dim ret   As Variant
+            ReDim ret(LBound(matrix, 2) To UBound(matrix, 2))
+            For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
+                ret(j) = matrix(i, j)
+            Next j
+            selectRow = moveVariant(ret)
+        End If
     End If
 End Function
     Public Function p_selectRow(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -390,16 +394,17 @@ End Function
 
 '特定列の取得
 Public Function selectCol(ByRef matrix As Variant, ByRef j As Variant) As Variant
-    If j < LBound(matrix, 2) Or UBound(matrix, 2) < j Then
-        selectCol = VBA.Array()
-    Else
-        Dim i     As Long
-        Dim ret   As Variant
-        ReDim ret(LBound(matrix, 1) To UBound(matrix, 1))
-        For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-            ret(i) = matrix(i, j)
-        Next i
-        selectCol = moveVariant(ret)
+    selectCol = VBA.Array()
+    If Dimension(matrix) = 2 Then
+        If LBound(matrix, 2) <= j And j <= UBound(matrix, 2) Then
+            Dim i     As Long
+            Dim ret   As Variant
+            ReDim ret(LBound(matrix, 1) To UBound(matrix, 1))
+            For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
+                ret(i) = matrix(i, j)
+            Next i
+            swapVariant selectCol, ret
+        End If
     End If
 End Function
     Public Function p_selectCol(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -682,20 +687,24 @@ End Function
 'ベクトル・配列の（列の）フィルタリング
 'Flgは 0/1
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim indice As Variant, localFlag As Variant
-    Dim i As Long, counter As Long, z As Variant
-    localFlag = headN(flg, min_fun(sizeof(flg), colSize(data)))
-    indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
-    i = 0
-    counter = 0
-    For Each z In localFlag
-        If z <> 0 Then
-            indice(counter) = i + LBound(data, 2)
-            counter = counter + 1
-        End If
-        i = i + 1
-    Next z
-    filterC = subM(data, , indice)
+    If Dimension(data) = 2 Then
+        Dim indice As Variant, localFlag As Variant
+        Dim i As Long, counter As Long, z As Variant
+        localFlag = headN(flg, min_fun(sizeof(flg), colSize(data)))
+        indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
+        i = 0
+        counter = 0
+        For Each z In localFlag
+            If z <> 0 Then
+                indice(counter) = i + LBound(data, 2)
+                counter = counter + 1
+            End If
+            i = i + 1
+        Next z
+        filterC = subM(data, , indice)
+    Else
+        filterC = VBA.Array()
+    End If
 End Function
     Public Function p_filterC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_filterC = make_funPointer(AddressOf filterC, firstParam, secondParam)
@@ -744,28 +753,38 @@ End Function
 
 '行方向に結合
 Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    Dim i As Long, counter As Long
-    Dim ret As Variant
-    If Dimension(matrix1) < 1 Or Dimension(matrix2) < 1 Then
-        catR = VBA.Array()
+    If rowSize(matrix1) = 0 Then        ' 非配列または空の配列
+        If rowSize(matrix2) = 0 Then        ' 非配列または空の配列
+            catR = VBA.Array()
+        ElseIf Dimension(matrix2) = 1 Then
+            catR = makeM(1, rowSize(matrix2), matrix2)
+        Else
+            catR = matrix2
+        End If
     ElseIf Dimension(matrix1) = 1 Then
         catR = catR(makeM(1, rowSize(matrix1), matrix1), matrix2)
-    ElseIf Dimension(matrix2) = 1 Then
-        catR = catR(matrix1, makeM(1, rowSize(matrix2), matrix2))
-    ElseIf colSize(matrix1) <> colSize(matrix2) Then
-        catR = Array()
     Else
-        ret = makeM(rowSize(matrix1) + rowSize(matrix2), colSize(matrix1))
-        counter = 0
-        For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
-            Call fillRow_imple(ret, counter, matrix1, i)
-            counter = counter + 1
-        Next i
-        For i = LBound(matrix2, 1) To UBound(matrix2, 1) Step 1
-            Call fillRow_imple(ret, counter, matrix2, i)
-            counter = counter + 1
-        Next i
-        catR = moveVariant(ret)
+        If rowSize(matrix2) = 0 Then        ' 非配列または空の配列
+            catR = matrix1
+        ElseIf Dimension(matrix2) = 1 Then
+            catR = catR(matrix1, makeM(1, rowSize(matrix2), matrix2))
+        ElseIf colSize(matrix1) <> colSize(matrix2) Then
+            catR = VBA.Array()
+        Else
+            Dim i As Long, counter As Long
+            Dim ret As Variant
+            ret = makeM(rowSize(matrix1) + rowSize(matrix2), colSize(matrix1))
+            counter = 0
+            For i = LBound(matrix1, 1) To UBound(matrix1, 1) Step 1
+                Call fillRow_imple(ret, counter, matrix1, i)
+                counter = counter + 1
+            Next i
+            For i = LBound(matrix2, 1) To UBound(matrix2, 1) Step 1
+                Call fillRow_imple(ret, counter, matrix2, i)
+                counter = counter + 1
+            Next i
+            swapVariant catR, ret
+        End If
     End If
 End Function
     Function p_catR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -774,28 +793,38 @@ End Function
 
 '列方向に結合
 Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    Dim i As Long, counter As Long
-    Dim ret As Variant
-    If Dimension(matrix1) < 1 Or Dimension(matrix2) < 1 Then
-        catC = VBA.Array()
+    If rowSize(matrix1) = 0 Then        ' 非配列または空の配列
+        If rowSize(matrix2) = 0 Then        ' 非配列または空の配列
+            catC = VBA.Array()
+        ElseIf Dimension(matrix2) = 1 Then
+            catC = makeM(rowSize(matrix2), 1, matrix2)
+        Else
+            catC = matrix2
+        End If
     ElseIf Dimension(matrix1) = 1 Then
         catC = catC(makeM(rowSize(matrix1), 1, matrix1), matrix2)
-    ElseIf Dimension(matrix2) = 1 Then
-        catC = catC(matrix1, makeM(rowSize(matrix2), 1, matrix2))
-    ElseIf rowSize(matrix1) <> rowSize(matrix2) Then
-        catC = VBA.Array()
     Else
-        ret = makeM(rowSize(matrix1), colSize(matrix1) + colSize(matrix2))
-        counter = 0
-        For i = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
-            Call fillCol_imple(ret, counter, matrix1, i)
-            counter = counter + 1
-        Next i
-        For i = LBound(matrix2, 2) To UBound(matrix2, 2) Step 1
-            Call fillCol_imple(ret, counter, matrix2, i)
-            counter = counter + 1
-        Next i
-        catC = moveVariant(ret)
+        If rowSize(matrix2) = 0 Then        ' 非配列または空の配列
+            catC = matrix1
+        ElseIf Dimension(matrix2) = 1 Then
+            catC = catC(matrix1, makeM(rowSize(matrix2), 1, matrix2))
+        ElseIf rowSize(matrix1) <> rowSize(matrix2) Then
+            catC = VBA.Array()
+        Else
+            Dim j As Long, counter As Long
+            Dim ret As Variant
+            ret = makeM(rowSize(matrix1), colSize(matrix1) + colSize(matrix2))
+            counter = 0
+            For j = LBound(matrix1, 2) To UBound(matrix1, 2) Step 1
+                Call fillCol_imple(ret, counter, matrix1, j)
+                counter = counter + 1
+            Next j
+            For j = LBound(matrix2, 2) To UBound(matrix2, 2) Step 1
+                Call fillCol_imple(ret, counter, matrix2, j)
+                counter = counter + 1
+            Next j
+            swapVariant catC, ret
+        End If
     End If
 End Function
     Function p_catC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -804,29 +833,25 @@ End Function
 
 '配列の行/列の転置
 Function transpose(ByRef matrix As Variant) As Variant
-    Dim i As Long, j As Long, r As Long, c As Long
+    Dim i As Long, j As Long
     Dim ret As Variant
     Select Case Dimension(matrix)
     Case 0
         transpose = matrix
     Case 1
-        If LBound(matrix, 1) > UBound(matrix, 1) Then
+        If rowSize(matrix) = 0 Then
             transpose = VBA.Array()
         Else
             transpose = makeM(sizeof(matrix), 1, matrix)
         End If
     Case 2
-        r = LBound(matrix, 1)
-        c = LBound(matrix, 2)
-        If c <= UBound(matrix, 2) And r <= UBound(matrix, 1) Then
-            ReDim ret(0 To UBound(matrix, 2) - c, 0 To UBound(matrix, 1) - r)
-        End If
-        For i = 0 To UBound(matrix, 2) - c
-            For j = 0 To UBound(matrix, 1) - r
-                ret(i, j) = matrix(j + r, i + c)
+        ReDim ret(LBound(matrix, 2) To UBound(matrix, 2), LBound(matrix, 1) To UBound(matrix, 1))
+        For i = LBound(matrix, 2) To UBound(matrix, 2)
+            For j = LBound(matrix, 1) To UBound(matrix, 1)
+                ret(i, j) = matrix(j, i)
             Next j
         Next i
-        transpose = moveVariant(ret)
+        swapVariant transpose, ret
     Case Else
         transpose = VBA.Array()
     End Select
