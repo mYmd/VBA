@@ -492,11 +492,11 @@ End Sub
 
 
 ' 少しだけ奇妙な再帰
-Function curiouslyRecursive(ByRef it As Variant, ByRef x As Variant) As Variant
+Function curiouslyRecursive(ByRef vec As Variant, ByRef x As Variant) As Variant
     If IsArray(x) Then
-        curiouslyRecursive = foldl(p_curiouslyRecursive, it, x)
+        Set curiouslyRecursive = foldl(p_curiouslyRecursive, vec, x)
     Else
-        curiouslyRecursive = iterator_push_ex(it, x)
+        Set curiouslyRecursive = vec.push_back(x)
     End If
 End Function
     Function p_curiouslyRecursive(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -504,14 +504,12 @@ End Function
     End Function
 
 Sub curiouslyRecursiveTest()
-    Dim Arr As Variant
-    Arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
-    Dim it As Variant:  it = make_iterator(Array())
-    it = curiouslyRecursive(it, Arr)
-    Dim ret As Variant: ret = release_iterator(it)
-    ReDim Preserve ret(0 To iterator_pos(it))
-    printS ret
-    printM ret
+    Dim arr As Variant
+    arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
+    Dim vec As Variant
+    Set vec = curiouslyRecursive(New vh_stdvec, arr)
+    vec.printS
+    vec.printM
 End Sub
 
 
