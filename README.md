@@ -37,14 +37,17 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
   Haskell_3_printM.bas（配列表示）  
   Haskell_4_vector.bas（その他配列操作）  
   Haskell_5_sort.bas（ソートとlower_bound等）  
-  Haskell_6_iterator.bas（イテレータ）  
   misc_random.bas（乱数）  
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
   misc_*.bas（test_moduleで使用）  
+  vh_stdvec.cls（Haskell_6_iterator.basを代替）  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2016/3/7  
+Haskell_6_iterator.bas を廃止して vh_stdvec.cls を追加  
+
 2016/1/9  
 C++APIにchangeLBoundを追加（SafeArrayのLBoundを変更する関数）  
 mapM.defとHaskell_0_declare.basにそれを反映  
