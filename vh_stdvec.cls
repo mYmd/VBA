@@ -272,11 +272,13 @@ End Function
 
 ' 書き込み済み末尾に対するmove（領域拡張する）
 Public Function move_back(ByRef x As Variant) As vh_stdvec
+    init_
     Set move_back = Me.insert_empty(pos_write + 1, 1).swap(pos_write + 1, x)
 End Function
 
 ' 書き込み済み末尾に対するmove_array（領域拡張する）
 Public Function move_back_array(ByRef arr As Variant) As vh_stdvec
+    init_
     If Dimension(arr) = 1 And 0 < rowSize(arr) Then
         Set move_back_array = insert_empty(pos_write + 1, rowSize(arr)).swap_array(pos_write + 1, arr)
     Else
