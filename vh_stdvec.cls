@@ -14,12 +14,13 @@ Option Explicit
 '*********************************************************************************
 '   標準ベクトル
 ' --------------------------------------------------------------------------------
-'   Function        create               1次元配列をmoveしてVECTORを作成
-'   Function        clear()                 全ての要素を削除
+'   Function        create              Variantの1次元配列をmoveしてVECTORを作成
+'   Function        clear               全ての要素を削除
 '   Function        free                配列部分を戻して自身は解放
-'   Property Get    size()              書き込み済み要素数を取得
+'   Property Get    size                書き込み済み要素数を取得
 '   Property Get    capacity            ReDimせずに格納できる最大の要素数を取得
-'   Function        shrink              領域を size まで切り詰める
+'   Function        shrink              領域を指定の長さまたはsizeまで切り詰める
+'   Function        erase_n             指定した位置から個数を指定して範囲を削除する
 '   Sub             printS              デバッグウィンドウに size と capacity を表示する
 '   Sub             printM              デバッグウィンドウに 書き込み済み領域全体を表示する
 '   Sub             printM_             デバッグウィンドウにジャグ配列を展開して表示する
@@ -43,7 +44,7 @@ Option Explicit
 Private vec_ As Variant
 Private pos_write As Long
 
-' 1次元配列をmoveしてVECTORを作成（LBound = 0にする）
+' Variantの1次元配列をmoveしてVECTORを作成（LBound = 0にする）
 Public Function create(ByRef v As Variant) As Variant
     If Dimension(v) = 1 Then
         vec_ = Empty
@@ -83,11 +84,37 @@ Public Property Get capacity() As Long
     capacity = rowSize(vec_)
 End Property
 
-' 領域を size まで切り詰める
-Public Function shrink() As vh_stdvec
+' 領域を指定の長さまたはsizeまで切り詰める
+Public Function shrink(Optional ByRef size_ As Variant) As vh_stdvec
     init_
+    If Not IsMissing(size_) Then
+        If 0 < size_ Then pos_write = min_fun(pos_write, size_ - 1)
+    End If
     If 0 <= pos_write Then ReDim Preserve vec_(0 To pos_write)
     Set shrink = Me
+End Function
+
+' 指定した位置から個数を指定して範囲を削除する
+Public Function erase_n(ByVal begin As Long, ByVal n As Long) As vh_stdvec
+    init_
+    If 0 <= begin And begin <= pos_write And 0 < n Then
+        Dim kkk As Long
+        kkk = begin + n
+        If begin < kkk Then
+            Do While kkk <= pos_write
+                swapVariant vec_(begin), vec_(kkk)
+                begin = begin + 1
+                kkk = kkk + 1
+            Loop
+        End If
+        kkk = begin
+        Do While kkk <= pos_write
+            vec_(kkk) = Empty
+            kkk = kkk + 1
+        Loop
+        pos_write = begin - 1
+    End If
+    Set erase_n = Me
 End Function
 
 ' デバッグウィンドウに size と capacity を表示する
