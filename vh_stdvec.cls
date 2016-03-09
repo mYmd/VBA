@@ -127,32 +127,32 @@ End Sub
 Public Sub printM(Optional ByRef r As Variant)
     init_
     If 0 < rowSize(vec_) Then
-        Dim n As Long
         If IsMissing(r) Then
-            n = pos_write
+            Haskell_3_printM.printM vec_, VBA.Array(0, pos_write)
+        ElseIf 0 < r Then
+            Haskell_3_printM.printM vec_, VBA.Array(0, min_fun(r - 1, pos_write))
         Else
-            n = min_fun(r, pos_write)
+            Haskell_3_printM.printM vec_, VBA.Array(max_fun(pos_write + r + 1, 0), pos_write)
         End If
-        Haskell_3_printM.printM subV(vec_, a__a(0, n))
     Else
         Debug.Print "#Empty Vector#"
     End If
 End Sub
 
 ' デバッグウィンドウにジャグ配列を展開して表示する
-Public Sub printM_(Optional ByVal r As Variant)
-    init_
-    If 0 < rowSize(vec_) Then
-        Dim n As Long
-        If IsMissing(r) Then
-            n = pos_write
-        Else
-            n = min_fun(r, pos_write)
-        End If
-        Haskell_3_printM.printM_ subV(vec_, a__a(0, n))
+Sub printM_(Optional ByRef r As Variant, Optional ByRef c As Variant)
+    Dim begin_ As Long, end_   As Long
+    If IsMissing(r) Then
+        begin_ = 0
+        end_ = pos_write
+    ElseIf 0 <= r Then
+        begin_ = 0
+        end_ = min_fun(pos_write, r - 1)
     Else
-        Debug.Print "#Empty Vector#"
+        end_ = pos_write
+        begin_ = max_fun(0, end_ + r + 1)
     End If
+    Haskell_3_printM.printM_ vec_, VBA.Array(begin_, end_), c
 End Sub
 
 ' 指定位置の 値 を取得する（1以上の第2引数を指定した場合はその長さの配列）
