@@ -13,7 +13,13 @@ Option Explicit
 'デバッグウィンドウに配列のサイズを表示する
 Sub printS(ByRef m As Variant)
     If IsEmpty(m) Then Debug.Print " vbEmpty:": Exit Sub
-    If Dimension(m) = 0 Then Debug.Print " Scalar": Exit Sub
+    If Dimension(m) = 0 Then
+        If IsArray(m) Then
+            Debug.Print "#Erased Array#":   Exit Sub
+        Else
+            Debug.Print " Scalar":          Exit Sub
+        End If
+    End If
     Dim expr As String, i As Long, total As Long
     expr = "": total = 1
     For i = 1 To Dimension(m) Step 1
@@ -25,15 +31,21 @@ Sub printS(ByRef m As Variant)
 End Sub
 
 'デバッグウィンドウに２次元配列を表示する
-Sub printM(ByRef m As Variant, Optional ByVal R As Variant, Optional ByVal c As Variant)
-    If Dimension(m) = 0 Then Debug.Print m:                     Exit Sub
+Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As Variant)
+    If Dimension(m) = 0 Then
+        If IsArray(m) Then
+            Debug.Print "#Erased Array#":                       Exit Sub
+        Else
+            Debug.Print m:                                      Exit Sub
+        End If
+    End If
     If UBound(m) < LBound(m) Then Debug.Print "#Empty Matrix#": Exit Sub
-    If Dimension(m) = 1 Then printV m, R:                       Exit Sub
+    If Dimension(m) = 1 Then printV m, r:                       Exit Sub
     If 2 < Dimension(m) Then Debug.Print "#Dimension Error#":   Exit Sub
     '-----------------------------------------
     Dim SR As Long, ER As Long
     Dim SC As Long, EC As Long
-    Call get_start_end(m, IIf(IsMissing(R), rowSize(m), R), 1, SR, ER)
+    Call get_start_end(m, IIf(IsMissing(r), rowSize(m), r), 1, SR, ER)
     Call get_start_end(m, IIf(IsMissing(c), colSize(m), c), 2, SC, EC)
     If (ER < SR) Or (EC < SC) Then
         Debug.Print "#Empty Matrix#"
@@ -73,13 +85,19 @@ Sub printM(ByRef m As Variant, Optional ByVal R As Variant, Optional ByVal c As 
 End Sub
     
     'デバッグウィンドウにベクトルを表示する
-    Private Sub printV(ByRef v As Variant, Optional ByVal R As Variant)
+    Private Sub printV(ByRef v As Variant, Optional ByRef r As Variant)
         If Dimension(v) = 0 Then Debug.Print v:                     Exit Sub
-        If Dimension(v) = 2 Then printM v, R:                       Exit Sub
+        If Dimension(v) = 2 Then printM v, r:                       Exit Sub
         If LBound(v) > UBound(v) Then Debug.Print "#Empty Vector#": Exit Sub
         '-----------------------------------------
         Dim SR As Long, ER As Long
-        Call get_start_end(v, IIf(IsMissing(R), sizeof(v), R), 1, SR, ER)
+        If IsMissing(r) Then
+            Call get_start_end(v, sizeof(v), 1, SR, ER)
+        ElseIf rowSize(r) < 2 Then
+            Call get_start_end(v, r, 1, SR, ER)
+        Else
+            SR = r(0): ER = r(1)
+        End If
         If ER < SR Then
             Debug.Print "#Empty Vector#"
             Exit Sub
@@ -171,20 +189,23 @@ Function dumpFun(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As Varia
 End Function
 
 'デバッグウィンドウに1次元ジャグ配列を展開して表示する
-Sub printM_(ByRef vec As Variant, Optional ByVal R As Variant)
+Sub printM_(ByRef vec As Variant, Optional ByRef r As Variant, Optional ByRef c As Variant)
     Dim begin_ As Long, end_   As Long
-    If IsMissing(R) Then
+    If IsMissing(r) Then
         begin_ = LBound(vec)
-        end_ = UBound(vec) + 1
-    ElseIf 0 < R Then
+        end_ = UBound(vec)
+    ElseIf 1 < rowSize(r) Then
+        begin_ = r(0)
+        end_ = r(1)
+    ElseIf 0 <= r Then
         begin_ = LBound(vec)
-        end_ = min_fun(UBound(vec) + 1, begin_ + R)
+        end_ = min_fun(UBound(vec), begin_ + r - 1)
     Else
-        end_ = UBound(vec) + 1
-        begin_ = max_fun(LBound(vec), end_ + R)
+        end_ = UBound(vec)
+        begin_ = max_fun(LBound(vec), end_ + r + 1)
     End If
-    Do While begin_ < end_
-        printM vec(begin_)
+    Do While begin_ <= end_
+        printM vec(begin_), c
         begin_ = begin_ + 1
     Loop
 End Sub
