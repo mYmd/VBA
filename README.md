@@ -29,8 +29,8 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
 (32bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
 (64bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM64.dll)  
 
-以下のbasファイルはVBAのソースコード。(Office 2010～)
-標準モジュールにそのまま取り込む。  
+以下のbasファイル／clsファイルはVBAのソースコード。(Office 2010～)
+標準モジュールとクラスモジュールにそのまま取り込む。  
   Haskell_0_declare.bas（Declare文のみ）  
   Haskell_1_Core.bas（中心となるモジュール）  
   Haskell_2_stdFun.bas（Haskell的なリスト操作）  
@@ -41,6 +41,7 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
   test_module.bas（サンプルプログラム：Sub vbaUnit）  
   misc_*.bas（test_moduleで使用）  
   vh_stdvec.cls（Haskell_6_iterator.basを代替）  
+  
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
