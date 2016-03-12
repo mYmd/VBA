@@ -26,7 +26,7 @@ Option Explicit
 '   Sub             printM_             デバッグウィンドウにジャグ配列を展開して表示する
 '   Property Get    val                 指定位置の値を取得
 '   Property Get    pop                 valのmove版
-'   Function        push                指定位置の値を設定
+'   Function        push                指定位置に値を設定
 '   Function        push_n              同一の値に対するpushの複数回適用
 '   Function        push_array          配列の一括 push
 '   Function        swap                pushのswap版
@@ -44,15 +44,24 @@ Option Explicit
 Private vec_ As Variant
 Private pos_write As Long
 
-' Variantの1次元配列をmoveしてVECTORを作成（LBound = 0にする）
+Private Sub Class_Initialize()
+    vec_ = VBA.Array()
+    pos_write = -1
+End Sub
+
+Private Sub Class_Terminate()
+    vec_ = Empty
+End Sub
+
+' Variantの1次元配列をmoveして自身のデータとする（LBound = 0にする）
 Public Function create(ByRef v As Variant) As Variant
-    If Dimension(v) = 1 Then
+    If Dimension(v) = 1 And VarType(v) = VarType(Array()) Then
         vec_ = Empty
         swapVariant vec_, v
         changeLBound vec_, 0
         pos_write = UBound(vec_)
     Else
-        clear
+        Err.Raise Number:=575, Description:="vh_stdvec::create - inproper parmater"
     End If
     Set create = Me
 End Function
@@ -66,27 +75,24 @@ End Function
 
 ' 配列部分を戻して自身は解放
 Public Function free() As Variant
-    init_
     shrink
     swapVariant free, vec_
-    init_
+    vec_ = VBA.Array()
+    pos_write = -1
 End Function
 
 ' 書き込み済み要素数を取得
 Public Property Get size() As Long
-    init_
     size = 1 + pos_write
 End Property
 
 ' ReDimせずに格納できる最大の要素数を取得
 Public Property Get capacity() As Long
-    init_
     capacity = rowSize(vec_)
 End Property
 
 ' 領域を指定の長さまたはsizeまで切り詰める
 Public Function shrink(Optional ByRef size_ As Variant) As vh_stdvec
-    init_
     If Not IsMissing(size_) Then
         If 0 < size_ Then pos_write = min_fun(pos_write, size_ - 1)
     End If
@@ -96,7 +102,6 @@ End Function
 
 ' 指定した位置から個数を指定して範囲を削除する
 Public Function erase_n(ByVal begin As Long, ByVal n As Long) As vh_stdvec
-    init_
     If 0 <= begin And begin <= pos_write And 0 < n Then
         Dim kkk As Long
         kkk = begin + n
@@ -117,15 +122,13 @@ Public Function erase_n(ByVal begin As Long, ByVal n As Long) As vh_stdvec
     Set erase_n = Me
 End Function
 
-' デバッグウィンドウに size と capacity を表示する
+' デバッグウィンドウに書き込み済み領域と配列領域を表示する
 Public Sub printS()
-    init_
-    Debug.Print "[Data]: 0 -> " & pos_write & " : [Capacity]: 0 -> " & UBound(vec_)
+    Debug.Print "[Data]: 0 -> " & pos_write & " : [Accessible]: 0 -> " & UBound(vec_)
 End Sub
 
-' デバッグウィンドウに 書き込み済み領域全体を表示する
+' デバッグウィンドウに 書き込み済み領域の全体または一部を表示する
 Public Sub printM(Optional ByRef r As Variant)
-    init_
     If 0 < rowSize(vec_) Then
         If IsMissing(r) Then
             Haskell_3_printM.printM vec_, VBA.Array(0, pos_write)
@@ -155,7 +158,7 @@ Sub printM_(Optional ByRef r As Variant, Optional ByRef c As Variant)
     Haskell_3_printM.printM_ vec_, VBA.Array(begin_, end_), c
 End Sub
 
-' 指定位置の 値 を取得する（1以上の第2引数を指定した場合はその長さの配列）
+' 指定位置の 値 を取得する（1以上の第2引数を指定した場合はその長さ分配列で返す）
 Public Property Get val(ByVal begin As Long, Optional ByVal len_ As Long = 0) As Variant
     If 0 < len_ Then
         Dim ret As Variant, i As Long
@@ -169,7 +172,7 @@ Public Property Get val(ByVal begin As Long, Optional ByVal len_ As Long = 0) As
     End If
 End Property
 
-' 指定位置の 値 を取得する move版
+' 指定位置の 値 を取得する move版（1以上の第2引数を指定した場合はその長さ分配列で返す）
 Public Property Get pop(ByVal begin As Long, Optional ByVal len_ As Long = 0) As Variant
     If 0 < len_ Then
         Dim ret As Variant, i As Long
@@ -183,7 +186,7 @@ Public Property Get pop(ByVal begin As Long, Optional ByVal len_ As Long = 0) As
     End If
 End Property
 
-' 指定位置の 値 を設定する
+' 指定位置に値を設定する
 Public Function push(ByVal pos As Long, ByVal x As Variant) As vh_stdvec
     Set push = Me.swap(pos, x)
 End Function
@@ -222,8 +225,8 @@ End Function
 
 ' pushのmove版
 Public Function move(ByVal pos As Long, ByRef x As Variant) As vh_stdvec
-    vec_(pos) = Empty
     Set move = Me.swap(pos, x)
+    x = Empty
 End Function
 
 ' push_arrayのmove版
@@ -237,7 +240,6 @@ End Function
 
 ' beginの位置の前にn個のEmptyを挿入する
 Public Function insert_empty(ByVal begin As Long, ByVal n As Long) As vh_stdvec
-    init_
     If begin < 0 Or n < 1 Then
         Set insert_empty = Me
         Exit Function
@@ -299,24 +301,14 @@ End Function
 
 ' 書き込み済み末尾に対するmove（領域拡張する）
 Public Function move_back(ByRef x As Variant) As vh_stdvec
-    init_
     Set move_back = Me.insert_empty(pos_write + 1, 1).swap(pos_write + 1, x)
 End Function
 
 ' 書き込み済み末尾に対するmove_array（領域拡張する）
 Public Function move_back_array(ByRef arr As Variant) As vh_stdvec
-    init_
     If Dimension(arr) = 1 And 0 < rowSize(arr) Then
         Set move_back_array = insert_empty(pos_write + 1, rowSize(arr)).swap_array(pos_write + 1, arr)
     Else
         Set move_back_array = Me
     End If
 End Function
-
-'-----------------------------------------------
-    Private Sub init_()
-        If IsEmpty(vec_) Then
-            vec_ = VBA.Array()
-            pos_write = -1
-        End If
-    End Sub
