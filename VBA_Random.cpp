@@ -5,7 +5,8 @@
 #include "VBA_NestFunc.hpp"
 
 namespace{
-    std::default_random_engine d_engine;
+    std::random_device seed_gen;
+    std::default_random_engine d_engine{seed_gen()};
 }
 
 // 乱数 seed を指定してランダマイズ
@@ -14,14 +15,13 @@ __int32 __stdcall seed_Engine(VARIANT* seed)
 {
     VARIANT tmp;
     ::VariantInit(&tmp);
-    if ( S_OK == ::VariantChangeType(&tmp, seed, 0, VT_I4) )
+    if ( seed && S_OK == ::VariantChangeType(&tmp, seed, 0, VT_I4) )
     {
         d_engine.seed(static_cast<std::default_random_engine::result_type>(tmp.lVal));
         return tmp.lVal;
     }
     else
     {
-        std::random_device seed_gen;
         auto sd = seed_gen();
         d_engine.seed(sd);
         return static_cast<__int32>(sd);
