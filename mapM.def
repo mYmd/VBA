@@ -24,6 +24,8 @@ EXPORTS
 	repeat_imple = repeat_imple
 	swapVariant = swapVariant
 	changeLBound = changeLBound
+	copy_valueMember = copy_valueMember
+	copy_objectMember = copy_objectMember
 
 	seed_Engine = seed_Engine
 	uniform_int_dist = uniform_int_dist
