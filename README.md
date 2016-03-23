@@ -46,6 +46,9 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2016/3/23  
+ファイル classMemberCopy.cpp を追加  
+
 2016/3/7  
 Haskell_6_iterator.bas を廃止して vh_stdvec.cls を追加  
 
