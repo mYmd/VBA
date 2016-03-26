@@ -234,7 +234,7 @@ namespace   {
         }
         else
         {
-            return S_FALSE;
+            return S_OK;    //未初期化配列もReDim可能
         }
     }
 }
