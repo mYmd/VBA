@@ -198,20 +198,45 @@ VARIANT_BOOL __stdcall copy_objectMember(IDispatch* me, IDispatch** pmbr, IDispa
         if ( !name )    return 0;
         VARIANT tmp;
         ::VariantInit(&tmp);
-        DISPID dispid;
-        (*pmbr)->GetIDsOfNames(IID_NULL, &name, 1, LOCALE_USER_DEFAULT, &dispid);
+        tmp.vt = VT_DISPATCH;
+        tmp.pdispVal = NULL;
         DISPPARAMS dp = { nullptr, nullptr, 0, 0 };
-        HRESULT hr = (*pmbr)->Invoke(dispid,
-                                     IID_NULL,
-                                     LOCALE_SYSTEM_DEFAULT,
-                                     DISPATCH_METHOD,
-                                     &dp,
-                                     &tmp,
-                                     NULL,
-                                     NULL);
-        if ( hr != S_OK )  return 0;
-        if ( 0 < dir )      std::swap(tmp.pdispVal, *p);
-        else                std::swap(tmp.pdispVal, *pmbr);
+        if ( 0 < dir )
+        {
+            if ( *pmbr )
+            {
+                DISPID dispid;
+                (*pmbr)->GetIDsOfNames(IID_NULL, &name, 1, LOCALE_USER_DEFAULT, &dispid);
+                HRESULT hr = (*pmbr)->Invoke(dispid,
+                                             IID_NULL,
+                                             LOCALE_SYSTEM_DEFAULT,
+                                             DISPATCH_METHOD,
+                                             &dp,
+                                             &tmp,
+                                             NULL,
+                                             NULL);
+                if ( hr != S_OK )  return 0;
+            }
+            std::swap(tmp.pdispVal, *p);
+        }
+        else
+        {
+            if ( *p )
+            {
+                DISPID dispid;
+                (*p)->GetIDsOfNames(IID_NULL, &name, 1, LOCALE_USER_DEFAULT, &dispid);
+                HRESULT hr = (*p)->Invoke(dispid,
+                                          IID_NULL,
+                                          LOCALE_SYSTEM_DEFAULT,
+                                          DISPATCH_METHOD,
+                                          &dp,
+                                          &tmp,
+                                          NULL,
+                                          NULL);
+                if ( hr != S_OK )  return 0;
+            }
+            std::swap(tmp.pdispVal, *pmbr);
+        }
         ::VariantClear(&tmp);
     }
     return -1;
