@@ -41,6 +41,11 @@ Option Explicit
 '   Function  columnWise_change_move    〃moveして返す
 '   Function  equal_all                 1次元配列の全要素の等値比較
 '   Function  equal_all_pred            〃　述語バージョン
+'   Function  filter_if                 述語を与えて1次元配列をフィルタリング
+'   Function  filter_if_not             述語を与えて1次元配列をフィルタリング（否定形）
+'  -----------------------------------------------------------------------------
+'   Function  pipe                      vh_pipeオブジェクトの生成
+'   Function  pipe_                     vh_pipeオブジェクトの生成（引数をmoveする）
 '  -----------------------------------------------------------------------------
 '   Function  splitStr2Funs             delimiterで区切られた文字列を関数列へマッピング
 '   Function  str2SummaryFun            文字列から集計関数へ変換
@@ -61,9 +66,9 @@ Public Function p_try(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(ph_1), 0)), ph_2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)), ph_2)
         Else
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(ph_1), 0)), f2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)), f2)
         End If
     Else
         If IsMissing(f2) Then
@@ -79,9 +84,9 @@ Public Function p_try_not(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(ph_1))), ph_2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)), ph_2)
         Else
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(ph_1))), f2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)), f2)
         End If
     Else
         If IsMissing(f2) Then
@@ -383,6 +388,34 @@ End Function
         p_equal_all = make_funPointer(AddressOf equal_all, firstParam, secondParam)
     End Function
 
+' 述語を与えて1次元配列をフィルタリング
+Public Function filter_if(ByRef fun As Variant, ByRef vec As Variant) As Variant
+    filter_if = filterR(vec, mapF(fun, vec))
+End Function
+    Public Function p_filter_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_filter_if = make_funPointer(AddressOf filter_if, firstParam, secondParam)
+    End Function
+
+' 述語を与えて1次元配列をフィルタリング（否定形）
+Public Function filter_if_not(ByRef fun As Variant, ByRef vec As Variant) As Variant
+    filter_if_not = filter_if(p_equal(0, fun), vec)
+End Function
+    Public Function p_filter_if_not(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_filter_if_not = make_funPointer(AddressOf filter_if_not, firstParam, secondParam)
+    End Function
+
+' vh_pipeオブジェクトの生成
+Public Function pipe(ByRef x As Variant) As vh_pipe
+    Set pipe = New vh_pipe
+    pipe.swap_val_ (x)   'コピーを渡す
+End Function
+
+' vh_pipeオブジェクトの生成（引数をmoveする）
+Public Function pipe_(ByRef x As Variant) As vh_pipe
+    Set pipe_ = New vh_pipe
+    pipe_.swap_val_ x
+End Function
+
 ' 1次元配列の全要素の等値比較（述語バージョン）
 Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
     If sizeof(a) = sizeof(b) Then
@@ -521,10 +554,10 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
     Dim i As Long
     Dim inQuotationFlag As Boolean: inQuotationFlag = False
     For i = 1 To Len(line_s) Step 1
-        If Mid(line_s, i, 1) = """" Then
+        If mid(line_s, i, 1) = """" Then
             inQuotationFlag = Not inQuotationFlag
         End If
-        If Mid(line_s, i, 1) = delim Then
+        If mid(line_s, i, 1) = delim Then
             If Not inQuotationFlag Then
                 Mid(line_s, i, 1) = Chr(0)
             End If
