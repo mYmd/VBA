@@ -242,7 +242,7 @@ Public Function insert_empty(ByVal begin As Long, ByVal n As Long) As vh_stdvec
         Exit Function
     End If
     Dim NNN As Long
-    NNN = max_fun(begin, pos_write) + n - 1
+    NNN = max_fun(begin, pos_write) + n
     If UBound(vec_) < NNN Then
         ReDim Preserve vec_(0 To max_fun(1 + 2 * UBound(vec_), NNN))
     End If
