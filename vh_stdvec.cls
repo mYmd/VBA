@@ -300,10 +300,12 @@ Public Function map(ByRef fun As Variant) As vh_stdvec
 End Function
 
 ' 比較関数を与えて配列をソートする
-Public Function orderby(ByRef comp As Variant) As vh_stdvec
+Public Function orderby(Optional ByRef comp As Variant) As vh_stdvec
     shrink
-    Dim s As Variant
-    s = sortIndex_pred(vec_, comp)
-    permutate vec_, s
+    If IsMissing(comp) Then
+        permutate vec_, sortIndex(vec_)     ' p_less
+    Else
+        permutate vec_, sortIndex_pred(vec_, comp)
+    End If
     Set orderby = Me
 End Function
