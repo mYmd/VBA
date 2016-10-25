@@ -41,7 +41,7 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept
     VARIANT      ret;
     ::VariantInit(&ret);
     functionExpr func(bfun);
-    if ( func.isValid() )
+    if (func.isValid())
         std::swap(ret, *func.eval(param1, param2));
     return ret;
 }
@@ -327,6 +327,35 @@ repeat_imple(   VARIANT*        init    ,
     return ret;
 }
 
+//1次元配列vecの離れた要素間で2項操作を適用する
+VARIANT  __stdcall
+self_zipWith(VARIANT* bfun, VARIANT* vec, __int32 shift) noexcept
+{
+    VARIANT      ret;
+    ::VariantInit(&ret);
+    functionExpr func(bfun);
+    //----------------------------
+    if (!vec || !func.isValid() || 0 == (VT_ARRAY & vec->vt))   return ret;
+    safearrayRef arIn(vec);
+    if (1 != arIn.getDim())                                     return ret;
+    //----------------------------
+    auto const len = static_cast<ULONG>(arIn.getSize(1));
+    if ( 0 == len )                                             return ret;
+    if ( shift < 0 )
+        shift = ((1 + (-shift)/len) * len + shift) % len;
+    SAFEARRAYBOUND bound{len, 0};
+    ret.vt = VT_ARRAY | VT_VARIANT;
+    ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
+    safearrayRef arOut(&ret);
+    for (ULONG i = 0; i < len; ++i)
+    {
+        auto& elem1 = arIn(i, 0, 0);
+        auto& elem2 = arIn((i+shift) % len, 0, 0);
+        std::swap(arOut(i), *func.eval(&elem1, &elem2));
+    }
+    return      ret;
+}
+
 //********************************************************************
 
 namespace   {
@@ -355,7 +384,8 @@ namespace   {
                                             :(axis == 2 )?  arIn.getSize(2)
                                             :               arIn.getSize(3) );
         // SAFEARRAY作成
-        std::array<SAFEARRAYBOUND, 2> resultBounds{ { {bound1, 0},{bound2, 0} } };
+        std::array<SAFEARRAYBOUND, 2> resultBounds{ { {static_cast<ULONG>(bound1), 0},
+                                                      {static_cast<ULONG>(bound2), 0} } };
         if ( 1 != dim )
         {
             ret.vt = VT_ARRAY | VT_VARIANT;
