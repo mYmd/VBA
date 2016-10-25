@@ -16,6 +16,7 @@ Option Explicit
 '   Function  p_InStr                   InStr関数
 '   Function  p_InStrRev                InStrRev関数
 '   Function  p_StrConv                 StrConv関数
+'   Function  p_Trim                    Trim関数
 '   Function  cutoff_left               文字列の左側 n 文字切落
 '   Function  cutoff_right              文字列の右側 n 文字切落
 '   Function  separate_string           文字列の左右分離
@@ -33,8 +34,9 @@ Option Explicit
 '   Function  fillRow_b_move            LBound基準のfillRow_move
 '   Sub       fillCol_b                 LBound基準のfillCol
 '   Function  fillCol_b_move            LBound基準のfillCol_move
+'   Function  adjacent_op               1次元配列の隣接する要素間で2項操作
+'   Function  get_unique                1次元配列の重複要素を削除する (ソート済前提)
 '  -----------------------------------------------------------------------------
-'   Function  adjacent_op               1次元配列vecの隣接する要素間で2項操作
 '   Sub       rowWise_change            2次元配列の行ごとに関数適用
 '   Function  rowWise_change_move       〃moveして返す
 '   Sub       columnWise_change         2次元配列の列ごとに関数適用
@@ -43,6 +45,9 @@ Option Explicit
 '   Function  equal_all_pred            〃　述語バージョン
 '   Function  filter_if                 述語を与えて1次元配列をフィルタリング
 '   Function  filter_if_not             述語を与えて1次元配列をフィルタリング（否定形）
+'  -----------------------------------------------------------------------------
+'   Function  p_not                     論理Not
+'   Function  p_imply                   含意(A=>B)   IIF(Not A Or B, True, False)
 '  -----------------------------------------------------------------------------
 '   Function  pipe                      vh_pipeオブジェクトの生成
 '   Function  pipe_                     vh_pipeオブジェクトの生成（引数をmoveする）
@@ -162,6 +167,20 @@ End Function
      End Function
 Public Function p_StrConv(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_StrConv = make_funPointer(AddressOf StrConv_, firstParam, secondParam)
+End Function
+
+' Trim関数
+     Private Function Trim_(ByRef expr As Variant, ByRef left_right As Variant) As Variant
+        If left_right < 0 Then
+            Trim_ = RTrim(expr)
+        ElseIf 0 < left_right Then
+            Trim_ = LTrim(expr)
+        Else
+            Trim_ = Trim(expr)
+        End If
+     End Function
+Public Function p_trim(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_trim = make_funPointer(AddressOf Trim_, firstParam, secondParam)
 End Function
 
 ' 文字列の左側 n 文字切落
@@ -329,17 +348,30 @@ End Function
 ' 出力列の要素数は元の要素数 - 1   (LBound = 0)
 Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Variant
     adjacent_op = VBA.Array()
-    If is_bindFun(op) And Dimension(vec) = 1 Then
-        Dim ret As Variant, i As Long, lb As Long: lb = LBound(vec)
-        ret = makeM(sizeof(vec) - 1)
-        For i = 0 To sizeof(vec) - 2 Step 1
-            ret(i) = unbind_invoke(op, vec(lb + i), vec(lb + i + 1))
-        Next i
+    If is_bindFun(op) And Dimension(vec) = 1 And 1 < sizeof(vec) Then
+        Dim ret As Variant
+        ret = self_zipWith(op, vec, 1)
+        ReDim Preserve ret(0 To UBound(ret) - 1)
         swapVariant adjacent_op, ret
     End If
 End Function
     Public Function p_adjacent_op(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_adjacent_op = make_funPointer(AddressOf adjacent_op, firstParam, secondParam)
+    End Function
+
+' 配列の重複要素を削除する(ソート済前提、compは等値条件)
+Public Function get_unique(ByRef vec As Variant, Optional ByRef comp As Variant) As Variant
+    Dim flag As Variant
+    If IsMissing(comp) Then
+        flag = self_zipWith(p_notEqual, vec, -1)
+    Else
+        flag = mapF(p_equal(0), self_zipWith(comp, vec, -1))
+    End If
+    If 0 < sizeof(flag) Then flag(0) = 1
+    get_unique = filterR(vec, flag)
+End Function
+    Function p_get_unique(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_get_unique = make_funPointer_with_2nd_Default(AddressOf get_unique, firstParam, secondParam)
     End Function
 
 ' 2次元配列の行ごとに関数適用
@@ -381,12 +413,23 @@ End Function
     End Function
 
 ' 1次元配列の全要素の等値比較
-Public Function equal_all(ByRef a As Variant, ByRef b As Variant) As Variant
-    equal_all = equal_all_pred(p_equal, a, b)
+Public Function equal_all(ByRef A As Variant, ByRef B As Variant) As Variant
+    equal_all = equal_all_pred(p_equal, A, B)
 End Function
     Public Function p_equal_all(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_equal_all = make_funPointer(AddressOf equal_all, firstParam, secondParam)
     End Function
+
+' 1次元配列の全要素の等値比較（述語バージョン）
+Public Function equal_all_pred(ByRef pred As Variant, ByRef A As Variant, ByRef B As Variant) As Variant
+    If sizeof(A) = sizeof(B) Then
+        equal_all_pred = IIf(sizeof(A) <= find_pred(p_equal(0), zipWith(pred, A, B)), _
+                             1, _
+                             0)
+    Else
+        equal_all_pred = 0
+    End If
+End Function
 
 ' 述語を与えて1次元配列をフィルタリング
 Public Function filter_if(ByRef fun As Variant, ByRef vec As Variant) As Variant
@@ -404,6 +447,33 @@ End Function
         p_filter_if_not = make_funPointer(AddressOf filter_if_not, firstParam, secondParam)
     End Function
 
+' 論理Not   (0 = False, Null = False, Empty = False, Nothing = False とみなす)
+    Private Function Not_(ByRef expr As Variant, Optional ByRef dummy As Variant) As Variant
+        If IsNull(expr) Then
+            Not_ = 1
+        ElseIf IsEmpty(expr) Then
+            Not_ = 1
+        ElseIf IsNumeric(expr) Then
+            Not_ = IIf(expr = False, 1, 0)
+        ElseIf IsObject(expr) Then
+            Not_ = IIf(expr Is Nothing, 1, 0)
+        Else
+            Not_ = 0
+        End If
+    End Function
+Public Function p_not(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_not = make_funPointer(AddressOf Not_, firstParam, secondParam)
+End Function
+
+' 含意(A=>B)   IIF(Not A Or B, True, False)
+    Private Function Imply_(ByRef A As Variant, ByRef B As Variant) As Variant
+        Imply_ = IIf(Not_(A) = 1 Or Not_(B) = 0, 1, 0)
+    End Function
+Public Function p_imply(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_imply = make_funPointer(AddressOf Imply_, firstParam, secondParam)
+End Function
+
+'-----------------------------------------------------------
 ' vh_pipeオブジェクトの生成
 Public Function pipe(ByRef x As Variant) As vh_pipe
     Set pipe = New vh_pipe
@@ -414,17 +484,6 @@ End Function
 Public Function pipe_(ByRef x As Variant) As vh_pipe
     Set pipe_ = New vh_pipe
     pipe_.swap_val_ x
-End Function
-
-' 1次元配列の全要素の等値比較（述語バージョン）
-Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
-    If sizeof(a) = sizeof(b) Then
-        equal_all_pred = IIf(sizeof(a) <= find_pred(p_equal(0), zipWith(pred, a, b)), _
-                             1, _
-                             0)
-    Else
-        equal_all_pred = 0
-    End If
 End Function
 
 '******************************************************************************
