@@ -22,6 +22,7 @@ EXPORTS
 	stdsort = stdsort
 	find_imple = find_imple
 	repeat_imple = repeat_imple
+	self_zipWith = self_zipWith
 	swapVariant = swapVariant
 	changeLBound = changeLBound
 	copy_valueMember = copy_valueMember
