@@ -665,19 +665,24 @@ End Function
 'ベクトル・配列の（行の）フィルタリング
 'Flgは 0/1
 Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
-    Dim indice As Variant, localFlag As Variant
-    Dim i As Long, counter As Long, z As Variant
-    localFlag = headN(flg, min_fun(sizeof(flg), rowSize(data)))
-    indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
-    i = 0
-    counter = 0
-    For Each z In localFlag
-        If z <> 0 Then
-            indice(counter) = i + LBound(data, 1)
+    Dim indice As Variant
+    Dim i As Long, j As Long, counter As Long, NN As Long
+    NN = min_fun(sizeof(flg), rowSize(data))
+    indice = makeM(NN)
+    i = LBound(data, 1)
+    counter = -1
+    For j = LBound(flg) To LBound(flg) + NN - 1 Step 1
+        If flg(j) <> 0 Then
             counter = counter + 1
+            indice(counter) = i
         End If
         i = i + 1
-    Next z
+    Next j
+    If 0 <= counter Then
+        ReDim Preserve indice(0 To counter)
+    Else
+        indice = Array()
+    End If
     filterR = subM(data, indice)
 End Function
     Public Function p_filterR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -688,19 +693,24 @@ End Function
 'Flgは 0/1
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
     If Dimension(data) = 2 Then
-        Dim indice As Variant, localFlag As Variant
-        Dim i As Long, counter As Long, z As Variant
-        localFlag = headN(flg, min_fun(sizeof(flg), colSize(data)))
-        indice = repeat(0, count_if(p_notEqual(, 0), localFlag))
-        i = 0
-        counter = 0
-        For Each z In localFlag
-            If z <> 0 Then
-                indice(counter) = i + LBound(data, 2)
+        Dim indice As Variant
+        Dim i As Long, j As Long, counter As Long, NN As Long
+        NN = min_fun(sizeof(flg), colSize(data))
+        indice = makeM(NN)
+        i = LBound(data, 2)
+        counter = -1
+        For j = LBound(flg) To LBound(flg) + NN - 1 Step 1
+            If flg(j) <> 0 Then
                 counter = counter + 1
+                indice(counter) = i
             End If
             i = i + 1
-        Next z
+        Next j
+        If 0 <= counter Then
+            ReDim Preserve indice(0 To counter)
+        Else
+            indice = Array()
+        End If
         filterC = subM(data, , indice)
     Else
         filterC = VBA.Array()
@@ -858,19 +868,19 @@ Function transpose(ByRef matrix As Variant) As Variant
 End Function
 
 'ふたつの配列の対応する要素どうしをmakePairしてジャグ配列を作る
-Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
-    zip = zipWith(p_makePair, a, b)
+Public Function zip(ByRef A As Variant, ByRef B As Variant) As Variant
+    zip = zipWith(p_makePair, A, B)
 End Function
     Function p_zip(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_zip = make_funPointer(AddressOf zip, firstParam, secondParam)
     End Function
 
     ' zipVsのサブルーチン
-    Private Function zipVs_imple(ByRef m As Variant, ByRef a As Variant) As Variant
+    Private Function zipVs_imple(ByRef m As Variant, ByRef A As Variant) As Variant
         Dim i As Long, j As Long: j = m(0)
         Dim k As Long: k = 0
-        For i = LBound(a) To UBound(a) Step 1
-            m(1)(k)(j) = a(i)
+        For i = LBound(A) To UBound(A) Step 1
+            m(1)(k)(j) = A(i)
             k = k + 1
         Next i
         m(0) = m(0) + 1
@@ -951,43 +961,43 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
 End Function
 
 ' Array(a)作成
-Function makeSole(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
-    makeSole = VBA.Array(a)
+Function makeSole(ByRef A As Variant, Optional ByRef dummy As Variant) As Variant
+    makeSole = VBA.Array(A)
 End Function
     Public Function p_makeSole(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_makeSole = make_funPointer(AddressOf makeSole, firstParam, secondParam)
     End Function
 
 ' Array(a, b)作成
-Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
-    makePair = VBA.Array(a, b)
+Function makePair(ByRef A As Variant, ByRef B As Variant) As Variant
+    makePair = VBA.Array(A, B)
 End Function
     Public Function p_makePair(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_makePair = make_funPointer(AddressOf makePair, firstParam, secondParam)
     End Function
 
 ' 配列の先頭に要素を追加
-Function cons(ByRef a As Variant, ByRef vec As Variant) As Variant
-    cons = catV(Array(a), vec)
+Function cons(ByRef A As Variant, ByRef vec As Variant) As Variant
+    cons = catV(Array(A), vec)
 End Function
     Public Function p_cons(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
     End Function
 
 'ベクトルの直積に関数を適用した行列を作る
-Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
+Public Function product_set(ByRef pCallback As Variant, ByRef A As Variant, ByRef B As Variant) As Variant
     Dim z As Variant, k As Long
-    Dim ret As Variant:     ReDim ret(LBound(a) To UBound(a), LBound(b) To UBound(b))
-    If rowSize(a) < rowSize(b) Then
-        k = LBound(a)
-        For Each z In a
-            Call fillRow(ret, k, mapF(bind1st(pCallback, z), b))
+    Dim ret As Variant:     ReDim ret(LBound(A) To UBound(A), LBound(B) To UBound(B))
+    If rowSize(A) < rowSize(B) Then
+        k = LBound(A)
+        For Each z In A
+            Call fillRow(ret, k, mapF(bind1st(pCallback, z), B))
             k = k + 1
         Next z
     Else
-        k = LBound(b)
-        For Each z In b
-            Call fillCol(ret, k, mapF(bind2nd(pCallback, z), a))
+        k = LBound(B)
+        For Each z In B
+            Call fillCol(ret, k, mapF(bind2nd(pCallback, z), A))
             k = k + 1
         Next z
     End If
