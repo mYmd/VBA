@@ -23,7 +23,8 @@ Option Explicit
 '   Function find_imple         述語による検索
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
 '   Function swapVariant        VARIANT変数どうしのスワップ
-'   Sub changeLBound            VBA配列のLBound変更
+'   Sub      changeLBound       VBA配列のLBound変更
+'   Function self_zipWith       1次元配列の離れた要素間で2項操作を適用する
 '======================================================
 ' Callbackとして使える関数のシグネチャは
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
@@ -34,7 +35,7 @@ Option Explicit
 Declare PtrSafe Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
 'プレースホルダ・オブジェクトの生成
-Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal N As Long = 0) As Variant
+Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal n As Long = 0) As Variant
 
 'プレースホルダ・オブジェクト判定
 Declare PtrSafe Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
@@ -129,7 +130,13 @@ Declare PtrSafe Function repeat_imple Lib "mapM.dll" ( _
     ByVal stopCondition As Long) As Variant
 
 'VARIANT変数どうしのスワップ
-Declare PtrSafe Function swapVariant Lib "mapM.dll" (ByRef a As Variant, ByRef b As Variant) As Long
+Declare PtrSafe Function swapVariant Lib "mapM.dll" (ByRef A As Variant, ByRef B As Variant) As Long
 
 ' VBA配列のLBound変更
 Declare PtrSafe Sub changeLBound Lib "mapM.dll" (ByRef v As Variant, ByVal lbound_v As Long)
+
+' 1次元配列の離れた要素間で2項操作を適用する
+Declare PtrSafe Function self_zipWith Lib "mapM.dll" ( _
+                                ByRef pCallback As Variant, _
+                            ByRef vec As Variant, _
+                      ByVal shift As Long) As Variant
