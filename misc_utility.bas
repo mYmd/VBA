@@ -170,17 +170,21 @@ Public Function p_StrConv(Optional ByRef firstParam As Variant, Optional ByRef s
 End Function
 
 ' Trim関数
-     Private Function Trim_(ByRef expr As Variant, ByRef left_right As Variant) As Variant
-        If left_right < 0 Then
-            Trim_ = RTrim(expr)
-        ElseIf 0 < left_right Then
-            Trim_ = LTrim(expr)
+     Private Function Trim_(ByRef expr As Variant, Optional ByRef left_right As Variant) As Variant
+        If IsNumeric(left_right) Then
+            If left_right < 0 Then
+                Trim_ = RTrim(expr)
+            ElseIf 0 < left_right Then
+                Trim_ = LTrim(expr)
+            Else
+                Trim_ = Trim(expr)
+            End If
         Else
             Trim_ = Trim(expr)
         End If
      End Function
-Public Function p_trim(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-    p_trim = make_funPointer(AddressOf Trim_, firstParam, secondParam)
+Public Function p_Trim(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_Trim = make_funPointer_with_2nd_Default(AddressOf Trim_, firstParam, secondParam)
 End Function
 
 ' 文字列の左側 n 文字切落
@@ -608,26 +612,42 @@ End Function
 Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) As Variant
     Dim delim As String
     delim = IIf(VarType(delimiter) = vbString, delimiter, ",")
-    Dim line_s As String
-    line_s = Replace(expr, """""", vbBack)      ' ""  -> vbBack Chr(8)
-    Dim i As Long
-    Dim inQuotationFlag As Boolean: inQuotationFlag = False
-    For i = 1 To Len(line_s) Step 1
-        If mid(line_s, i, 1) = """" Then
-            inQuotationFlag = Not inQuotationFlag
-        End If
-        If mid(line_s, i, 1) = delim Then
-            If Not inQuotationFlag Then
-                Mid(line_s, i, 1) = Chr(0)
+    Dim bn As Long, en As Long, counter As Long, isEven As Boolean
+    Dim ret As Variant: ret = Array()
+    Dim LenExpr As Long: LenExpr = Len(expr)
+    isEven = True
+    bn = 1
+    counter = -1
+    Do
+        For en = bn To LenExpr Step 1
+            If mid(expr, en, 1) = """" Then
+                isEven = Not isEven
+            ElseIf isEven And mid(expr, en, 1) = delim Then
+                counter = counter + 1
+                ReDim Preserve ret(0 To counter)
+                ret(counter) = mid(expr, bn, en - bn)
+                bn = en + 1
+                Exit For
             End If
+        Next en
+        If bn < en Then
+            counter = counter + 1
+            ReDim Preserve ret(0 To counter)
+            ret(counter) = mid(expr, bn)
+            bn = en + 1
         End If
-    Next i
-    line_s = Replace(line_s, """", "")      ' " 消去
-    line_s = Replace(line_s, vbBack, """")  ' vbBack -> "
-    line_s = Replace(line_s, "\\t", vbLf)   ' \\t -> vbLf   Chr(10)
-    line_s = Replace(line_s, "\t", vbTab)   ' \t  -> vbTab  Chr(9)
-    line_s = Replace(line_s, vbLf, "\t")    ' vbLf   -> \\t
-    csv2Vector = Split(line_s, Chr(0))
+     Loop While bn < LenExpr
+     Do While 0 <= counter
+        If left(ret(counter), 1) = """" Then
+            ret(counter) = mid(ret(counter), 2, Len(ret(counter)) - 2)
+        End If
+        ret(counter) = Replace(ret(counter), """""", """")
+        ret(counter) = Replace(ret(counter), "\\t", vbLf)   ' \\t -> vbLf   Chr(10)
+        ret(counter) = Replace(ret(counter), "\t", vbTab)    ' \t  -> vbTab  Chr(9)
+        ret(counter) = Replace(ret(counter), vbLf, "\t")     ' vbLf   -> \\t
+        counter = counter - 1
+    Loop
+    swapVariant csv2Vector, ret
 End Function
     Public Function p_csv2Vector(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_csv2Vector = make_funPointer_with_2nd_Default(AddressOf csv2Vector, firstParam, secondParam)
