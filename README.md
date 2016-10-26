@@ -47,6 +47,10 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2016/10/26  
+C++APIにself_zipWithを追加（1次元配列の離れた要素間で2項操作を適用する関数）  
+mapM.defとmisc_utility.basにそれを反映  
+
 2016/7/4  
 vh_pipe.cls を追加  
 
