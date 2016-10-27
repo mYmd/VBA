@@ -56,9 +56,11 @@ Option Explicit
 '   Function  str2SummaryFun            文字列から集計関数へ変換
 '   Function  str2ConvertFun            文字列から型変換関数へ変換
 '  -----------------------------------------------------------------------------
-'   Function  group_by_partition_points     partition_points によるGROUP-BY
+'   Function  group_by_partition_points partition_points によるGROUP-BY
 '  -----------------------------------------------------------------------------
-'   Function  csv2Vector                    csvファイルの1行を配列に分割
+'   Function  csv2Vector                csvファイルの1行を配列に分割
+'  -----------------------------------------------------------------------------
+'   Function  A_overlap_B               ２つの1次元配列の共有部分と非共有部分を特定
 '*********************************************************************************
 
 ' p_getNth_b(, n)の構文糖
@@ -620,12 +622,12 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
     counter = -1
     Do
         For en = bn To LenExpr Step 1
-            If mid(expr, en, 1) = """" Then
+            If Mid(expr, en, 1) = """" Then
                 isEven = Not isEven
-            ElseIf isEven And mid(expr, en, 1) = delim Then
+            ElseIf isEven And Mid(expr, en, 1) = delim Then
                 counter = counter + 1
                 ReDim Preserve ret(0 To counter)
-                ret(counter) = mid(expr, bn, en - bn)
+                ret(counter) = Mid(expr, bn, en - bn)
                 bn = en + 1
                 Exit For
             End If
@@ -633,13 +635,13 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
         If bn < en Then
             counter = counter + 1
             ReDim Preserve ret(0 To counter)
-            ret(counter) = mid(expr, bn)
+            ret(counter) = Mid(expr, bn)
             bn = en + 1
         End If
      Loop While bn < LenExpr
      Do While 0 <= counter
         If left(ret(counter), 1) = """" Then
-            ret(counter) = mid(ret(counter), 2, Len(ret(counter)) - 2)
+            ret(counter) = Mid(ret(counter), 2, Len(ret(counter)) - 2)
         End If
         ret(counter) = Replace(ret(counter), """""", """")
         ret(counter) = Replace(ret(counter), "\\t", vbLf)   ' \\t -> vbLf   Chr(10)
@@ -652,3 +654,37 @@ End Function
     Public Function p_csv2Vector(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_csv2Vector = make_funPointer_with_2nd_Default(AddressOf csv2Vector, firstParam, secondParam)
     End Function
+
+' ２つの1次元配列の共有部分(1)と非共有部分(0)を特定
+' ともに順序compで昇順ソートされている前提
+' 戻り値はそれぞれの配列に対する状況を格納したJag配列
+Function A_overlap_B(ByRef a As Variant, ByRef b As Variant, Optional ByRef comp As Variant) As Variant
+    If IsMissing(comp) Then
+        A_overlap_B = A_overlap_B(a, b, p_less)
+    Else
+        Dim ppA As Variant, ppB As Variant
+        Dim a2B As Variant, b2A As Variant
+        ppA = partition_points_pred(a, comp)
+        ppB = partition_points_pred(b, comp)
+        a2B = mapF_swap(p_equal_range_pred(comp), b, subV(a, headN(ppA, -1)))
+        a2B = mapF(p_less(p__n(0), p__n(1)), a2B)
+        b2A = mapF_swap(p_equal_range_pred(comp), a, subV(b, headN(ppB, -1)))
+        b2A = mapF(p_less(p__n(0), p__n(1)), b2A)
+        A_overlap_B = VBA.Array( _
+            foldl1(p_catV, zipWith(p_repeat, a2B, adjacent_op(p_minus(ph_2, ph_1), ppA))) _
+            , _
+            foldl1(p_catV, zipWith(p_repeat, b2A, adjacent_op(p_minus(ph_2, ph_1), ppB))) _
+        )
+    End If
+    '   a = uniform_int_dist(20, 0, 20):  permutate a, sortIndex(a)  '  [ 0～20]
+    '   b = uniform_int_dist(20, 10, 30): permutate b, sortIndex(b)  '  [10～30]
+    '   x = A_overlap_B(a, b)
+    ' -----------------------------------
+    '   printM catR(a, x(0))
+    '   0  0  1  4  5  5  5  6  9  10  10  13  13  15  15  15  16  17  17  19
+    '   0  0  0  0  0  0  0  0  0   0   0   1   1   1   1   1   1   1   1   1
+    ' -----------------------------------
+    '   printM catR(b, x(1))
+    '   12  13  13  14  15  16  16  17  18  19  21  22  22  23  23  24  26  26  28  30
+    '    0   1   1   0   1   1   1   1   0   1   0   0   0   0   0   0   0   0   0   0
+End Function
