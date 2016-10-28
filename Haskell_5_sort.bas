@@ -20,6 +20,8 @@ Option Explicit
     ' Function  less_equal_dic      述語 辞書式less_equal
     ' Function  greater_dic         述語 辞書式greater
     ' Function  greater_equal_dic   述語 辞書式greater_equal
+    ' Function  equal_dic           述語 辞書式equal
+    ' Function  notEqual_dic        述語 辞書式notEqual
 '====================================================================================================
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
@@ -212,7 +214,7 @@ Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As V
     Do
         ret(wPos) = rPos
         If UBound(vec) < rPos Then Exit Do
-        rPos = upper_bound_pred(vec, vec(rPos), pred)
+        rPos = upper_bound_imple(vec, vec(rPos), pred, rPos, UBound(vec))
         wPos = wPos + 1
     Loop
     ReDim Preserve ret(0 To wPos)
@@ -260,6 +262,21 @@ End Function
         p_greater_equal_dic = make_funPointer(AddressOf greater_equal_dic, firstParam, secondParam)
     End Function
 
+'述語 辞書式equal
+Function equal_dic(ByRef a As Variant, ByRef b As Variant) As Variant
+    equal_dic = IIf(0 = less_dic(a, b) And 0 = less_dic(b, a), 1&, 0&)
+End Function
+    Function p_equal_dic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_equal_dic = make_funPointer(AddressOf equal_dic, firstParam, secondParam)
+    End Function
+
+'述語 辞書式notEqual
+Function notEqual_dic(ByRef a As Variant, ByRef b As Variant) As Variant
+    notEqual_dic = IIf(0 = equal_dic(b, a), 1&, 0&)
+End Function
+    Function p_notEqual_dic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_notEqual_dic = make_funPointer(AddressOf notEqual_dic, firstParam, secondParam)
+    End Function
 
 '#####################
 Private Function lower_bound_imple(ByRef matrix As Variant, _
