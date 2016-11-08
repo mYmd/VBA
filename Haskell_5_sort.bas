@@ -214,7 +214,7 @@ Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As V
     Do
         ret(wPos) = rPos
         If UBound(vec) < rPos Then Exit Do
-        rPos = upper_bound_imple(vec, vec(rPos), pred, rPos, UBound(vec))
+        rPos = upper_bound_imple(vec, vec(rPos), pred, rPos, 1 + UBound(vec))
         wPos = wPos + 1
     Loop
     ReDim Preserve ret(0 To wPos)
