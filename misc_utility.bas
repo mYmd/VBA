@@ -52,6 +52,8 @@ Option Explicit
 '   Function  pipe                      vh_pipeオブジェクトの生成
 '   Function  pipe_                     vh_pipeオブジェクトの生成（引数をmoveする）
 '  -----------------------------------------------------------------------------
+'   Function  stdVec                    vh_stdvecオブジェクトの生成
+'  -----------------------------------------------------------------------------
 '   Function  splitStr2Funs             delimiterで区切られた文字列を関数列へマッピング
 '   Function  str2SummaryFun            文字列から集計関数へ変換
 '   Function  str2ConvertFun            文字列から型変換関数へ変換
@@ -490,6 +492,12 @@ End Function
 Public Function pipe_(ByRef x As Variant) As vh_pipe
     Set pipe_ = New vh_pipe
     pipe_.swap_val_ x
+End Function
+'-----------------------------------------------------------
+' vh_stdvecオブジェクトの生成
+Public Function stdVec(Optional ByRef x As Variant) As vh_stdvec
+    Set stdVec = New vh_stdvec
+    stdVec.from x
 End Function
 
 '******************************************************************************
