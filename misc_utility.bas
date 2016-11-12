@@ -623,7 +623,7 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
     Dim delim As String
     delim = IIf(VarType(delimiter) = vbString, delimiter, ",")
     Dim bn As Long, en As Long, counter As Long, isEven As Boolean
-    Dim ret As Variant: ret = Array()
+    Dim ret As Variant: ret = Array("")
     Dim LenExpr As Long: LenExpr = Len(expr)
     isEven = True
     bn = 1
