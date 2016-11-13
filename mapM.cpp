@@ -50,12 +50,12 @@ unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept
 __int32 __stdcall
 swapVariant(VARIANT* a, VARIANT* b) noexcept
 {
-	if ( a && b )
-	{
-		std::swap(*a, *b);
+    if ( a && b )
+    {
+        std::swap(*a, *b);
         return ( 0 == (VT_BYREF & a->vt) && 0 == (VT_BYREF & b->vt) ) ? 1: 0;
-	}    
-	return 0;
+    }    
+    return 0;
 }
 
 //SafeArrayのLBoundを変更
