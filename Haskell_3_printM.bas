@@ -11,7 +11,7 @@ Option Explicit
 '================================================================================
 
 'デバッグウィンドウに配列のサイズを表示する
-Sub printS(ByRef m As Variant)
+Sub printS(ByRef m As Variant, ParamArray dummy() As Variant)
     If IsEmpty(m) Then Debug.Print " vbEmpty:": Exit Sub
     If Dimension(m) = 0 Then
         If IsArray(m) Then
@@ -160,7 +160,19 @@ Function dumpFun(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As Varia
                   "(" & dumpFun(x(1), IIf(OneTwo = 0, 1, OneTwo)) & _
                   ", " & dumpFun(x(2), IIf(OneTwo = 0, 2, OneTwo)) & ")"
     ElseIf is_placeholder(x) Then
-        If x = placeholder(0) Then
+        If x = ph_0 Then
+            If OneTwo = 1 Then
+                dumpFun = "!1"
+            ElseIf OneTwo = 2 Then
+                dumpFun = "!2"
+            Else
+                dumpFun = "!"
+            End If
+        ElseIf x = ph_1 Then
+            dumpFun = "!1"
+        ElseIf x = ph_2 Then
+            dumpFun = "!2"
+        ElseIf x = yield_0 Then
             If OneTwo = 1 Then
                 dumpFun = "_1"
             ElseIf OneTwo = 2 Then
@@ -168,9 +180,9 @@ Function dumpFun(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As Varia
             Else
                 dumpFun = "_"
             End If
-        ElseIf x = placeholder(1) Then
+        ElseIf x = yield_1 Then
             dumpFun = "_1"
-        ElseIf x = placeholder(2) Then
+        ElseIf x = yield_2 Then
             dumpFun = "_2"
         Else
             dumpFun = ""
