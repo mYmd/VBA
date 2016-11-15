@@ -1,8 +1,8 @@
 //mapM.cpp
 //Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
-#include "VBA_NestFunc.hpp"
 #include <list>
+#include "VBA_NestFunc.hpp"
 
 namespace   {
     //基本型のみ想定したmin
