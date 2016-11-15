@@ -4,6 +4,10 @@
 #include <memory>
 #include <array>
 
+#if _MSC_VER < 1900
+    #define noexcept throw()
+#endif
+
 //VBA配列の次元取得
 __int32 __stdcall   Dimension(const VARIANT* pv) noexcept;
 
@@ -17,6 +21,7 @@ __int32 __stdcall   is_placeholder(const VARIANT* pv) noexcept;
 VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept;
 
 //--------------------------------------------------------
+// SafeArray要素のアクセス
 class safearrayRef  {
     SAFEARRAY*      psa; 
     VARTYPE         pvt;
@@ -41,8 +46,7 @@ public:
 class funcExpr_i    {
 public:
     virtual ~funcExpr_i() = default;
-    virtual bool isYielder() const noexcept;
-    virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) = 0;
+    virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept = 0;
 };
 
 //--------------------------------------------------------
@@ -56,18 +60,32 @@ using vbCallbackFunc_t = VARIANT (__stdcall * )(VARIANT*, VARIANT*);
 namespace{
     struct VBCallbackStruct;
 }
-//
+
+//VBA関数の表現
 class functionExpr : public funcExpr_i    {
     vbCallbackFunc_t    fun;
     VARIANT             val;
     std::unique_ptr<funcExpr_i> left;
     std::unique_ptr<funcExpr_i> right;
+    functionExpr(functionExpr const&) = delete;
+    functionExpr(functionExpr&&) = delete;
 public:
     explicit functionExpr(const VARIANT*) noexcept;
     explicit functionExpr(const VBCallbackStruct&) noexcept;
-    functionExpr(functionExpr const&) = delete;
-    functionExpr(functionExpr&&) = delete;
     ~functionExpr();
     VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept;
     bool isValid() const noexcept;
+};
+
+//関数の引数としての関数（関数合成ではない）
+class innerFunction : public funcExpr_i {
+    VARIANT             myVal;
+    VARIANT&            val;
+    innerFunction(innerFunction const&) = delete;
+    innerFunction(innerFunction&&) = delete;
+    void eval_imple(VARIANT*, VARIANT*, VARIANT*, int) noexcept;
+public:
+    innerFunction(VARIANT*, bool) noexcept;
+    ~innerFunction();
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept;
 };
