@@ -19,7 +19,6 @@ Option Explicit
 '   Function yield_2            関数評価時に ph_2 を生成する
 '   Function make_funPointer    ユーザ関数をbindファンクタ化する（関数の部分適用）
 '   Function make_funPointer_with_2nd_Default  2番目の引数にデフォルト値を設定する場合
-'   Function make_funPointer_with_3_parameters 3つのパラメータを持つ関数
 '   Function is_bindFun         bindされた関数であることの判定
 '   Function bind1st            1番目の引数を再束縛する
 '   Function bind2nd            2番目の引数を再束縛する
@@ -41,6 +40,14 @@ Option Explicit
 '   Function repeat_while_not   述語による条件が満たされない間繰り返し関数適用
 '   Function generate_while     述語による条件が満たされる間繰り返し関数適用の履歴を生成
 '   Function generate_while_not 述語による条件が満たされない間繰り返し関数適用の履歴を生成
+'   Function p_foldl            1次元配列限定のfoldl
+'   Function p_foldr            1次元配列限定のfoldr
+'   Function p_foldl1           1次元配列のfoldl1
+'   Function p_foldr1           1次元配列のfoldr1
+'   Function p_scanl            1次元配列限定のscanl
+'   Function p_scanr            1次元配列限定のscanr
+'   Function p_scanl1           1次元配列のscanl1
+'   Function p_scanr1           1次元配列のscanr1
 '   Function foldl_zipWith      zipWithをfoldlする
 '   Function foldl1_zipWith     zipWithをfoldl1する
 '   Function foldr_zipWith      zipWithをfoldrする
@@ -87,7 +94,6 @@ Function yield_2() As Variant
     yield_2 = placeholder(802)
 End Function
 
-
     ' Array() が IsMissing = True になることのWorkAround
     Function Is_Missing_(Optional ByRef x As Variant) As Boolean
         Is_Missing_ = IIf(IsMissing(x) And Not IsArray(x), True, False)
@@ -98,57 +104,30 @@ End Function
 'make_funPointer(func, firstParam)                  1番目の引数を束縛
 'make_funPointer(func, , secondParam)               2番目の引数を束縛
 'make_funPointer(func, firstParam, secondParam)     両方の引数を束縛（遅延評価）
+'functionParamPoint = 1 : firstParamが関数
+'functionParamPoint = 2 : secondParamが関数
+'functionParamPoint = 0 : firstParam、secondParamが値（デフォルト）
 Function make_funPointer(ByVal func As LongPtr, _
-                         Optional ByRef firstParam As Variant, _
-                         Optional ByRef secondParam As Variant) As Variant
+                         ByRef firstParam As Variant, _
+                         ByRef secondParam As Variant, _
+                         Optional ByVal functionParamPoint As Long = 0) As Variant
     make_funPointer = VBA.Array(func, _
-                    IIf(Is_Missing_(firstParam), placeholder, firstParam), _
-                    IIf(Is_Missing_(secondParam), placeholder, secondParam), _
-                    placeholder _
+                    IIf(Is_Missing_(firstParam), yield_0, firstParam), _
+                    IIf(Is_Missing_(secondParam), yield_0, secondParam), _
+                    placeholder(functionParamPoint) _
                    )
 End Function
 
 'ユーザ関数をbindファンクタ化する（2番目の引数にデフォルト値を設定する場合）
 Function make_funPointer_with_2nd_Default(ByVal func As LongPtr, _
-                         Optional ByRef firstParam As Variant, _
-                         Optional ByRef secondParam As Variant) As Variant
+                         ByRef firstParam As Variant, _
+                         ByRef secondParam As Variant, _
+                         Optional ByVal functionParamPoint As Long = 0) As Variant
     make_funPointer_with_2nd_Default = VBA.Array(func, _
-                                 IIf(Is_Missing_(firstParam), placeholder, firstParam), _
+                                 IIf(Is_Missing_(firstParam), yield_0, firstParam), _
                                  secondParam, _
-                                 placeholder _
+                                 placeholder(functionParamPoint) _
                                 )
-End Function
-
-'ユーザ関数をbindファンクタ化する（3つのパラメータを持つ関数）
-Function make_funPointer_with_3_parameters(ByVal func1 As LongPtr, _
-                                        ByVal func2 As LongPtr, _
-                                    ByVal func3 As LongPtr, _
-                            ByRef firstParam As Variant, _
-                            ByRef secondParam As Variant, _
-                            ByRef thirdParam As Variant) As Variant
-    If Is_Missing_(firstParam) Or is_placeholder(firstParam) Then
-        make_funPointer_with_3_parameters = _
-            VBA.Array(func1, _
-                      IIf(Is_Missing_(firstParam), placeholder, firstParam), _
-                      VBA.Array(secondParam, thirdParam), _
-                      placeholder _
-                     )
-    ElseIf Is_Missing_(secondParam) Or is_placeholder(secondParam) Then
-        make_funPointer_with_3_parameters = _
-            VBA.Array(func2, VBA.Array(firstParam, thirdParam), _
-                      IIf(Is_Missing_(secondParam), placeholder, secondParam), _
-                      placeholder _
-                     )
-    ElseIf Is_Missing_(thirdParam) Or is_placeholder(thirdParam) Then
-        make_funPointer_with_3_parameters = _
-            VBA.Array(func3, _
-                      VBA.Array(firstParam, secondParam), _
-                      IIf(Is_Missing_(thirdParam), placeholder, thirdParam), _
-                      placeholder _
-                     )
-    Else
-        make_funPointer_with_3_parameters = Empty
-    End If
 End Function
 
 'bindされた関数であることの判定
@@ -160,15 +139,17 @@ End Function
 '引数を再束縛する
     Private Function bind_imple(ByRef func As Variant, _
                                 ByRef param As Variant, _
-                                ByVal p0 As Long, _
-                                ByVal p1 As Long) As Variant
+                                ByVal pA As Long, _
+                                ByVal pB As Long, _
+                                ByVal pC As Long, _
+                                ByVal pD As Long) As Variant
         If is_bindFun(func) Then
             bind_imple = VBA.Array(func(0), _
-                                   bind_imple(func(1), param, p0, p1), _
-                                   bind_imple(func(2), param, p0, p1), _
-                                   placeholder)
+                                   bind_imple(func(1), param, pA, pB, pC, pD), _
+                                   bind_imple(func(2), param, pA, pB, pC, pD), _
+                                   func(3))
         ElseIf is_placeholder(func) Then
-            If func = placeholder(p0) Or func = placeholder(p1) Then
+            If func = placeholder(pA) Or func = placeholder(pB) Or func = placeholder(pC) Or func = placeholder(pD) Then
                 bind_imple = param
             Else
                 bind_imple = func
@@ -177,25 +158,36 @@ End Function
             bind_imple = func
         End If
     End Function
-Function bind1st(ByRef func As Variant, ByRef firstParam As Variant) As Variant
-    bind1st = VBA.Array(func(0), _
-                        bind_imple(func(1), firstParam, 0, 1), _
-                        bind_imple(func(2), firstParam, 1, 1), _
-                        placeholder)
-End Function
-    Function p_bind1st(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_bind1st = make_funPointer(AddressOf bind1st, firstParam, secondParam)
-    End Function
 
-Function bind2nd(ByRef func As Variant, ByRef secondParam As Variant) As Variant
-    bind2nd = VBA.Array(func(0), _
-                        bind_imple(func(1), secondParam, 2, 2), _
-                        bind_imple(func(2), secondParam, 0, 2), _
-                        placeholder)
+Function bind1st(ByRef func As Variant, ByRef firstParam As Variant, _
+                    Optional ByVal ph_only As Boolean = False) As Variant
+    If ph_only Then
+        bind1st = VBA.Array(func(0), _
+                            bind_imple(func(1), firstParam, 0, 1, 0, 1), _
+                            bind_imple(func(2), firstParam, 1, 1, 1, 1), _
+                            func(3))
+    Else
+        bind1st = VBA.Array(func(0), _
+                            bind_imple(func(1), firstParam, 0, 1, 800, 801), _
+                            bind_imple(func(2), firstParam, 1, 1, 801, 801), _
+                            func(3))
+    End If
 End Function
-    Function p_bind2nd(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_bind2nd = make_funPointer(AddressOf bind2nd, firstParam, secondParam)
-    End Function
+
+Function bind2nd(ByRef func As Variant, ByRef secondParam As Variant, _
+                    Optional ByVal ph_only As Boolean = False) As Variant
+    If ph_only Then
+        bind2nd = VBA.Array(func(0), _
+                            bind_imple(func(1), secondParam, 2, 2, 2, 2), _
+                            bind_imple(func(2), secondParam, 0, 0, 2, 2), _
+                            func(3))
+    Else
+        bind2nd = VBA.Array(func(0), _
+                            bind_imple(func(1), secondParam, 2, 2, 802, 802), _
+                            bind_imple(func(2), secondParam, 0, 2, 800, 802), _
+                            func(3))
+    End If
+End Function
 
 '第1引数のswap（大きな変数の場合に使用）
 Sub swap1st(ByRef func As Variant, ByRef firstParam As Variant)
@@ -213,7 +205,7 @@ Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
     mapF = mapF_imple(func, matrix)
 End Function
     Function p_mapF(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam)
+        p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam, 1)
     End Function
 
 ' mapF(fun(a), m) または mapF(fun(, a), m)の構文糖
@@ -261,7 +253,7 @@ Function applyFun(ByRef param As Variant, ByRef func As Variant) As Variant
     End If
 End Function
     Function p_applyFun(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_applyFun = make_funPointer(AddressOf applyFun, firstParam, secondParam)
+        p_applyFun = make_funPointer(AddressOf applyFun, firstParam, secondParam, 2)
     End Function
 
 '関数に1引数を代入する関数
@@ -272,7 +264,7 @@ Function setParam(ByRef func As Variant, ByRef param As Variant) As Variant
     setParam = applyFun(param, func)
 End Function
     Function p_setParam(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_setParam = make_funPointer(AddressOf setParam, firstParam, secondParam)
+        p_setParam = make_funPointer(AddressOf setParam, firstParam, secondParam, 1)
     End Function
 
 '関数合成（foldl）
@@ -344,7 +336,7 @@ Function count_if(ByRef pred As Variant, ByRef matrix As Variant) As Variant
     Next z
 End Function
     Function p_count_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam)
+        p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam, 1)
     End Function
 
 '1次元配列から条件に合致するものを検索(最初にヒットしたインデックスを返す)
@@ -355,7 +347,7 @@ Function find_pred(ByRef pred As Variant, ByRef vec As Variant) As Variant
     End If
 End Function
     Function p_find_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_find_pred = make_funPointer(AddressOf find_pred, firstParam, secondParam)
+        p_find_pred = make_funPointer(AddressOf find_pred, firstParam, secondParam, 1)
     End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用
@@ -388,6 +380,90 @@ Function generate_while_not(ByVal val As Variant, _
                             ByRef fun As Variant, _
                             Optional ByVal n As Long = -1) As Variant
     generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
+End Function
+
+' 1次元配列限定の foldl (p_foldl のみPublic)
+    Private Function foldl_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
+        Dim fun As Variant
+        fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
+        foldl_v = foldl(fun, fun_init(1), vec)
+    End Function
+Public Function p_foldl(ByRef fun As Variant, ByRef init As Variant) As Variant
+    p_foldl = VBA.Array(AddressOf foldl_v, _
+                        VBA.Array(fun, init), _
+                        yield_0, _
+                        placeholder)
+End Function
+
+' 1次元配列限定の foldr (p_foldr のみPublic)
+    Private Function foldr_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
+        Dim fun As Variant
+        fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
+        foldr_v = foldr(fun, fun_init(1), vec)
+    End Function
+Public Function p_foldr(ByRef fun As Variant, ByRef init As Variant) As Variant
+    p_foldr = VBA.Array(AddressOf foldr_v, _
+                        VBA.Array(fun, init), _
+                        yield_0, _
+                        placeholder)
+End Function
+
+' 1次元配列限定の foldl1 (p_foldl1 のみPublic)
+    Private Function foldl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
+        foldl1_v = foldl1(fun, vec)
+    End Function
+Public Function p_foldl1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_foldl1 = make_funPointer(AddressOf foldl1_v, firstParam, secondParam, 1)
+End Function
+
+' 1次元配列限定の foldr1 (p_foldr1 のみPublic)
+    Private Function foldr1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
+        foldr1_v = foldr1(fun, vec)
+    End Function
+Public Function p_foldr1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_foldr1 = make_funPointer(AddressOf foldr1_v, firstParam, secondParam, 1)
+End Function
+
+' 1次元配列限定の scanl (p_scanl のみPublic)
+    Private Function scanl_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
+        Dim fun As Variant
+        fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
+        scanl_v = scanl(fun, fun_init(1), vec)
+    End Function
+Public Function p_scanl(ByRef fun As Variant, ByRef init As Variant) As Variant
+    p_scanl = VBA.Array(AddressOf scanl_v, _
+                        VBA.Array(fun, init), _
+                        yield_0, _
+                        placeholder)
+End Function
+
+' 1次元配列限定の scanr (p_scanr のみPublic)
+    Private Function scanr_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
+        Dim fun As Variant
+        fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
+        scanr_v = scanr(fun, fun_init(1), vec)
+    End Function
+Public Function p_scanr(ByRef fun As Variant, ByRef init As Variant) As Variant
+    p_scanr = VBA.Array(AddressOf scanr_v, _
+                        VBA.Array(fun, init), _
+                        yield_0, _
+                        placeholder)
+End Function
+
+' 1次元配列限定の scanl1 (p_scanl1 のみPublic)
+    Private Function scanl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
+        scanl1_v = scanl1(fun, vec)
+    End Function
+Public Function p_scanl1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_scanl1 = make_funPointer(AddressOf scanl1_v, firstParam, secondParam, 1)
+End Function
+
+' 1次元配列限定の scanr1 (p_scanr1 のみPublic)
+    Private Function scanr1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
+        scanr1_v = scanr1(fun, vec)
+    End Function
+Public Function p_scanr1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_scanr1 = make_funPointer(AddressOf scanr1_v, firstParam, secondParam, 1)
 End Function
 
 ' zipWithをfoldlする
