@@ -15,15 +15,12 @@ Option Explicit
 '   Function  p_format                  Format関数
 '   Function  p_InStr                   InStr関数
 '   Function  p_InStrRev                InStrRev関数
+'   Function  p_Like                    Like関数
 '   Function  p_StrConv                 StrConv関数
 '   Function  p_Trim                    Trim関数
 '   Function  cutoff_left               文字列の左側 n 文字切落
 '   Function  cutoff_right              文字列の右側 n 文字切落
 '   Function  separate_string           文字列の左右分離
-'   Function  p_foldl1                  1次元配列のfoldl1
-'   Function  p_foldr1                  1次元配列のfoldr1
-'   Function  p_scanl1                  1次元配列のscanl1
-'   Function  p_scanr1                  1次元配列のscanr1
 '   Function  subM_R                    subM(m, 行範囲) の構文糖
 '   Function  subM_R_b                  〃（LBound基準）
 '   Function  subM_C                    subM(m, , 列範囲) の構文糖
@@ -165,6 +162,14 @@ Public Function p_InStrRev(Optional ByRef firstParam As Variant, Optional ByRef 
     p_InStrRev = make_funPointer(AddressOf InStrRev_, firstParam, secondParam)
 End Function
 
+' Like関数
+    Private Function Like_(ByRef s As Variant, ByRef expr As Variant) As Variant
+        Like_ = IIf(s Like expr, 1, 0)
+    End Function
+Public Function p_Like(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_Like = make_funPointer(AddressOf Like_, firstParam, secondParam)
+End Function
+
 ' StrConv関数
      Private Function StrConv_(ByRef s As Variant, ByRef expr As Variant) As Variant
         StrConv_ = StrConv(s, expr)
@@ -218,38 +223,6 @@ End Function
     Function p_separate_string(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_separate_string = make_funPointer(AddressOf separate_string, firstParam, secondParam)
     End Function
-
-' 1次元配列限定の foldl1 (p_foldl1 のみPublic)
-    Private Function foldl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
-        foldl1_v = foldl1(fun, vec)
-    End Function
-Public Function p_foldl1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-    p_foldl1 = make_funPointer(AddressOf foldl1_v, firstParam, secondParam)
-End Function
-
-' 1次元配列限定の foldr1 (p_foldr1 のみPublic)
-    Private Function foldr1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
-        foldr1_v = foldr1(fun, vec)
-    End Function
-Public Function p_foldr1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-    p_foldr1 = make_funPointer(AddressOf foldr1_v, firstParam, secondParam)
-End Function
-
-' 1次元配列限定の scanl1 (p_scanl1 のみPublic)
-    Private Function scanl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
-        scanl1_v = scanl1(fun, vec)
-    End Function
-Public Function p_scanl1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-    p_scanl1 = make_funPointer(AddressOf scanl1_v, firstParam, secondParam)
-End Function
-
-' 1次元配列限定の scanr1 (p_scanr1 のみPublic)
-    Private Function scanr1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
-        scanr1_v = scanr1(fun, vec)
-    End Function
-Public Function p_scanr1(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-    p_scanr1 = make_funPointer(AddressOf scanr1_v, firstParam, secondParam)
-End Function
 
 ' subM(m, 行範囲) の構文糖
 Public Function subM_R(ByRef m As Variant, ByRef rRange As Variant) As Variant
@@ -364,7 +337,7 @@ Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Varian
     End If
 End Function
     Public Function p_adjacent_op(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_adjacent_op = make_funPointer(AddressOf adjacent_op, firstParam, secondParam)
+        p_adjacent_op = make_funPointer(AddressOf adjacent_op, firstParam, secondParam, 1)
     End Function
 
 ' 配列の重複要素を削除する(ソート済前提、compは等値条件)
@@ -379,7 +352,7 @@ Public Function get_unique(ByRef vec As Variant, Optional ByRef comp As Variant)
     get_unique = filterR(vec, flag)
 End Function
     Function p_get_unique(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_get_unique = make_funPointer_with_2nd_Default(AddressOf get_unique, firstParam, secondParam)
+        p_get_unique = make_funPointer_with_2nd_Default(AddressOf get_unique, firstParam, secondParam, 2)
     End Function
 
 ' 2次元配列の行ごとに関数適用
@@ -421,17 +394,17 @@ End Function
     End Function
 
 ' 1次元配列の全要素の等値比較
-Public Function equal_all(ByRef A As Variant, ByRef B As Variant) As Variant
-    equal_all = equal_all_pred(p_equal, A, B)
+Public Function equal_all(ByRef a As Variant, ByRef b As Variant) As Variant
+    equal_all = equal_all_pred(p_equal, a, b)
 End Function
     Public Function p_equal_all(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_equal_all = make_funPointer(AddressOf equal_all, firstParam, secondParam)
     End Function
 
 ' 1次元配列の全要素の等値比較（述語バージョン）
-Public Function equal_all_pred(ByRef pred As Variant, ByRef A As Variant, ByRef B As Variant) As Variant
-    If sizeof(A) = sizeof(B) Then
-        equal_all_pred = IIf(sizeof(A) <= find_pred(p_equal(0), zipWith(pred, A, B)), _
+Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
+    If sizeof(a) = sizeof(b) Then
+        equal_all_pred = IIf(sizeof(a) <= find_pred(p_equal(0), zipWith(pred, a, b)), _
                              1, _
                              0)
     Else
@@ -444,7 +417,7 @@ Public Function filter_if(ByRef fun As Variant, ByRef vec As Variant) As Variant
     filter_if = filterR(vec, mapF(fun, vec))
 End Function
     Public Function p_filter_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_filter_if = make_funPointer(AddressOf filter_if, firstParam, secondParam)
+        p_filter_if = make_funPointer(AddressOf filter_if, firstParam, secondParam, 1)
     End Function
 
 ' 述語を与えて1次元配列をフィルタリング（否定形）
@@ -452,7 +425,7 @@ Public Function filter_if_not(ByRef fun As Variant, ByRef vec As Variant) As Var
     filter_if_not = filter_if(p_equal(0, fun), vec)
 End Function
     Public Function p_filter_if_not(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_filter_if_not = make_funPointer(AddressOf filter_if_not, firstParam, secondParam)
+        p_filter_if_not = make_funPointer(AddressOf filter_if_not, firstParam, secondParam, 1)
     End Function
 
 ' 論理Not   (0 = False, Null = False, Empty = False, Nothing = False とみなす)
@@ -474,8 +447,8 @@ Public Function p_not(Optional ByRef firstParam As Variant, Optional ByRef secon
 End Function
 
 ' 含意(A=>B)   IIF(Not A Or B, True, False)
-    Private Function Imply_(ByRef A As Variant, ByRef B As Variant) As Variant
-        Imply_ = IIf(Not_(A) = 1 Or Not_(B) = 0, 1, 0)
+    Private Function Imply_(ByRef a As Variant, ByRef b As Variant) As Variant
+        Imply_ = IIf(Not_(a) = 1 Or Not_(b) = 0, 1, 0)
     End Function
 Public Function p_imply(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
     p_imply = make_funPointer(AddressOf Imply_, firstParam, secondParam)
@@ -493,12 +466,14 @@ Public Function pipe_(ByRef x As Variant) As vh_pipe
     Set pipe_ = New vh_pipe
     pipe_.swap_val_ x
 End Function
+
 '-----------------------------------------------------------
 ' vh_stdvecオブジェクトの生成
 Public Function stdVec(Optional ByRef x As Variant) As vh_stdvec
     Set stdVec = New vh_stdvec
     stdVec.from x
 End Function
+
 
 '******************************************************************************
 ' delimiterで区切られた文字列を関数列へマッピング
@@ -630,12 +605,12 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
     counter = -1
     Do
         For en = bn To LenExpr Step 1
-            If Mid(expr, en, 1) = """" Then
+            If mid(expr, en, 1) = """" Then
                 isEven = Not isEven
-            ElseIf isEven And Mid(expr, en, 1) = delim Then
+            ElseIf isEven And mid(expr, en, 1) = delim Then
                 counter = counter + 1
                 ReDim Preserve ret(0 To counter)
-                ret(counter) = Mid(expr, bn, en - bn)
+                ret(counter) = mid(expr, bn, en - bn)
                 bn = en + 1
                 Exit For
             End If
@@ -643,13 +618,13 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
         If bn < en Then
             counter = counter + 1
             ReDim Preserve ret(0 To counter)
-            ret(counter) = Mid(expr, bn)
+            ret(counter) = mid(expr, bn)
             bn = en + 1
         End If
      Loop While bn < LenExpr
      Do While 0 <= counter
         If left(ret(counter), 1) = """" Then
-            ret(counter) = Mid(ret(counter), 2, Len(ret(counter)) - 2)
+            ret(counter) = mid(ret(counter), 2, Len(ret(counter)) - 2)
         End If
         ret(counter) = Replace(ret(counter), """""", """")
         ret(counter) = Replace(ret(counter), "\\t", vbLf)   ' \\t -> vbLf   Chr(10)
