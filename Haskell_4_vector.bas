@@ -19,7 +19,7 @@ Option Explicit
     ' Function  o__o                自然数列 (from, to)
     ' Function  headN               ベクトルの最初のN個
     ' Function  tailN               ベクトルの最後のN個
-    ' Function  vector              スカラー、配列のベクトル化
+    ' Function  vector              スカラー、配列の1次元配列化
     ' Function  reverse             ベクトルを逆順に並べる
     ' Sub       rotate              1次元配列の回転
     ' Function  rotation            rotateした配列を返す
@@ -54,6 +54,9 @@ Option Explicit
     ' Function  makeSole            Array(a)作成
     ' Function  makePair            Array(a, b)作成
     ' Function  cons                配列の先頭に要素を追加
+    ' Sub       push_back           1次元の配列の末尾に要素を追加（LBoundを0にする）
+    ' Function  push_back_move      push_backしてmoveして返す
+    ' Function  flatten             配列を平坦な1次元配列化する
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
 '====================================================================================================
 
@@ -236,27 +239,75 @@ End Function
         p_tailN = make_funPointer(AddressOf tailN, firstParam, secondParam)
     End Function
 
-'スカラー、配列のベクトル化(行→列)
-Public Function vector(data As Variant) As Variant
-    Dim i As Long, j As Long, counter As Long
-    Dim ret   As Variant
-    Select Case Dimension(data)
-    Case 0
+'スカラー、配列のベクトル化
+'デフォルトでC言語オーダー展開、orderがFalseに解釈できる場合はVBオーダー展開
+Public Function vector(ByRef data As Variant, Optional ByRef order As Variant) As Variant
+    Dim dimen As Long: dimen = Dimension(data)
+    If dimen = 0 Then
         vector = VBA.Array(data)
-    Case 1
+        Exit Function
+    ElseIf dimen = 1 Then
         vector = data
-    Case 2
-        counter = 0
-        ReDim ret(0 To sizeof(data) - 1)
-        For i = LBound(data, 1) To UBound(data, 1) Step 1
-            For j = LBound(data, 2) To UBound(data, 2) Step 1
-                ret(counter) = data(i, j)
-                counter = counter + 1
-            Next j
-        Next i
-        vector = moveVariant(ret)
-    End Select
+        changeLBound vector, 0
+        Exit Function
+    End If
+    Dim c_order As Boolean: c_order = True
+    If IsNumeric(order) And Not IsEmpty(order) Then c_order = order
+    Dim i As Long, j As Long, counter As Long
+    Dim ret As Variant, z As Variant
+    ReDim ret(0 To sizeof(data) - 1)
+    counter = 0
+    If c_order Then
+        If dimen = 2 Then
+            For i = LBound(data, 1) To UBound(data, 1) Step 1
+                For j = LBound(data, 2) To UBound(data, 2) Step 1
+                    ret(counter) = data(i, j)
+                    counter = counter + 1
+                Next j
+            Next i
+        Else
+            ReDim bound(1 To dimen, 0 To 1) As Long
+            ReDim index(1 To dimen) As Long
+            index(1) = -1
+            For i = 1 To dimen Step 1
+                bound(i, 0) = UBound(data, i) - LBound(data, i) + 1
+            Next i
+            bound(dimen, 1) = 1
+            For i = dimen - 1 To 1 Step -1
+                bound(i, 1) = bound(i + 1, 0) * bound(i + 1, 1)
+            Next i
+            For Each z In data
+                counter = BoundaryControl(bound, index, 1)
+                swapVariant ret(counter), z
+            Next z
+        End If
+    Else
+        For Each z In data
+            swapVariant ret(counter), z
+            counter = counter + 1
+        Next z
+    End If
+    swapVariant vector, ret
 End Function
+    Public Function p_vector(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_vector = make_funPointer_with_2nd_Default(AddressOf vector, firstParam, secondParam)
+    End Function
+
+    Private Function BoundaryControl(ByRef bound As Variant, _
+                                     ByRef index As Variant, _
+                                     ByVal i As Long) As Long
+        index(i) = index(i) + 1
+        If index(i) = bound(i, 0) Then
+            index(i) = 0
+            BoundaryControl = BoundaryControl(bound, index, i + 1)
+        Else
+            BoundaryControl = 0
+            Dim j As Long
+            For j = LBound(index) To UBound(index) Step 1
+                BoundaryControl = BoundaryControl + index(j) * bound(j, 1)
+            Next j
+        End If
+    End Function
 
 'ベクトルを逆順に並べる
 Public Function reverse(ByRef vec As Variant) As Variant
@@ -312,17 +363,17 @@ Sub rotate(ByRef vec As Variant, ByVal shift As Long)
 End Sub
 
 '1次元配列を回転した配列
-Function rotation(ByRef vec As Variant, ByRef shift As Variant) As Variant
+Public Function rotation(ByRef vec As Variant, ByRef shift As Variant) As Variant
     Dim tmp As Variant
     tmp = vec
     rotation = rotate_move(tmp, shift)
 End Function
-    Function p_rotation(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    Public Function p_rotation(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_rotation = make_funPointer(AddressOf rotation, firstParam, secondParam)
     End Function
 
 'rotationしてmoveして返す
-Function rotate_move(ByRef vec As Variant, ByRef shift As Variant) As Variant
+Public Function rotate_move(ByRef vec As Variant, ByRef shift As Variant) As Variant
     rotate vec, shift
     rotate_move = moveVariant(vec)
 End Function
@@ -721,7 +772,7 @@ End Function
     End Function
 
 'ベクトルを結合
-Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
+Public Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
     If Dimension(v1) = 1 And Dimension(v2) = 1 Then
@@ -741,12 +792,12 @@ Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
         catV = catV(vector(v1), vector(v2))
     End If
 End Function
-    Function p_catV(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    Public Function p_catV(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_catV = make_funPointer(AddressOf catV, firstParam, secondParam)
     End Function
 
 'ベクトルを結合（可変長引数）
-Function catVs(ParamArray vectors() As Variant) As Variant
+Public Function catVs(ParamArray vectors() As Variant) As Variant
     Dim i As Long
     Dim tmp As Variant
     If LBound(vectors) <= UBound(vectors) Then
@@ -762,7 +813,7 @@ Function catVs(ParamArray vectors() As Variant) As Variant
 End Function
 
 '行方向に結合
-Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
+Public Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     If rowSize(matrix1) = 0 Then        ' 非配列または空の配列
         If rowSize(matrix2) = 0 Then        ' 非配列または空の配列
             catR = VBA.Array()
@@ -797,12 +848,12 @@ Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
         End If
     End If
 End Function
-    Function p_catR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    Public Function p_catR(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_catR = make_funPointer(AddressOf catR, firstParam, secondParam)
     End Function
 
 '列方向に結合
-Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
+Public Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
     If rowSize(matrix1) = 0 Then        ' 非配列または空の配列
         If rowSize(matrix2) = 0 Then        ' 非配列または空の配列
             catC = VBA.Array()
@@ -837,12 +888,12 @@ Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
         End If
     End If
 End Function
-    Function p_catC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    Public Function p_catC(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_catC = make_funPointer(AddressOf catC, firstParam, secondParam)
     End Function
 
 '配列の行/列の転置
-Function transpose(ByRef matrix As Variant) As Variant
+Public Function transpose(ByRef matrix As Variant) As Variant
     Dim i As Long, j As Long
     Dim ret As Variant
     Select Case Dimension(matrix)
@@ -868,30 +919,30 @@ Function transpose(ByRef matrix As Variant) As Variant
 End Function
 
 'ふたつの配列の対応する要素どうしをmakePairしてジャグ配列を作る
-Public Function zip(ByRef A As Variant, ByRef B As Variant) As Variant
-    zip = zipWith(p_makePair, A, B)
+Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
+    zip = zipWith(p_makePair, a, b)
 End Function
-    Function p_zip(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    Public Function p_zip(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_zip = make_funPointer(AddressOf zip, firstParam, secondParam)
     End Function
 
     ' zipVsのサブルーチン
-    Private Function zipVs_imple(ByRef m As Variant, ByRef A As Variant) As Variant
+    Private Function zipVs_imple(ByRef m As Variant, ByRef a As Variant) As Variant
         Dim i As Long, j As Long: j = m(0)
         Dim k As Long: k = 0
-        For i = LBound(A) To UBound(A) Step 1
-            m(1)(k)(j) = A(i)
+        For i = LBound(a) To UBound(a) Step 1
+            m(1)(k)(j) = a(i)
             k = k + 1
         Next i
         m(0) = m(0) + 1
         swapVariant zipVs_imple, m
     End Function
-        Function p_zipVs_imple(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        Public Function p_zipVs_imple(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
             p_zipVs_imple = make_funPointer(AddressOf zipVs_imple, firstParam, secondParam)
         End Function
 
 '複数の1次元配列をzip
-Function zipVs(ByRef vectors As Variant) As Variant
+Public Function zipVs(ByRef vectors As Variant) As Variant
     Dim ret As Variant
     ret = VBA.Array(0, repeat(makeM(sizeof(vectors)), sizeof(vectors(LBound(vectors)))))
     ret = foldl(p_zipVs_imple, ret, vectors)
@@ -899,7 +950,7 @@ Function zipVs(ByRef vectors As Variant) As Variant
 End Function
 
 '２次元配列の各行ベクトルをzipVs
-Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Variant
+Public Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Variant
     If IsMissing(target) Then
         Dim ret As Variant
         ReDim ret(LBound(m, 2) To UBound(m, 2))
@@ -914,7 +965,7 @@ Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Variant
 End Function
 
 '２次元配列の各列ベクトルをzipVs
-Function zipC(ByRef m As Variant, Optional ByRef target As Variant) As Variant
+Public Function zipC(ByRef m As Variant, Optional ByRef target As Variant) As Variant
     If IsMissing(target) Then
         Dim ret As Variant
         ReDim ret(LBound(m, 1) To UBound(m, 1))
@@ -961,43 +1012,84 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
 End Function
 
 ' Array(a)作成
-Function makeSole(ByRef A As Variant, Optional ByRef dummy As Variant) As Variant
-    makeSole = VBA.Array(A)
+Public Function makeSole(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
+    makeSole = VBA.Array(a)
 End Function
     Public Function p_makeSole(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_makeSole = make_funPointer(AddressOf makeSole, firstParam, secondParam)
     End Function
 
 ' Array(a, b)作成
-Function makePair(ByRef A As Variant, ByRef B As Variant) As Variant
-    makePair = VBA.Array(A, B)
+Public Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
+    makePair = VBA.Array(a, b)
 End Function
     Public Function p_makePair(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_makePair = make_funPointer(AddressOf makePair, firstParam, secondParam)
     End Function
 
 ' 配列の先頭に要素を追加
-Function cons(ByRef A As Variant, ByRef vec As Variant) As Variant
-    cons = catV(Array(A), vec)
+Public Function cons(ByRef a As Variant, ByRef vec As Variant) As Variant
+    cons = catV(Array(a), vec)
 End Function
     Public Function p_cons(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
     End Function
 
+' １次元配列の末尾に要素を追加（LBoundを0にする）
+Public Sub push_back(ByRef vec As Variant, ByRef a As Variant)
+    If Dimension(vec) = 1 Then
+        changeLBound vec, 0
+        ReDim Preserve vec(0 To UBound(vec) + 1)
+        vec(UBound(vec)) = a
+    End If
+End Sub
+
+' push_backしてmoveして返す
+Public Function push_back_move(ByRef vec As Variant, ByRef a As Variant) As Variant
+    push_back vec, a
+    swapVariant push_back_move, vec
+End Function
+    Public Function p_push_back_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_push_back_move = make_funPointer(AddressOf push_back_move, firstParam, secondParam)
+    End Function
+
+' 配列を平坦な1次元配列化する
+Public Function flatten(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
+    flatten = flatten_imple(VBA.Array(), vec)
+End Function
+    Public Function p_flatten(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_flatten = make_funPointer(AddressOf flatten, firstParam, secondParam)
+    End Function
+
+    Private Function flatten_imple(ByRef vec As Variant, ByRef x As Variant) As Variant
+        If IsArray(x) Then
+            If Dimension(x) = 1 Then    ' 再帰
+                flatten_imple = foldl(p_flatten_imple, vec, x)
+            Else
+                flatten_imple = foldl(p_flatten_imple, vec, vector(x))
+            End If
+        Else
+            flatten_imple = push_back_move(vec, x)
+        End If
+    End Function
+    Private Function p_flatten_imple(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_flatten_imple = make_funPointer(AddressOf flatten_imple, firstParam, secondParam)
+    End Function
+
 'ベクトルの直積に関数を適用した行列を作る
-Public Function product_set(ByRef pCallback As Variant, ByRef A As Variant, ByRef B As Variant) As Variant
+Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
     Dim z As Variant, k As Long
-    Dim ret As Variant:     ReDim ret(LBound(A) To UBound(A), LBound(B) To UBound(B))
-    If rowSize(A) < rowSize(B) Then
-        k = LBound(A)
-        For Each z In A
-            Call fillRow(ret, k, mapF(bind1st(pCallback, z), B))
+    Dim ret As Variant:     ReDim ret(LBound(a) To UBound(a), LBound(b) To UBound(b))
+    If rowSize(a) < rowSize(b) Then
+        k = LBound(a)
+        For Each z In a
+            Call fillRow(ret, k, mapF(bind1st(pCallback, z), b))
             k = k + 1
         Next z
     Else
-        k = LBound(B)
-        For Each z In B
-            Call fillCol(ret, k, mapF(bind2nd(pCallback, z), A))
+        k = LBound(b)
+        For Each z In b
+            Call fillCol(ret, k, mapF(bind2nd(pCallback, z), a))
             k = k + 1
         Next z
     End If
