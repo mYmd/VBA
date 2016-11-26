@@ -261,7 +261,11 @@ Public Function vector(ByRef data As Variant, Optional ByRef order As Variant) A
         If dimen = 2 Then
             For i = LBound(data, 1) To UBound(data, 1) Step 1
                 For j = LBound(data, 2) To UBound(data, 2) Step 1
-                    ret(counter) = data(i, j)
+                    If IsObject(data(i, j)) Then
+                        Set ret(counter) = data(i, j)
+                    Else
+                        ret(counter) = data(i, j)
+                    End If
                     counter = counter + 1
                 Next j
             Next i
