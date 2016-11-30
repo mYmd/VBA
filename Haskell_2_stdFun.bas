@@ -102,7 +102,7 @@ End Sub
 '     ファンクタ等
 '   Function rowSize        配列の行数
 '   Function colSize        配列の列数
-'   Function sizeof         配列の全要素数
+'   Function sizeof         配列の全要素数または特定の軸の要素数
 '   Function p_constant     定数関数
 '   Function p_true         定数関数(true)
 '   Function p_false        定数関数(false)
@@ -123,8 +123,8 @@ End Sub
 '   Function CDbl_          CDbl（実数化）
 '   Function CStr_          CStr（文字列化）
 '   Function str_len        Len
-'   Function str_left       Left
-'   Function str_right      Right
+'   Function str_left       Left（負の引数も可）
+'   Function str_right      Right（負の引数も可）
 '   Function str_mid        Mid
 '   Function str_cat        文字列結合
 '   Function splitFun       Split
@@ -162,26 +162,28 @@ Public Function colSize(ByRef data As Variant) As Long
     End Select
 End Function
 
-'配列の全要素数
-Public Function sizeof(ByRef data As Variant) As Long
+'配列の全要素数または特定の軸の要素数
+Public Function sizeof(ByRef data As Variant, Optional ByVal axis As Long = 0) As Long
     Dim d As Long:  d = Dimension(data)
     Dim i As Long
     sizeof = 1
-    For i = 1 To d Step 1
-        sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i))
-    Next i
+    If axis = 0 Then
+        For i = 1 To d Step 1
+            sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i))
+        Next i
+    ElseIf 0 < axis And axis <= d Then
+        sizeof = 1 + UBound(data, axis) - LBound(data, axis)
+    End If
 End Function
     
     Public Function p_sizeof(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_sizeof = make_funPointer_with_2nd_Default(AddressOf sizeof_, firstParam, secondParam)
     End Function
-    Private Function sizeof_(ByRef data As Variant, Optional ByRef d As Variant) As Variant
-        If IsMissing(d) Then
+    Function sizeof_(ByRef data As Variant, Optional ByRef d As Variant) As Variant
+        If IsNumeric(d) Then
+            sizeof_ = sizeof(data, d)
+        Else
             sizeof_ = sizeof(data)
-        ElseIf d = 1 Then
-            sizeof_ = rowSize(data)
-        ElseIf d = 2 Then
-            sizeof_ = colSize(data)
         End If
     End Function
 
@@ -407,7 +409,7 @@ End Function
     
 'Mid
 Function str_mid(ByRef st As Variant, ByRef begin_end As Variant) As Variant
-    str_mid = Mid(st, begin_end(0), begin_end(1))
+    str_mid = mid(st, begin_end(0), begin_end(1))
 End Function
     Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
