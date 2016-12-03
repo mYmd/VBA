@@ -202,22 +202,27 @@ End Function
 
 'デバッグウィンドウに1次元ジャグ配列を展開して表示する
 Sub printM_(ByRef vec As Variant, Optional ByRef r As Variant, Optional ByRef c As Variant)
-    Dim begin_ As Long, end_   As Long
-    If IsMissing(r) Then
-        begin_ = LBound(vec)
-        end_ = UBound(vec)
-    ElseIf 1 < rowSize(r) Then
-        begin_ = r(0)
-        end_ = r(1)
-    ElseIf 0 <= r Then
-        begin_ = LBound(vec)
-        end_ = min_fun(UBound(vec), begin_ + r - 1)
-    Else
-        end_ = UBound(vec)
-        begin_ = max_fun(LBound(vec), end_ + r + 1)
-    End If
-    Do While begin_ <= end_
-        printM vec(begin_), c
-        begin_ = begin_ + 1
-    Loop
+    Select Case Dimension(vec)
+    Case 0
+        printM vec
+    Case 1
+        Dim begin_ As Long, end_   As Long
+        If IsMissing(r) Then
+            begin_ = LBound(vec)
+            end_ = UBound(vec)
+        ElseIf 1 < rowSize(r) Then
+            begin_ = r(0)
+            end_ = r(1)
+        ElseIf 0 <= r Then
+            begin_ = LBound(vec)
+            end_ = min_fun(UBound(vec), begin_ + r - 1)
+        Else
+            end_ = UBound(vec)
+            begin_ = max_fun(LBound(vec), end_ + r + 1)
+        End If
+        Do While begin_ <= end_
+            printM vec(begin_), c
+            begin_ = begin_ + 1
+        Loop
+    End Select
 End Sub
