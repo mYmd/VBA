@@ -14,11 +14,11 @@ Option Explicit
 '   Function foldl              配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
 '   Function foldr              配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
 '   Function foldl1             配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
-'   Function foldr1             配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
+'   Function foldr1             配列に対する特定の軸に沿った右畳み込み（末尾要素を初期値とする）
 '   Function scanl              配列に対する特定の軸に沿った左scan（初期値指定あり）
 '   Function scanr              配列に対する特定の軸に沿った右scan（初期値指定あり）
 '   Function scanl1             配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
-'   Function scanr1             配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
+'   Function scanr1             配列に対する特定の軸に沿った右scan（末尾要素を初期値とする）
 '   Function stdsort            1次元配列のソートインデックス出力
 '   Function find_imple         述語による検索
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
