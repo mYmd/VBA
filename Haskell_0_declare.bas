@@ -77,7 +77,7 @@ Declare PtrSafe Function foldl1 Lib "mapM.dll" ( _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3次元までのVBA配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
+' 3次元までのVBA配列に対する特定の軸に沿った右畳み込み（末尾要素を初期値とする）
 Declare PtrSafe Function foldr1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
@@ -103,7 +103,7 @@ Declare PtrSafe Function scanl1 Lib "mapM.dll" ( _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3次元までのVBA配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
+' 3次元までのVBA配列に対する特定の軸に沿った右scan（末尾要素を初期値とする）
 Declare PtrSafe Function scanr1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
