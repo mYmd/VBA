@@ -1059,26 +1059,33 @@ End Function
 
 ' 配列を平坦な1次元配列化する
 Public Function flatten(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
-    flatten = flatten_imple(VBA.Array(), vec)
+    flatten = VBA.Array()
+    flatten_imple flatten, vec
 End Function
     Public Function p_flatten(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_flatten = make_funPointer(AddressOf flatten, firstParam, secondParam)
     End Function
-
-    Private Function flatten_imple(ByRef vec As Variant, ByRef x As Variant) As Variant
-        If IsArray(x) Then
-            If Dimension(x) = 1 Then    ' 再帰
-                flatten_imple = foldl(p_flatten_imple, vec, x)
-            Else
-                flatten_imple = foldl(p_flatten_imple, vec, vector(x))
-            End If
-        Else
-            flatten_imple = push_back_move(vec, x)
-        End If
-    End Function
-    Private Function p_flatten_imple(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_flatten_imple = make_funPointer(AddressOf flatten_imple, firstParam, secondParam)
-    End Function
+    
+    Private Sub flatten_imple(ByRef vec As Variant, ByRef x As Variant)
+        Select Case Dimension(x)
+        Case 0
+            push_back vec, x
+        Case 1
+            Dim i As Long
+            For i = LBound(x) To UBound(x) Step 1
+                flatten_imple vec, x(i)    ' 再帰
+            Next i
+        Case 2
+            Dim j As Long
+            For i = LBound(x, 1) To UBound(x, 1) Step 1
+                For j = LBound(x, 2) To UBound(x, 2) Step 1
+                    flatten_imple vec, x(i, j)    ' 再帰
+                Next j
+            Next i
+        Case Else
+            flatten_imple vec, vector(x)
+        End Select
+    End Sub
 
 'ベクトルの直積に関数を適用した行列を作る
 Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
