@@ -6,12 +6,12 @@
 //VBA配列の次元取得
 __int32 __stdcall Dimension(const VARIANT* pv) noexcept
 {
-	if ( !pv || 0 == (VT_ARRAY & pv->vt ) )
-		return	0;
-	if ( 0 == (VT_BYREF & pv->vt) )
-		return ::SafeArrayGetDim(pv->parray);
-	else
-		return (pv->pparray)? ::SafeArrayGetDim(*pv->pparray): 0;
+    if (!pv || 0 == (VT_ARRAY & pv->vt))
+        return	0;
+    if (0 == (VT_BYREF & pv->vt))
+        return ::SafeArrayGetDim(pv->parray);
+    else
+        return (pv->pparray) ? ::SafeArrayGetDim(*pv->pparray) : 0;
 }
 
 //プレースホルダの生成
@@ -27,17 +27,17 @@ VARIANT __stdcall placeholder(__int32 n) noexcept
 //プレースホルダの判定
 __int32 __stdcall is_placeholder(const VARIANT* pv) noexcept
 {
-    return ( pv && (pv->vt == VT_ERROR) && 0 <= pv->scode && (pv->scode % 10) <= 2 ) ? 1 : 0;
+    return (pv && (pv->vt == VT_ERROR) && 0 <= pv->scode && (pv->scode % 10) <= 2) ? 1 : 0;
 }
 
 //===================================================================
 // SafeArray要素のアクセス
 safearrayRef::safearrayRef(const VARIANT* pv) noexcept
-    :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr), size({1, 1, 1})
+    :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr), size({ 1, 1, 1 })
 {
     ::VariantInit(&val_);
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
-    psa = (0 == (VT_BYREF & pv->vt))? pv->parray: *pv->pparray;
+    psa = (0 == (VT_BYREF & pv->vt)) ? pv->parray : *pv->pparray;
     if (!psa)                                       return;
     //このAPIのせいでreinterpret_cast
     ::SafeArrayAccessData(psa, reinterpret_cast<void**>(&it));
@@ -61,7 +61,7 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
 
 safearrayRef::~safearrayRef()
 {
-    if(psa)     SafeArrayUnaccessData(psa);
+    if (psa)     SafeArrayUnaccessData(psa);
     VariantClear(&val_);
 }
 
@@ -85,7 +85,7 @@ std::size_t safearrayRef::getOriginalLBound(std::size_t i) const noexcept
 VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k) noexcept
 {
     auto distance = size[0]*size[1]*k + size[0]*j + i;
-    if ( pvt == VT_VARIANT)
+    if (pvt == VT_VARIANT)
     {
         return *reinterpret_cast<VARIANT*>(it + distance*elemsize);
     }
@@ -98,19 +98,19 @@ VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k) n
 
 //===================================================================
 //bindされている値
-class valueExpr : public funcExpr_i    {
+class valueExpr : public funcExpr_i {
     VARIANT*     val;
 public:
-    explicit valueExpr(VARIANT* v) : val(v)    {    }
+    explicit valueExpr(VARIANT* v) : val(v) {    }
     valueExpr(valueExpr const&) = delete;
     valueExpr(valueExpr&&) = delete;
     ~valueExpr() = default;
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept      {   return val;     }
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept { return val; }
 };
 
 //--------------------------------------------------------
 //指定された引数を返すプレースホルダ
-class placeholder0 : public funcExpr_i    {
+class placeholder0 : public funcExpr_i {
 public:
     ~placeholder0() = default;
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
@@ -122,29 +122,35 @@ public:
 };
 
 //常に第1引数を返すプレースホルダ
-class placeholder1 : public funcExpr_i    {
+class placeholder1 : public funcExpr_i {
 public:
     ~placeholder1() = default;
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
-    {   return x;   }
+    {
+        return x;
+    }
 };
 
 //常に第2引数を返すプレースホルダ
-class placeholder2 : public funcExpr_i    {
+class placeholder2 : public funcExpr_i {
 public:
     ~placeholder2() = default;
     VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
-    {   return y;   }
+    {
+        return y;
+    }
 };
 
 //-------------------------------------------------------------
-namespace   {   //util
-    //プレースホルダの種類
+namespace {   //util
+              //プレースホルダの種類
     int placeholder_num(const VARIANT* pv) noexcept
-    {   return ( pv && (pv->vt == VT_ERROR) ) ?  pv->scode :  -1;   }
+    {
+        return (pv && (pv->vt == VT_ERROR)) ? pv->scode : -1;
+    }
 
     //------------------------------------------------------------------
-    struct VBCallbackStruct   {
+    struct VBCallbackStruct {
         vbCallbackFunc_t    fun;
         VARIANT*            elem1;
         VARIANT*            elem2;
@@ -160,12 +166,12 @@ namespace   {   //util
         : fun(nullptr), elem1(nullptr), elem2(nullptr), delay(0)
     {
         safearrayRef arRef(bfun);
-        if ( 1 != arRef.getDim() )         return;
-        if ( arRef.getSize(1) < 4 )        return;
-        if ( placeholder_num(&arRef(3)) < 0 )   return;
+        if (1 != arRef.getDim())         return;
+        if (arRef.getSize(1) < 4)        return;
+        if (placeholder_num(&arRef(3)) < 0)   return;
         VARIANT pF;
         ::VariantInit(&pF);
-        if ( S_OK != ::VariantChangeType(&pF, &arRef(0), 0, VT_I8))     return;
+        if (S_OK != ::VariantChangeType(&pF, &arRef(0), 0, VT_I8))     return;
         fun = reinterpret_cast<vbCallbackFunc_t>(pF.llVal);
         VariantClear(&pF);
         elem1 = &arRef(1);
@@ -178,9 +184,9 @@ namespace   {   //util
     {
         VBCallbackStruct callback(elem);
         try {
-            if ( callback.fun )
+            if (callback.fun)
             {
-                if ( delay )
+                if (delay)
                     return std::make_unique<innerFunction>(elem, true);
                 else
                     return std::make_unique<functionExpr>(callback);
@@ -195,7 +201,8 @@ namespace   {   //util
                 default:    return std::make_unique<valueExpr>(elem);
                 }
             }
-        } catch (...)   {
+        }
+        catch (...) {
             return std::unique_ptr<valueExpr>(nullptr);
         }
     };
@@ -209,8 +216,8 @@ functionExpr::functionExpr(const VARIANT* bfun) noexcept : functionExpr(VBCallba
 functionExpr::functionExpr(const VBCallbackStruct& callback) noexcept : fun(callback.fun)
 {
     ::VariantInit(&val);
-    if ( !fun )     return;
-    left  = functionExpr_imple(callback.elem1, callback.delay == 1);
+    if (!fun)     return;
+    left = functionExpr_imple(callback.elem1, callback.delay == 1);
     right = functionExpr_imple(callback.elem2, callback.delay == 2);
 }
 
@@ -221,10 +228,10 @@ functionExpr::~functionExpr()
 
 VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) noexcept // = 0
 {
-    if ( fun )
+    if (fun)
     {
-        auto tmp = fun(  left->eval(x, y, left_right? left_right : 1),
-                        right->eval(x, y, left_right? left_right : 2));
+        auto tmp = fun(left->eval(x, y, left_right ? left_right : 1),
+            right->eval(x, y, left_right ? left_right : 2));
         ::VariantClear(&val);   //計算した後でクリアしなければダメ
         std::swap(val, tmp);
     }
@@ -236,10 +243,10 @@ bool functionExpr::isValid() const noexcept
     return fun != nullptr;
 }
 //-------------------------------------------------------------------------
-innerFunction::innerFunction(VARIANT* pVal, bool copy) noexcept : val(copy? myVal: *pVal)
+innerFunction::innerFunction(VARIANT* pVal, bool copy) noexcept : val(copy ? myVal : *pVal), phn1(-2), phn2(-2)
 {
     ::VariantInit(&myVal);
-    if ( copy )        ::VariantCopyInd(&myVal, pVal);
+    if (copy)        ::VariantCopyInd(&myVal, pVal);
 }
 
 innerFunction::~innerFunction()
@@ -249,23 +256,25 @@ innerFunction::~innerFunction()
 
 VARIANT* innerFunction::eval(VARIANT* x, VARIANT* y, int left_right) noexcept // = 0
 {
-    VBCallbackStruct callback{&val};
-    eval_imple(callback.elem1, x, y, left_right);
-    eval_imple(callback.elem2, x, y, left_right);
+    VBCallbackStruct callback{ &val };
+    eval_imple(callback.elem1, x, y, left_right, phn1);
+    eval_imple(callback.elem2, x, y, left_right, phn2);
     return &val;
 }
 
-void innerFunction::eval_imple(VARIANT* elem, VARIANT* x, VARIANT* y, int left_right) noexcept
+void innerFunction::eval_imple(VARIANT* elem, VARIANT* x, VARIANT* y, int left_right, int& phn) noexcept
 {
-    VBCallbackStruct callback{elem};
+    VBCallbackStruct callback{ elem };
     if (callback.fun)
     {
-        innerFunction inner{elem, false};
+        innerFunction inner{ elem, false };
         inner.eval(x, y, left_right);
     }
     else
     {
-        switch (placeholder_num(elem))
+        if ( phn < -1 )
+            phn = placeholder_num(elem);
+        switch ( phn )
         {
         case 0:
             ::VariantCopy(elem, placeholder0{}.eval(x, y, left_right));
