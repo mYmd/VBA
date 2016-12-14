@@ -5,7 +5,7 @@
 #include <array>
 
 #if _MSC_VER < 1900
-    #define noexcept throw()
+#define noexcept throw()
 #endif
 
 //VBA配列の次元取得
@@ -22,8 +22,8 @@ VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param
 
 //--------------------------------------------------------
 // SafeArray要素のアクセス
-class safearrayRef  {
-    SAFEARRAY*      psa; 
+class safearrayRef {
+    SAFEARRAY*      psa;
     VARTYPE         pvt;
     std::size_t     dim;
     std::size_t     elemsize;
@@ -43,7 +43,7 @@ public:
 
 //--------------------------------------------------------
 //関数のインタフェース
-class funcExpr_i    {
+class funcExpr_i {
 public:
     virtual ~funcExpr_i() = default;
     virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept = 0;
@@ -55,14 +55,14 @@ public:
 // Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
 // もしくは
 // Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
-using vbCallbackFunc_t = VARIANT (__stdcall * )(VARIANT*, VARIANT*);
+using vbCallbackFunc_t = VARIANT(__stdcall *)(VARIANT*, VARIANT*);
 
-namespace{
+namespace {
     struct VBCallbackStruct;
 }
 
 //VBA関数の表現
-class functionExpr : public funcExpr_i    {
+class functionExpr : public funcExpr_i {
     vbCallbackFunc_t    fun;
     VARIANT             val;
     std::unique_ptr<funcExpr_i> left;
@@ -81,9 +81,11 @@ public:
 class innerFunction : public funcExpr_i {
     VARIANT             myVal;
     VARIANT&            val;
+    int                 phn1;
+    int                 phn2;
     innerFunction(innerFunction const&) = delete;
     innerFunction(innerFunction&&) = delete;
-    void eval_imple(VARIANT*, VARIANT*, VARIANT*, int) noexcept;
+    void eval_imple(VARIANT*, VARIANT*, VARIANT*, int, int&) noexcept;
 public:
     innerFunction(VARIANT*, bool) noexcept;
     ~innerFunction();
