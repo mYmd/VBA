@@ -780,14 +780,20 @@ Public Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     Dim i As Long, counter As Long
     Dim ret As Variant
     If Dimension(v1) = 1 And Dimension(v2) = 1 Then
-        ret = v1
-        If 0 < sizeof(v2) Then ReDim Preserve ret(0 To sizeof(v1) + sizeof(v2) - 1)
-        counter = sizeof(v1)
-        For i = LBound(v2) To UBound(v2) Step 1
-            ret(counter) = v2(i)
-            counter = counter + 1
-        Next i
-        catV = moveVariant(ret)
+        If rowSize(v1) = 0 Then
+            ret = v2
+        ElseIf rowSize(v2) = 0 Then
+            ret = v1
+        Else
+            ret = v1
+            ReDim Preserve ret(0 To rowSize(v1) + rowSize(v2) - 1)
+            counter = rowSize(v1)
+            For i = LBound(v2) To UBound(v2) Step 1
+                ret(counter) = v2(i)
+                counter = counter + 1
+            Next i
+        End If
+        swapVariant catV, ret
     ElseIf Dimension(v1) <> 1 And Dimension(v2) = 1 Then
         catV = catV(vector(v1), v2)
     ElseIf Dimension(v1) = 1 And Dimension(v2) <> 1 Then
