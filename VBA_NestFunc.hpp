@@ -83,9 +83,11 @@ class innerFunction : public funcExpr_i {
     VARIANT&            val;
     int                 phn1;
     int                 phn2;
+    std::unique_ptr<innerFunction>  arg1;
+    std::unique_ptr<innerFunction>  arg2;
     innerFunction(innerFunction const&) = delete;
     innerFunction(innerFunction&&) = delete;
-    void eval_imple(VARIANT*, VARIANT*, VARIANT*, int, int&) noexcept;
+    void eval_imple(VARIANT*, VARIANT*, VARIANT*, int, int) noexcept;
 public:
     innerFunction(VARIANT*, bool) noexcept;
     ~innerFunction();
