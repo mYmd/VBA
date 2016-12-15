@@ -257,23 +257,24 @@ innerFunction::~innerFunction()
 VARIANT* innerFunction::eval(VARIANT* x, VARIANT* y, int left_right) noexcept // = 0
 {
     VBCallbackStruct callback{ &val };
-    eval_imple(callback.elem1, x, y, left_right, phn1);
-    eval_imple(callback.elem2, x, y, left_right, phn2);
+    eval_imple(callback.elem1, x, y, left_right, 1);
+    eval_imple(callback.elem2, x, y, left_right, 2);
     return &val;
 }
 
-void innerFunction::eval_imple(VARIANT* elem, VARIANT* x, VARIANT* y, int left_right, int& phn) noexcept
+void innerFunction::eval_imple(VARIANT* elem, VARIANT* x, VARIANT* y, int left_right, int arg12) noexcept
 {
+    int& phn = (arg12 == 1)? phn1: phn2;
+    std::unique_ptr<innerFunction>& ptr = (arg12 == 1)? arg1: arg2;
     VBCallbackStruct callback{ elem };
     if (callback.fun)
     {
-        innerFunction inner{ elem, false };
-        inner.eval(x, y, left_right);
+        if (!ptr)   ptr = std::make_unique<innerFunction>(elem, false);
+        ptr->eval(x, y, left_right);
     }
     else
     {
-        if ( phn < -1 )
-            phn = placeholder_num(elem);
+        if ( phn < -1 )     phn = placeholder_num(elem);
         switch ( phn )
         {
         case 0:
