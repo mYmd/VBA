@@ -408,8 +408,8 @@ End Function
     End Function
     
 'Mid
-Function str_mid(ByRef st As Variant, ByRef begin_end As Variant) As Variant
-    str_mid = mid(st, begin_end(0), begin_end(1))
+Function str_mid(ByRef st As Variant, ByRef begin_len As Variant) As Variant
+    str_mid = mid(st, begin_len(0), begin_len(1))
 End Function
     Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
