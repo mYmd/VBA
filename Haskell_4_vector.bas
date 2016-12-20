@@ -1049,7 +1049,11 @@ End Function
 Public Sub push_back(ByRef vec As Variant, ByRef a As Variant)
     If Dimension(vec) = 1 Then
         changeLBound vec, 0
-        ReDim Preserve vec(0 To UBound(vec) + 1)
+        If UBound(vec) < 0 Then
+            ReDim vec(0 To 0)
+        Else
+            ReDim Preserve vec(0 To UBound(vec) + 1)
+        End If
         vec(UBound(vec)) = a
     End If
 End Sub
