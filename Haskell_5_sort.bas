@@ -61,7 +61,7 @@ Function sortIndex_pred(ByRef matrix As Variant, ByRef comp As Variant) As Varia
     End Select
 End Function
     Public Function p_sortIndex_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_sortIndex_pred = make_funPointer(AddressOf sortIndex_pred, firstParam, secondParam)
+        p_sortIndex_pred = make_funPointer(AddressOf sortIndex_pred, firstParam, secondParam, 2)
     End Function
 
 ' 1次元配列 vec の並べ換え
@@ -130,14 +130,11 @@ Function lower_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef p
 End Function
     ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
     ' mapF_swap(p_lower_bound_pred(comp), matrix, values) という使用方法を想定
-    Function p_lower_bound_pred(ByRef comp_ As Variant) As Variant
-        Dim comp As Variant:    comp = comp_
-        swap1st comp, yield_1
-        swap2nd comp, yield_2
+    Function p_lower_bound_pred(ByRef comp As Variant) As Variant
         p_lower_bound_pred = make_funPointer( _
                     AddressOf lower_bound_pred_zzz, _
                     Empty, _
-                    p_makePair(ph_1, comp))
+                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
     End Function
     Private Function lower_bound_pred_zzz(ByRef matrix As Variant, ByRef comp_val As Variant) As Variant
         lower_bound_pred_zzz = lower_bound_pred(matrix, comp_val(0), comp_val(1))
@@ -160,14 +157,11 @@ Function upper_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef p
 End Function
     ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
     ' mapF_swap(p_upper_bound_pred(comp), matrix, values) という使用方法を想定
-    Function p_upper_bound_pred(ByRef comp_ As Variant) As Variant
-        Dim comp As Variant:    comp = comp_
-        swap1st comp, yield_1
-        swap2nd comp, yield_2
+    Function p_upper_bound_pred(ByRef comp As Variant) As Variant
         p_upper_bound_pred = make_funPointer( _
                     AddressOf upper_bound_pred_zzz, _
                     Empty, _
-                    p_makePair(ph_1, comp))
+                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
     End Function
     Private Function upper_bound_pred_zzz(ByRef matrix As Variant, ByRef comp_val As Variant) As Variant
         upper_bound_pred_zzz = upper_bound_pred(matrix, comp_val(0), comp_val(1))
@@ -187,14 +181,11 @@ Function equal_range_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef p
 End Function
     ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
     ' mapF_swap(p_equal_range_pred(comp), matrix, values) という使用方法を想定
-    Function p_equal_range_pred(ByRef comp_ As Variant) As Variant
-        Dim comp As Variant:    comp = comp_
-        swap1st comp, yield_1
-        swap2nd comp, yield_2
+    Function p_equal_range_pred(ByRef comp As Variant) As Variant
         p_equal_range_pred = make_funPointer( _
                     AddressOf equal_range_pred_zzz, _
                     Empty, _
-                    p_makePair(ph_1, comp))
+                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
     End Function
     Private Function equal_range_pred_zzz(ByRef matrix As Variant, ByRef comp_val As Variant) As Variant
         equal_range_pred_zzz = equal_range_pred(matrix, comp_val(0), comp_val(1))
