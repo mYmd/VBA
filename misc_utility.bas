@@ -72,13 +72,13 @@ Public Function p_try(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)), ph_2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)))
         Else
             p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)), f2)
         End If
     Else
         If IsMissing(f2) Then
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)), ph_2)
+            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)))
         Else
             p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)), f2)
         End If
@@ -90,13 +90,13 @@ Public Function p_try_not(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)), ph_2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)))
         Else
             p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)), f2)
         End If
     Else
         If IsMissing(f2) Then
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))), ph_2)
+            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))))
         Else
             p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))), f2)
         End If
@@ -598,7 +598,7 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
     Dim delim As String
     delim = IIf(VarType(delimiter) = vbString, delimiter, ",")
     Dim bn As Long, en As Long, counter As Long, isEven As Boolean
-    Dim ret As Variant: ret = Array("")
+    Dim ret As Variant: ret = VBA.Array("")
     Dim LenExpr As Long: LenExpr = Len(expr)
     isEven = True
     bn = 1
