@@ -35,6 +35,8 @@ Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As 
     If Dimension(m) = 0 Then
         If IsArray(m) Then
             Debug.Print "#Erased Array#":                       Exit Sub
+        ElseIf IsObject(m) Then
+            Debug.Print " " & TypeName(m):                      Exit Sub
         Else
             Debug.Print m:                                      Exit Sub
         End If
@@ -43,32 +45,37 @@ Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As 
     If Dimension(m) = 1 Then printV m, r:                       Exit Sub
     If 2 < Dimension(m) Then Debug.Print "#Dimension Error#":   Exit Sub
     '-----------------------------------------
-    Dim SR As Long, ER As Long
+    Dim SR As Long, er As Long
     Dim SC As Long, EC As Long
-    Call get_start_end(m, IIf(IsMissing(r), rowSize(m), r), 1, SR, ER)
+    Call get_start_end(m, IIf(IsMissing(r), rowSize(m), r), 1, SR, er)
     Call get_start_end(m, IIf(IsMissing(c), colSize(m), c), 2, SC, EC)
-    If (ER < SR) Or (EC < SC) Then
+    If (er < SR) Or (EC < SC) Then
         Debug.Print "#Empty Matrix#"
         Exit Sub
     End If
     Dim i As Long, j As Long
-    If (100000 < (ER - SR + 1) * (EC - SC + 1)) Then
+    If (100000 < (er - SR + 1) * (EC - SC + 1)) Then
         i = MsgBox("サイズ超過。縦*横 <=100000以内", vbOKOnly, "サイズ超過")
         Exit Sub
     End If
     Dim MaxL() As Long:     ReDim MaxL(SC To EC)
-    Dim tmp() As Variant:   ReDim tmp(SR To ER, SC To EC)
+    Dim tmp() As Variant:   ReDim tmp(SR To er, SC To EC)
     For j = SC To EC Step 1
-        For i = SR To ER Step 1
-            tmp(i, j) = m(i, j)
-            If IsError(m(i, j)) = True Then tmp(i, j) = "Error!"
-            If IsEmpty(m(i, j)) = True Then tmp(i, j) = ""
-            If IsNull(m(i, j)) = True Then tmp(i, j) = ""
-            If IsArray(m(i, j)) = True Then tmp(i, j) = "[" & i & "," & j & "]"
+        For i = SR To er Step 1
+            If IsObject(m(i, j)) = True Then
+                tmp(i, j) = TypeName(m(i, j))
+            Else
+                tmp(i, j) = m(i, j)
+                If IsError(m(i, j)) = True Then tmp(i, j) = "Error!"
+                If IsEmpty(m(i, j)) = True Then tmp(i, j) = ""
+                If IsNull(m(i, j)) = True Then tmp(i, j) = ""
+                If IsArray(m(i, j)) = True Then tmp(i, j) = "[" & i & "," & j & "]"
+                If IsObject(m(i, j)) = True Then tmp(i, j) = TypeName(m(i, j))
+            End If
             If MaxL(j) < LenW(Trim(tmp(i, j))) Then MaxL(j) = LenW(Trim(tmp(i, j)))
         Next i
     Next j
-    For i = SR To ER Step 1
+    For i = SR To er Step 1
         For j = SC To EC - 1 Step 1
             If VarType(tmp(i, j)) = vbString Then
                 Debug.Print Space(2); Trim(tmp(i, j)); Space(MaxL(j) - LenW(Trim(tmp(i, j))));
@@ -90,24 +97,24 @@ End Sub
         If Dimension(v) = 2 Then printM v, r:                       Exit Sub
         If LBound(v) > UBound(v) Then Debug.Print "#Empty Vector#": Exit Sub
         '-----------------------------------------
-        Dim SR As Long, ER As Long
+        Dim SR As Long, er As Long
         If IsMissing(r) Then
-            Call get_start_end(v, sizeof(v), 1, SR, ER)
+            Call get_start_end(v, sizeof(v), 1, SR, er)
         ElseIf rowSize(r) < 2 Then
-            Call get_start_end(v, r, 1, SR, ER)
+            Call get_start_end(v, r, 1, SR, er)
         Else
-            SR = r(0): ER = r(1)
+            SR = r(0): er = r(1)
         End If
-        If ER < SR Then
+        If er < SR Then
             Debug.Print "#Empty Vector#"
             Exit Sub
         End If
         Dim i As Long
-        If (10000 < ER - SR + 1) Then
+        If (10000 < er - SR + 1) Then
             i = MsgBox("サイズ超過。長さ 10000個以内。", vbOKOnly, "サイズ超過")
             Exit Sub
         End If
-        For i = SR To ER - 1 Step 1
+        For i = SR To er - 1 Step 1
             If IsError(v(i)) = True Then
                 Debug.Print "  Error!";
             ElseIf IsArray(v(i)) = True Then
@@ -116,20 +123,24 @@ End Sub
                 Debug.Print "  ";
             ElseIf IsNull(v(i)) = True Then
                 Debug.Print "  ";
+            ElseIf IsObject(v(i)) = True Then
+                Debug.Print Space(2); TypeName(v(i));
             Else
                 Debug.Print Space(2); Trim(v(i));
             End If
         Next i
-        If IsError(v(ER)) = True Then
+        If IsError(v(er)) = True Then
             Debug.Print "  Error!"
-        ElseIf IsArray(v(ER)) = True Then
-            Debug.Print "  [" & ER & "]"
-        ElseIf IsEmpty(v(ER)) = True Then
+        ElseIf IsArray(v(er)) = True Then
+            Debug.Print "  [" & er & "]"
+        ElseIf IsEmpty(v(er)) = True Then
             Debug.Print "  "
-        ElseIf IsNull(v(ER)) = True Then
+        ElseIf IsNull(v(er)) = True Then
             Debug.Print "  "
+        ElseIf IsObject(v(er)) = True Then
+            Debug.Print Space(2); TypeName(v(er))
         Else
-            Debug.Print Space(2); Trim(v(ER))
+            Debug.Print Space(2); Trim(v(er))
         End If
     End Sub
 
