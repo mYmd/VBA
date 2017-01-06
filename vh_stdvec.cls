@@ -6,7 +6,7 @@ Attribute VB_Name = "vh_stdvec"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 Option Explicit
 'vh_stdvec
 'Copyright (c) 2016 mmYYmmdd
