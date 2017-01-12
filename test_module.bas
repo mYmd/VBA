@@ -86,14 +86,15 @@ End Sub
     End Sub
 
     Private Sub fibonacci_test()
-        Dim n As Long
-        Debug.Print "------- フィボナッチ数列（5通り） ------------"
-        n = 15
+        Dim n As Long: n = 15
+        Dim f As Variant
+        Debug.Print "------- フィボナッチ数列（2通り） ------------"
         printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
-        printM unzip(scanl_Funs(Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
-        printM unzip(scanl(p_applyFun2by2, Array(0, 1), repeat(Array(p_secondArg, p_plus), n)), 1)(0)
-        printM unzip(generate_while(Array(0, 1), p_true, p_makePair(p_getNth(, 1), p_plus(p_getNth(, 0), p_getNth(, 1))), n), 1)(0)
-        printM unzip(generate_while(Array(0, 1), p_true, p_applyFun2by2(, Array(p_secondArg, p_plus)), n), 1)(0)
+        f = p_push_back_move(, p_foldl1(p_plus, p_tailN(, 2)))
+        printM repeat_while(Array(0, 1), p_true, f, n - 1)
+        Debug.Print "------- テトラナッチ数列 ------------"
+        f = p_push_back_move(, p_foldl1(p_plus, p_tailN(, 4)))
+        printM repeat_while(Array(0, 0, 0, 1), p_true, f, n - 1)
     End Sub
     
     Private Sub FizzBuzz_test()
