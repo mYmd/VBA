@@ -24,10 +24,7 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
  構成要素  
 ・C++ソースをdllとしてコンパイル＆ビルド  
 エクスポートする関数はdefファイルで定義  
-
 (Declare宣言はdll名をmapM.dllとする前提にしている)  
-(32bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM.dll)  
-(64bit dllバイナリはhttp://home.b07.itscom.net/m-yamada/VBA/mapM64.dll)  
 
 以下のbasファイル／clsファイルはVBAのソースコード。(Office 2010～)
 標準モジュールとクラスモジュールにそのまま取り込む。  
@@ -47,6 +44,9 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
 '=============================================================  
+2017/1/15  
+dllバイナリを外部URLからここのbinフォルダに変更  
+
 2016/10/26  
 C++APIにself_zipWithを追加（1次元配列の離れた要素間で2項操作を適用する関数）  
 mapM.defとmisc_utility.basにそれを反映  
