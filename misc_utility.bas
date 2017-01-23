@@ -1,4 +1,3 @@
-Attribute VB_Name = "misc_utility"
 'misc_utility
 'Copyright (c) 2016 mmYYmmdd
 Option Explicit
@@ -105,9 +104,9 @@ End Function
     
     Private Function replace_0(ByRef x As Variant, ByRef alt As Variant) As Variant
         If IsNumeric(x) Then
-            replace_0 = alt
+            Call assignVar(replace_0, alt)
         Else
-            replace_0 = x(0)
+            Call assignVar(replace_0, x(0))
         End If
     End Function
     Private Function p_replace_0(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
