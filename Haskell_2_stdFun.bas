@@ -1,10 +1,10 @@
-Attribute VB_Name = "Haskell_2_stdFun"
 'Haskell_2_stdFun
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
 
 '********************************************************************
 '   要素アクセス
+' Sub       assignVar       汎用の変数コピー
 ' Function  firstArg        1番目の引数
 ' Function  secondArg       2番目の引数
 ' Function  getNth          N番目の配列要素取得（LBoundを無視した絶対位置）
@@ -17,9 +17,20 @@ Option Explicit
 '　-----------------------------------------------------------------
 '     ファンクタ等　～
 '********************************************************************
+
+' 汎用の変数コピー
+Public Sub assignVar(ByRef target As Variant, ByRef source As Variant)
+    If IsObject(source) Then
+        Set target = source
+    Else
+        target = source
+    End If
+End Sub
+
+
 '1番目の引数
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
-    firstArg = a
+    Call assignVar(firstArg, a)
 End Function
     Function p_firstArg(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_firstArg = make_funPointer(AddressOf firstArg, firstParam, secondParam)
@@ -27,7 +38,7 @@ End Function
 
 '2番目の引数
 Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
-    secondArg = b
+    Call assignVar(secondArg, b)
 End Function
     Function p_secondArg(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_secondArg = make_funPointer(AddressOf secondArg, firstParam, secondParam)
@@ -35,7 +46,7 @@ End Function
 
 'N番目の配列要素取得（LBoundを無視した絶対位置）
 Function getNth(ByRef vec As Variant, ByRef index As Variant) As Variant
-    getNth = vec(index)
+    Call assignVar(getNth, vec(index))
 End Function
     Function p_getNth(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
@@ -45,9 +56,9 @@ End Function
 'index < 0 の場合は後ろから取得
 Function getNth_b(ByRef vec As Variant, ByRef index As Variant) As Variant
     If 0 <= index Then
-        getNth_b = vec(index + LBound(vec))
+        Call assignVar(getNth_b, vec(index + LBound(vec)))
     Else
-        getNth_b = vec(UBound(vec) + 1 + index)
+        Call assignVar(getNth_b, vec(UBound(vec) + 1 + index))
     End If
 End Function
     Function p_getNth_b(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -58,14 +69,14 @@ End Function
 'index < 0 の場合は後ろに設定
 Sub setNth_b(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     If 0 <= index Then
-        vec(index + LBound(vec)) = value
+        Call assignVar(vec(index + LBound(vec)), value)
     Else
-        vec(index + 1 + UBound(vec)) = value
+        Call assignVar(vec(index + 1 + UBound(vec)), value)
     End If
 End Sub
 
 Function setNth_move(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
-    vec(index) = value
+    Call assignVar(vec(index), value)
     setNth_move = moveVariant(vec)
 End Function
 
@@ -206,7 +217,6 @@ End Function
 Function if_else(ByRef val As Variant, ByRef trans As Variant) As Variant
     Dim lb As Long
     Dim check As Boolean
-    
     lb = LBound(trans)
     If is_bindFun(trans(lb)) Then
         check = applyFun(val, trans(lb))
@@ -217,16 +227,16 @@ Function if_else(ByRef val As Variant, ByRef trans As Variant) As Variant
         If is_bindFun(trans(1 + lb)) Then
             if_else = applyFun(val, trans(1 + lb))
         Else
-            if_else = trans(1 + lb)
+            Call assignVar(if_else, trans(1 + lb))
         End If
     Else
         If is_bindFun(trans(2 + lb)) Then
             if_else = applyFun(val, trans(2 + lb))
         Else
-            if_else = trans(2 + lb)
+            Call assignVar(if_else, trans(2 + lb))
         End If
     End If
-    If is_placeholder(if_else) Then if_else = val
+    If is_placeholder(if_else) Then Call assignVar(if_else, val)
 End Function
     Function p_if_else(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_if_else = make_funPointer(AddressOf if_else, firstParam, secondParam)
@@ -235,9 +245,9 @@ End Function
 'Nullを他の値に置換する
 Function replaceNull(ByRef x As Variant, ByRef alt As Variant) As Variant
     If IsNull(x) Then
-        replaceNull = alt
+        Call assignVar(replaceNull, alt)
     Else
-        replaceNull = x
+        Call assignVar(replaceNull, x)
     End If
 End Function
     Function p_replaceNull(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -247,9 +257,9 @@ End Function
 'Emptyを他の値に置換する
 Function replaceEmpty(ByRef x As Variant, ByRef alt As Variant) As Variant
     If IsEmpty(x) Then
-        replaceEmpty = alt
+        Call assignVar(replaceEmpty, alt)
     Else
-        replaceEmpty = x
+        Call assignVar(replaceEmpty, x)
     End If
 End Function
     Function p_replaceEmpty(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -366,7 +376,7 @@ End Function
 
 'CDbl
 Function CDbl_(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
-    CDbl_ = 0
+    CDbl_ = 0#
     If IsNumeric(a) Then CDbl_ = CDbl(a)
     If IsDate(a) Then CDbl_ = CDbl(DateValue(a))
 End Function
@@ -385,7 +395,8 @@ End Function
 
 'Len
 Function str_len(ByRef st As Variant, Optional ByRef dummy As Variant) As Variant
-    str_len = Len(st)
+    str_len = 0
+    If VarType(st) = vbString Then str_len = Len(st)
 End Function
     Function p_len(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_len = make_funPointer(AddressOf str_len, firstParam, secondParam)
@@ -436,7 +447,7 @@ Function joinFun(ByRef m As Variant, ByRef delim As Variant) As Variant
     If IsEmpty(m) Or IsNull(m) Then
         joinFun = ""
     Else
-        joinFun = Join(m, delim)
+        joinFun = join(m, delim)
     End If
 End Function
     Function p_join(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
