@@ -1,4 +1,3 @@
-Attribute VB_Name = "Haskell_4_vector"
 'Haskell_4_vector
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
@@ -86,11 +85,17 @@ Public Function repeat(ByRef v As Variant, ByRef n As Variant) As Variant
         repeat = VBA.Array()
     Else
         Dim i As Long
-        Dim ret As Variant: ReDim ret(0 To n - 1)
-        For i = 0 To n - 1 Step 1
-            ret(i) = v
-        Next i
-        repeat = moveVariant(ret)
+        Dim ret As Variant:     ReDim ret(0 To n - 1)
+        If IsObject(v) Then
+            For i = 0 To n - 1 Step 1
+                Set ret(i) = v
+            Next i
+        Else
+            For i = 0 To n - 1 Step 1
+                ret(i) = v
+            Next i
+        End If
+        Call swapVariant(repeat, ret)
     End If
 End Function
     Public Function p_repeat(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -107,7 +112,7 @@ Public Function iota(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
         ret(k) = i
         k = k + 1
     Next i
-    iota = moveVariant(ret)
+    Call swapVariant(iota, ret)
 End Function
     Public Function p_iota(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_iota = make_funPointer(AddressOf iota, firstParam, secondParam)
@@ -134,7 +139,7 @@ Public Function a__o(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
             ret(k) = i
             k = k + 1
         Next i
-        a__o = moveVariant(ret)
+        Call swapVariant(a__o, ret)
     Else
         a__o = VBA.Array()
     End If
@@ -152,7 +157,7 @@ Public Function o__a(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
             ret(k) = i
             k = k + 1
         Next i
-        o__a = moveVariant(ret)
+        Call swapVariant(o__a, ret)
     Else
         o__a = VBA.Array()
     End If
@@ -170,7 +175,7 @@ Public Function o__o(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
             ret(k) = i
             k = k + 1
         Next i
-        o__o = moveVariant(ret)
+        Call swapVariant(o__o, ret)
     Else
         o__o = VBA.Array()
     End If
@@ -195,14 +200,14 @@ Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
         ret = vec
         changeLBound ret, 0
         ReDim Preserve ret(0 To n - 1)
-        swapVariant headN, ret
+        Call swapVariant(headN, ret)
     Else
         lb = LBound(vec)
         ReDim ret(0 To n - 1)
         For i = 0 To n - 1 Step 1
-            ret(i) = vec(i + lb)
+            Call assignVar(ret(i), vec(i + lb))
         Next i
-        headN = moveVariant(ret)
+        Call swapVariant(headN, ret)
     End If
 End Function
     Public Function p_headN(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -230,9 +235,9 @@ Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
         lb = UBound(vec) - n + 1
         ReDim ret(0 To n - 1)
         For i = 0 To n - 1 Step 1
-            ret(i) = vec(i + lb)
+            Call assignVar(ret(i), vec(i + lb))
         Next i
-        tailN = moveVariant(ret)
+        Call swapVariant(tailN, ret)
     End If
 End Function
     Public Function p_tailN(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -261,11 +266,7 @@ Public Function vector(ByRef data As Variant, Optional ByRef order As Variant) A
         If dimen = 2 Then
             For i = LBound(data, 1) To UBound(data, 1) Step 1
                 For j = LBound(data, 2) To UBound(data, 2) Step 1
-                    If IsObject(data(i, j)) Then
-                        Set ret(counter) = data(i, j)
-                    Else
-                        ret(counter) = data(i, j)
-                    End If
+                    Call assignVar(ret(counter), data(i, j))
                     counter = counter + 1
                 Next j
             Next i
@@ -282,16 +283,16 @@ Public Function vector(ByRef data As Variant, Optional ByRef order As Variant) A
             Next i
             For Each z In data
                 counter = BoundaryControl(bound, index, 1)
-                swapVariant ret(counter), z
+                Call swapVariant(ret(counter), z)
             Next z
         End If
     Else
         For Each z In data
-            swapVariant ret(counter), z
+            Call swapVariant(ret(counter), z)
             counter = counter + 1
         Next z
     End If
-    swapVariant vector, ret
+    Call swapVariant(vector, ret)
 End Function
     Public Function p_vector(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_vector = make_funPointer_with_2nd_Default(AddressOf vector, firstParam, secondParam)
@@ -323,7 +324,7 @@ Public Function reverse(ByRef vec As Variant) As Variant
         If VarType(vec) = VarType(Array()) Then
             ret = vec
             Do While i < j
-                swapVariant ret(i), ret(j)
+                Call swapVariant(ret(i), ret(j))
                 i = i + 1
                 j = j - 1
             Loop
@@ -345,7 +346,7 @@ Public Function reverse(ByRef vec As Variant) As Variant
             Loop
         End If
     End If
-    reverse = moveVariant(ret)
+    Call swapVariant(reverse, ret)
 End Function
 
 '1次元配列の回転
@@ -378,8 +379,8 @@ End Function
 
 'rotationしてmoveして返す
 Public Function rotate_move(ByRef vec As Variant, ByRef shift As Variant) As Variant
-    rotate vec, shift
-    rotate_move = moveVariant(vec)
+    Call rotate(vec, shift)
+    Call swapVariant(rotate_move, vec)
 End Function
     Function p_rotate_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_rotate_move = make_funPointer(AddressOf rotate_move, firstParam, secondParam)
@@ -390,14 +391,14 @@ End Function
         Dim k As Long:          k = LBound(vec)
         ReDim tmp(LBound(vec) To UBound(vec))
         For i = const_j To UBound(vec) Step 1
-            swapVariant tmp(k), vec(i)
+            Call swapVariant(tmp(k), vec(i))
             k = k + 1
         Next i
         For i = LBound(vec) To const_j - 1 Step 1
-            swapVariant tmp(k), vec(i)
+            Call swapVariant(tmp(k), vec(i))
             k = k + 1
         Next i
-        vec = moveVariant(tmp)
+        Call swapVariant(vec, tmp)
     End Sub
     Private Sub rotate_imple_O(ByRef vec As Variant, ByVal const_j As Long)
         Dim tmp As Variant:     Dim i As Long
@@ -411,7 +412,7 @@ End Function
             Set tmp(k) = vec(i)
             k = k + 1
         Next i
-        vec = moveVariant(tmp)
+        Call swapVariant(vec, tmp)
     End Sub
     Private Sub rotate_imple_L(ByRef vec As Variant, ByVal const_j As Long)
         Dim tmp As Variant:     Dim i As Long
@@ -425,7 +426,7 @@ End Function
             tmp(k) = vec(i)
             k = k + 1
         Next i
-        vec = moveVariant(tmp)
+        Call swapVariant(vec, tmp)
     End Sub
 
 '特定行の取得
@@ -437,9 +438,9 @@ Public Function selectRow(ByRef matrix As Variant, ByRef i As Variant) As Varian
             Dim ret   As Variant
             ReDim ret(LBound(matrix, 2) To UBound(matrix, 2))
             For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-                ret(j) = matrix(i, j)
+                Call assignVar(ret(j), matrix(i, j))
             Next j
-            selectRow = moveVariant(ret)
+            Call swapVariant(selectRow, ret)
         End If
     End If
 End Function
@@ -456,9 +457,9 @@ Public Function selectCol(ByRef matrix As Variant, ByRef j As Variant) As Varian
             Dim ret   As Variant
             ReDim ret(LBound(matrix, 1) To UBound(matrix, 1))
             For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-                ret(i) = matrix(i, j)
+                Call assignVar(ret(i), matrix(i, j))
             Next i
-            swapVariant selectCol, ret
+            Call swapVariant(selectCol, ret)
         End If
     End If
 End Function
@@ -476,7 +477,7 @@ Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByR
         If 0 < r And 0 < c Then ReDim ret(0 To r - 1, 0 To c - 1)
     End If
     If IsMissing(data) = False Then Call fillM(ret, data)
-    makeM = moveVariant(ret)
+    Call swapVariant(makeM, ret)
 End Function
 
 '配列をデータで埋める
@@ -488,7 +489,7 @@ Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
         data_2 = VBA.Array(data)
         stepN = 0
     ElseIf Dimension(data) = 1 Then
-        swapVariant data_2, data
+        Call swapVariant(data_2, data)
         swapFlag = True
     Else
         data_2 = vector(data)
@@ -499,7 +500,7 @@ Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
     Case 1
         For i = LBound(matrix) To UBound(matrix) Step 1
             If UBound(data_2) < k Then Exit For
-            matrix(i) = data_2(k)
+            Call assignVar(matrix(i), data_2(k))
             k = k + stepN
         Next i
     Case 2
@@ -507,18 +508,18 @@ Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
             If UBound(data_2) < k Then Exit For
             For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
                 If UBound(data_2) < k Then Exit For
-                matrix(i, j) = data_2(k)
+                Call assignVar(matrix(i, j), data_2(k))
                 k = k + stepN
             Next j
         Next i
     End Select
-    If swapFlag Then swapVariant data_2, data
+    If swapFlag Then Call swapVariant(data_2, data)
 End Sub
 
 '配列をデータで埋めてmoveして返す
 Public Function fillM_move(ByRef matrix As Variant, ByRef data As Variant) As Variant
     Call fillM(matrix, data)
-    fillM_move = moveVariant(matrix)
+    Call swapVariant(fillM_move, matrix)
 End Function
 
 '配列の特定行をデータで埋める
@@ -526,13 +527,13 @@ Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Varia
     Dim j As Long, k As Long
     If Dimension(data) = 0 Then
         For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-            matrix(i, j) = data
+            Call assignVar(matrix(i, j), data)
         Next j
     ElseIf Dimension(data) = 1 Then
         k = LBound(data)
         For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
             If UBound(data) < k Then Exit For
-            matrix(i, j) = data(k)
+            Call assignVar(matrix(i, j), data(k))
             k = k + 1
         Next j
     End If
@@ -541,7 +542,7 @@ End Sub
 '配列の特定行をデータで埋めてmoveして返す
 Public Function fillRow_move(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
     Call fillRow(matrix, i, data)
-    fillRow_move = moveVariant(matrix)
+    Call swapVariant(fillRow_move, matrix)
 End Function
 
     '((((配列の特定行をデータで埋める))))
@@ -552,7 +553,7 @@ End Function
         Dim j As Long, k As Long
         k = LBound(data, 2)
         For j = LBound(matrix, 2) To UBound(matrix, 2) Step 1
-            matrix(i, j) = data(rrrr, k)
+            Call assignVar(matrix(i, j), data(rrrr, k))
             k = k + 1
         Next j
     End Sub
@@ -562,13 +563,13 @@ Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Varia
     Dim i As Long, k As Long
     If Dimension(data) = 0 Then
         For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-            matrix(i, j) = data
+            Call assignVar(matrix(i, j), data)
         Next i
     ElseIf Dimension(data) = 1 Then
         k = LBound(data)
         For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
             If UBound(data) < k Then Exit For
-            matrix(i, j) = data(k)
+            Call assignVar(matrix(i, j), data(k))
             k = k + 1
         Next i
     End If
@@ -577,7 +578,7 @@ End Sub
 '配列の特定列をデータで埋めてmoveして返す
 Public Function fillCol_move(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
     Call fillCol(matrix, j, data)
-    fillCol_move = moveVariant(matrix)
+    Call swapVariant(fillCol_move, matrix)
 End Function
     
     '((((配列の特定列をデータで埋める))))
@@ -588,20 +589,20 @@ End Function
         Dim i As Long, k As Long
         k = LBound(data, 1)
         For i = LBound(matrix, 1) To UBound(matrix, 1) Step 1
-            matrix(i, j) = data(k, cccc)
+            Call assignVar(matrix(i, j), data(k, cccc))
             k = k + 1
         Next i
     End Sub
 
 '1次元配列を他の1次元配列の繰り返しで埋める（回数指定可）
-Sub fillPattern(ByRef vec As Variant, ByRef pattern As Variant, Optional ByVal counter As Long = -1)
+Sub fillPattern(ByRef vec As Variant, ByRef Pattern As Variant, Optional ByVal counter As Long = -1)
     Dim ubm As Long:    ubm = UBound(vec)
-    Dim ubp As Long:    ubp = UBound(pattern)
-    Dim lbp As Long:    lbp = LBound(pattern)
+    Dim ubp As Long:    ubp = UBound(Pattern)
+    Dim lbp As Long:    lbp = LBound(Pattern)
     Dim i As Long:  i = LBound(vec)
-    Dim k As Long:  k = LBound(pattern)
+    Dim k As Long:  k = LBound(Pattern)
     Do While i <= ubm And counter <> 0
-        vec(i) = pattern(k)
+        Call assignVar(vec(i), Pattern(k))
         i = i + 1
         k = k + 1
         If ubp < k Then
@@ -612,9 +613,9 @@ Sub fillPattern(ByRef vec As Variant, ByRef pattern As Variant, Optional ByVal c
 End Sub
 
 '1次元配列を他の1次元配列の繰り返しで埋めてmoveして返す
-Public Function fillPattern_move(ByRef vec As Variant, ByRef pattern As Variant, Optional ByVal counter As Long = -1) As Variant
-    fillPattern vec, pattern, counter
-    fillPattern_move = moveVariant(vec)
+Public Function fillPattern_move(ByRef vec As Variant, ByRef Pattern As Variant, Optional ByVal counter As Long = -1) As Variant
+    fillPattern vec, Pattern, counter
+    Call swapVariant(fillPattern_move, vec)
 End Function
 
 '1次元配列の部分配列を作成する
@@ -636,7 +637,7 @@ End Function
     End Function
     Private Function getNth_if(ByRef vec As Variant, ByRef index As Variant) As Variant
         If LBound(vec) <= index And index <= UBound(vec) Then
-            getNth_if = vec(index)
+            Call assignVar(getNth_if, vec(index))
         End If
     End Function
     Private Function p_getNth_if(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -696,7 +697,7 @@ End Function
                     If LBound(matrix, 1) <= rows(i) And rows(i) <= UBound(matrix, 1) Then
                         For j = LBound(cols) To UBound(cols) Step 1
                             If LBound(matrix, 2) <= cols(j) And cols(j) <= UBound(matrix, 2) Then
-                                ret(counterR, counterC) = matrix(rows(i), cols(j))
+                                Call assignVar(ret(counterR, counterC), matrix(rows(i), cols(j)))
                             End If
                             counterC = counterC + 1
                         Next j
@@ -707,14 +708,14 @@ End Function
                 For i = LBound(rows) To UBound(rows) Step 1
                     counterC = LBound(matrix, 2)
                     For j = LBound(cols) To UBound(cols) Step 1
-                        ret(counterR, counterC) = matrix(rows(i), cols(j))
+                        Call assignVar(ret(counterR, counterC), matrix(rows(i), cols(j)))
                         counterC = counterC + 1
                     Next j
                     counterR = counterR + 1
                 Next i
             End If
         End Select
-        subM_imple = moveVariant(ret)
+        Call swapVariant(subM_imple, ret)
     End Function
 
 'ベクトル・配列の（行の）フィルタリング
@@ -789,11 +790,11 @@ Public Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
             ReDim Preserve ret(0 To rowSize(v1) + rowSize(v2) - 1)
             counter = rowSize(v1)
             For i = LBound(v2) To UBound(v2) Step 1
-                ret(counter) = v2(i)
+                Call assignVar(ret(counter), v2(i))
                 counter = counter + 1
             Next i
         End If
-        swapVariant catV, ret
+        Call swapVariant(catV, ret)
     ElseIf Dimension(v1) <> 1 And Dimension(v2) = 1 Then
         catV = catV(vector(v1), v2)
     ElseIf Dimension(v1) = 1 And Dimension(v2) <> 1 Then
@@ -813,11 +814,11 @@ Public Function catVs(ParamArray vectors() As Variant) As Variant
     If LBound(vectors) <= UBound(vectors) Then
         ReDim tmp(LBound(vectors) To UBound(vectors))
         For i = LBound(vectors) To UBound(vectors)
-            swapVariant vectors(i), tmp(i)
+            Call swapVariant(vectors(i), tmp(i))
         Next i
         catVs = foldl1(p_catV, tmp)
         For i = LBound(vectors) To UBound(vectors)
-            swapVariant vectors(i), tmp(i)
+            Call swapVariant(vectors(i), tmp(i))
         Next i
     End If
 End Function
@@ -854,7 +855,7 @@ Public Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Vari
                 Call fillRow_imple(ret, counter, matrix2, i)
                 counter = counter + 1
             Next i
-            swapVariant catR, ret
+            Call swapVariant(catR, ret)
         End If
     End If
 End Function
@@ -894,7 +895,7 @@ Public Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Vari
                 Call fillCol_imple(ret, counter, matrix2, j)
                 counter = counter + 1
             Next j
-            swapVariant catC, ret
+            Call swapVariant(catC, ret)
         End If
     End If
 End Function
@@ -919,10 +920,10 @@ Public Function transpose(ByRef matrix As Variant) As Variant
         ReDim ret(LBound(matrix, 2) To UBound(matrix, 2), LBound(matrix, 1) To UBound(matrix, 1))
         For i = LBound(matrix, 2) To UBound(matrix, 2)
             For j = LBound(matrix, 1) To UBound(matrix, 1)
-                ret(i, j) = matrix(j, i)
+                Call assignVar(ret(i, j), matrix(j, i))
             Next j
         Next i
-        swapVariant transpose, ret
+        Call swapVariant(transpose, ret)
     Case Else
         transpose = VBA.Array()
     End Select
@@ -941,11 +942,11 @@ End Function
         Dim i As Long, j As Long: j = m(0)
         Dim k As Long: k = 0
         For i = LBound(a) To UBound(a) Step 1
-            m(1)(k)(j) = a(i)
+            Call assignVar(m(1)(k)(j), a(i))
             k = k + 1
         Next i
         m(0) = m(0) + 1
-        swapVariant zipVs_imple, m
+        Call swapVariant(zipVs_imple, m)
     End Function
         Public Function p_zipVs_imple(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
             p_zipVs_imple = make_funPointer(AddressOf zipVs_imple, firstParam, secondParam)
@@ -956,7 +957,7 @@ Public Function zipVs(ByRef vectors As Variant) As Variant
     Dim ret As Variant
     ret = VBA.Array(0, repeat(makeM(sizeof(vectors)), sizeof(vectors(LBound(vectors)))))
     ret = foldl(p_zipVs_imple, ret, vectors)
-    swapVariant zipVs, ret(1)
+    Call swapVariant(zipVs, ret(1))
 End Function
 
 '２次元配列の各行ベクトルをzipVs
@@ -968,7 +969,7 @@ Public Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Va
         For i = LBound(m, 2) To UBound(m, 2) Step 1
             ret(i) = selectCol(m, i)
         Next i
-        swapVariant zipR, ret
+        Call swapVariant(zipR, ret)
     Else
         zipR = zipR(subM(m, target))
     End If
@@ -983,7 +984,7 @@ Public Function zipC(ByRef m As Variant, Optional ByRef target As Variant) As Va
         For i = LBound(m, 1) To UBound(m, 1) Step 1
             ret(i) = selectRow(m, i)
         Next i
-        swapVariant zipC, ret
+        Call swapVariant(zipC, ret)
     Else
         zipC = zipC(subM(m, , target))
     End If
@@ -1005,10 +1006,10 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
             ReDim z(0 To sizeof(vec) - 1)
             counter = 0
             For i = LBound(vec) To UBound(vec) Step 1
-                If j <= UBound(vec(i)) Then z(counter) = vec(i)(j)
+                If j <= UBound(vec(i)) Then Call assignVar(z(counter), vec(i)(j))
                 counter = counter + 1
             Next i
-            swapVariant ret(j), z
+            Call swapVariant(ret(j), z)
         Next j
     Else
         ReDim ret(0 To sizeof(vec) - 1, 0 To colLen - 1)
@@ -1018,7 +1019,7 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
             counter = counter + 1
         Next i
     End If
-    unzip = moveVariant(ret)
+    Call swapVariant(unzip, ret)
 End Function
 
 ' Array(a)作成
@@ -1050,18 +1051,18 @@ Public Sub push_back(ByRef vec As Variant, ByRef a As Variant)
     If Dimension(vec) = 1 Then
         changeLBound vec, 0
         If UBound(vec) < 0 Then
-            ReDim vec(0 To 0)
+            vec = VBA.Array(a)
         Else
             ReDim Preserve vec(0 To UBound(vec) + 1)
+            Call assignVar(vec(UBound(vec)), a)
         End If
-        vec(UBound(vec)) = a
     End If
 End Sub
 
 ' push_backしてmoveして返す
 Public Function push_back_move(ByRef vec As Variant, ByRef a As Variant) As Variant
     push_back vec, a
-    swapVariant push_back_move, vec
+    Call swapVariant(push_back_move, vec)
 End Function
     Public Function p_push_back_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_push_back_move = make_funPointer(AddressOf push_back_move, firstParam, secondParam)
@@ -1114,5 +1115,5 @@ Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRe
             k = k + 1
         Next z
     End If
-    product_set = moveVariant(ret)
+    Call swapVariant(product_set, ret)
 End Function
