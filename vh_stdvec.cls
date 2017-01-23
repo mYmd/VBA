@@ -38,6 +38,8 @@ Option Explicit
 '   Function        filter              抽出条件を与えて配列をフィルタリングする
 '   Function        map                 変換式を与えて配列を変換する
 '   Function        orderby             比較関数を与えて配列をソートする
+'   Function        zipWith             他のベクトルとの zipWith
+'   Function        inner_join          他のベクトルとの Inner Join
 '*********************************************************************************
     Private Declare PtrSafe Function copy_valueMember Lib "mapM.dll" _
                                             (ByVal source As vh_stdvec, _
@@ -58,12 +60,22 @@ Option Explicit
     End Sub
 
 ' Variantの1次元配列をmoveして自身のデータとする（LBound = 0にする）
+' 2次元配列を渡した場合は zipC する
 Public Function from(ByRef v As Variant) As vh_stdvec
-    If Dimension(v) = 1 And VarType(v) = VarType(Array()) Then
+    If VarType(v) = VarType(Array()) Then
         vec_ = Empty
-        swapVariant vec_, v
-        changeLBound vec_, 0
-        pos_write = UBound(vec_)
+        Select Case Dimension(v)
+        Case 1
+            swapVariant vec_, v
+            changeLBound vec_, 0
+            pos_write = UBound(vec_)
+        Case 2
+            vec_ = zipC(v)
+            changeLBound vec_, 0
+            pos_write = UBound(vec_)
+        Case Else
+            Err.Raise Number:=575, Description:="vh_stdvec::from - inproper parmater"
+        End Select
     Else
         Err.Raise Number:=575, Description:="vh_stdvec::from - inproper parmater"
     End If
@@ -287,25 +299,70 @@ End Function
 ' 抽出条件を与えて配列をフィルタリングする
 Public Function filter(ByRef pred As Variant) As vh_stdvec
     shrink
-    vec_ = filterR(vec_, mapF(pred, vec_))
-    pos_write = UBound(vec_)
-    Set filter = Me
+    Set filter = New vh_stdvec
+    filter.from filterR(vec_, mapF(pred, vec_))
 End Function
 
 ' 変換式を与えて配列を変換する
 Public Function map(ByRef fun As Variant) As vh_stdvec
     shrink
-    vec_ = mapF(fun, vec_)
-    Set map = Me
+    Set map = New vh_stdvec
+    map.from mapF(fun, vec_)
 End Function
 
 ' 比較関数を与えて配列をソートする
 Public Function orderby(Optional ByRef comp As Variant) As vh_stdvec
     shrink
+    Dim tmp As Variant
+    tmp = vec_
     If IsMissing(comp) Then
-        permutate vec_, sortIndex(vec_)     ' p_less
+        permutate tmp, sortIndex(tmp)       ' p_less
     Else
-        permutate vec_, sortIndex_pred(vec_, comp)
+        permutate tmp, sortIndex_pred(tmp, comp)
     End If
-    Set orderby = Me
+    Set orderby = New vh_stdvec
+    orderby.from tmp
+End Function
+
+' 他のベクトルとの zipWith
+Public Function zipWith(ByRef fun As Variant, ByVal other As vh_stdvec) As vh_stdvec
+    shrink
+    Set zipWith = New vh_stdvec
+    zipWith.from Haskell_0_declare.zipWith(fun, vec_, other.clone().free())
+End Function
+
+' 他のベクトルとの Inner Join
+' key1 : 自身のキー列番号
+' key2 : 対象ベクトルのキー列番号
+Public Function inner_join(ByVal other As vh_stdvec, _
+                     ByVal key1 As Long, _
+                     ByVal key2 As Long, _
+                     Optional ByRef comp As Variant) As vh_stdvec
+    shrink
+    Dim v       As Variant:     v = other.clone.free
+    Dim key1_v  As Variant:     key1_v = mapF(p__n(key1), vec_)
+    Dim key2_v  As Variant:     key2_v = mapF(p__n(key2), v)
+    Dim isCompFunction As Boolean:  isCompFunction = is_bindFun(comp)
+    Dim si      As Variant
+    If isCompFunction Then
+        si = sortIndex_pred(key2_v, comp)
+    Else
+        si = sortIndex(key2_v)
+    End If
+    permutate key2_v, si
+    permutate v, si
+    Set inner_join = New vh_stdvec
+    Dim i As Long
+    Dim eq_range As Variant, rec As Variant
+    For i = LBound(key1_v) To UBound(key1_v) Step 1
+        If isCompFunction Then
+            eq_range = equal_range_pred(key2_v, key1_v(i), comp)
+        Else
+            eq_range = equal_range(key2_v, key1_v(i))
+        End If
+        If eq_range(0) < eq_range(1) Then
+            rec = mapF(p_catV(vec_(i)), subV(v, a__o(eq_range(0), eq_range(1))))
+            inner_join.push_back_array rec
+        End If
+    Next i
 End Function
