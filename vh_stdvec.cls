@@ -122,10 +122,8 @@ Public Property Get capacity() As Long
 End Property
 
 ' 領域を指定の長さまたはsizeまで切り詰める
-Public Function shrink(Optional ByRef size_ As Variant) As vh_stdvec
-    If Not IsMissing(size_) Then
-        If 0 < size_ Then pos_write = min_fun(pos_write, size_ - 1)
-    End If
+Public Function shrink(Optional ByVal size_ As Long = -1) As vh_stdvec
+    If 0 < size_ Then pos_write = min_fun(pos_write, size_ - 1)
     If 0 <= pos_write Then ReDim Preserve vec_(0 To pos_write)
     Set shrink = Me
 End Function
@@ -339,30 +337,63 @@ Public Function inner_join(ByVal other As vh_stdvec, _
                      ByVal key2 As Long, _
                      Optional ByRef comp As Variant) As vh_stdvec
     shrink
-    Dim v       As Variant:     v = other.clone.free
-    Dim key1_v  As Variant:     key1_v = mapF(p__n(key1), vec_)
-    Dim key2_v  As Variant:     key2_v = mapF(p__n(key2), v)
-    Dim isCompFunction As Boolean:  isCompFunction = is_bindFun(comp)
-    Dim si      As Variant
-    If isCompFunction Then
-        si = sortIndex_pred(key2_v, comp)
-    Else
-        si = sortIndex(key2_v)
-    End If
-    permutate key2_v, si
-    permutate v, si
-    Set inner_join = New vh_stdvec
-    Dim i As Long
-    Dim eq_range As Variant, rec As Variant
-    For i = LBound(key1_v) To UBound(key1_v) Step 1
-        If isCompFunction Then
-            eq_range = equal_range_pred(key2_v, key1_v(i), comp)
+    Dim other_v As Variant:   other_v = other.clone.free
+    If Not IsArray(vec_(0)) Then
+        If Not IsArray(other_v(0)) Then
+            Set inner_join = inner_join_imple(vec_, _
+                                              other_v, _
+                                              other_v, _
+                                              True, _
+                                              comp)
         Else
-            eq_range = equal_range(key2_v, key1_v(i))
+            Set inner_join = inner_join_imple(vec_, _
+                                              mapF(p__n(key2), other_v), _
+                                              other_v, _
+                                              False, _
+                                              comp)
         End If
-        If eq_range(0) < eq_range(1) Then
-            rec = mapF(p_catV(vec_(i)), subV(v, a__o(eq_range(0), eq_range(1))))
-            inner_join.push_back_array rec
+    Else
+        If Not IsArray(other_v(0)) Then
+            Set inner_join = inner_join_imple(mapF(p__n(key1), vec_), _
+                                              other_v, _
+                                              other_v, _
+                                              True, _
+                                              comp)
+        Else
+            Set inner_join = inner_join_imple(mapF(p__n(key1), vec_), _
+                                              mapF(p__n(key2), other_v), _
+                                              other_v, _
+                                              False, _
+                                              comp)
         End If
-    Next i
+    End If
 End Function
+
+    Private Function inner_join_imple(ByRef key1_v As Variant, _
+                                      ByRef key2_v As Variant, _
+                                      ByRef other_v As Variant, _
+                                      ByVal same As Boolean, _
+                                      ByRef comp As Variant) As vh_stdvec
+        Set inner_join_imple = New vh_stdvec
+        Dim isCompFunction  As Boolean: isCompFunction = is_bindFun(comp)
+        Dim si              As Variant
+        If isCompFunction Then
+            si = sortIndex_pred(key2_v, comp)
+        Else
+            si = sortIndex(key2_v)
+        End If
+        Call permutate(key2_v, si)
+        If Not same Then Call permutate(other_v, si)
+        Dim i As Long, eq_range As Variant, rec As Variant
+        For i = LBound(key1_v) To UBound(key1_v) Step 1
+            If isCompFunction Then
+                eq_range = equal_range_pred(key2_v, key1_v(i), comp)
+            Else
+                eq_range = equal_range(key2_v, key1_v(i))
+            End If
+            If eq_range(0) < eq_range(1) Then
+                rec = mapF(p_catV(vec_(i)), subV(other_v, a__o(eq_range(0), eq_range(1))))
+                inner_join_imple.push_back_array rec
+            End If
+        Next i
+    End Function
