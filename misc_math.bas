@@ -6,6 +6,8 @@ Option Explicit
 '********************************************************************
 '   数学関数 (Haskell_2_stdFunにも一部の数学的関数がある)
 
+' Function  isPrimeNumber       素数判定
+' Function  primeNumbers        素数一覧
 ' Function  sin_fun(p_sin)      Sin
 ' Function  cos_fun(p_con)      Cos
 ' Function  pow_fun(p_pow)      Pow
@@ -14,6 +16,62 @@ Option Explicit
 ' Function  integral_simpson    シンプソン法による数値積分
 ' Function  make_complex        複素数の生成
 '********************************************************************
+
+    Private primeNumbers_() As Long
+    Private syntheticFlag_() As Boolean
+    Private max_nval_ As Long
+
+' 素数判定
+Public Function isPrimeNumber(ByVal val As Long) As Boolean
+    If max_nval_ = 0 Then
+        ReDim primeNumbers_(0 To 1)
+        primeNumbers_(0) = 2: primeNumbers_(1) = 3
+        ReDim syntheticFlag_(0 To 3)
+        syntheticFlag_(0) = True: syntheticFlag_(1) = True
+        max_nval_ = 3
+    End If
+    Do While max_nval_ < val
+        enlargePrime val
+        max_nval_ = UBound(syntheticFlag_)
+    Loop
+    If val < 0 Then
+        isPrimeNumber = False
+    Else
+        isPrimeNumber = Not syntheticFlag_(val)
+    End If
+End Function
+
+' 素数一覧
+Public Function primeNumbers(Optional ByVal val As Long = -1) As Variant
+    Call isPrimeNumber(val)
+    primeNumbers = primeNumbers_
+End Function
+
+    Private Sub enlargePrime(ByVal val As Long)
+        Dim lastPrime As Long
+        lastPrime = primeNumbers_(UBound(primeNumbers_))
+        Dim flag_end As Long, flag_end_ex As Long
+        flag_end = UBound(syntheticFlag_)
+        flag_end_ex = min_fun(val, lastPrime ^ 2)
+        ReDim Preserve syntheticFlag_(0 To flag_end_ex)
+        Dim counter As Long:    counter = flag_end_ex - flag_end
+        Dim p_iter As Long, i As Long
+        For p_iter = 0 To UBound(primeNumbers_) Step 1
+            Dim prime_ As Long:     prime_ = primeNumbers_(p_iter)
+            For i = prime_ * (1 + flag_end \ prime_) To flag_end_ex Step prime_
+                If Not syntheticFlag_(i) Then counter = counter - 1
+                syntheticFlag_(i) = True
+            Next i
+        Next p_iter
+        p_iter = UBound(primeNumbers_)   '
+        ReDim Preserve primeNumbers_(0 To p_iter + counter)
+        For i = flag_end + 1 To flag_end_ex Step 1
+            If syntheticFlag_(i) = 0 Then
+                p_iter = p_iter + 1
+                primeNumbers_(p_iter) = i
+            End If
+        Next i
+    End Sub
 
 ' Sin
 Function sin_fun(ByRef x As Variant, ByRef dummy As Variant) As Variant
