@@ -1,3 +1,4 @@
+Attribute VB_Name = "Haskell_2_stdFun"
 'Haskell_2_stdFun
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
@@ -14,6 +15,7 @@ Option Explicit
 ' Function  setNth_b_move   N番目の配列要素設定（LBound基準）
 ' Function  move_many       複数（可変長）の変数をmoveしてひとつのジャグ配列にする
 ' Sub       move_back       ジャグ配列から複数（可変長）の変数にmove back
+' Function  place_fill      配列の特定位置に関数を適用する（値を埋めてmoveして返す）
 '　-----------------------------------------------------------------
 '     ファンクタ等　～
 '********************************************************************
@@ -108,6 +110,19 @@ Sub move_back(ByRef m As Variant, ParamArray ret() As Variant)
     Next i
     m = Empty
 End Sub
+
+' 配列の特定位置に関数を適用する（値を埋めてmoveして返す）
+Public Function place_fill(ByRef vec As Variant, _
+                           ByRef fun As Variant, _
+                           ByRef indice As Variant) As Variant
+    Dim tmp As Variant
+    tmp = mapF(fun, indice)
+    Dim i As Long
+    For i = LBound(indice) To UBound(indice) Step 1
+        Call swapVariant(vec(indice(i)), tmp(i))
+    Next i
+    Call swapVariant(place_fill, vec)
+End Function
 
 '********************************************************************
 '     ファンクタ等
