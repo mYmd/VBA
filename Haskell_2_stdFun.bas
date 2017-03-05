@@ -8,6 +8,7 @@ Option Explicit
 ' Sub       assignVar       汎用の変数コピー
 ' Function  firstArg        1番目の引数
 ' Function  secondArg       2番目の引数
+' Function  p_identity      引数自身
 ' Function  getNth          N番目の配列要素取得（LBoundを無視した絶対位置）
 ' Function  getNth_b        N番目の配列要素取得（LBound基準）
 ' Sub       setNth_b        N番目の配列要素設定（LBound基準）
@@ -15,7 +16,7 @@ Option Explicit
 ' Function  setNth_b_move   N番目の配列要素設定（LBound基準）
 ' Function  move_many       複数（可変長）の変数をmoveしてひとつのジャグ配列にする
 ' Sub       move_back       ジャグ配列から複数（可変長）の変数にmove back
-' Function  place_fill      配列の特定位置に関数／値を適用する（値を埋めてmoveして返す）
+' Function  place_fill      配列の指定位置に関数／値を適用する（値を埋めてmoveして返す）
 '　-----------------------------------------------------------------
 '     ファンクタ等　～
 '********************************************************************
@@ -28,7 +29,6 @@ Public Sub assignVar(ByRef target As Variant, ByRef source As Variant)
         target = source
     End If
 End Sub
-
 
 '1番目の引数
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
@@ -45,6 +45,15 @@ End Function
     Function p_secondArg(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_secondArg = make_funPointer(AddressOf secondArg, firstParam, secondParam)
     End Function
+
+'引数それ自身(p_firstArgと同等)
+    Private Function identity__(ByRef a As Variant, _
+                                Optional ByRef dummy As Variant) As Variant
+        Call assignVar(identity__, a)
+    End Function
+Public Function p_identity(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_identity = make_funPointer(AddressOf identity__, firstParam, secondParam)
+End Function
 
 'N番目の配列要素取得（LBoundを無視した絶対位置）
 Function getNth(ByRef vec As Variant, ByRef index As Variant) As Variant
@@ -111,18 +120,24 @@ Sub move_back(ByRef m As Variant, ParamArray ret() As Variant)
     m = Empty
 End Sub
 
-' 配列の特定位置に関数／値を適用する（値を埋めてmoveして返す）
-Public Function place_fill(ByRef vec As Variant, _
-                           ByRef fun As Variant, _
-                           ByRef indice As Variant) As Variant
+' 配列vecの指定位置に関数／値を適用する（値を埋めてmoveして返す）
+Function place_fill(ByRef vec As Variant, _
+                    ByRef fun As Variant, _
+                    ByRef indice As Variant, _
+                    Optional ByRef souce As Variant) As Variant
     Dim i As Long
+    ' souceまたはindex（souce 省略時）を埋め込む
     If is_bindFun(fun) Then
         Dim tmp As Variant
-        tmp = mapF(fun, indice)
+        If IsMissing(souce) Then    ' = index
+            tmp = mapF(fun, indice)
+        Else
+            tmp = mapF(fun, subV(souce, indice))
+        End If
         For i = LBound(indice) To UBound(indice) Step 1
             Call swapVariant(vec(indice(i)), tmp(i))
         Next i
-    Else
+    Else    ' 単一の値を埋め込む
         For i = LBound(indice) To UBound(indice) Step 1
             Call assignVar(vec(indice(i)), fun)
         Next i
