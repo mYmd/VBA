@@ -59,9 +59,12 @@ Option Explicit
 '***********************************************************************************
 
 'sourceのVARIANT変数をtargetのVARIANTへmoveする
-Function moveVariant(ByRef source As Variant) As Variant
+Function moveVariant(ByRef source As Variant, Optional ByRef dummy As Variant) As Variant
     swapVariant moveVariant, source
 End Function
+    Function p_moveVariant(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_moveVariant = make_funPointer(AddressOf moveVariant, firstParam, secondParam)
+    End Function
 '***********************************************************************************
 
 'プレースホルダ（置かれた位置によって第1引数もしくは第2引数を受け取る）
