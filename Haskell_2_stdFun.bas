@@ -22,11 +22,11 @@ Option Explicit
 '********************************************************************
 
 ' 汎用の変数コピー
-Public Sub assignVar(ByRef target As Variant, ByRef source As Variant)
+Public Sub assignVar(ByRef Target As Variant, ByRef source As Variant)
     If IsObject(source) Then
-        Set target = source
+        Set Target = source
     Else
-        target = source
+        Target = source
     End If
 End Sub
 
@@ -213,13 +213,15 @@ End Function
 Public Function sizeof(ByRef data As Variant, Optional ByVal axis As Long = 0) As Long
     Dim d As Long:  d = Dimension(data)
     Dim i As Long
-    sizeof = 1
+    sizeof = IIf(IsEmpty(data) Or IsNull(data), 0, 1)
     If axis = 0 Then
         For i = 1 To d Step 1
             sizeof = sizeof * (1 + UBound(data, i) - LBound(data, i))
         Next i
     ElseIf 0 < axis And axis <= d Then
         sizeof = 1 + UBound(data, axis) - LBound(data, axis)
+    Else
+        sizeof = 0
     End If
 End Function
     
