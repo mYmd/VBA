@@ -9,11 +9,11 @@ Option Explicit
 ' Function  firstArg        1番目の引数
 ' Function  secondArg       2番目の引数
 ' Function  p_identity      引数自身
-' Function  getNth          N番目の配列要素取得（LBoundを無視した絶対位置）
-' Function  getNth_b        N番目の配列要素取得（LBound基準）
-' Sub       setNth_b        N番目の配列要素設定（LBound基準）
-' Function  setNth_move     N番目の配列要素設定（LBoundを無視した絶対位置）
-' Function  setNth_b_move   N番目の配列要素設定（LBound基準）
+' Function  getNth          N番目の配列要素取得（絶対アドレス）
+' Function  getNth_b        N番目の配列要素取得（オフセットアドレス）
+' Sub       setNth_b        N番目の配列要素設定（オフセットアドレス）
+' Function  setNth_move     N番目の配列要素設定（絶対アドレス）
+' Function  setNth_b_move   N番目の配列要素設定（オフセットアドレス）
 ' Function  move_many       複数（可変長）の変数をmoveしてひとつのジャグ配列にする
 ' Sub       move_back       ジャグ配列から複数（可変長）の変数にmove back
 ' Function  place_fill      配列の指定位置に関数／値を適用する（値を埋めてmoveして返す）
@@ -55,7 +55,7 @@ Public Function p_identity(Optional ByRef firstParam As Variant, Optional ByRef 
         p_identity = make_funPointer(AddressOf identity__, firstParam, secondParam)
 End Function
 
-'N番目の配列要素取得（LBoundを無視した絶対位置）
+'N番目の配列要素取得（絶対アドレス）
 Function getNth(ByRef vec As Variant, ByRef index As Variant) As Variant
     Call assignVar(getNth, vec(index))
 End Function
@@ -63,7 +63,7 @@ End Function
         p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
     End Function
 
-'N番目の配列要素取得（LBound基準）
+'N番目の配列要素取得（オフセットアドレス）
 'index < 0 の場合は後ろから取得
 Function getNth_b(ByRef vec As Variant, ByRef index As Variant) As Variant
     If 0 <= index Then
@@ -76,7 +76,7 @@ End Function
         p_getNth_b = make_funPointer(AddressOf getNth_b, firstParam, secondParam)
     End Function
 
-'N番目の配列要素設定（LBound基準）
+'N番目の配列要素設定（オフセットアドレス）
 'index < 0 の場合は後ろに設定
 Sub setNth_b(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     If 0 <= index Then
@@ -86,6 +86,7 @@ Sub setNth_b(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     End If
 End Sub
 
+'N番目の配列要素設定（絶対アドレス）
 Function setNth_move(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     Call assignVar(vec(index), value)
     setNth_move = moveVariant(vec)
@@ -156,6 +157,7 @@ End Function
 ' * Function if_else        if else 選択
 '   Function replaceNull    Nullを他の値に置換する
 '   Function replaceEmpty   Emptyを他の値に置換する
+'   Function maskVar        値のマスク（mask=0 の時にEmpty化）
 '   Function expN           指数関数
 '   Function logN           対数関数
 '   Function absD           絶対値
@@ -304,6 +306,17 @@ End Function
         p_replaceEmpty = make_funPointer(AddressOf replaceEmpty, firstParam, secondParam)
     End Function
 
+' 値のマスク（mask=0 の時にEmpty化）
+Function maskVar(ByRef x As Variant, ByRef mask As Variant) As Variant
+    If mask = 0 Then
+        maskVar = Empty
+    Else
+        Call assignVar(maskVar, x)
+    End If
+End Function
+    Function p_maskVar(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_maskVar = make_funPointer(AddressOf maskVar, firstParam, secondParam)
+    End Function
 
 '指数関数
 Function expN(ByRef a As Variant, ByRef dummy As Variant) As Variant
@@ -440,17 +453,25 @@ End Function
         p_len = make_funPointer(AddressOf str_len, firstParam, secondParam)
     End Function
     
-'Left
+'Left（負の引数も可）
 Function str_left(ByRef st As Variant, ByRef length As Variant) As Variant
-    str_left = left(st, length)
+    If 0 <= length Then
+        str_left = left(st, length)
+    Else
+        str_left = left(st, max_fun(0, Len(st) + length))
+    End If
 End Function
     Function p_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_left = make_funPointer(AddressOf str_left, firstParam, secondParam)
     End Function
     
-'Right
+'Right（負の引数も可）
 Function str_right(ByRef st As Variant, ByRef length As Variant) As Variant
-    str_right = right(st, length)
+    If 0 <= length Then
+        str_right = right(st, length)
+    Else
+        str_right = right(st, max_fun(0, Len(st) + length))
+    End If
 End Function
     Function p_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_right = make_funPointer(AddressOf str_right, firstParam, secondParam)
