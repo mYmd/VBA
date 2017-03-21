@@ -1,4 +1,5 @@
 'misc_utility
+'misc_utility
 'Copyright (c) 2016 mmYYmmdd
 Option Explicit
 
@@ -17,19 +18,17 @@ Option Explicit
 '   Function  p_Like                    Like関数
 '   Function  p_StrConv                 StrConv関数
 '   Function  p_Trim                    Trim関数
-'   Function  cutoff_left               文字列の左側 n 文字切落
-'   Function  cutoff_right              文字列の右側 n 文字切落
 '   Function  separate_string           文字列の左右分離
 '   Function  subM_R                    subM(m, 行範囲) の構文糖
-'   Function  subM_R_b                  〃（LBound基準）
+'   Function  subM_R_b                  〃（オフセットアドレス）
 '   Function  subM_C                    subM(m, , 列範囲) の構文糖
-'   Function  subM_C_b                  〃（LBound基準）
-'   Function  selectRow_b               LBound基準のselectRow
-'   Function  selectCol_b               LBound基準のselectCol
-'   Sub       fillRow_b                 LBound基準のfillRow
-'   Function  fillRow_b_move            LBound基準のfillRow_move
-'   Sub       fillCol_b                 LBound基準のfillCol
-'   Function  fillCol_b_move            LBound基準のfillCol_move
+'   Function  subM_C_b                  〃（オフセットアドレス）
+'   Function  selectRow_b               selectRow（オフセットアドレス）
+'   Function  selectCol_b               selectCol（オフセットアドレス）
+'   Sub       fillRow_b                 fillRow（オフセットアドレス）
+'   Function  fillRow_b_move            fillRow_move（オフセットアドレス）
+'   Sub       fillCol_b                 fillCol（オフセットアドレス）
+'   Function  fillCol_b_move            のfillCol_move（オフセットアドレス）
 '   Function  adjacent_op               1次元配列の隣接する要素間で2項操作
 '   Function  get_unique                1次元配列の重複要素を削除する (ソート済前提)
 '  -----------------------------------------------------------------------------
@@ -128,11 +127,16 @@ Public Function p_typename(Optional ByRef firstParam As Variant, Optional ByRef 
 End Function
 
 ' IsNumeric関数
-        Private Function IsNumeric_(ByRef expr As Variant, Optional ByRef dummy As Variant) As Variant
-            IsNumeric_ = IIf(IsNumeric(expr) And Not IsEmpty(expr) And VarType(expr) <> vbString, 1&, 0&)
+        Private Function IsNumeric_(ByRef expr As Variant, Optional ByRef strict As Variant) As Variant
+            IsNumeric_ = IIf(IsNumeric(expr) Or IsDate(expr), 1&, 0&)
+            If Not IsMissing(strict) Then
+                If 0 = Not_(strict) Then
+                    IsNumeric_ = IIf(IsNumeric(expr) And Not IsEmpty(expr) Or VarType(expr) <> vbString, 0&, 1&)
+                End If
+            End If
         End Function
 Public Function p_isNumeric(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-    p_isNumeric = make_funPointer(AddressOf IsNumeric_, firstParam, secondParam)
+    p_isNumeric = make_funPointer_with_2nd_Default(AddressOf IsNumeric_, firstParam, secondParam)
 End Function
 
 ' Format関数
@@ -195,28 +199,12 @@ Public Function p_Trim(Optional ByRef firstParam As Variant, Optional ByRef seco
     p_Trim = make_funPointer_with_2nd_Default(AddressOf Trim_, firstParam, secondParam)
 End Function
 
-' 文字列の左側 n 文字切落
-Function cutoff_left(ByRef expr As Variant, ByRef n As Variant) As Variant
-    cutoff_left = right(expr, max_fun(0, Len(expr) - n))
-End Function
-    Function p_cutoff_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_cutoff_left = make_funPointer(AddressOf cutoff_left, firstParam, secondParam)
-    End Function
-
-' 文字列の右側 n 文字切落
-Function cutoff_right(ByRef expr As Variant, ByRef n As Variant) As Variant
-    cutoff_right = left(expr, max_fun(0, Len(expr) - n))
-End Function
-    Function p_cutoff_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_cutoff_right = make_funPointer(AddressOf cutoff_right, firstParam, secondParam)
-    End Function
-
 ' 文字列の左右分離
 Function separate_string(ByRef expr As Variant, ByRef n As Variant) As Variant
     If 0 < n Then
-        separate_string = VBA.Array(left(expr, n), cutoff_left(expr, n))
+        separate_string = VBA.Array(left(expr, n), str_right(expr, -n))
     Else
-        separate_string = VBA.Array(cutoff_right(expr, -n), right(expr, -n))
+        separate_string = VBA.Array(str_left(expr, n), right(expr, -n))
     End If
 End Function
     Function p_separate_string(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -235,7 +223,7 @@ End Function
         p_subM_R = make_funPointer(AddressOf subM_R, firstParam, secondParam)
     End Function
 
-' subM(m, 行範囲) の構文糖（LBound基準）
+' subM(m, 行範囲) の構文糖（オフセットアドレス）
 Public Function subM_R_b(ByRef m As Variant, ByRef rRange As Variant) As Variant
     Dim range_b As Variant
     range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 1)), p_plus(1 + UBound(m, 1)))), rRange)
@@ -257,7 +245,7 @@ End Function
         p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
     End Function
 
-' subM(m, , 列範囲) の構文糖（LBound基準）
+' subM(m, , 列範囲) の構文糖（オフセットアドレス）
 Public Function subM_C_b(ByRef m As Variant, ByRef cRange As Variant) As Variant
     Dim range_b As Variant
     range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 2)), p_plus(1 + UBound(m, 2)))), cRange)
@@ -267,7 +255,7 @@ End Function
         p_subM_C_b = make_funPointer(AddressOf subM_C_b, firstParam, secondParam)
     End Function
 
-'特定行の取得（LBound基準）
+'特定行の取得（オフセットアドレス）
 'index < 0 の場合は後ろから取得
 Public Function selectRow_b(ByRef matrix As Variant, ByRef i As Variant) As Variant
     If 0 <= i Then
@@ -280,7 +268,7 @@ End Function
         p_selectRow_b = make_funPointer(AddressOf selectRow_b, firstParam, secondParam)
     End Function
 
-'特定列の取得（LBound基準）
+'特定列の取得（オフセットアドレス）
 'index < 0 の場合は後ろから取得
 Public Function selectCol_b(ByRef matrix As Variant, ByRef j As Variant) As Variant
     If 0 <= j Then
@@ -293,7 +281,7 @@ End Function
         p_selectCol_b = make_funPointer(AddressOf selectCol_b, firstParam, secondParam)
     End Function
 
-'配列の特定行をデータで埋める（LBound基準）
+'配列の特定行をデータで埋める（オフセットアドレス）
 Public Sub fillRow_b(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
     If 0 <= i Then
         Call fillRow(matrix, i + LBound(matrix, 1), data)
@@ -302,13 +290,13 @@ Public Sub fillRow_b(ByRef matrix As Variant, ByVal i As Long, ByRef data As Var
     End If
 End Sub
 
-'配列の特定行をデータで埋めてmoveして返す（LBound基準）
+'配列の特定行をデータで埋めてmoveして返す（オフセットアドレス）
 Public Function fillRow_b_move(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
     Call fillRow_b(matrix, i, data)
     fillRow_b_move = moveVariant(matrix)
 End Function
 
-'配列の特定列をデータで埋める（LBound基準）
+'配列の特定列をデータで埋める（オフセットアドレス）
 Public Sub fillCol_b(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant)
     If 0 <= j Then
         Call fillCol(matrix, j + LBound(matrix, 2), data)
@@ -317,7 +305,7 @@ Public Sub fillCol_b(ByRef matrix As Variant, ByVal j As Long, ByRef data As Var
     End If
 End Sub
 
-'配列の特定列をデータで埋めてmoveして返す（LBound基準）
+'配列の特定列をデータで埋めてmoveして返す（オフセットアドレス）
 Public Function fillCol_b_move(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
     Call fillCol_b(matrix, j, data)
     fillCol_b_move = moveVariant(matrix)
@@ -427,8 +415,8 @@ End Function
         p_filter_if_not = make_funPointer(AddressOf filter_if_not, firstParam, secondParam, 1)
     End Function
 
-' 論理Not   (0 = False, Null = False, Empty = False, Nothing = False とみなす)
-    Private Function Not_(ByRef expr As Variant, Optional ByRef dummy As Variant) As Variant
+' 論理Not   (0, Null, Empty, Nothing, CDate(0) はFalseとみなす)
+     Private Function Not_(ByRef expr As Variant, Optional ByRef dummy As Variant) As Variant
         If IsNull(expr) Then
             Not_ = 1
         ElseIf IsEmpty(expr) Then
@@ -437,6 +425,8 @@ End Function
             Not_ = IIf(expr = False, 1, 0)
         ElseIf IsObject(expr) Then
             Not_ = IIf(expr Is Nothing, 1, 0)
+        ElseIf IsDate(expr) Then
+            Not_ = IIf(expr = 0, 1, 0)
         Else
             Not_ = 0
         End If
