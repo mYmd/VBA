@@ -11,24 +11,30 @@ Option Explicit
 '================================================================================
 
 'デバッグウィンドウに配列のサイズを表示する
-Sub printS(ByRef m As Variant, ParamArray dummy() As Variant)
-    If IsEmpty(m) Then Debug.Print " vbEmpty:": Exit Sub
-    If Dimension(m) = 0 Then
-        If IsArray(m) Then
-            Debug.Print "#Erased Array#":   Exit Sub
-        Else
-            Debug.Print " Scalar":          Exit Sub
-        End If
-    End If
-    Dim expr As String, i As Long, total As Long
-    expr = "": total = 1
-    For i = 1 To Dimension(m) Step 1
-        expr = expr & "[Dim" & i & "]: " & LBound(m, i) & " -> " & UBound(m, i) & "  "
-        total = total * (1 + UBound(m, i) - LBound(m, i))
+Sub printS(ParamArray m() As Variant)
+    Dim i As Long
+    For i = LBound(m) To UBound(m) Step 1
+        printS_imple m(i)
     Next i
-    expr = expr & ": Total Size = " & total
-    Debug.Print expr
 End Sub
+    Private Sub printS_imple(ByRef m As Variant)
+        If IsEmpty(m) Then Debug.Print " vbEmpty:": Exit Sub
+        If Dimension(m) = 0 Then
+            If IsArray(m) Then
+                Debug.Print "#Erased Array#":   Exit Sub
+            Else
+                Debug.Print " Scalar":          Exit Sub
+            End If
+        End If
+        Dim expr As String, i As Long, total As Long
+        expr = "": total = 1
+        For i = 1 To Dimension(m) Step 1
+            expr = expr & "[Dim" & i & "]: " & LBound(m, i) & " -> " & UBound(m, i) & "  "
+            total = total * (1 + UBound(m, i) - LBound(m, i))
+        Next i
+        expr = expr & ": Total Size = " & total
+        Debug.Print expr
+    End Sub
 
 'デバッグウィンドウに２次元配列を表示する
 Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As Variant)
