@@ -1,3 +1,4 @@
+Attribute VB_Name = "Haskell_4_vector"
 'Haskell_4_vector
 'Copyright (c) 2015 mmYYmmdd
 Option Explicit
@@ -41,7 +42,9 @@ Option Explicit
     ' Function  filterR             ベクトル・配列の（行の）フィルタリング
     ' Function  filterC             ベクトル・配列の（列の）フィルタリング
     ' Function  catV                ベクトルを結合
+    ' Function  catV_move           ベクトルを結合（引数をmove）
     ' Function  catVs               ベクトルを結合（可変長引数）
+    ' Function  catVs_move          ベクトルを結合（可変長引数：引数をmove）
     ' Function  catR                行方向に結合
     ' Function  catC                列方向に結合
     ' Function  transpose           配列の転置
@@ -53,7 +56,7 @@ Option Explicit
     ' Function  makeSole            Array(a)作成
     ' Function  makePair            Array(a, b)作成
     ' Function  cons                配列の先頭に要素を追加
-    ' Sub       push_back           1次元の配列の末尾に要素を追加（LBoundを0にする）
+    ' Sub       push_back           1次元の配列の末尾に要素を追加（LBoundは0に変更する）
     ' Function  push_back_move      push_backしてmoveして返す
     ' Function  flatten             配列を平坦な1次元配列化する
     ' Function  product_set         ふたつのベクトルの直積に関数を適用した行列を作る
@@ -778,34 +781,64 @@ End Function
 
 'ベクトルを結合
 Public Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
-    Dim i As Long, counter As Long
-    Dim ret As Variant
-    If Dimension(v1) = 1 And Dimension(v2) = 1 Then
-        If rowSize(v1) = 0 Then
-            ret = v2
-        ElseIf rowSize(v2) = 0 Then
-            ret = v1
-        Else
-            ret = v1
-            ReDim Preserve ret(0 To rowSize(v1) + rowSize(v2) - 1)
-            counter = rowSize(v1)
-            For i = LBound(v2) To UBound(v2) Step 1
-                Call assignVar(ret(counter), v2(i))
-                counter = counter + 1
-            Next i
-        End If
-        Call swapVariant(catV, ret)
-    ElseIf Dimension(v1) <> 1 And Dimension(v2) = 1 Then
-        catV = catV(vector(v1), v2)
-    ElseIf Dimension(v1) = 1 And Dimension(v2) <> 1 Then
-        catV = catV(v1, vector(v2))
-    Else
-        catV = catV(vector(v1), vector(v2))
-    End If
+    catV = catV_move((v1), (v2))
 End Function
     Public Function p_catV(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_catV = make_funPointer(AddressOf catV, firstParam, secondParam)
     End Function
+
+    Public Sub assignORswap(ByRef Target As Variant, ByRef source As Variant)
+        If IsArray(source) Then
+            Call swapVariant(Target, source)
+        ElseIf IsObject(source) Then
+            Set Target = source
+        Else
+            Target = source
+        End If
+    End Sub
+
+' ベクトルを結合（引数をmove）
+Public Function catV_move(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
+    Dim i As Long, dim1 As Long, dim2 As Long, counter1 As Long, counter2 As Long
+    dim1 = Dimension(v1):   dim2 = Dimension(v2)
+    If dim1 = 1 And dim2 = 1 Then
+        Call changeLBound(v1, 0):   counter1 = UBound(v1) + 1
+        Call changeLBound(v2, 0):   counter2 = UBound(v2) + 1
+        If counter1 = 0 Then
+            Call swapVariant(catV_move, v2)
+        ElseIf counter2 = 0 Then
+            Call swapVariant(catV_move, v1)
+        Else
+            ReDim Preserve v1(0 To counter1 + counter2 - 1)
+            For i = 0 To UBound(v2) Step 1
+                Call assign_or_move_(v1(counter1), v2(i))
+                counter1 = counter1 + 1
+            Next i
+            v2 = Empty
+            Call swapVariant(catV_move, v1)
+        End If
+    ElseIf dim1 <> 1 And dim2 = 1 Then
+        catV_move = catV_move(vector(v1), v2)
+    ElseIf dim1 = 1 And dim2 <> 1 Then
+        catV_move = catV_move(v1, vector(v2))
+    Else
+        catV_move = catV_move(vector(v1), vector(v2))
+    End If
+End Function
+    Public Function p_catV_move(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_catV_move = make_funPointer(AddressOf catV_move, firstParam, secondParam)
+    End Function
+
+    ' 変数コピー or move
+    Private Sub assign_or_move_(ByRef Target As Variant, ByRef source As Variant)
+        If IsArray(source) Then
+            Call swapVariant(Target, source)
+        ElseIf IsObject(source) Then
+            Set Target = source
+        Else
+            Target = source
+        End If
+    End Sub
 
 'ベクトルを結合（可変長引数）
 Public Function catVs(ParamArray vectors() As Variant) As Variant
@@ -814,12 +847,22 @@ Public Function catVs(ParamArray vectors() As Variant) As Variant
     If LBound(vectors) <= UBound(vectors) Then
         ReDim tmp(LBound(vectors) To UBound(vectors))
         For i = LBound(vectors) To UBound(vectors)
-            Call swapVariant(vectors(i), tmp(i))
+            Call assignVar(tmp(i), vectors(i))  ' ここはコピー
         Next i
-        catVs = foldl1(p_catV, tmp)
+        catVs = foldl1(p_catV_move, tmp)
+    End If
+End Function
+
+'ベクトルを結合（可変長引数：引数をmove）
+Public Function catVs_move(ParamArray vectors() As Variant) As Variant
+    Dim i As Long
+    Dim tmp As Variant
+    If LBound(vectors) <= UBound(vectors) Then
+        ReDim tmp(LBound(vectors) To UBound(vectors))
         For i = LBound(vectors) To UBound(vectors)
             Call swapVariant(vectors(i), tmp(i))
         Next i
+        catVs_move = foldl1(p_catV_move, tmp)
     End If
 End Function
 
@@ -961,8 +1004,8 @@ Public Function zipVs(ByRef vectors As Variant) As Variant
 End Function
 
 '２次元配列の各行ベクトルをzipVs
-Public Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Variant
-    If IsMissing(target) Then
+Public Function zipR(ByRef m As Variant, Optional ByRef Target As Variant) As Variant
+    If IsMissing(Target) Then
         Dim ret As Variant
         ReDim ret(LBound(m, 2) To UBound(m, 2))
         Dim i As Long
@@ -971,13 +1014,13 @@ Public Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Va
         Next i
         Call swapVariant(zipR, ret)
     Else
-        zipR = zipR(subM(m, target))
+        zipR = zipR(subM(m, Target))
     End If
 End Function
 
 '２次元配列の各列ベクトルをzipVs
-Public Function zipC(ByRef m As Variant, Optional ByRef target As Variant) As Variant
-    If IsMissing(target) Then
+Public Function zipC(ByRef m As Variant, Optional ByRef Target As Variant) As Variant
+    If IsMissing(Target) Then
         Dim ret As Variant
         ReDim ret(LBound(m, 1) To UBound(m, 1))
         Dim i As Long
@@ -986,7 +1029,7 @@ Public Function zipC(ByRef m As Variant, Optional ByRef target As Variant) As Va
         Next i
         Call swapVariant(zipC, ret)
     Else
-        zipC = zipC(subM(m, , target))
+        zipC = zipC(subM(m, , Target))
     End If
 End Function
 
@@ -1046,7 +1089,7 @@ End Function
         p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
     End Function
 
-' １次元配列の末尾に要素を追加（LBoundを0にする）
+' １次元配列の末尾に要素を追加（LBoundは0に変更する）
 Public Sub push_back(ByRef vec As Variant, ByRef a As Variant)
     If Dimension(vec) = 1 Then
         changeLBound vec, 0
