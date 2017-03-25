@@ -61,7 +61,7 @@ Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As 
     End If
     Dim i As Long, j As Long
     If (100000 < (er - SR + 1) * (EC - SC + 1)) Then
-        i = MsgBox("サイズ超過。縦*横 <=100000以内", vbOKOnly, "サイズ超過")
+        Debug.Print "# The matrix is too big to display!!!! (>100000) #"
         Exit Sub
     End If
     Dim MaxL() As Long:     ReDim MaxL(SC To EC)
@@ -117,7 +117,7 @@ End Sub
         End If
         Dim i As Long
         If (10000 < er - SR + 1) Then
-            i = MsgBox("サイズ超過。長さ 10000個以内。", vbOKOnly, "サイズ超過")
+            Debug.Print "# The vector is too big to display!!!! (>10000) #"
             Exit Sub
         End If
         For i = SR To er - 1 Step 1
