@@ -35,16 +35,17 @@ Option Explicit
 '   Function        push_back           書き込み済み末尾に対するpush（領域拡張する）
 '   Function        push_back_n         書き込み済み末尾に対するpush_n（領域拡張する）
 '   Function        push_back_array     書き込み済み末尾に対するpush_array（領域拡張する）
+'   Function        push_back_arrays    push_back_arrayの反復
 '   Function        filter              抽出条件を与えて配列をフィルタリングする
 '   Function        map                 変換式を与えて配列を変換する
 '   Function        orderby             比較関数を与えて配列をソートする
 '   Function        zipWith             他のベクトルとの zipWith
 '   Function        inner_join          他のベクトルとの Inner Join
 '*********************************************************************************
-    Private Declare PtrSafe Function copy_valueMember Lib "mapM.dll" _
+    Private Declare PtrSafe Function copy_valueMember Lib "C:\Projects\DLL\mapM.dll" _
                                             (ByVal source As vh_stdvec, _
                                         ByRef mem As Variant, _
-                                    ByVal target As vh_stdvec, _
+                                    ByVal Target As vh_stdvec, _
                                 ByVal direc As Long) As Boolean
 
     Private vec_ As Variant
@@ -98,9 +99,9 @@ Public Function free() As Variant
 End Function
 
 'vh_stdvecどうしのswap
-Public Function swap(ByVal target As vh_stdvec) As vh_stdvec
-    Call copy_valueMember(Me, vec_, target, 0)
-    Call copy_valueMember(Me, pos_write, target, 0)
+Public Function swap(ByVal Target As vh_stdvec) As vh_stdvec
+    Call copy_valueMember(Me, vec_, Target, 0)
+    Call copy_valueMember(Me, pos_write, Target, 0)
     Set swap = Me
 End Function
 
@@ -292,6 +293,15 @@ Public Function push_back_array(ByRef arr As Variant) As vh_stdvec
     Else
         Set push_back_array = Me
     End If
+End Function
+
+' push_back_arrayの反復
+Public Function push_back_arrays(ByRef arrays As Variant) As vh_stdvec
+    Dim i As Long
+    For i = LBound(arrays) To UBound(arrays) Step 1
+        push_back_array arrays(i)
+    Next i
+    Set push_back_arrays = Me
 End Function
 
 ' 抽出条件を与えて配列をフィルタリングする
