@@ -42,7 +42,7 @@ Option Explicit
 '   Function        zipWith             他のベクトルとの zipWith
 '   Function        inner_join          他のベクトルとの Inner Join
 '*********************************************************************************
-    Private Declare PtrSafe Function copy_valueMember Lib "C:\Projects\DLL\mapM.dll" _
+    Private Declare PtrSafe Function copy_valueMember Lib "mapM.dll" _
                                             (ByVal source As vh_stdvec, _
                                         ByRef mem As Variant, _
                                     ByVal Target As vh_stdvec, _
