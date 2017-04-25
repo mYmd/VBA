@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "VBA_NestFunc.hpp"
 
-//æ¯”è¼ƒé–¢æ•°
+//”äŠrŠÖ”
 class compareByVBAfunc   {
     VARIANT*        begin;
     functionExpr*   comp;
@@ -20,7 +20,7 @@ public:
     }
 };
 
-//1æ¬¡å…ƒæ˜‡é †
+//1ŸŒ³¸‡
 class compFunctor  {
     VARIANT*    begin;
 public:
@@ -30,11 +30,12 @@ public:
     ~compFunctor() = default;
     bool operator ()(__int32 i, __int32 j) const noexcept
     {
-        return VARCMP_LT == VarCmp(begin + i, begin + j, LANG_JAPANESE, 0);
+        auto a = ::VarCmp(begin + i, begin + j, LANG_JAPANESE, 0);
+        return (a == VARCMP_LT) || (a == VARCMP_EQ && (i < j));
     }
 };
 
-//2æ¬¡å…ƒæ˜‡é †
+//2ŸŒ³¸‡
 class compDictionaryFunctor  {
     VARIANT*    begin;
 public:
@@ -49,12 +50,11 @@ public:
         if ( arr1.getDim() != 1 || arr2.getDim() != 1 )     return false;
         for ( ULONG k = 0; k < arr1.getSize(1) && k < arr2.getSize(1); ++k )
         {
-            if ( VARCMP_LT == VarCmp(&arr1(k), &arr2(k), LANG_JAPANESE, 0) )
-                return true;
-            if ( VARCMP_LT == VarCmp(&arr2(k), &arr1(k), LANG_JAPANESE, 0) )
-                return false;
+            auto a = ::VarCmp(&arr1(k), &arr2(k), LANG_JAPANESE, 0);
+            if ( a == VARCMP_LT )   return true;
+            if ( a == VARCMP_GT )   return false;
         }
-        return false;
+        return i < j;
     }
 };
 
@@ -82,12 +82,12 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
             VArray[i] = arrIn(i);
         }
     }
-    if ( defaultFlag == 1 ) //1æ¬¡å…ƒæ˜‡é †
+    if ( defaultFlag == 1 ) //1ŸŒ³¸‡
     {
         compFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + arrIn.getSize(1), functor);
     }
-    else if ( defaultFlag == 2 ) //2æ¬¡å…ƒæ˜‡é †
+    else if ( defaultFlag == 2 ) //2ŸŒ³¸‡
     {
         compDictionaryFunctor   functor(VArray.get());
         std::sort(index.get(), index.get() + arrIn.getSize(1), functor);
@@ -97,10 +97,10 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
         functionExpr comp(pComp);
         compareByVBAfunc functor(VArray.get(), comp);
         if ( functor.valid() )
-            std::sort(index.get(), index.get() + arrIn.getSize(1), functor);
+            std::stable_sort(index.get(), index.get() + arrIn.getSize(1), functor);
     }
     //-------------------------------------------------------
-    SAFEARRAYBOUND boundRet = { static_cast<ULONG>(arrIn.getSize(1)), 0};   //è¦ç´ æ•°ã€LBound
+    SAFEARRAYBOUND boundRet = { static_cast<ULONG>(arrIn.getSize(1)), 0};   //—v‘f”ALBound
     ret.vt = VT_ARRAY | VT_VARIANT;
     ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
     safearrayRef arrOut(&ret);
