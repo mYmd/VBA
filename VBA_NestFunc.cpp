@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "VBA_NestFunc.hpp"
 
-//VBAé…åˆ—ã®æ¬¡å…ƒå–å¾—
+//VBA”z—ñ‚ÌŸŒ³æ“¾
 __int32 __stdcall Dimension(const VARIANT* pv) noexcept
 {
     if (!pv || 0 == (VT_ARRAY & pv->vt))
@@ -14,7 +14,7 @@ __int32 __stdcall Dimension(const VARIANT* pv) noexcept
         return (pv->pparray) ? ::SafeArrayGetDim(*pv->pparray) : 0;
 }
 
-//ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ã®ç”Ÿæˆ
+//ƒvƒŒ[ƒXƒzƒ‹ƒ_‚Ì¶¬
 VARIANT __stdcall placeholder(__int32 n) noexcept
 {
     VARIANT ret;
@@ -24,14 +24,14 @@ VARIANT __stdcall placeholder(__int32 n) noexcept
     return ret;
 }
 
-//ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ã®åˆ¤å®š
+//ƒvƒŒ[ƒXƒzƒ‹ƒ_‚Ì”»’è
 __int32 __stdcall is_placeholder(const VARIANT* pv) noexcept
 {
     return (pv && (pv->vt == VT_ERROR) && 0 <= pv->scode && (pv->scode % 10) <= 2) ? 1 : 0;
 }
 
 //===================================================================
-// SafeArrayè¦ç´ ã®ã‚¢ã‚¯ã‚»ã‚¹
+// SafeArray—v‘f‚ÌƒAƒNƒZƒX
 safearrayRef::safearrayRef(const VARIANT* pv) noexcept
     :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr), size({ 1, 1, 1 })
 {
@@ -39,7 +39,7 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
     psa = (0 == (VT_BYREF & pv->vt)) ? pv->parray : *pv->pparray;
     if (!psa)                                       return;
-    //ã“ã®APIã®ã›ã„ã§reinterpret_cast
+    //‚±‚ÌAPI‚Ì‚¹‚¢‚Åreinterpret_cast
     ::SafeArrayAccessData(psa, reinterpret_cast<void**>(&it));
     dim = ::SafeArrayGetDim(psa);
     if (!it || 3 < dim)
@@ -49,7 +49,7 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
     }
     elemsize = SafeArrayGetElemsize(psa);
     SafeArrayGetVartype(psa, &pvt);
-    val_.vt = pvt | VT_BYREF;   //ã“ã“
+    val_.vt = pvt | VT_BYREF;   //‚±‚±
     for (decltype(dim) i = 0; i < dim; ++i)
     {
         LONG ub = 0, lb = 0;
@@ -97,7 +97,7 @@ VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k) n
 }
 
 //===================================================================
-//bindã•ã‚Œã¦ã„ã‚‹å€¤
+//bind‚³‚ê‚Ä‚¢‚é’l
 class valueExpr : public funcExpr_i {
     VARIANT*     val;
 public:
@@ -105,15 +105,18 @@ public:
     valueExpr(valueExpr const&) = delete;
     valueExpr(valueExpr&&) = delete;
     ~valueExpr() = default;
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept { return val; }
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept override
+    {
+        return val;
+    }
 };
 
 //--------------------------------------------------------
-//æŒ‡å®šã•ã‚ŒãŸå¼•æ•°ã‚’è¿”ã™ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€
+//w’è‚³‚ê‚½ˆø”‚ğ•Ô‚·ƒvƒŒ[ƒXƒzƒ‹ƒ_
 class placeholder0 : public funcExpr_i {
 public:
     ~placeholder0() = default;
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept override
     {
         return      (left_right == 1) ? x
             : (left_right == 2) ? y
@@ -121,21 +124,21 @@ public:
     }
 };
 
-//å¸¸ã«ç¬¬1å¼•æ•°ã‚’è¿”ã™ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€
+//í‚É‘æ1ˆø”‚ğ•Ô‚·ƒvƒŒ[ƒXƒzƒ‹ƒ_
 class placeholder1 : public funcExpr_i {
 public:
     ~placeholder1() = default;
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept override
     {
         return x;
     }
 };
 
-//å¸¸ã«ç¬¬2å¼•æ•°ã‚’è¿”ã™ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€
+//í‚É‘æ2ˆø”‚ğ•Ô‚·ƒvƒŒ[ƒXƒzƒ‹ƒ_
 class placeholder2 : public funcExpr_i {
 public:
     ~placeholder2() = default;
-    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept
+    VARIANT* eval(VARIANT* x, VARIANT* y, int left_right = 0) noexcept override
     {
         return y;
     }
@@ -143,7 +146,7 @@ public:
 
 //-------------------------------------------------------------
 namespace {   //util
-              //ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ã®ç¨®é¡
+              //ƒvƒŒ[ƒXƒzƒ‹ƒ_‚Ìí—Ş
     int placeholder_num(const VARIANT* pv) noexcept
     {
         return (pv && (pv->vt == VT_ERROR)) ? pv->scode : -1;
@@ -232,7 +235,7 @@ VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) noexcept // 
     {
         auto tmp = fun(left->eval(x, y, left_right ? left_right : 1),
             right->eval(x, y, left_right ? left_right : 2));
-        ::VariantClear(&val);   //è¨ˆç®—ã—ãŸå¾Œã§ã‚¯ãƒªã‚¢ã—ãªã‘ã‚Œã°ãƒ€ãƒ¡
+        ::VariantClear(&val);   //ŒvZ‚µ‚½Œã‚ÅƒNƒŠƒA‚µ‚È‚¯‚ê‚Îƒ_ƒ
         std::swap(val, tmp);
     }
     return &val;
@@ -266,10 +269,9 @@ void innerFunction::eval_imple(VARIANT* elem, VARIANT* x, VARIANT* y, int left_r
 {
     int& phn = (arg12 == 1)? phn1: phn2;
     std::unique_ptr<innerFunction>& ptr = (arg12 == 1)? arg1: arg2;
-    VBCallbackStruct callback{ elem };
-    if (callback.fun)
+    if ( ptr || VBCallbackStruct{elem}.fun )
     {
-        if (!ptr)   ptr = std::make_unique<innerFunction>(elem, false);
+        if ( !ptr )     ptr = std::make_unique<innerFunction>(elem, false);
         ptr->eval(x, y, left_right);
     }
     else

@@ -8,20 +8,20 @@
 #define noexcept throw()
 #endif
 
-//VBAé…åˆ—ã®æ¬¡å…ƒå–å¾—
+//VBA”z—ñ‚ÌŸŒ³æ“¾
 __int32 __stdcall   Dimension(const VARIANT* pv) noexcept;
 
-//ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ã®ç”Ÿæˆ
+//ƒvƒŒ[ƒXƒzƒ‹ƒ_‚Ì¶¬
 VARIANT __stdcall   placeholder(__int32) noexcept;
 
-//ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ã®åˆ¤å®š
+//ƒvƒŒ[ƒXƒzƒ‹ƒ_‚Ì”»’è
 __int32 __stdcall   is_placeholder(const VARIANT* pv) noexcept;
 
-//bindã•ã‚Œã¦ã„ãªã„VBAé–¢æ•°ã‚’2å¼•æ•°ã§å‘¼ã³å‡ºã™
+//bind‚³‚ê‚Ä‚¢‚È‚¢VBAŠÖ”‚ğ2ˆø”‚ÅŒÄ‚Ño‚·
 VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept;
 
 //--------------------------------------------------------
-// SafeArrayè¦ç´ ã®ã‚¢ã‚¯ã‚»ã‚¹
+// SafeArray—v‘f‚ÌƒAƒNƒZƒX
 class safearrayRef {
     SAFEARRAY*      psa;
     VARTYPE         pvt;
@@ -42,7 +42,7 @@ public:
 };
 
 //--------------------------------------------------------
-//é–¢æ•°ã®ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹
+//ŠÖ”‚ÌƒCƒ“ƒ^ƒtƒF[ƒX
 class funcExpr_i {
 public:
     virtual ~funcExpr_i() = default;
@@ -50,10 +50,10 @@ public:
 };
 
 //--------------------------------------------------------
-//ä½¿ç”¨ã™ã‚‹å”¯ä¸€ã®VBAã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°å‹  vbCallbackFunc_t
-//VBAã«ãŠã‘ã‚‹ã‚·ã‚°ãƒãƒãƒ£ã¯
+//g—p‚·‚é—Bˆê‚ÌVBAƒR[ƒ‹ƒoƒbƒNŠÖ”Œ^  vbCallbackFunc_t
+//VBA‚É‚¨‚¯‚éƒVƒOƒlƒ`ƒƒ‚Í
 // Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
-// ã‚‚ã—ãã¯
+// ‚à‚µ‚­‚Í
 // Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
 using vbCallbackFunc_t = VARIANT(__stdcall *)(VARIANT*, VARIANT*);
 
@@ -61,7 +61,7 @@ namespace {
     struct VBCallbackStruct;
 }
 
-//VBAé–¢æ•°ã®è¡¨ç¾
+//VBAŠÖ”‚Ì•\Œ»
 class functionExpr : public funcExpr_i {
     vbCallbackFunc_t    fun;
     VARIANT             val;
@@ -73,11 +73,11 @@ public:
     explicit functionExpr(const VARIANT*) noexcept;
     explicit functionExpr(const VBCallbackStruct&) noexcept;
     ~functionExpr();
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept;
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept override;
     bool isValid() const noexcept;
 };
 
-//é–¢æ•°ã®å¼•æ•°ã¨ã—ã¦ã®é–¢æ•°ï¼ˆé–¢æ•°åˆæˆã§ã¯ãªã„ï¼‰
+//ŠÖ”‚Ìˆø”‚Æ‚µ‚Ä‚ÌŠÖ”iŠÖ”‡¬‚Å‚Í‚È‚¢j
 class innerFunction : public funcExpr_i {
     VARIANT             myVal;
     VARIANT&            val;
@@ -91,5 +91,5 @@ class innerFunction : public funcExpr_i {
 public:
     innerFunction(VARIANT*, bool) noexcept;
     ~innerFunction();
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept;
+    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept override;
 };
