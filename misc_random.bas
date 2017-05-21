@@ -88,11 +88,17 @@ End Function
     End Function
 
 ' iotaのランダム版（from_iからto_iまでの自然数をランダムに並べたベクトル）
+' Fisher-Yates
 Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
-    Dim dist As Variant
-    dist = uniform_real_dist(1 + Abs(to_i - from_i), 0#, 1#)
-    Call changeLBound(dist, min_fun(from_i, to_i))
-    random_iota = sortIndex(dist)
+    Dim ret As Variant, i As Long, j As Long, tmp As Long
+    ret = iota(from_i, to_i)
+    For i = UBound(ret) To 1 Step -1
+        j = uniform_int_dist(0, 0, i)
+        'If i <> j Then
+            tmp = ret(i): ret(i) = ret(j): ret(j) = tmp
+        'End If
+    Next i
+    Call swapVariant(random_iota, ret)
 End Function
 
 ' 配列の要素をランダムに並び替えた配列を出力
