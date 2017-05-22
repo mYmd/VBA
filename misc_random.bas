@@ -94,9 +94,7 @@ Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
     ret = iota(from_i, to_i)
     For i = UBound(ret) To 1 Step -1
         j = uniform_int_dist(0, 0, i)
-        'If i <> j Then
-            tmp = ret(i): ret(i) = ret(j): ret(j) = tmp
-        'End If
+        tmp = ret(i): ret(i) = ret(j): ret(j) = tmp
     Next i
     Call swapVariant(random_iota, ret)
 End Function
