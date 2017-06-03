@@ -22,7 +22,14 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm
 ///////////////////////////////////////////////////////////////////////////////  
 '=============================================================  
  構成要素  
-・C++ソースをdllとしてコンパイル＆ビルド  
+基本的にはここのbinフォルダにある「VBAHaskellほぼ全部入り.xlsm」に記載している通り。  
+https://github.com/mYmd/VBA/blob/master/bin/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9%83%A8%E5%85%A5%E3%82%8A.xlsm  
+ もしくは  
+http://home.b07.itscom.net/m-yamada/VBA/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9%83%A8%E5%85%A5%E3%82%8A.xlsm  
+
+手動でやる方法（多少面倒）  
+
+・C++ソースをdllとしてコンパイル＆ビルド  
 エクスポートする関数はdefファイルで定義  
 (Declare宣言はdll名をmapM.dllとする前提にしている)  
 
