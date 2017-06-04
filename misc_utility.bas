@@ -1,4 +1,4 @@
-'misc_utility
+Attribute VB_Name = "misc_utility"
 'misc_utility
 'Copyright (c) 2016 mmYYmmdd
 Option Explicit
