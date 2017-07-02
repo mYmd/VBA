@@ -5,48 +5,47 @@
 #include "VBA_NestFunc.hpp"
 
 namespace {
-    //Âü∫Êú¨Âûã„ÅÆ„ÅøÊÉ≥ÂÆö„Åó„Åümin
+    //äÓñ{å^ÇÃÇ›ëzíËÇµÇΩmin
     template <typename T>  T minV(T a, T b) { return (a < b) ? a : b; }
 
-    //foldl „Å® foldr „Å® foldl1 „Å® foldr1 „ÅÆÂÖ±ÈÄöÂá¶ÁêÜ
-    void   fold_imple(functionExpr&   bfun,
-        VARIANT*        init,
-        VARIANT*        matrix,
-        __int32 const   axis,
-        VARIANT&        ret,
-        bool            left) noexcept; //left==true, right == false
+    //foldl Ç∆ foldr Ç∆ foldl1 Ç∆ foldr1 ÇÃã§í èàóù
+    void   fold_imple(  functionExpr&   bfun,
+                        VARIANT*        init,
+                        VARIANT*        matrix,
+                        __int32 const   axis,
+                        VARIANT&        ret,
+                        bool            left) noexcept; //left==true, right == false
 
-                                        //scanl „Å® scanr „Å® scanl1 „Å® scanr1 „ÅÆÂÖ±ÈÄöÂá¶ÁêÜ
-    void   scan_imple(functionExpr&   bfun,
-        VARIANT*        init,
-        VARIANT*        matrix,
-        __int32 const   axis,
-        VARIANT&        ret,
-        bool            left) noexcept; //left==true, right == false
+                                        //scanl Ç∆ scanr Ç∆ scanl1 Ç∆ scanr1 ÇÃã§í èàóù
+    void   scan_imple(  functionExpr&   bfun,
+                        VARIANT*        init,
+                        VARIANT*        matrix,
+                        __int32 const   axis,
+                        VARIANT&        ret,
+                        bool            left) noexcept; //left==true, right == false
 
-                                        //repeat_while „Å® repeat_while_not „Å® generate_while „Å® generate_while_not „ÅÆÂÖ±ÈÄöÂá¶ÁêÜ
-    __int32 repeat_imple_0(VARIANT*        init,
-        functionExpr&   pred,
-        functionExpr&   trans,
-        __int32 const   maxN,
-        VARIANT&        ret,
-        bool const      scan,
-        bool const      stopCondition);
+                                        //repeat_while Ç∆ repeat_while_not Ç∆ generate_while Ç∆ generate_while_not ÇÃã§í èàóù
+    __int32 repeat_imple_0( VARIANT*        init,
+                            functionExpr&   pred,
+                            functionExpr&   trans,
+                            __int32 const   maxN,
+                            VARIANT&        ret,
+                            bool const      scan,
+                            bool const      stopCondition);
 }   // namespace
 
-    //bind„Åï„Çå„Å¶„ÅÑ„Å™„ÅÑVBAÈñ¢Êï∞„Çí2ÂºïÊï∞„ÅßÂëº„Å≥Âá∫„Åô
+    //bindÇ≥ÇÍÇƒÇ¢Ç»Ç¢VBAä÷êîÇ2à¯êîÇ≈åƒÇ—èoÇ∑
 VARIANT  __stdcall
 unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    auto ret = iVariant();
+    functionExpr func{bfun};
     if (func.isValid())
         std::swap(ret, *func.eval(param1, param2));
     return ret;
 }
 
-//VARIANTÂ§âÊï∞„ÅÆswap
+//VARIANTïœêîÇÃswap
 __int32 __stdcall
 swapVariant(VARIANT* a, VARIANT* b) noexcept
 {
@@ -68,7 +67,7 @@ swapVariant(VARIANT* a, VARIANT* b) noexcept
     return 0;
 }
 
-//SafeArray„ÅÆLBound„ÇíÂ§âÊõ¥
+//SafeArrayÇÃLBoundÇïœçX
 void __stdcall changeLBound(VARIANT* pv, __int32 b)
 {
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
@@ -80,22 +79,21 @@ void __stdcall changeLBound(VARIANT* pv, __int32 b)
 
 ////************************************************************************************
 
-//ÈÖçÂàómatrix„ÅÆÂêÑË¶ÅÁ¥†„Å´VBAÈñ¢Êï∞„ÇíÈÅ©Áî®„Åô„Çã
+//îzóÒmatrixÇÃäeóvëfÇ…VBAä÷êîÇìKópÇ∑ÇÈ
 VARIANT  __stdcall
 mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
-    if (!matrix || !func.isValid())       return ret;
+    functionExpr func{bfun};
+    if (!matrix || !func.isValid())       return iVariant();
     if (0 == (VT_ARRAY & matrix->vt))
     {
+        auto ret = iVariant();
         std::swap(ret, *func.eval(matrix, matrix));
         return ret;
     }
-    safearrayRef arIn(matrix);
+    safearrayRef arIn{matrix};
     auto pArray = (0 == (VT_BYREF & matrix->vt)) ? (matrix->parray) : (*matrix->pparray);
-    if (arIn.getDim() == 0)                      return ret;
+    if (arIn.getDim() == 0)                      return iVariant();
     std::array<SAFEARRAYBOUND, 3>   Bounds{
         {
             { static_cast<ULONG>(arIn.getSize(1)), 0 },
@@ -103,10 +101,10 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
             { static_cast<ULONG>(arIn.getSize(3)), 0 }
         }
     };
-    // SAFEARRAY‰ΩúÊàê
-    ret.vt = VT_ARRAY | VT_VARIANT;
+    // SAFEARRAYçÏê¨
+    auto ret = iVariant(VT_ARRAY | VT_VARIANT);
     ret.parray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn.getDim()), Bounds.data());
-    safearrayRef arOut(&ret);
+    safearrayRef arOut{&ret};
     for (ULONG i = 0; i < Bounds[0].cElements; ++i)
     {
         for (ULONG j = 0; j < Bounds[1].cElements; ++j)
@@ -123,24 +121,23 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
 
 //**************************************************************************
 
-//ÈÖçÂàómatrix1„Å®matrix2„ÅÆÂêÑË¶ÅÁ¥†„Å´2Â§âÊï∞„ÅÆCallbackÔºàvbCallbackFunc_tÂûã„ÅÆVBAÈñ¢Êï∞Ôºâ„ÇíÈÅ©Áî®„Åô„Çã
+//îzóÒmatrix1Ç∆matrix2ÇÃäeóvëfÇ…2ïœêîÇÃCallbackÅivbCallbackFunc_tå^ÇÃVBAä÷êîÅjÇìKópÇ∑ÇÈ
 VARIANT  __stdcall
 zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    functionExpr func{bfun};
     //----------------------------
-    if (!matrix1 || !matrix2 || !func.isValid())      return ret;
+    if (!matrix1 || !matrix2 || !func.isValid())      return iVariant();
     if (0 == (VT_ARRAY & matrix1->vt) &&  0 == (VT_ARRAY & matrix2->vt))
     {
+        auto ret = iVariant();
         std::swap(ret, *func.eval(matrix1, matrix2));
         return ret;
     }
-    safearrayRef arIn1(matrix1);
-    safearrayRef arIn2(matrix2);
+    safearrayRef arIn1{matrix1};
+    safearrayRef arIn2{matrix2};
     if (0 == arIn1.getDim() || 0 == arIn2.getDim() || arIn1.getDim() != arIn2.getDim())
-        return ret;
+        return iVariant();
     //----------------------------
     std::array<SAFEARRAYBOUND, 3>   minBounds{
         {
@@ -149,10 +146,10 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
             { static_cast<ULONG>(minV(arIn1.getSize(3), arIn2.getSize(3))), 0 }
         }
     };
-    // SAFEARRAY‰ΩúÊàê
-    ret.vt = VT_ARRAY | VT_VARIANT;
+    // SAFEARRAYçÏê¨
+    auto ret = iVariant(VT_ARRAY | VT_VARIANT);
     ret.parray = ::SafeArrayCreate(VT_VARIANT, static_cast<UINT>(arIn1.getDim()), minBounds.data());
-    safearrayRef arOut(&ret);
+    safearrayRef arOut{&ret};
     for (ULONG i = 0; i < minBounds[0].cElements; ++i)
     {
         for (ULONG j = 0; j < minBounds[1].cElements; ++j)
@@ -170,13 +167,12 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
 
 //**************************************************************************
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂ∑¶Áï≥„ÅøËæº„ÅøÔºàÂàùÊúüÂÄ§ÊåáÂÆö„ÅÇ„ÇäÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩç∂èÙÇ›çûÇ›Åièâä˙íléwíËÇ†ÇËÅj
 VARIANT  __stdcall
 foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    auto ret = iVariant();
+    functionExpr func{bfun};
     if (!matrix || !init || !func.isValid())  return ret;
     if (0 == (VT_ARRAY & matrix->vt))
     {
@@ -187,13 +183,12 @@ foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     return      ret;
 }
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂè≥Áï≥„ÅøËæº„ÅøÔºàÂàùÊúüÂÄ§ÊåáÂÆö„ÅÇ„ÇäÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩâEèÙÇ›çûÇ›Åièâä˙íléwíËÇ†ÇËÅj
 VARIANT  __stdcall
 foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    auto ret = iVariant();
+    functionExpr func{bfun};
     if (!matrix || !init || !func.isValid())      return ret;
     if (0 == (VT_ARRAY & matrix->vt))
     {
@@ -204,27 +199,25 @@ foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     return      ret;
 }
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂ∑¶Áï≥„ÅøËæº„ÅøÔºàÂÖàÈ†≠Ë¶ÅÁ¥†„ÇíÂàùÊúüÂÄ§„Å®„Åô„ÇãÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩç∂èÙÇ›çûÇ›ÅiêÊì™óvëfÇèâä˙ílÇ∆Ç∑ÇÈÅj
 VARIANT  __stdcall
 foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
-    if (!matrix || !func.isValid())                       return ret;
+    auto ret = iVariant();
+    functionExpr func{bfun};
+    if (!matrix || !func.isValid())                     return ret;
     if (0 == (VT_ARRAY & matrix->vt))                   return *matrix;
     fold_imple(func, 0, matrix, axis, ret, true);
     return      ret;
 }
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂè≥Áï≥„ÅøËæº„ÅøÔºàÂÖàÈ†≠Ë¶ÅÁ¥†„ÇíÂàùÊúüÂÄ§„Å®„Åô„ÇãÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩâEèÙÇ›çûÇ›ÅiêÊì™óvëfÇèâä˙ílÇ∆Ç∑ÇÈÅj
 VARIANT  __stdcall
 foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
-    if (!matrix || !func.isValid())                       return ret;
+    auto ret = iVariant();
+    functionExpr func{bfun};
+    if (!matrix || !func.isValid())                     return ret;
     if (0 == (VT_ARRAY & matrix->vt))                   return *matrix;
     fold_imple(func, 0, matrix, axis, ret, false);
     return      ret;
@@ -232,13 +225,12 @@ foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 
 //**************************************************************************
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂ∑¶scanÔºàÂàùÊúüÂÄ§ÊåáÂÆö„ÅÇ„ÇäÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩç∂scanÅièâä˙íléwíËÇ†ÇËÅj
 VARIANT  __stdcall
 scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    auto ret = iVariant();
+    functionExpr func{bfun};
     if (!matrix || !init || !func.isValid())      return ret;
     if (0 == (VT_ARRAY & matrix->vt))
     {
@@ -249,13 +241,12 @@ scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     return      ret;
 }
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂè≥scanÔºàÂàùÊúüÂÄ§ÊåáÂÆö„ÅÇ„ÇäÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩâEscanÅièâä˙íléwíËÇ†ÇËÅj
 VARIANT  __stdcall
 scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    auto ret = iVariant();
+    functionExpr func{bfun};
     if (!matrix || !init || !func.isValid())      return ret;
     if (0 == (VT_ARRAY & matrix->vt))
     {
@@ -266,47 +257,44 @@ scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
     return      ret;
 }
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂ∑¶scanÔºàÂÖàÈ†≠Ë¶ÅÁ¥†„ÇíÂàùÊúüÂÄ§„Å®„Åô„ÇãÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩç∂scanÅiêÊì™óvëfÇèâä˙ílÇ∆Ç∑ÇÈÅj
 VARIANT  __stdcall
 scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
-    if (!matrix || !func.isValid())                   return ret;
+    auto ret = iVariant();
+    functionExpr func{bfun};
+    if (!matrix || !func.isValid())                 return ret;
     if (0 == (VT_ARRAY & matrix->vt))               return *matrix;
     scan_imple(func, 0, matrix, axis, ret, true);
     return      ret;
 }
 
-//3Ê¨°ÂÖÉ„Åæ„Åß„ÅÆVBAÈÖçÂàó„Å´ÂØæ„Åô„ÇãÁâπÂÆö„ÅÆËª∏„Å´Ê≤ø„Å£„ÅüÂè≥scanÔºàÂÖàÈ†≠Ë¶ÅÁ¥†„ÇíÂàùÊúüÂÄ§„Å®„Åô„ÇãÔºâ
+//3éüå≥Ç‹Ç≈ÇÃVBAîzóÒÇ…ëŒÇ∑ÇÈì¡íËÇÃé≤Ç…âàÇ¡ÇΩâEscanÅiêÊì™óvëfÇèâä˙ílÇ∆Ç∑ÇÈÅj
 VARIANT  __stdcall
 scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
-    if (!matrix || !func.isValid())                   return ret;
+    auto ret = iVariant();
+    functionExpr func{bfun};
+    if (!matrix || !func.isValid())                 return ret;
     if (0 == (VT_ARRAY & matrix->vt))               return *matrix;
     scan_imple(func, 0, matrix, axis, ret, false);
     return      ret;
 }
 
 //**************************************************************************
-//Ëø∞Ë™û„Å´„Çà„Çã1Ê¨°ÂÖÉÈÖçÂàó„Åã„Çâ„ÅÆÊ§úÁ¥¢
+//èqåÍÇ…ÇÊÇÈ1éüå≥îzóÒÇ©ÇÁÇÃåüçı
 __int32  __stdcall
 find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def) noexcept
 {
     if (!bfun || !matrix)                         return def;
-    safearrayRef arIn(matrix);
+    safearrayRef arIn{matrix};
     if (arIn.getDim() != 1)                       return def;
-    functionExpr func(bfun);
+    functionExpr func{bfun};
     if (!func.isValid())                          return def;
     for (std::size_t i = 0; i <arIn.getSize(1); ++i)
     {
         auto& elem = arIn(i);
-        VARIANT ret;
-        ::VariantInit(&ret);
+        auto ret = iVariant();
         ::VariantChangeType(&ret, func.eval(&elem, &elem), 0, VT_I4);
         if (ret.lVal != 0)
         {
@@ -318,7 +306,7 @@ find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def) noexcept
     return      def;
 }
 
-//repeat_while „Å® repeat_while_not „Å® generate_while „Å® generate_while_not
+//repeat_while Ç∆ repeat_while_not Ç∆ generate_while Ç∆ generate_while_not
 VARIANT __stdcall
 repeat_imple(VARIANT*        init,
     VARIANT*        pred,
@@ -327,36 +315,33 @@ repeat_imple(VARIANT*        init,
     __int32         scan,
     __int32         stopCondition)
 {
-    VARIANT ret;
-    ::VariantInit(&ret);
+    auto ret = iVariant();
     if (!init || !pred || !trans)                 return ret;
-    functionExpr funcP(pred);
-    functionExpr funcT(trans);
+    functionExpr funcP{pred};
+    functionExpr funcT{trans};
     if (!funcP.isValid() || !funcT.isValid())     return ret;
     auto i = repeat_imple_0(init, funcP, funcT, maxN, ret, 0 != scan, 0 != stopCondition);
     return ret;
 }
 
-//1Ê¨°ÂÖÉÈÖçÂàóvec„ÅÆÈõ¢„Çå„ÅüË¶ÅÁ¥†Èñì„Åß2È†ÖÊìç‰Ωú„ÇíÈÅ©Áî®„Åô„Çã
+//1éüå≥îzóÒvecÇÃó£ÇÍÇΩóvëfä‘Ç≈2çÄëÄçÏÇìKópÇ∑ÇÈ
 VARIANT  __stdcall
 self_zipWith(VARIANT* bfun, VARIANT* vec, __int32 shift) noexcept
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    functionExpr func(bfun);
+    functionExpr func{bfun};
     //----------------------------
-    if (!vec || !func.isValid() || 0 == (VT_ARRAY & vec->vt))   return ret;
-    safearrayRef arIn(vec);
-    if (1 != arIn.getDim())                                     return ret;
+    if (!vec || !func.isValid() || 0 == (VT_ARRAY & vec->vt))   return iVariant();
+    safearrayRef arIn{vec};
+    if (1 != arIn.getDim())                                     return iVariant();
     //----------------------------
     auto const len = static_cast<ULONG>(arIn.getSize(1));
-    if (0 == len)                                             return ret;
+    if (0 == len)                                               return iVariant();
     if (shift < 0)
         shift = ((1 + (-shift)/len) * len + shift) % len;
     SAFEARRAYBOUND bound{ len, 0 };
-    ret.vt = VT_ARRAY | VT_VARIANT;
+    auto ret = iVariant(VT_ARRAY | VT_VARIANT);
     ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
-    safearrayRef arOut(&ret);
+    safearrayRef arOut{&ret};
     for (ULONG i = 0; i < len; ++i)
     {
         auto& elem1 = arIn(i, 0, 0);
@@ -370,15 +355,15 @@ self_zipWith(VARIANT* bfun, VARIANT* vec, __int32 shift) noexcept
 
 namespace {
 
-    //foldl „Å® foldr „Å® foldl1 „Å® foldr1 „ÅÆÂÖ±ÈÄöÂá¶ÁêÜ
-    void   fold_imple(functionExpr&   bfun,
-        VARIANT*        init,
-        VARIANT*        matrix,
-        __int32 const   axis,
-        VARIANT&        ret,
-        bool const      left)  noexcept //left==true, right == false
+    //foldl Ç∆ foldr Ç∆ foldl1 Ç∆ foldr1 ÇÃã§í èàóù
+    void   fold_imple(  functionExpr&   bfun,
+                        VARIANT*        init,
+                        VARIANT*        matrix,
+                        __int32 const   axis,
+                        VARIANT&        ret,
+                        bool const      left)  noexcept //left==true, right == false
     {
-        safearrayRef arIn(matrix);
+        safearrayRef arIn{matrix};
         auto const dim = static_cast<__int32>(arIn.getDim());
         if (0 == dim)                     return;
         if (axis < 1 || dim < axis)       return;
@@ -393,7 +378,7 @@ namespace {
         auto const bound = static_cast<int>((axis == 1) ? arIn.getSize(1)
             : (axis == 2) ? arIn.getSize(2)
             : arIn.getSize(3));
-        // SAFEARRAY‰ΩúÊàê
+        // SAFEARRAYçÏê¨
         std::array<SAFEARRAYBOUND, 2> resultBounds{ { { static_cast<ULONG>(bound1), 0 },
         { static_cast<ULONG>(bound2), 0 } } };
         if (1 != dim)
@@ -401,13 +386,12 @@ namespace {
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = ::SafeArrayCreate(VT_VARIANT, dim-1, resultBounds.data());
         }
-        safearrayRef arOut(&ret);
+        safearrayRef arOut{&ret};
         for (index1 = 0; index1 < bound1; ++index1)
         {
             for (index2 = 0; index2 < bound2; ++index2)
             {
-                VARIANT result;
-                ::VariantInit(&result);
+                auto result = iVariant();
                 VARIANT* presult = nullptr;
                 auto first_time = true;
                 if (init)
@@ -458,15 +442,15 @@ namespace {
         }
     }
 
-    //scanl „Å® scanr „Å® scanl1 „Å® scanr1 „ÅÆÂÖ±ÈÄöÂá¶ÁêÜ
-    void   scan_imple(functionExpr&   bfun,
-        VARIANT*        init,
-        VARIANT*        matrix,
-        __int32 const   axis,
-        VARIANT&        ret,
-        bool const      left) noexcept //left==true, right == false
+    //scanl Ç∆ scanr Ç∆ scanl1 Ç∆ scanr1 ÇÃã§í èàóù
+    void   scan_imple(  functionExpr&   bfun,
+                        VARIANT*        init,
+                        VARIANT*        matrix,
+                        __int32 const   axis,
+                        VARIANT&        ret,
+                        bool const      left) noexcept //left==true, right == false
     {
-        safearrayRef arIn(matrix);
+        safearrayRef arIn{matrix};
         auto const dim = static_cast<__int32>(arIn.getDim());
         if (0 == dim)                         return;
         if (axis < 1 || dim < axis)           return;
@@ -477,7 +461,7 @@ namespace {
         auto const bound1 = static_cast<int>((axis == 1) ? arIn.getSize(2) : arIn.getSize(1));
         auto const bound2 = static_cast<int>((axis == 3) ? arIn.getSize(2) : arIn.getSize(3));
         auto const bound = static_cast<int>((axis == 1) ? arIn.getSize(1) : (axis == 2) ? arIn.getSize(2) : arIn.getSize(3));
-        // SAFEARRAY‰ΩúÊàê
+        // SAFEARRAYçÏê¨
         {
             std::array<SAFEARRAYBOUND, 3> resultBounds{
                 {
@@ -491,14 +475,13 @@ namespace {
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = retArray;
         }
-        safearrayRef arOut(&ret);
+        safearrayRef arOut{&ret};
         auto adj = [=](std::size_t x) { return (init && left && x == axis) ? 1 : 0; };
         for (index1 = 0; index1 < bound1; ++index1)
         {
             for (index2 = 0; index2 < bound2; ++index2)
             {
-                VARIANT result;
-                ::VariantInit(&result);
+                auto result = iVariant();
                 VARIANT* presult = nullptr;
                 auto first_time = true;
                 if (init)
@@ -535,19 +518,18 @@ namespace {
         }
     }
 
-    //repeat_while „Å® repeat_while_not „Å® generate_while „Å® generate_while_not „ÅÆÂÖ±ÈÄöÂá¶ÁêÜ
-    __int32 repeat_imple_0(VARIANT*        init,
-        functionExpr&   pred,
-        functionExpr&   trans,
-        __int32 const   maxN,
-        VARIANT&        ret,
-        bool const      scan,
-        bool const      stopCondition)
+    //repeat_while Ç∆ repeat_while_not Ç∆ generate_while Ç∆ generate_while_not ÇÃã§í èàóù
+    __int32 repeat_imple_0( VARIANT*        init,
+                            functionExpr&   pred,
+                            functionExpr&   trans,
+                            __int32 const   maxN,
+                            VARIANT&        ret,
+                            bool const      scan,
+                            bool const      stopCondition)
     {
-        VARIANT zero, check;
         ::VariantClear(&ret);
-        ::VariantInit(&zero);
-        ::VariantInit(&check);
+        auto zero  = iVariant();
+        auto check = iVariant();
         ::VariantCopy(&ret, init);
         auto pret = &ret;
         std::list<VARIANT> vlist;
@@ -580,7 +562,7 @@ namespace {
             SAFEARRAYBOUND bound = { static_cast<ULONG>(vlist.size()), 0 };
             ret.vt = VT_ARRAY | VT_VARIANT;
             ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
-            safearrayRef arOut(&ret);
+            safearrayRef arOut{&ret};
             LONG index = 0;
             for (auto it = vlist.begin(); it != vlist.end(); ++it, ++index)
                 std::swap(arOut(index), *it);
