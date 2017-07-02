@@ -45,8 +45,8 @@ public:
     ~compDictionaryFunctor() = default;
     bool operator ()(__int32 i, __int32 j) const noexcept
     {
-        safearrayRef arr1(begin + i);
-        safearrayRef arr2(begin + j);
+        safearrayRef arr1{begin + i};
+        safearrayRef arr2{begin + j};
         if ( arr1.getDim() != 1 || arr2.getDim() != 1 )     return false;
         for ( ULONG k = 0; k < arr1.getSize(1) && k < arr2.getSize(1); ++k )
         {
@@ -60,10 +60,8 @@ public:
 
 VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
 {
-    VARIANT      ret;
-    ::VariantInit(&ret);
-    safearrayRef arrIn(array);
-    if ( 1 != arrIn.getDim() )          return ret;
+    safearrayRef arrIn{array};
+    if ( 1 != arrIn.getDim() )          return iVariant();
     auto index = std::make_unique<__int32[]>(arrIn.getSize(1));
     auto VArray = std::make_unique<VARIANT[]>(arrIn.getSize(1));
     auto refFlag = std::make_unique<bool[]>(arrIn.getSize(1));
@@ -84,7 +82,7 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     }
     if ( defaultFlag == 1 ) //1éüå≥è∏èá
     {
-        compFunctor   functor(VArray.get());
+        compFunctor   functor{VArray.get()};
         std::sort(index.get(), index.get() + arrIn.getSize(1), functor);
     }
     else if ( defaultFlag == 2 ) //2éüå≥è∏èá
@@ -94,24 +92,22 @@ VARIANT __stdcall stdsort(VARIANT* array, __int32 defaultFlag, VARIANT* pComp)
     }
     else if ( pComp )
     {
-        functionExpr comp(pComp);
-        compareByVBAfunc functor(VArray.get(), comp);
+        functionExpr comp{pComp};
+        compareByVBAfunc functor{VArray.get(), comp};
         if ( functor.valid() )
             std::stable_sort(index.get(), index.get() + arrIn.getSize(1), functor);
     }
     //-------------------------------------------------------
     SAFEARRAYBOUND boundRet = { static_cast<ULONG>(arrIn.getSize(1)), 0};   //óvëfêîÅALBound
-    ret.vt = VT_ARRAY | VT_VARIANT;
+    auto ret = iVariant(VT_ARRAY | VT_VARIANT);
     ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &boundRet);
-    safearrayRef arrOut(&ret);
-    VARIANT elem;
-    ::VariantInit(&elem);
-    elem.vt = VT_I4;
+    safearrayRef arrOut{&ret};
+    auto elem= iVariant(VT_I4);
     for ( std::size_t i = 0; i < arrIn.getSize(1); ++i )
     {
         elem.lVal = static_cast<decltype(elem.lVal)>(index[i] + arrIn.getOriginalLBound(1));
         ::VariantCopy(&arrOut(i), &elem);
         if ( refFlag[i] )   ::VariantClear(&VArray[i]);
     }
-    return      ret;
+    return  ret;
 }
