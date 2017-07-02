@@ -21,6 +21,8 @@ __int32 __stdcall   is_placeholder(const VARIANT* pv) noexcept;
 VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept;
 
 //--------------------------------------------------------
+VARIANT iVariant(VARTYPE t = VT_EMPTY);
+
 // SafeArray要素のアクセス
 class safearrayRef {
     SAFEARRAY*      psa;
