@@ -31,9 +31,17 @@ __int32 __stdcall is_placeholder(const VARIANT* pv) noexcept
 }
 
 //===================================================================
+VARIANT iVariant(VARTYPE t)
+{
+    VARIANT ret;
+    ::VariantInit(&ret);
+    ret.vt = t;
+    return ret;
+}
+
 // SafeArray要素のアクセス
 safearrayRef::safearrayRef(const VARIANT* pv) noexcept
-    :psa(nullptr), pvt(0), dim(0), elemsize(0), it(nullptr), size({ 1, 1, 1 })
+    :psa{nullptr}, pvt{0}, dim{0}, elemsize{0}, it{nullptr}, size({ 1, 1, 1 })
 {
     ::VariantInit(&val_);
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
@@ -101,7 +109,7 @@ VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k) n
 class valueExpr : public funcExpr_i {
     VARIANT*     val;
 public:
-    explicit valueExpr(VARIANT* v) : val(v) {    }
+    explicit valueExpr(VARIANT* v) : val{v} {    }
     valueExpr(valueExpr const&) = delete;
     valueExpr(valueExpr&&) = delete;
     ~valueExpr() = default;
@@ -166,14 +174,13 @@ namespace {   //util
 
     //------------------------------------------------------------------
     VBCallbackStruct::VBCallbackStruct(const VARIANT* bfun) noexcept
-        : fun(nullptr), elem1(nullptr), elem2(nullptr), delay(0)
+        : fun{nullptr}, elem1{nullptr}, elem2{nullptr}, delay{0}
     {
-        safearrayRef arRef(bfun);
+        safearrayRef arRef{bfun};
         if (1 != arRef.getDim())         return;
         if (arRef.getSize(1) < 4)        return;
         if (placeholder_num(&arRef(3)) < 0)   return;
-        VARIANT pF;
-        ::VariantInit(&pF);
+        auto pF = iVariant();
         if (S_OK != ::VariantChangeType(&pF, &arRef(0), 0, VT_I8))     return;
         fun = reinterpret_cast<vbCallbackFunc_t>(pF.llVal);
         VariantClear(&pF);
@@ -185,7 +192,7 @@ namespace {   //util
     //
     auto functionExpr_imple(VARIANT* elem, bool delay) noexcept ->std::unique_ptr<funcExpr_i>
     {
-        VBCallbackStruct callback(elem);
+        VBCallbackStruct callback{elem};
         try {
             if (callback.fun)
             {
@@ -213,10 +220,10 @@ namespace {   //util
 
 //--------------------------------------------------------
 
-functionExpr::functionExpr(const VARIANT* bfun) noexcept : functionExpr(VBCallbackStruct(bfun))
+functionExpr::functionExpr(const VARIANT* bfun) noexcept : functionExpr{VBCallbackStruct{bfun}}
 {   }
 
-functionExpr::functionExpr(const VBCallbackStruct& callback) noexcept : fun(callback.fun)
+functionExpr::functionExpr(const VBCallbackStruct& callback) noexcept : fun{callback.fun}
 {
     ::VariantInit(&val);
     if (!fun)     return;
@@ -233,8 +240,8 @@ VARIANT* functionExpr::eval(VARIANT* x, VARIANT* y, int left_right) noexcept // 
 {
     if (fun)
     {
-        auto tmp = fun(left->eval(x, y, left_right ? left_right : 1),
-            right->eval(x, y, left_right ? left_right : 2));
+        auto tmp = fun( left->eval(x, y, left_right ? left_right : 1),
+                        right->eval(x, y, left_right ? left_right : 2)  );
         ::VariantClear(&val);   //計算した後でクリアしなければダメ
         std::swap(val, tmp);
     }
@@ -246,7 +253,7 @@ bool functionExpr::isValid() const noexcept
     return fun != nullptr;
 }
 //-------------------------------------------------------------------------
-innerFunction::innerFunction(VARIANT* pVal, bool copy) noexcept : val(copy ? myVal : *pVal), phn1(-2), phn2(-2)
+innerFunction::innerFunction(VARIANT* pVal, bool copy) noexcept : val{copy ? myVal : *pVal}, phn1{-2}, phn2{-2}
 {
     ::VariantInit(&myVal);
     if (copy)        ::VariantCopyInd(&myVal, pVal);
