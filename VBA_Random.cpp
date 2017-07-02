@@ -9,12 +9,11 @@ namespace{
     std::default_random_engine d_engine{seed_gen()};
 }
 
-// ä¹±æ•° seed ã‚’æŒ‡å®šã—ã¦ãƒ©ãƒ³ãƒ€ãƒã‚¤ã‚º
-// seedçœç•¥æ™‚ã‚‚ã—ãã¯æ•´æ•°ã¨ã—ã¦è©•ä¾¡ã§ããªã„ã¨ãã¯ seed_gen ã«ã‚ˆã‚‹
+// —” seed ‚ğw’è‚µ‚Äƒ‰ƒ“ƒ_ƒ}ƒCƒY
+// seedÈ—ª‚à‚µ‚­‚Í®”‚Æ‚µ‚Ä•]‰¿‚Å‚«‚È‚¢‚Æ‚«‚Í seed_gen ‚É‚æ‚é
 __int32 __stdcall seed_Engine(VARIANT* seed)
 {
-    VARIANT tmp;
-    ::VariantInit(&tmp);
+    auto tmp = iVariant();
     if ( seed && S_OK == ::VariantChangeType(&tmp, seed, 0, VT_I4) )
     {
         d_engine.seed(static_cast<std::default_random_engine::result_type>(tmp.lVal));
@@ -29,12 +28,11 @@ __int32 __stdcall seed_Engine(VARIANT* seed)
 }
 
 namespace   {
-    //å…±é€šã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³
+    //‹¤’ÊƒTƒuƒ‹[ƒ`ƒ“
     template <typename DIST, typename F>
     VARIANT dist_imple(__int32 N, DIST dist, F fun)
     {
-        VARIANT ret;
-        ::VariantInit(&ret);
+        auto ret = iVariant();
         if ( N < 1 )
         {
             fun(ret, dist(d_engine));
@@ -42,9 +40,9 @@ namespace   {
         else
         {
             ret.vt = VT_ARRAY | VT_VARIANT;
-            SAFEARRAYBOUND Bound = { N, 0 };
+            SAFEARRAYBOUND Bound = { static_cast<ULONG>(N), 0 };
             ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &Bound);
-            safearrayRef arOut(&ret);
+            safearrayRef arOut{&ret};
             for ( int i = 0; i < N; ++i )
             {
                 ::VariantInit(&arOut(i));
@@ -55,7 +53,7 @@ namespace   {
     }
 }
 
-// N å€‹ã®ä¸€æ§˜æ•´æ•°ä¹±æ•°ã‚’ç”Ÿæˆ  ç¯„å›²[from, to]ã‚’æŒ‡å®š 
+// N ŒÂ‚Ìˆê—l®”—”‚ğ¶¬  ”ÍˆÍ[from, to]‚ğw’è 
 VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to)
 {
     return
@@ -65,7 +63,7 @@ VARIANT __stdcall uniform_int_dist(__int32 N, __int32 from, __int32 to)
                   );
 }
 
-// N å€‹ã®ä¸€æ§˜å®Ÿä¹±æ•°ã‚’ç”Ÿæˆ  ç¯„å›²[from, to]ã‚’æŒ‡å®š
+// N ŒÂ‚Ìˆê—lÀ—”‚ğ¶¬  ”ÍˆÍ[from, to]‚ğw’è
 VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to)
 {
     return
@@ -75,7 +73,7 @@ VARIANT __stdcall uniform_real_dist(__int32 N, double from, double to)
                   );
 }
 
-// N å€‹ã®æ­£è¦åˆ†å¸ƒå®Ÿä¹±æ•°ã‚’ç”Ÿæˆ  å¹³å‡ mean ã¨æ¨™æº–åå·® stddev ã‚’æŒ‡å®š
+// N ŒÂ‚Ì³‹K•ª•zÀ—”‚ğ¶¬  •½‹Ï mean ‚Æ•W€•Î· stddev ‚ğw’è
 VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev)
 {
     return
@@ -85,7 +83,7 @@ VARIANT __stdcall normal_dist(__int32 N, double mean, double stddev)
                   );
 }
 
-// N å€‹ã®ãƒ™ãƒ«ãƒŒãƒ¼ã‚¤åˆ†å¸ƒä¹±æ•°ã‚’ç”Ÿæˆ  ç¢ºç‡ prob ã‚’æŒ‡å®š
+// N ŒÂ‚Ìƒxƒ‹ƒk[ƒC•ª•z—”‚ğ¶¬  Šm—¦ prob ‚ğw’è
 VARIANT __stdcall bernoulli_dist(__int32 N, double prob)
 {
     return
