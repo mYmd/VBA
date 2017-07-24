@@ -15,7 +15,7 @@ __int32 __stdcall Dimension(const VARIANT* pv) noexcept
 }
 
 //プレースホルダの生成
-VARIANT __stdcall placeholder(__int32 n) noexcept
+VARIANT __stdcall placeholder(__int32 const n) noexcept
 {
     VARIANT ret;
     ::VariantInit(&ret);
@@ -31,7 +31,7 @@ __int32 __stdcall is_placeholder(const VARIANT* pv) noexcept
 }
 
 //===================================================================
-VARIANT iVariant(VARTYPE t)
+VARIANT iVariant(VARTYPE const t) noexcept
 {
     VARIANT ret;
     ::VariantInit(&ret);
@@ -55,8 +55,8 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
         size[0] = 0;
         return;
     }
-    elemsize = SafeArrayGetElemsize(psa);
-    SafeArrayGetVartype(psa, &pvt);
+    elemsize = ::SafeArrayGetElemsize(psa);
+    ::SafeArrayGetVartype(psa, &pvt);
     val_.vt = pvt | VT_BYREF;   //ここ
     for (decltype(dim) i = 0; i < dim; ++i)
     {
@@ -69,8 +69,8 @@ safearrayRef::safearrayRef(const VARIANT* pv) noexcept
 
 safearrayRef::~safearrayRef()
 {
-    if (psa)     SafeArrayUnaccessData(psa);
-    VariantClear(&val_);
+    if (psa)     ::SafeArrayUnaccessData(psa);
+    ::VariantClear(&val_);
 }
 
 std::size_t safearrayRef::getDim() const noexcept
@@ -109,7 +109,7 @@ VARIANT& safearrayRef::operator()(std::size_t i, std::size_t j, std::size_t k) n
 class valueExpr : public funcExpr_i {
     VARIANT*     val;
 public:
-    explicit valueExpr(VARIANT* v) : val{v} {    }
+    explicit valueExpr(VARIANT* v) noexcept : val{v} {    }
     valueExpr(valueExpr const&) = delete;
     valueExpr(valueExpr&&) = delete;
     ~valueExpr() = default;

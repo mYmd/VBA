@@ -14,7 +14,7 @@ namespace {
                         VARIANT*        matrix,
                         __int32 const   axis,
                         VARIANT&        ret,
-                        bool            left) noexcept; //left==true, right == false
+                        bool const      left) noexcept; //left==true, right == false
 
                                         //scanl と scanr と scanl1 と scanr1 の共通処理
     void   scan_imple(  functionExpr&   bfun,
@@ -22,21 +22,21 @@ namespace {
                         VARIANT*        matrix,
                         __int32 const   axis,
                         VARIANT&        ret,
-                        bool            left) noexcept; //left==true, right == false
+                        bool const      left) noexcept; //left==true, right == false
 
                                         //repeat_while と repeat_while_not と generate_while と generate_while_not の共通処理
-    __int32 repeat_imple_0( VARIANT*        init,
+    __int32 repeat_imple_0( VARIANT const*  init,
                             functionExpr&   pred,
                             functionExpr&   trans,
                             __int32 const   maxN,
                             VARIANT&        ret,
                             bool const      scan,
-                            bool const      stopCondition);
+                            bool const      stopCondition) noexcept;
 }   // namespace
 
     //bindされていないVBA関数を2引数で呼び出す
 VARIANT  __stdcall
-unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept
+unbind_invoke(VARIANT const* bfun, VARIANT* param1, VARIANT* param2) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -68,7 +68,7 @@ swapVariant(VARIANT* a, VARIANT* b) noexcept
 }
 
 //SafeArrayのLBoundを変更
-void __stdcall changeLBound(VARIANT* pv, __int32 b)
+void __stdcall changeLBound(VARIANT* pv, __int32 const b) noexcept
 {
     if (!pv || 0 == (VT_ARRAY & pv->vt))            return;
     auto psa = (0 == (VT_BYREF & pv->vt)) ? pv->parray : *pv->pparray;
@@ -81,7 +81,7 @@ void __stdcall changeLBound(VARIANT* pv, __int32 b)
 
 //配列matrixの各要素にVBA関数を適用する
 VARIANT  __stdcall
-mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
+mapF_imple(VARIANT const* bfun, VARIANT* matrix) noexcept
 {
     functionExpr func{bfun};
     if (!matrix || !func.isValid())       return iVariant();
@@ -92,7 +92,6 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
         return ret;
     }
     safearrayRef arIn{matrix};
-    auto pArray = (0 == (VT_BYREF & matrix->vt)) ? (matrix->parray) : (*matrix->pparray);
     if (arIn.getDim() == 0)                      return iVariant();
     std::array<SAFEARRAYBOUND, 3>   Bounds{
         {
@@ -123,7 +122,7 @@ mapF_imple(VARIANT* bfun, VARIANT* matrix) noexcept
 
 //配列matrix1とmatrix2の各要素に2変数のCallback（vbCallbackFunc_t型のVBA関数）を適用する
 VARIANT  __stdcall
-zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
+zipWith(VARIANT const* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
 {
     functionExpr func{bfun};
     //----------------------------
@@ -169,7 +168,7 @@ zipWith(VARIANT* bfun, VARIANT* matrix1, VARIANT* matrix2) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った左畳み込み（初期値指定あり）
 VARIANT  __stdcall
-foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
+foldl(VARIANT const* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -185,7 +184,7 @@ foldl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った右畳み込み（初期値指定あり）
 VARIANT  __stdcall
-foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
+foldr(VARIANT* const bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -201,7 +200,7 @@ foldr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った左畳み込み（先頭要素を初期値とする）
 VARIANT  __stdcall
-foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
+foldl1(VARIANT* const bfun, VARIANT* matrix, __int32 axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -213,7 +212,7 @@ foldl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った右畳み込み（先頭要素を初期値とする）
 VARIANT  __stdcall
-foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
+foldr1(VARIANT* const bfun, VARIANT* matrix, __int32 axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -227,7 +226,7 @@ foldr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った左scan（初期値指定あり）
 VARIANT  __stdcall
-scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
+scanl(VARIANT* const bfun, VARIANT* init, VARIANT* matrix, __int32 const axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -243,7 +242,7 @@ scanl(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った右scan（初期値指定あり）
 VARIANT  __stdcall
-scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
+scanr(VARIANT* const bfun, VARIANT* init, VARIANT* matrix, __int32 const axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -259,7 +258,7 @@ scanr(VARIANT* bfun, VARIANT* init, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った左scan（先頭要素を初期値とする）
 VARIANT  __stdcall
-scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
+scanl1(VARIANT* const bfun, VARIANT* matrix, __int32 const axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -271,7 +270,7 @@ scanl1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 
 //3次元までのVBA配列に対する特定の軸に沿った右scan（先頭要素を初期値とする）
 VARIANT  __stdcall
-scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
+scanr1(VARIANT* const bfun, VARIANT* matrix, __int32 const axis) noexcept
 {
     auto ret = iVariant();
     functionExpr func{bfun};
@@ -284,7 +283,7 @@ scanr1(VARIANT* bfun, VARIANT* matrix, __int32 axis) noexcept
 //**************************************************************************
 //述語による1次元配列からの検索
 __int32  __stdcall
-find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def) noexcept
+find_imple(VARIANT* const bfun, VARIANT* matrix, __int32 const def) noexcept
 {
     if (!bfun || !matrix)                         return def;
     safearrayRef arIn{matrix};
@@ -308,12 +307,12 @@ find_imple(VARIANT* bfun, VARIANT* matrix, __int32 def) noexcept
 
 //repeat_while と repeat_while_not と generate_while と generate_while_not
 VARIANT __stdcall
-repeat_imple(VARIANT*        init,
-    VARIANT*        pred,
-    VARIANT*        trans,
-    __int32         maxN,
-    __int32         scan,
-    __int32         stopCondition)
+repeat_imple(VARIANT const*       init,
+            VARIANT const*        pred,
+            VARIANT const*        trans,
+            __int32 const         maxN,
+            __int32 const         scan,
+            __int32 const         stopCondition) noexcept
 {
     auto ret = iVariant();
     if (!init || !pred || !trans)                 return ret;
@@ -326,15 +325,15 @@ repeat_imple(VARIANT*        init,
 
 //1次元配列vecの離れた要素間で2項操作を適用する
 VARIANT  __stdcall
-self_zipWith(VARIANT* bfun, VARIANT* vec, __int32 shift) noexcept
+self_zipWith(VARIANT const* bfun, VARIANT* vec, __int32 shift) noexcept
 {
     functionExpr func{bfun};
     //----------------------------
     if (!vec || !func.isValid() || 0 == (VT_ARRAY & vec->vt))   return iVariant();
-    safearrayRef arIn{vec};
-    if (1 != arIn.getDim())                                     return iVariant();
+    safearrayRef arIn1{vec}, arIn2{ vec };      // 2つ必要
+    if (1 != arIn1.getDim())                                    return iVariant();
     //----------------------------
-    auto const len = static_cast<ULONG>(arIn.getSize(1));
+    auto const len = static_cast<ULONG>(arIn1.getSize(1));
     if (0 == len)                                               return iVariant();
     if (shift < 0)
         shift = ((1 + (-shift)/len) * len + shift) % len;
@@ -344,8 +343,8 @@ self_zipWith(VARIANT* bfun, VARIANT* vec, __int32 shift) noexcept
     safearrayRef arOut{&ret};
     for (ULONG i = 0; i < len; ++i)
     {
-        auto& elem1 = arIn(i, 0, 0);
-        auto& elem2 = arIn((i+shift) % len, 0, 0);
+        auto& elem1 = arIn1(i, 0, 0);
+        auto& elem2 = arIn2((i+shift) % len, 0, 0);
         std::swap(arOut(i), *func.eval(&elem1, &elem2));
     }
     return      ret;
@@ -519,59 +518,65 @@ namespace {
     }
 
     //repeat_while と repeat_while_not と generate_while と generate_while_not の共通処理
-    __int32 repeat_imple_0( VARIANT*        init,
+    __int32 repeat_imple_0( VARIANT const*  init,
                             functionExpr&   pred,
                             functionExpr&   trans,
                             __int32 const   maxN,
                             VARIANT&        ret,
                             bool const      scan,
-                            bool const      stopCondition)
+                            bool const      stopCondition) noexcept
     {
-        ::VariantClear(&ret);
         auto zero  = iVariant();
         auto check = iVariant();
         ::VariantCopy(&ret, init);
         auto pret = &ret;
-        std::list<VARIANT> vlist;
-        if (scan)
+        try
         {
-            vlist.push_back(zero);
-            ::VariantCopy(&vlist.back(), pret);
-        }
-        __int32 count = 0;
-        while (maxN < 0 || count < maxN)
-        {
-            ::VariantChangeType(&check, pred.eval(pret, pret), 0, VT_I4);
-            if ((check.lVal != 0) == stopCondition)
-            {
-                ::VariantClear(&check);
-                break;
-            }
-            pret = trans.eval(pret, pret);
+            std::list<VARIANT> vlist;
             if (scan)
             {
                 vlist.push_back(zero);
                 ::VariantCopy(&vlist.back(), pret);
             }
-            ::VariantClear(&check);
-            ++count;
+            __int32 count = 0;
+            while (maxN < 0 || count < maxN)
+            {
+                ::VariantChangeType(&check, pred.eval(pret, pret), 0, VT_I4);
+                if ((check.lVal != 0) == stopCondition)
+                {
+                    ::VariantClear(&check);
+                    break;
+                }
+                pret = trans.eval(pret, pret);
+                if (scan)
+                {
+                    vlist.push_back(zero);
+                    ::VariantCopy(&vlist.back(), pret);
+                }
+                ::VariantClear(&check);
+                ++count;
+            }
+            if (scan && 0 < vlist.size())
+            {
+                ::VariantClear(&ret);
+                SAFEARRAYBOUND bound = { static_cast<ULONG>(vlist.size()), 0 };
+                ret.vt = VT_ARRAY | VT_VARIANT;
+                ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
+                safearrayRef arOut{ &ret };
+                LONG index = 0;
+                for (auto it = vlist.begin(); it != vlist.end(); ++it, ++index)
+                    std::swap(arOut(index), *it);
+            }
+            else
+            {
+                ::VariantCopy(&ret, pret);
+            }
+            return count;
         }
-        if (scan && 0 < vlist.size())
+        catch (const std::exception&)
         {
-            ::VariantClear(&ret);
-            SAFEARRAYBOUND bound = { static_cast<ULONG>(vlist.size()), 0 };
-            ret.vt = VT_ARRAY | VT_VARIANT;
-            ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &bound);
-            safearrayRef arOut{&ret};
-            LONG index = 0;
-            for (auto it = vlist.begin(); it != vlist.end(); ++it, ++index)
-                std::swap(arOut(index), *it);
+            return 0;
         }
-        else
-        {
-            ::VariantCopy(&ret, pret);
-        }
-        return count;
     }
 
 }   // namespace

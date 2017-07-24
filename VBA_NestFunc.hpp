@@ -18,10 +18,10 @@ VARIANT __stdcall   placeholder(__int32) noexcept;
 __int32 __stdcall   is_placeholder(const VARIANT* pv) noexcept;
 
 //bindされていないVBA関数を2引数で呼び出す
-VARIANT __stdcall   unbind_invoke(VARIANT* bfun, VARIANT* param1, VARIANT* param2) noexcept;
+VARIANT __stdcall   unbind_invoke(VARIANT const* bfun, VARIANT* param1, VARIANT* param2) noexcept;
 
 //--------------------------------------------------------
-VARIANT iVariant(VARTYPE t = VT_EMPTY);
+VARIANT iVariant(VARTYPE t = VT_EMPTY) noexcept;
 
 // SafeArray要素のアクセス
 class safearrayRef {

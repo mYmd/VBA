@@ -4,9 +4,13 @@
 #include <utility>
 #include "OAIdl.h"
 
+#if _MSC_VER < 1900
+#define noexcept throw()
+#endif
+
 namespace   {
-    //ReDimå¯èƒ½ãªé…åˆ—ã‹ã©ã†ã‹
-    HRESULT redimCheck(SAFEARRAY * psa)
+    //ReDim‰Â”\‚È”z—ñ‚©‚Ç‚¤‚©
+    HRESULT redimCheck(SAFEARRAY * psa) noexcept
     {
         if ( const auto dim = ::SafeArrayGetDim(psa) )
         {
@@ -18,12 +22,12 @@ namespace   {
             saboundNew.lLbound = lLbound;
             return ::SafeArrayRedim(psa, &saboundNew);
         }
-        return S_OK;    //æœªåˆæœŸåŒ–é…åˆ—ã‚‚ReDimå¯èƒ½
+        return S_OK;    //–¢‰Šú‰»”z—ñ‚àReDim‰Â”\
     }
 
-    // ã‚³ãƒ”ãƒ¼  *me->mem   <===>   *target->mem
+    // ƒRƒs[  *me->mem   <===>   *target->mem
     template <typename T>
-    void copy_or_swap(T* pV, IDispatch* me, IDispatch* target, __int32 dir)
+    void copy_or_swap(T* pV, IDispatch* me, IDispatch* target, __int32 dir) noexcept
     {
         auto n = reinterpret_cast<char*>(pV) - reinterpret_cast<char*>(me);
         auto p = reinterpret_cast<T*>(reinterpret_cast<char*>(target) + n);
@@ -33,12 +37,15 @@ namespace   {
     }
 }
 
-// VBAã®ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰¹å®šã®ãƒ¡ãƒ³ãƒï¼ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‹ä»¥å¤–ï¼‰ã‚’åŒä¸€ã‚¯ãƒ©ã‚¹ã®ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚³ãƒ”ãƒ¼ã™ã‚‹
-// me     : ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆByVal x As ***Class) (As Objectã§ã¯ãƒ€ãƒ¡)
-// mbr    : ç‰¹å®šã®ãƒ¡ãƒ³ãƒï¼ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‹ä»¥å¤–ï¼‰
-// target : å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆmeã¨åŒä¸€ã‚¯ãƒ©ã‚¹ï¼‰
-// dir    : 0 < dir : meã‹ã‚‰targetã¸ã‚³ãƒ”ãƒ¼ã€ dir < 0 : targetã‹ã‚‰meã¸ã‚³ãƒ”ãƒ¼ã€ã€€dir == 0 : swap
-VARIANT_BOOL __stdcall copy_valueMember(IDispatch* me, VARIANT* mbr, IDispatch* target, __int32 dir)
+// VBA‚ÌƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg‚Ì“Á’è‚Ìƒƒ“ƒoiƒIƒuƒWƒFƒNƒgŒ^ˆÈŠOj‚ğ“¯ˆêƒNƒ‰ƒX‚Ì‘¼‚ÌƒIƒuƒWƒFƒNƒg‚ÉƒRƒs[‚·‚é
+// me     : ƒNƒ‰ƒXƒIƒuƒWƒFƒNƒgiByVal x As ***Class) (As Object‚Å‚Íƒ_ƒ)
+// mbr    : “Á’è‚Ìƒƒ“ƒoiƒIƒuƒWƒFƒNƒgŒ^ˆÈŠOj
+// target : ‘ÎÛƒIƒuƒWƒFƒNƒgime‚Æ“¯ˆêƒNƒ‰ƒXj
+// dir    : 0 < dir : me‚©‚çtarget‚ÖƒRƒs[A dir < 0 : target‚©‚çme‚ÖƒRƒs[A@dir == 0 : swap
+VARIANT_BOOL __stdcall copy_valueMember(IDispatch*  me      ,
+                                        VARIANT*    mbr     ,
+                                        IDispatch*  target  ,
+                                        __int32     dir     ) noexcept
 {
     const auto vt = mbr->vt;
     if ( vt & VT_BYREF )
@@ -120,19 +127,24 @@ VARIANT_BOOL __stdcall copy_valueMember(IDispatch* me, VARIANT* mbr, IDispatch* 
     return -1;
 }
 
-// VBAã®ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‹ã®ãƒ¡ãƒ³ãƒã‚’åŒä¸€ã‚¯ãƒ©ã‚¹ã®ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚³ãƒ”ãƒ¼ã™ã‚‹
-// me     : ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆByVal x As ***Class) (As Objectã§ã¯ãƒ€ãƒ¡)
-// pmbr   : ç‰¹å®šã®ãƒ¡ãƒ³ãƒ
-// target : å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆmeã¨åŒä¸€ã‚¯ãƒ©ã‚¹ï¼‰
-// dir    : 0 < dir : meã‹ã‚‰targetã¸ã‚³ãƒ”ãƒ¼ã€ dir < 0 : targetã‹ã‚‰meã¸ã‚³ãƒ”ãƒ¼ã€ã€€dir == 0 : swap
-// method : ãƒ¡ãƒ³ãƒã§ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å¼•æ•°ãªã—ã®ã‚³ãƒ”ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰åï¼ˆ"clone"ç­‰ï¼‰
-VARIANT_BOOL __stdcall copy_objectMember(IDispatch* me, IDispatch** pmbr, IDispatch* target, __int32 dir, VARIANT* method)
+// VBA‚ÌƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg‚ÌƒIƒuƒWƒFƒNƒgŒ^‚Ìƒƒ“ƒo‚ğ“¯ˆêƒNƒ‰ƒX‚Ì‘¼‚ÌƒIƒuƒWƒFƒNƒg‚ÉƒRƒs[‚·‚é
+// me     : ƒNƒ‰ƒXƒIƒuƒWƒFƒNƒgiByVal x As ***Class) (As Object‚Å‚Íƒ_ƒ)
+// pmbr   : “Á’è‚Ìƒƒ“ƒo
+// target : ‘ÎÛƒIƒuƒWƒFƒNƒgime‚Æ“¯ˆêƒNƒ‰ƒXj
+// dir    : 0 < dir : me‚©‚çtarget‚ÖƒRƒs[A dir < 0 : target‚©‚çme‚ÖƒRƒs[A@dir == 0 : swap
+// method : ƒƒ“ƒo‚Å‚ ‚éƒIƒuƒWƒFƒNƒg‚Ìˆø”‚È‚µ‚ÌƒRƒs[ƒƒ\ƒbƒh–¼i"clone"“™j
+VARIANT_BOOL __stdcall copy_objectMember(   IDispatch*  me      ,
+                                            IDispatch** pmbr    ,
+                                            IDispatch*  target  ,
+                                            __int32     dir     ,
+                                            VARIANT*    method  ) noexcept
 {
     auto n = reinterpret_cast<char*>(pmbr) - reinterpret_cast<char*>(me);
     auto p = reinterpret_cast<IDispatch**>(reinterpret_cast<char*>(target) + n);
     if ( 0 == dir )
     {
         std::swap(*p, *pmbr);
+        return -1;
     }
     else
     {
