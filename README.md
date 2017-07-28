@@ -49,7 +49,7 @@ http://home.b07.itscom.net/m-yamada/VBA/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9
   
 （declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記。）  
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
-Declare文についている 'PtrSafe'宣言をすべて削除れば使用可能。  
+Declare文についている 'PtrSafe'宣言をすべて削除すれば使用可能。  
 '=============================================================  
 2017/1/15  
 dllバイナリを外部URLからここのbinフォルダに変更   
