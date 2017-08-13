@@ -1,0 +1,251 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(8);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=733 style='border-collapse:
+ collapse;table-layout:fixed;width:550pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=684 style='mso-width-source:userset;mso-width-alt:21888;width:513pt'>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 width=49 style='height:17.25pt;width:37pt'><a
+  href="sheet001.htm#_vh_pipe"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80 width=684 style='width:513pt'><a name="_pipe">vh_pipeオブジェクトの生成<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>（<ruby>実装<span style='display:none'><rt>ジッソウ</rt></span></ruby>はmisc_utilityモジュール）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">pipe</font><font
+  class="font0">(ByRef x As Variant) As vh_pipe</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_">vh_pipeオブジェクトの生成（引数をmoveする）<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>（実装はmisc_utilityモジュール）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">pipe_</font><font
+  class="font0">(ByRef x As Variant) As vh_pipe</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_X">関数適用して自分自身を返す</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">x</font><font
+  class="font0">(ByRef fun As Variant) As vh_pipe</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>? <font class="font24">pipe</font><font class="font0">(3) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.<font
+  class="font24">x</font><font class="font0">(p_plus(10)) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.<font
+  class="font24">x</font><font class="font0">(p_mult(10)) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.<font
+  class="font24">x</font><font class="font0">(p_minus(, 3)) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.val</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>127<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>&lt;-<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>((3 + 10) * 10) - 3<span style='mso-spacerun:yes'>&nbsp;</span></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_arrow">関数適用して自分自身を返す<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(Function x と<ruby>同<span style='display:none'><rt>オナ</rt></span></ruby>じ)</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">→</font><font
+  class="font0">(ByRef fun As Variant) As vh_pipe</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<font class="font24"> pipe_</font><font class="font0">(iota(1,
+  20)) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.<font
+  class="font24">→</font><font class="font0">(p_filter_if(p_less(yield_1, 10)))
+  _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.<font
+  class="font24">→</font><font class="font0">(p_mapF(p_mult(yield_1, 100))) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.pop</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>100<span
+  style='mso-spacerun:yes'>&nbsp; </span>200<span
+  style='mso-spacerun:yes'>&nbsp; </span>300<span
+  style='mso-spacerun:yes'>&nbsp; </span>400<span
+  style='mso-spacerun:yes'>&nbsp; </span>500<span
+  style='mso-spacerun:yes'>&nbsp; </span>600<span
+  style='mso-spacerun:yes'>&nbsp; </span>700<span
+  style='mso-spacerun:yes'>&nbsp; </span>800<span
+  style='mso-spacerun:yes'>&nbsp; </span>900</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_vh_pipe"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_val">結果を取得</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Property Get <font class="font13">val</font><font
+  class="font0">() As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_pop">結果を取得(値はmoveされる）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Property Get <font class="font13">pop</font><font
+  class="font0">() As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_swap">vh_pipeどうしのswap</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font41">swap</font><font
+  class="font0">(ByVal other As vh_pipe) As vh_pipe</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pipe_clone">同じ値を持ったオブジェクトの生成</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font41">clone</font><font
+  class="font0">(ByVal other As vh_pipe) As vh_pipe</font></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=684 style='width:513pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

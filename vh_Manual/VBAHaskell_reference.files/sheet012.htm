@@ -1,0 +1,520 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(11);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=733 style='border-collapse:
+ collapse;table-layout:fixed;width:550pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=684 style='mso-width-source:userset;mso-width-alt:21888;width:513pt'>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 width=49 style='height:13.5pt;width:37pt'></td>
+  <td class=xl79 width=684 style='width:513pt'><a name="_isPrimeNumber">素数判定</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl126>Function <font class="font29">isPrimeNumber</font><font
+  class="font0">(ByVal val As Long) As Boolean</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><a name="_primeNumbers">素数一覧</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl126>Function <font class="font29">primeNumbers</font><font
+  class="font0">(Optional ByVal val As Long = -1) As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_math"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl79><a name="_sin_fun">Sin</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl77>Function <font class="font14">sin_fun</font><font
+  class="font10">(ByRef x As Variant, ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl124><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_sin</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_cos_fun">Cos</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">cos_fun</font><font class="font0">(ByRef
+  x As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_cos</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_pow_fun">Pow</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">pow_fun</font><font class="font0">(ByRef
+  x As Variant, ByRef y As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_pow</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_make_polyCoef">多項式の微分または不定積分（係数の生成）</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>多項式そのものは Haskell_2_stdFun::poly</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">make_polyCoef</font><font
+  class="font0">(ByRef coef As Variant, Optional ByRef deriv_N As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_make_polyCoef</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_math"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><a name="_newton_method">ニュートン法による求根（の1ステップ）</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>x1 から
+  x2 を出力する</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>第1引数
+  ：　x ,<span style='mso-spacerun:yes'>&nbsp; </span>第2引数 (f, df/dx)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">newton_method</font><font
+  class="font0">(ByRef x As Variant, ByRef f_df As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_newton_method</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_integral_simpson">シンプソン法による数値積分</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">integral_simpson</font><font
+  class="font0">(ByRef fun As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal begin_ As Double, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal end_ As Double, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl116><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal n As Long) As Double</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_math"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><a name="_make_complex">複素数の生成（x-y<ruby>座標<span
+  style='display:none'><rt>ザヒョウ</rt></span></ruby>）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">make_complex</font><font
+  class="font0">(ByRef R As Variant, ByRef i As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_make_complex</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_make_complex_polar">複素数の生成（<ruby>極<span
+  style='display:none'><rt>キョク</rt></span></ruby><ruby>座標<span
+  style='display:none'><rt>ザヒョウ</rt></span></ruby>）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">make_complex_polar</font><font
+  class="font0">(ByRef R As Variant, ByRef arg As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_make_complex_polar</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_show_complex">複素数の<ruby>文字列<span style='display:
+  none'><rt>モジレツ</rt></span></ruby><ruby>化<span style='display:none'><rt>カ</rt></span></ruby>（x-y座標）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">show_complex</font><font
+  class="font0">(ByRef c As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_show_complex</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_show_complex_polar">複素数の<ruby>文字列<span
+  style='display:none'><rt>モジレツ</rt></span></ruby><ruby>化<span
+  style='display:none'><rt>カ</rt></span></ruby>（極座標）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">show_complex_polar</font><font
+  class="font0">(ByRef c As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_show_complex_polar</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_math"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><a name="_complex_add">複素数の<ruby>加法<span style='display:none'><rt>カホウ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">complex_add</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_add</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_complex_minus">複素数の<ruby>減法<span style='display:
+  none'><rt>ゲンポウ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">complex_minus</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_minus</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_complex_mult">複素数の<ruby>乗法<span style='display:none'><rt>ジョウホウ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">complex_mult</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_mult</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_complex_divide">複素数の<ruby>除法<span style='display:
+  none'><rt>ジョホウ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">complex_divide</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_divide</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_math"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><a name="_complex_cnj"><ruby>共役<span style='display:none'><rt>キョウヤク</rt></span></ruby>複素数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">complex_cnj</font><font
+  class="font0">(ByRef a As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_cnj</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_complex_abs2">複素数の<ruby>絶対値<span style='display:
+  none'><rt>ゼッタイチ</rt></span></ruby>2<ruby>乗<span style='display:none'><rt>ジョウ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">complex_abs2</font><font
+  class="font0">(ByRef a As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_abs2</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_complex_abs">複素数の<ruby>絶対値<span style='display:none'><rt>ゼッタイチ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">complex_abs</font><font
+  class="font0">(ByRef a As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_abs</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_complex_arg">複素数の<ruby>偏角<span style='display:none'><rt>ヘンカク</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">complex_arg</font><font
+  class="font0">(ByRef a As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_complex_arg</font><font class="font0">(</font></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=684 style='width:513pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

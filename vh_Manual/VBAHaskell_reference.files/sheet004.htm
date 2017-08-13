@@ -1,0 +1,1493 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(3);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=698 style='border-collapse:
+ collapse;table-layout:fixed;width:524pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=649 style='mso-width-source:userset;mso-width-alt:20768;width:487pt'>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 width=49 style='height:17.25pt;width:37pt'><a
+  href="sheet001.htm#_stdfun"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl77 width=649 style='width:487pt'><a name="_assignVar">汎用の変数コピー</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79>Sub <font class="font20">assignVar</font><font class="font10">(ByRef
+  Target As Variant, ByRef source As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>Set Target = Source と Let Target = Source の<ruby>自動<span
+  style='display:none'><rt>ジドウ</rt></span></ruby><ruby>判定<span
+  style='display:none'><rt>ハンテイ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl77><a name="_firstArg">1番目の引数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl79>Function <font class="font14">firstArg</font><font
+  class="font10">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_firstArg</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_identity</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>a<ruby>を<span style='display:none'><rt>カエ</rt></span></ruby>返すだけ</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82><a name="_secondArg">2番目の引数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl82>Function <font class="font13">secondArg</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl124><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_secondArg</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>b<ruby>を<span style='display:none'><rt>カエ</rt></span></ruby>返すだけ</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl88><a name="_getNth">N番目の配列要素取得（絶対アドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl88>Function <font class="font19">getNth</font><font class="font0">(ByRef
+  vec As Variant, ByRef index As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><font class="font11"><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>Function </font><font
+  class="font29">p_getNth</font><font class="font11">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl174>　</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>?<font class="font24">getNth</font><font class="font10">(iota(1,
+  1000000), 5234)</font></td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>5235</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl80><a name="_getNth_b">N番目の配列要素取得（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl68 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">getNth_b</font><font
+  class="font0">(ByRef vec As Variant, ByRef index As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl159><a href="sheet010.htm#_p__n"><font class="font11"><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>Function </font><font
+  class="font29">p_getNth_b</font><font class="font11">(<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←これの構文糖は </font><font class="font39">p__n(</font></a></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl108>index &lt; 0 の場合は後ろから取得</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>a = iota(1,10)</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>changeLBound<span style='mso-spacerun:yes'>&nbsp; </span>a,
+  16384</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>printS a</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>[Dim1]: 16384 -&gt; 16393<span
+  style='mso-spacerun:yes'>&nbsp; </span>: Total Size = 10</td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>? <font class="font24">getNth_b</font><font class="font10">(a,
+  0), </font><font class="font24">getNth_b</font><font class="font10">(a, -1)</font></td>
+ </tr>
+ <tr class=xl69 height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp;</span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>10<span style='mso-spacerun:yes'>&nbsp;</span></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_setNth_b">N番目の配列要素設定（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>index
+  &lt; 0 の場合は後ろに設定</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Sub <font class="font13">setNth_b</font><font class="font0">(ByRef
+  vec As Variant, ByVal index As Long, ByRef value As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>絶対<span style='display:none'><rt>ゼッタイ</rt></span></ruby><ruby>位置<span
+  style='display:none'><rt>イチ</rt></span></ruby>を<ruby>指定<span
+  style='display:none'><rt>シテイ</rt></span></ruby>する &quot;setNth&quot; は、<ruby>存在<span
+  style='display:none'><rt>ソンザイ</rt></span></ruby><ruby>意義<span
+  style='display:none'><rt>イギ</rt></span></ruby>がない</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_setNth_move">N番目の配列要素設定：moveバージョン（絶対アドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">setNth_move</font><font
+  class="font0">(ByRef vec As Variant, ByVal index As Long, ByRef value As
+  Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>a = iota(1, 1000000)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← 大きな配列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>a = <font class="font24">setNth_move</font>(a, 1002, -1)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← 1カ<ruby>所<span style='display:none'><rt>ショ</rt></span></ruby>を<ruby>書<span
+  style='display:none'><rt>カ</rt></span></ruby>き<ruby>換<span style='display:
+  none'><rt>カ</rt></span></ruby>えて<ruby>返<span style='display:none'><rt>カエ</rt></span></ruby>すのも<ruby>安心<span
+  style='display:none'><rt>アンシン</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>printM subV(a, iota(1000, 1005))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>1001<span
+  style='mso-spacerun:yes'>&nbsp; </span>1002<span
+  style='mso-spacerun:yes'>&nbsp; </span>-1<span
+  style='mso-spacerun:yes'>&nbsp; </span>1004<span
+  style='mso-spacerun:yes'>&nbsp; </span>1005<span
+  style='mso-spacerun:yes'>&nbsp; </span>1006</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_setNth_b_move">N番目の配列要素設定：moveバージョン（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">setNth_b_move</font><font
+  class="font0">(ByRef vec As Variant, ByVal index As Long, ByRef value As
+  Variant)</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_move_many">複数の変数をmoveしてひとつのジャグ配列にする</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">move_many</font><font
+  class="font0">(ParamArray m() As Variant) As Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl87 style='height:7.5pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>以<span style='display:none'><rt>イカ</rt></span></ruby>下のプロセス<ruby>で配<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby>列のコピー<ruby>が発<span
+  style='display:none'><rt>ハッセイ</rt></span></ruby>生しない</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>m = move_many(a, b, c, d, e. f. g)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←<span style='mso-spacerun:yes'>&nbsp; </span>a, b, c, d, e. f. g は<ruby>大<span
+  style='display:none'><rt>オオ</rt></span></ruby>きな<ruby>配列<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>（mをmap<ruby>F<span style='display:none'><rt>ナド</rt></span></ruby>等<ruby>に<span
+  style='display:none'><rt>ワタ</rt></span></ruby>渡し<ruby>て<span
+  style='display:none'><rt>ナニ</rt></span></ruby><ruby>何<span style='display:
+  none'><rt>ナニ</rt></span></ruby>かする・・・）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>move_back<span style='mso-spacerun:yes'>&nbsp; </span>m, a,
+  b, c, d, e, f<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←<span style='mso-spacerun:yes'>&nbsp; </span>a, b, c, d, e. f. g に<ruby>値<span
+  style='display:none'><rt>アタイ</rt></span></ruby>を<ruby>戻<span
+  style='display:none'><rt>モド</rt></span></ruby>す</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_move_back">ジャグ配列から複数（可変長）の変数にmove back</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Sub <font class="font13">move_back</font><font class="font0">(ByRef
+  m As Variant, ParamArray ret() As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>move_many<span style='mso-spacerun:yes'>&nbsp;</span><ruby>の<span
+  style='display:none'><rt>ギャク</rt></span></ruby><ruby>逆操<span
+  style='display:none'><rt>ソウサ</rt></span></ruby>作</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl80><a name="_place_fill">配列の指定位置に関数を適用する（値を埋めてmoveして返す）</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl80>Function <font class="font29">place_fill</font><font
+  class="font0">(ByRef vec As Variant, ByRef fun As Variant, ByRef indice As
+  Variant, _</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl117><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByRef souce As Variant) As Variant</td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl87 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl108>a = place_fill(repeat(&quot;-&quot;,10),
+  p_left(&quot;abcdefghijk&quot;), Array(2,5,8))</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl108>printM a</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>-<span
+  style='mso-spacerun:yes'>&nbsp; </span>-<span style='mso-spacerun:yes'>&nbsp;
+  </span>ab<span style='mso-spacerun:yes'>&nbsp; </span>-<span
+  style='mso-spacerun:yes'>&nbsp; </span>-<span style='mso-spacerun:yes'>&nbsp;
+  </span>abcde<span style='mso-spacerun:yes'>&nbsp; </span>-<span
+  style='mso-spacerun:yes'>&nbsp; </span>-<span style='mso-spacerun:yes'>&nbsp;
+  </span>abcdefgh<span style='mso-spacerun:yes'>&nbsp; </span>-</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl108>printM place_fill(repeat(0, 10), 1, Array(2,5,8))</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>0</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>m = place_fill(iota(0,100), &quot;Fizz&quot;, mapF(p_mult(3),
+  iota(1, 33)))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>m = place_fill(m, &quot;Buzz&quot;, mapF(p_mult(5), iota(1,
+  20)))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>m = place_fill(m, &quot;FizzBuzz&quot;, mapF(p_mult(15),
+  iota(1, 6)))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>printM m, -100</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>Fizz<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>Buzz<span
+  style='mso-spacerun:yes'>&nbsp; </span>Fizz<span
+  style='mso-spacerun:yes'>&nbsp; </span>7<span style='mso-spacerun:yes'>&nbsp;
+  </span>8<span style='mso-spacerun:yes'>&nbsp; </span>Fizz<span
+  style='mso-spacerun:yes'>&nbsp; </span>Buzz<span
+  style='mso-spacerun:yes'>&nbsp; </span>11<span
+  style='mso-spacerun:yes'>&nbsp; </span>Fizz<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>14<span
+  style='mso-spacerun:yes'>&nbsp; </span>FizzBuzz<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>Fizz<span
+  style='mso-spacerun:yes'>&nbsp; </span>19 …</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_rowSize">配列の行数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Function <font class="font13">rowSize</font><font
+  class="font0">(ByRef data As Variant) As Long</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_colSize">配列の列数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Function <font class="font13">colSize</font><font
+  class="font0">(ByRef data As Variant) As Long</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl78><a name="_sizeof">配列の全要素数または特定の軸の要素数</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl80>Function <font class="font29">sizeof</font><font class="font0">(ByRef
+  data As Variant, Optional ByVal axis As Long = 0) As Long</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_sizeof</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>次<span style='display:none'><rt>ジスウ</rt></span></ruby>数<ruby>の上<span
+  style='display:none'><rt>ジョウゲン</rt></span></ruby>限なし</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>axis = 0　：　<ruby>全<span style='display:none'><rt>ゼン</rt></span></ruby><ruby>要素<span
+  style='display:none'><rt>ヨウソ</rt></span></ruby><ruby>数<span style='display:
+  none'><rt>スウ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>0 &lt; axis &lt;=<span style='mso-spacerun:yes'>&nbsp;</span><ruby>次元<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>　：<ruby>　<span
+  style='display:none'><rt>ゼン</rt></span></ruby><ruby>指定<span style='display:
+  none'><rt>シテイ</rt></span></ruby>した<ruby>軸<span style='display:none'><rt>ジク</rt></span></ruby>の<ruby>要素<span
+  style='display:none'><rt>ヨウソ</rt></span></ruby><ruby>素<span style='display:
+  none'><rt>スウ</rt></span></ruby>数</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>そ<ruby>の<span style='display:none'><rt>タ</rt></span></ruby>他　：　1</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_constant">定数関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">p_constant</font><font
+  class="font0">(ByRef x As Variant) As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_true">定数関数(true)　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">p_true</font><font class="font0">()
+  As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_false">定数関数(false)　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl116>Function <font class="font13">p_false</font><font
+  class="font0">() As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_if_else">選択<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>if_else(値, [判定値(関数),
+  真の時の変換値(関数), 偽の時の変換値(関数)])</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">if_else</font><font class="font0">(ByRef
+  val As Variant, ByRef trans As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_if_else</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>プレースホルダ<ruby>を<span style='display:none'><rt>オ</rt></span></ruby>置く<ruby>と引<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>数がそのま<ruby>ま反<span
+  style='display:none'><rt>ハンエイ</rt></span></ruby>映される</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>?if_else(335, Array(p_mod(, 3), ph_0, &quot;アホ&quot;))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>335</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>?if_else(300, Array(p_mod(, 3), ph_0, &quot;アホ&quot;))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>アホ</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_replaceNull">Nullを他の値に置換する</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">replaceNull</font><font
+  class="font0">(ByRef x As Variant, ByRef alt As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_replaceNull</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_replaceEmpty">Emptyを他の値に置換する</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">replaceEmpty</font><font
+  class="font0">(ByRef x As Variant, ByRef alt As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_replaceEmpty</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>条<span style='display:none'><rt>ジョウケン</rt></span></ruby>件<ruby>に<span
+  style='display:none'><rt>ア</rt></span></ruby>合わないものを Empty <ruby>に変<span
+  style='display:none'><rt>ヘンカン</rt></span></ruby>換しておき、あとで<ruby>一気<span
+  style='display:none'><rt>イッキ</rt></span></ruby><ruby>に置<span
+  style='display:none'><rt>チカン</rt></span></ruby>換するのに<ruby>利用<span
+  style='display:none'><rt>リヨウ</rt></span></ruby>できる</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_maskVar">値のマスク（mask=0 の時にEmpty化）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">maskVar</font><font
+  class="font11">(ByRef x As Variant, ByRef mask As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_maskVar</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_expN">指数関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">expN</font><font class="font0">(ByRef
+  a As Variant, ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_exp</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_logN">対数関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">logN</font><font class="font0">(ByRef
+  a As Variant, Optional ByRef base As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_log</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_absD">絶対値</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">absD</font><font class="font0">(ByRef
+  val As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_abs</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_plus">加算</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font19">plus</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_plus</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_minus">減算</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">minus</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_minus</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_mult">乗算</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">mult</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_mult</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_divide">除算</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">divide</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_divide</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_modN">剰余</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">modN</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_mod</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_poly">多項式　（係数は高次-&gt;低次）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">poly</font><font class="font0">(ByRef
+  x As Variant, ByRef coef As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_poly</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_min_fun">min</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">min_fun</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_min</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_max_fun">max</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">max_fun</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_max</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_CLng_">CLng（整数化）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">CLng_</font><font class="font0">(ByRef
+  a As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_CLng</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_CDbl_">CDbl（実数化）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">CDbl_</font><font class="font0">(ByRef
+  a As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_CDbl</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_CStr_">CStr（文字列化）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">CStr_</font><font class="font0">(ByRef
+  a As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_CStr</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_str_len">Len関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">str_len</font><font class="font0">(ByRef
+  st As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_len</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_str_left">Left関数（負の引数も可）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">str_left</font><font
+  class="font0">(ByRef st As Variant, ByRef length As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_left</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_str_right">Right関数（負の引数も可）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">str_right</font><font
+  class="font0">(ByRef st As Variant, ByRef length As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_right</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_str_mid">Mid関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">str_mid</font><font class="font0">(ByRef
+  st As Variant, ByRef begin_len As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_mid</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_str_cat">文字列結合関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">str_cat</font><font class="font0">(ByRef
+  s1 As Variant, ByRef s2 As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_str_cat</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_splitFun">Split関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">splitFun</font><font
+  class="font0">(ByRef s As Variant, ByRef delim As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_split</font><font class="font11">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_joinFun">Join関数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">joinFun</font><font class="font0">(ByRef
+  m As Variant, ByRef delim As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_join</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_gcm"><ruby>最<span style='display:none'><rt>サイショウ</rt></span></ruby><ruby>小公倍<span
+  style='display:none'><rt>コウバイスウ</rt></span></ruby>数</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">gcm</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_gcm</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_lcm"><ruby>最大<span style='display:none'><rt>サイダイ</rt></span></ruby><ruby>公約数<span
+  style='display:none'><rt>コウヤクスウ</rt></span></ruby></a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">lcm</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_lcm</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_equal">述語 equal</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">equal</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_equal</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_notEqual">述語 not equal</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">notEqual</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_notEqual</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_less">述語 less ( &lt; )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">less</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_less</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_less_equal">述語 less_equal ( &lt;= )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">less_equal</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_less_equal</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_greater">述語 greater ( &gt; )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">greater</font><font class="font0">(ByRef
+  a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_greater</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a href="sheet001.htm#_stdfun"><span
+  style='font-size:14.0pt'><ruby>戻<span style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_greater_equal">述語 greater_equal ( &gt;= )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">greater_equal</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_greater_equal</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_is_null">述語 is_null</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">is_null</font><font class="font0">(ByRef
+  a As Variant, Optional ByRef dummy As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_is_null</font><font class="font0">(Optional
+  ByRef firstParam As Variant, Optional ByRef secondParam As Variant) </font><span
+  style='display:none'><font class="font0">As Variant</font></span></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_is_empty">述語 is_empty</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">is_empty</font><font
+  class="font0">(ByRef a As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_is_empty</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_is_valid">述語 is_valid</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">is_valid</font><font
+  class="font0">(ByRef a As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_is_valid</font><font class="font0">(</font></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=649 style='width:487pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

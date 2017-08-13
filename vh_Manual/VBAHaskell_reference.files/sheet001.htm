@@ -1,0 +1,2736 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(0);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple class=xl69>
+
+<table border=0 cellpadding=0 cellspacing=0 width=1044 style='border-collapse:
+ collapse;table-layout:fixed;width:784pt'>
+ <col class=xl69 width=76 style='mso-width-source:userset;mso-width-alt:2432;
+ width:57pt'>
+ <col class=xl69 width=253 style='mso-width-source:userset;mso-width-alt:8096;
+ width:190pt'>
+ <col class=xl69 width=549 style='mso-width-source:userset;mso-width-alt:17568;
+ width:412pt'>
+ <col class=xl69 width=22 style='mso-width-source:userset;mso-width-alt:704;
+ width:17pt'>
+ <col class=xl69 width=72 span=2 style='width:54pt'>
+ <tr height=26 style='mso-height-source:userset;height:19.5pt'>
+  <td height=26 width=76 style='height:19.5pt;width:57pt'><a name="_vba_home"></a></td>
+  <td class=xl158 width=253 style='width:190pt'><a href="sheet013.htm#_files"><span
+  style='font-size:10.0pt'>ファイル<ruby>構成<span style='display:none'><rt>コウセイ</rt></span></ruby></span></a></td>
+  <td class=xl94 width=549 style='width:412pt'><a
+  href="http://home.b07.itscom.net/m-yamada/VBA/" target="_parent"><span
+  style='color:blue;font-size:12.0pt'>http://home.b07.itscom.net/m-yamada/VBA/</span></a></td>
+  <td width=22 style='width:17pt'></td>
+  <td class=xl69 width=72 style='width:54pt'></td>
+  <td class=xl69 width=72 style='width:54pt'></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl93 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_DLL_Declare">DLL　Declare</a></td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/Haskell_0_declare.bas"
+  target="_parent"><span style='color:blue'>Haskell_0_declare[Github]</span></a></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl95 style='border-top:none'><a href="sheet002.htm#_Dimension"><span
+  style='color:red;font-weight:700'>Dimension</span></a></td>
+  <td class=xl73>配列の次元取得</td>
+  <td class=xl99>　</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl105><a href="sheet002.htm#_placeholder">placeholder</a></td>
+  <td class=xl74>プレースホルダ・オブジェクトの生成</td>
+  <td class=xl100 style='border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl106><a href="sheet002.htm#_is_placeholder">is_placeholder</a></td>
+  <td class=xl75>プレースホルダ・オブジェクト判定</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl107><a href="sheet002.htm#_unbind_invoke">unbind_invoke</a></td>
+  <td class=xl75>bindされていないVBA関数を2引数で呼び出す</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl107><a href="sheet002.htm#_mapF_imple">mapF_imple</a></td>
+  <td class=xl76>配列matrixの各要素elemに関数を適用する(mapF<ruby>関数<span style='display:
+  none'><rt>カンスウ</rt></span></ruby>内部で<ruby>使用<span style='display:none'><rt>シヨウ</rt></span></ruby>）</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_zipWith"><span style='color:red;
+  font-weight:700'>zipWith</span></a></td>
+  <td class=xl75>2つの配列の各要素に関数を適用する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_foldl"><span style='color:red;
+  font-weight:700'>foldl</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">左</font><font class="font0">畳み込み（初期値指定あり）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_foldr"><span style='color:red;
+  font-weight:700'>foldr</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">右</font><font class="font0">畳み込み（初期値指定あり）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_foldl1"><span style='color:red;
+  font-weight:700'>foldl1</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">左</font><font class="font0">畳み込み（先頭要素を初期値とする）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_foldr1"><span style='color:red;
+  font-weight:700'>foldr1</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">右</font><font class="font0">畳み込み（</font><ruby><font
+  class="font0">末尾</font><span style='display:none'><rt>マツビ</rt></span></ruby><font
+  class="font0">要素を初期値とする）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_scanl"><span style='color:red;
+  font-weight:700'>scanl</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">左</font><font class="font0">scan（初期値指定あり）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_scanr"><span style='color:red;
+  font-weight:700'>scanr</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">右</font><font class="font0">scan（初期値指定あり）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_scanl1"><span style='color:red;
+  font-weight:700'>scanl1</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">左</font><font class="font0">scan（先頭要素を初期値とする）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_scanr1"><span style='color:red;
+  font-weight:700'>scanr1</span></a></td>
+  <td class=xl76>配列に対する特定の軸に沿った<font class="font12">右</font><font class="font0">scan（末尾要素を初期値とする）</font></td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl107><a href="sheet002.htm#_stdsort">stdsort</a></td>
+  <td class=xl76>1次元配列のソートインデックス出力（sortIndex<ruby>関数<span style='display:none'><rt>カンスウ</rt></span></ruby><ruby>内部<span
+  style='display:none'><rt>ナイブ</rt></span></ruby>で<ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>）</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl107><a href="sheet002.htm#_find_imple">find_imple</a></td>
+  <td class=xl76>述語による検索（find_pred関数内部で使用）</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl107><a href="sheet002.htm#_repeat_imple">repeat_imple</a></td>
+  <td class=xl76>関数適用のループ（repeat_while等の関数内部で使用）</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet002.htm#_swapVariant"><span style='color:red;
+  font-weight:700'>swapVariant</span></a></td>
+  <td class=xl75>VARIANT変数どうしのスワップ</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet002.htm#_changeLBound">changeLBound</a></td>
+  <td class=xl76>配列のLBound変更</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl171 style='height:13.5pt'>Function</td>
+  <td class=xl166><a href="sheet002.htm#_self_zipWith">self_zipWith<ruby><font
+  class="font9"><rt class=font9></rt></font></ruby></a></td>
+  <td class=xl172>1次元配列の離れた要素間で2項操作を適用する<ruby><font class="font9"><rt
+  class=font9></rt></font></ruby></td>
+  <td class=xl101>　</td>
+  <td colspan=2 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_VBAHaskell_Core">VBAHaskellコア</a></td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/Haskell_1_Core.bas"
+  target="_parent"><span style='color:blue'>Haskell_1_Core[Github]</span></a></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl95 style='border-top:none'><a href="sheet003.htm#_moveVariant"><span
+  style='color:red;font-weight:700'>moveVariant</span></a></td>
+  <td class=xl73>sourceのVARIANT変数をtargetのVARIANTへmoveする</td>
+  <td class=xl99>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_ph_0">ph_0</a></td>
+  <td class=xl75>プレースホルダ</td>
+  <td class=xl100 style='border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet003.htm#_ph_1"><span style='color:red;
+  font-weight:700'>ph_1</span></a></td>
+  <td class=xl75>プレースホルダ</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet003.htm#_ph_2"><span style='color:red;
+  font-weight:700'>ph_2</span></a></td>
+  <td class=xl75>プレースホルダ</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_yield_0">yield_0</a></td>
+  <td class=xl75>関数評価時にph_0を生成する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_yield_1">yield_1</a></td>
+  <td class=xl75>関数評価時にph_1を生成する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_yield_2">yield_2</a></td>
+  <td class=xl75>関数評価時にph_2を生成する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet003.htm#_make_funPointer"><span
+  style='color:red;font-weight:700'>make_funPointer</span></a></td>
+  <td class=xl76>ユーザ関数をbindして<ruby>関数<span style='display:none'><rt>カンスウ</rt></span></ruby>オブジェクト化する（関数の部分適用）</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_make_funPointer_with_2nd_Default">make_funPointer_with_2nd_Default</a></td>
+  <td class=xl75>2番目の引数にデフォルト値を設定する場合</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_make_funPointer_with_3_parameters">make_funPointer_with_3_parameters</a></td>
+  <td class=xl75>3つのパラメータを持つ関数</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_is_bindFun">is_bindFun</a></td>
+  <td class=xl75>bindされた関数であることの判定</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_bind1st">bind1st</a></td>
+  <td class=xl76><ruby>未<span style='display:none'><rt>ミ</rt></span></ruby><ruby>束縛<span
+  style='display:none'><rt>ソクバク</rt></span></ruby>の<ruby>第<span
+  style='display:none'><rt>ダイ</rt></span></ruby>1引数を束縛する</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_bind2nd">bind2nd</a></td>
+  <td class=xl76><ruby>未<span style='display:none'><rt>ミ</rt></span></ruby><ruby>束縛<span
+  style='display:none'><rt>ソクバク</rt></span></ruby>の<ruby>第<span
+  style='display:none'><rt>ダイ</rt></span></ruby>2引数を束縛する</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet003.htm#_swap1st">swap1st</a></td>
+  <td class=xl76>第1引数のswap</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet003.htm#_swap2nd">swap2nd</a></td>
+  <td class=xl76>第2引数のswap</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl115 style='border-left:none'><a href="sheet003.htm#_mapF"><span
+  style='color:red;font-size:12.0pt;font-weight:700'>mapF</span></a></td>
+  <td class=xl76>配列の各要素に関数を適用する</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_mapF_swap">mapF_swap</a></td>
+  <td class=xl76>mapF(fun(a), m) または mapF(fun(, a), m)の構文糖</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_applyFun">applyFun</a></td>
+  <td class=xl75>関数適用関数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_setParam">setParam</a></td>
+  <td class=xl75>関数に引数を代入</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_foldl_Funs">foldl_Funs</a></td>
+  <td class=xl75>関数合成（foldl）</td>
+  <td class=xl100 style='border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_scanl_Funs">scanl_Funs</a></td>
+  <td class=xl75>関数合成（scanl）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_foldr_Funs">foldr_Funs</a></td>
+  <td class=xl75>関数合成（foldr）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_scanr_Funs">scanr_Funs</a></td>
+  <td class=xl75>関数合成（scanr）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_applyFun2by2">applyFun2by2</a></td>
+  <td class=xl75>((x,y),(f1,f2,...))-&gt;Array(f1(x,y),f2(x,y),...)</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_setParam2by2">setParam2by2</a></td>
+  <td class=xl75>((f1,f2,...),(x,y))-&gt;Array(f1(x,y),f2(x,y),...)</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_count_if">count_if</a></td>
+  <td class=xl75>配列の各要素で述語による評価結果がゼロでないものの数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_find_pred">find_pred</a></td>
+  <td class=xl75>1次元配列から条件に合致するものを検索</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_repeat_while">repeat_while</a></td>
+  <td class=xl75>述語による条件が満たされる間繰り返し関数適用</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_repeat_while_not">repeat_while_not</a></td>
+  <td class=xl75>述語による条件が満たされない間繰り返し関数適用</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_generate_while">generate_while</a></td>
+  <td class=xl75>述語による条件が満たされる間繰り返し関数適用の履歴を生成</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_generate_while_not">generate_while_not</a></td>
+  <td class=xl75>述語による条件が満たされない間繰り返し関数適用の履歴を生成</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet003.htm#_p_foldl">p_foldl</a></td>
+  <td class=xl76>1次元配列のfoldl　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet003.htm#_p_foldr">p_foldr</a></td>
+  <td class=xl76>1次元配列のfoldr　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_p_foldl1">p_foldl1</a></td>
+  <td class=xl76>1次元配列のfoldl1　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_p_foldr1">p_foldr1</a></td>
+  <td class=xl76>1次元配列のfoldr1　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet003.htm#_p_scanl">p_scanl</a></td>
+  <td class=xl76>1次元配列のscanl　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet003.htm#_p_scanr">p_scanr</a></td>
+  <td class=xl76>1次元配列のscanr　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_p_scanl1">p_scanl1</a></td>
+  <td class=xl76>1次元配列のscanl1　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_p_scanr1">p_scanr1</a></td>
+  <td class=xl76>1次元配列のscanr1　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_foldl_zipWith">foldl_zipWith</a></td>
+  <td class=xl75>zipWithをfoldlする</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_foldl1_zipWith">foldl1_zipWith</a></td>
+  <td class=xl75>zipWithをfoldl1する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_foldr_zipWith">foldr_zipWith</a></td>
+  <td class=xl75>zipWithをfoldrする</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_foldr1_zipWith">foldr1_zipWith</a></td>
+  <td class=xl75>zipWithをfoldr1する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_scanl_zipWith">scanl_zipWith</a></td>
+  <td class=xl75>zipWithをscanlする</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_scanr_zipWith">scanr_zipWith</a></td>
+  <td class=xl75>zipWithをscanrする</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_scanl1_zipWith">scanl1_zipWith</a></td>
+  <td class=xl75>zipWithをscanl1する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet003.htm#_scanr1_zipWith">scanr1_zipWith</a></td>
+  <td class=xl75>zipWithをscanr1する</td>
+  <td class=xl101>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 style='height:15.0pt'><a name="_stdfun"><ruby>標準<span
+  style='display:none'><rt>ヒョウジュン</rt></span></ruby><ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby></a></td>
+  <td class=xl92>　</td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/Haskell_2_stdFun.bas"
+  target="_parent"><span style='color:blue'>Haskell_2_stdFun[Github]</span></a></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl83 style='border-top:none'><a href="sheet004.htm#_assignVar">assignVar</a></td>
+  <td class=xl73>汎用の変数コピー</td>
+  <td class=xl102 style='border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl83 style='border-top:none'><a href="sheet004.htm#_firstArg">firstArg</a></td>
+  <td class=xl73 style='border-top:none'>1番目の引数</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_secondArg">secondArg</a></td>
+  <td class=xl75>2番目の引数</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet004.htm#_firstArg">p_identity</a></td>
+  <td class=xl76>引数それ自身<font class="font12">(p_firstArgと同等)</font><font
+  class="font10">　　（関数オブジェクトのみ）</font></td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet004.htm#_getNth"><span style='color:red;
+  font-weight:700'>getNth</span></a></td>
+  <td class=xl76>N番目の配列要素取得（絶対アドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_getNth_b">getNth_b</a></td>
+  <td class=xl76>N番目の配列要素取得（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet004.htm#_setNth_b">setNth_b</a></td>
+  <td class=xl76>N番目の配列要素設定（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_setNth_move">setNth_move</a></td>
+  <td class=xl76>N番目の配列要素設定（絶対アドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_setNth_b_move">setNth_b_move</a></td>
+  <td class=xl76>N番目の配列要素設定（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_move_many">move_many</a></td>
+  <td class=xl75>複数（可変長）の変数をmoveしてひとつのジャグ配列にする</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet004.htm#_move_back">move_back</a></td>
+  <td class=xl76>ジャグ配列から複数（可変長）の変数にmove back</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_place_fill">place_fill</a></td>
+  <td class=xl76>配列の<ruby>指定<span style='display:none'><rt>シテイ</rt></span></ruby>位置に関数を適用する（値を埋めてmoveして返す）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_rowSize">rowSize</a></td>
+  <td class=xl75>配列の行数</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_colSize">colSize</a></td>
+  <td class=xl75>配列の列数</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_sizeof">sizeof</a></td>
+  <td class=xl75>配列の全要素数または特定の軸の要素数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_p_constant">p_constant</a></td>
+  <td class=xl76>定数関数　　（<ruby>関数<span style='display:none'><rt>カンスウ</rt></span></ruby>オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_p_true">p_true</a></td>
+  <td class=xl76>定数関数(true)　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_p_false">p_false</a></td>
+  <td class=xl76>定数関数(false)　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_if_else">if_else</a></td>
+  <td class=xl76>if else 選択</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_replaceNull">replaceNull</a></td>
+  <td class=xl75>Nullを他の値に置換する</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_replaceEmpty">replaceEmpty</a></td>
+  <td class=xl75>Emptyを他の値に置換する</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_maskVar">maskVar</a></td>
+  <td class=xl75>値のマスク（mask=0 の時にEmpty化）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_expN">expN</a></td>
+  <td class=xl75>指数関数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_logN">logN</a></td>
+  <td class=xl75>対数関数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_absD">absD</a></td>
+  <td class=xl75>絶対値</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet004.htm#_plus"><span style='color:red;
+  font-weight:700'>plus</span></a></td>
+  <td class=xl75>加算</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_minus">minus</a></td>
+  <td class=xl75>減算</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_mult">mult</a></td>
+  <td class=xl75>乗算</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_divide">divide</a></td>
+  <td class=xl75>除算</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_poly">poly</a></td>
+  <td class=xl75>多項式</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_min_fun">min_fun</a></td>
+  <td class=xl75>min</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_max_fun">max_fun</a></td>
+  <td class=xl75>max</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_CLng_">CLng_</a></td>
+  <td class=xl75>CLng（整数化）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_CDbl_">CDbl_</a></td>
+  <td class=xl75>CDbl（実数化）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_CStr_">CStr_</a></td>
+  <td class=xl75>CStr（文字列化）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_str_len">str_len</a></td>
+  <td class=xl76>Len<ruby>関数<span style='display:none'><rt>カンスウ</rt></span></ruby></td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet004.htm#_str_left">str_left</a></td>
+  <td class=xl76>Left関数（負の引数も可）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_str_right">str_right</a></td>
+  <td class=xl76>Right関数（負の引数も可）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_str_mid">str_mid</a></td>
+  <td class=xl76>Mid関数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_str_cat">str_cat</a></td>
+  <td class=xl75>文字列結合</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_splitFun">splitFun</a></td>
+  <td class=xl76>Split関数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_joinFun">joinFun</a></td>
+  <td class=xl76>Join関数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_gcm">gcm</a></td>
+  <td class=xl75><ruby>最<span style='display:none'><rt>サイショウ</rt></span></ruby><ruby>小公倍<span
+  style='display:none'><rt>コウバイスウ</rt></span></ruby>数</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_lcm">lcm</a></td>
+  <td class=xl75><ruby>最大<span style='display:none'><rt>サイダイ</rt></span></ruby><ruby>公約数<span
+  style='display:none'><rt>コウヤクスウ</rt></span></ruby></td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_equal">equal</a></td>
+  <td class=xl76>述語Equal</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_notEqual">notEqual</a></td>
+  <td class=xl75>述語Not Equal</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_less">less</a></td>
+  <td class=xl76>述語less<span style='mso-spacerun:yes'>&nbsp; </span>( &lt; )</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_less_equal">less_equal</a></td>
+  <td class=xl76>述語less_equal<span style='mso-spacerun:yes'>&nbsp; </span>(
+  &lt;= )</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_greater">greater</a></td>
+  <td class=xl76>述語greater<span style='mso-spacerun:yes'>&nbsp; </span>( &gt; )</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_greater_equal">greater_equal</a></td>
+  <td class=xl76>述語greater_equal ( &gt;= )</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_is_null">is_null</a></td>
+  <td class=xl75>述語is_null</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_is_empty">is_empty</a></td>
+  <td class=xl75>述語is_empty</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet004.htm#_is_valid">is_valid</a></td>
+  <td class=xl75>述語is_valid</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_debug_print">デバッグ<ruby>表示<span style='display:none'><rt>ヒョウジ</rt></span></ruby></a></td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/Haskell_3_printM.bas"
+  target="_parent"><span style='color:blue'>Haskell_3_printM[Github]</span></a></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl86 style='height:15.0pt;border-top:none'>Sub</td>
+  <td class=xl95 style='border-top:none'><a href="sheet005.htm#_printS"><span
+  style='color:red;font-weight:700'>printS</span></a></td>
+  <td class=xl73>デバッグウィンドウに配列のサイズを表示する</td>
+  <td class=xl102 style='border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl96><a href="sheet005.htm#_printM"><span style='color:red;
+  font-weight:700'>printM</span></a></td>
+  <td class=xl75>デバッグウィンドウに２次元配列を表示する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet005.htm#_dumpFun">dumpFun</a></td>
+  <td class=xl75>ネストした関数を文字列化</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet005.htm#_printM_">printM_</a></td>
+  <td class=xl75>デバッグウィンドウに1次元ジャグ配列を展開して表示する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 style='height:15.0pt'><a name="_matrix_op"><ruby>配列<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby><ruby>操作<span
+  style='display:none'><rt>ソウサ</rt></span></ruby></a></td>
+  <td class=xl92>　</td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/Haskell_4_vector.bas"
+  target="_parent"><span style='color:blue'>Haskell_4_vector[Github]</span></a></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl83 style='border-top:none'><a href="sheet006.htm#_a_rows">a_rows</a></td>
+  <td class=xl73>全行番号の列挙</td>
+  <td class=xl102 style='border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="#RANGE!_a_cols">a_cols</a></td>
+  <td class=xl75>全列番号の列挙</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_repeat">repeat</a></td>
+  <td class=xl75>N個の値を並べる</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_iota"><span style='color:red;
+  font-weight:700'>iota</span></a></td>
+  <td class=xl75>自然数の連続データ（正順・逆順）</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_a__a">a__a</a></td>
+  <td class=xl75>自然数列 [from, to]</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_a__o"><span style='color:red;
+  font-weight:700'>a__o</span></a></td>
+  <td class=xl75>自然数列 [from, to)</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_o__a">o__a</a></td>
+  <td class=xl75>自然数列 (from, to]</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_o__o">o__o</a></td>
+  <td class=xl75>自然数列 (from, to)</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_headN">headN</a></td>
+  <td class=xl75>ベクトルの最初のN個</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_tailN">tailN</a></td>
+  <td class=xl75>ベクトルの最後のN個</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_vector"><span style='color:red;
+  font-weight:700'>vector</span></a></td>
+  <td class=xl75>スカラー、配列のベクトル化</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_reverse">reverse</a></td>
+  <td class=xl75>ベクトルを逆順に並べる</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet006.htm#_rotate">rotate</a></td>
+  <td class=xl75>1次元配列の回転</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_rotation">rotation</a></td>
+  <td class=xl75>rotateした配列を返す</td>
+  <td class=xl101>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_rotate_move">rotate_move</a></td>
+  <td class=xl75>rotateしてmoveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_selectRow">selectRow</a></td>
+  <td class=xl75>特定行の取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_selectCol">selectCol</a></td>
+  <td class=xl75>特定列の取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_makeM"><span style='color:red;
+  font-weight:700'>makeM</span></a></td>
+  <td class=xl75>配列の作成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet006.htm#_fillM">fillM</a></td>
+  <td class=xl75>配列をデータで埋める</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_fillM_move">fillM_move</a></td>
+  <td class=xl75>fillMしてmoveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet006.htm#_fillRow">fillRow</a></td>
+  <td class=xl75>配列の特定行をデータで埋める</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_fillRow_move">fillRow_move</a></td>
+  <td class=xl75>fillRowしてmoveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet006.htm#_fillCol">fillCol</a></td>
+  <td class=xl75>配列の特定列をデータで埋める</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_fillCol_move">fillCol_move</a></td>
+  <td class=xl75>fillColしてmoveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet006.htm#_fillPattern">fillPattern</a></td>
+  <td class=xl75>1次元配列を他の1次元配列の繰り返しで埋める（回数指定可）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_fillPattern_move">fillPattern_move</a></td>
+  <td class=xl75>fillPatternしてmoveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_subV"><span style='color:red;
+  font-weight:700'>subV</span></a></td>
+  <td class=xl75>1次元配列の部分配列を作成する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_subV_if">subV_if</a></td>
+  <td class=xl75>　〃（範囲外のインデックスに対してEmptyが入る）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_subM"><span style='color:red;
+  font-weight:700'>subM</span></a></td>
+  <td class=xl75>配列の部分配列を作成する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_subM_if">subM_if</a></td>
+  <td class=xl75>　〃（範囲外のインデックスに対してEmptyが入る）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_filterR"><span style='color:red;
+  font-weight:700'>filterR</span></a></td>
+  <td class=xl75>ベクトル・配列の（行の）フィルタリング</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_filterC">filterC</a></td>
+  <td class=xl75>配列の（列の）フィルタリング</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_catV"><span style='color:red;
+  font-weight:700'>catV</span></a></td>
+  <td class=xl75>ベクトルを結合</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_catVs_move">catV_move</a></td>
+  <td class=xl75>ベクトルを結合（引数をmove）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_catVs">catVs</a></td>
+  <td class=xl75>ベクトルを結合（可変長引数）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet006.htm#_catVs_move">catVs_move</a></td>
+  <td class=xl75>ベクトルを結合（可変長引数：引数をmove）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_catR">catR</a></td>
+  <td class=xl75>行方向に結合</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_catC">catC</a></td>
+  <td class=xl75>列方向に結合</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_transpose">transpose</a></td>
+  <td class=xl75>配列の転置</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_zip"><span style='color:red;font-weight:
+  700'>zip</span></a></td>
+  <td class=xl75>ふたつの配列の対応する要素どうしをmakePairしてジャグ配列を作る</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_zipVs">zipVs</a></td>
+  <td class=xl75>複数の1次元配列をzip</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet006.htm#_unzip"><span style='color:red;
+  font-weight:700'>unzip</span></a></td>
+  <td class=xl76>zipVsされたジャグ配列をほどいてzipVs前の1次元配列または2次元配列にする</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_zipR">zipR</a></td>
+  <td class=xl75>2次元配列の各行ベクトルをzipVs</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_zipC">zipC</a></td>
+  <td class=xl75>2次元配列の各列ベクトルをzipVs</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_makeSole">makeSole</a></td>
+  <td class=xl75>Array(a)作成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_makePair">makePair</a></td>
+  <td class=xl76>Array(a, b)作成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_cons">cons</a></td>
+  <td class=xl75>配列の先頭に要素を追加</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet006.htm#__push_back">push_back</a></td>
+  <td class=xl75>１次元配列の末尾に要素を追加</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_push_back_move">push_back_move</a></td>
+  <td class=xl75>push_backしてmoveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_flatten">flatten</a></td>
+  <td class=xl75>配列を平坦な1次元配列化する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet006.htm#_product_set">product_set</a></td>
+  <td class=xl75>ふたつのベクトルの直積に関数を適用した行列を作る</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_sorting">ソート<ruby>関連<span style='display:none'><rt>カンレン</rt></span></ruby></a></td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/Haskell_5_sort.bas"
+  target="_parent"><span style='color:blue'>Haskell_5_sort[Github]</span></a></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl95 style='border-top:none'><a href="sheet007.htm#_sortIndex"><span
+  style='color:red;font-weight:700'>sortIndex</span></a></td>
+  <td class=xl73>昇順ソート後のインデックス配列</td>
+  <td class=xl102 style='border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_sortIndex_pred">sortIndex_pred</a></td>
+  <td class=xl75>任意の比較関数によるソート後のインデックス配列</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet007.htm#_permutate">permutate</a></td>
+  <td class=xl75>1次元配列の並べ換え</td>
+  <td class=xl103 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet007.htm#_permutate_back">permutate_back</a></td>
+  <td class=xl76>permutate で並べ換えられた1次元配列を元の順列に戻す</td>
+  <td class=xl103 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_lower_bound">lower_bound</a></td>
+  <td class=xl76>ソート済み配列から指定された要素以上の値が現れる最初の位置を取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_lower_bound_pred">lower_bound_pred</a></td>
+  <td class=xl76>　〃（<ruby>比較<span style='display:none'><rt>ヒカク</rt></span></ruby><ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby><ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>）</td>
+  <td class=xl123 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_upper_bound">upper_bound</a></td>
+  <td class=xl76>ソート済み配列から指定された要素より大きい値が現れる最初の位置を取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_upper_bound_pred">upper_bound_pred</a></td>
+  <td class=xl76>　〃（<ruby>比較<span style='display:none'><rt>ヒカク</rt></span></ruby><ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby><ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>）</td>
+  <td class=xl123 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_equal_range">equal_range</a></td>
+  <td class=xl76>lower_boundとupper_boundの組</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_equal_range_pred">equal_range_pred</a></td>
+  <td class=xl76>　〃（<ruby>比較<span style='display:none'><rt>ヒカク</rt></span></ruby><ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby><ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>）</td>
+  <td class=xl123 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_partition_points">partition_points</a></td>
+  <td class=xl75>ソート済み配列から条件によって区分化されている位置の一覧を得る</td>
+  <td class=xl103 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_partition_points_pred">partition_points_pred</a></td>
+  <td class=xl75>ソート済み配列から条件によって区分化されている位置の一覧を得る（<ruby>比較<span
+  style='display:none'><rt>ヒカク</rt></span></ruby><ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby><ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>）</td>
+  <td class=xl103 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_less_dic">less_dic</a></td>
+  <td class=xl76>述語 辞書式less ( &lt; )</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_less_equal_dic">less_equal_dic</a></td>
+  <td class=xl76>述語 辞書式less_equal ( &lt;= )</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_greater_dic">greater_dic</a></td>
+  <td class=xl76>述語 辞書式greater ( &gt; )</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_greater_equal_dic">greater_equal_dic</a></td>
+  <td class=xl76>述語 辞書式greater_equal ( &gt;= )</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet007.htm#_equal_dic">equal_dic</a></td>
+  <td class=xl76>述語 辞書式equal ( = )</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet007.htm#_notEqual_dic">notEqual_dic</a></td>
+  <td class=xl76>述語 辞書式notEqual ( &lt;&gt; )</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_stdvec">Vectorクラス</a></td>
+  <td class=xl71></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Operator</td>
+  <td class=xl90><a href="sheet008.htm#_New_vh_stdvec">New</a></td>
+  <td class=xl73>vh_stdvecを作成</td>
+  <td class=xl102 style='border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_from_vh_stdvec">from</a></td>
+  <td class=xl75>Variantの1次元配列をmoveして自身のデータとする（LBound = 0にする）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_clear">clear</a></td>
+  <td class=xl75>全ての要素を削除</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_free">free</a></td>
+  <td class=xl75>配列部分を戻して自身は解放（shrinkしてから<ruby>出力<span style='display:none'><rt>シュツリョク</rt></span></ruby>する）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_swap_vh_stdvec">swap</a></td>
+  <td class=xl75>vh_stdvecどうしのswap</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_clone_vh_stdvec">clone</a></td>
+  <td class=xl76>同じ配列を持ったvh_stdvecオブジェクトの生成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Get</td>
+  <td class=xl84><a href="sheet008.htm#_size">size</a></td>
+  <td class=xl75>書き込み済み要素数を取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Get</td>
+  <td class=xl84><a href="sheet008.htm#_capacity">capacity</a></td>
+  <td class=xl75>ReDimせずに格納できる最大の要素数を取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_shrink">shrink</a></td>
+  <td class=xl76>領域を指定の長さまたはsizeまで切り詰める</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_erase_n">erase_n</a></td>
+  <td class=xl76>指定した位置から個数を指定して範囲を削除する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet008.htm#_vec_printS">printS</a></td>
+  <td class=xl76>デバッグウィンドウに<ruby>書<span style='display:none'><rt>カ</rt></span></ruby>き<ruby>込<span
+  style='display:none'><rt>コ</rt></span></ruby>み<ruby>済<span style='display:
+  none'><rt>ズ</rt></span></ruby>み<ruby>領域<span style='display:none'><rt>リョウイキ</rt></span></ruby>と<ruby>配列<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby><ruby>領域<span
+  style='display:none'><rt>リョウイキ</rt></span></ruby>を表示する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet008.htm#_vec_printM">printM</a></td>
+  <td class=xl76>デバッグウィンドウに 書き込み済み領域の全体または<ruby>一部<span style='display:none'><rt>イチブ</rt></span></ruby>を表示する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet008.htm#_vec_printM_">printM_</a></td>
+  <td class=xl75>デバッグウィンドウにジャグ配列を展開して表示する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Get</td>
+  <td class=xl84><a href="sheet008.htm#_val">val</a></td>
+  <td class=xl76>指定位置の 値 を取得する（1以上の第2引数を指定した場合はその長さ<ruby>分<span
+  style='display:none'><rt>ブン</rt></span></ruby>配列で<ruby>返<span
+  style='display:none'><rt>カエ</rt></span></ruby>す）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Get</td>
+  <td class=xl84><a href="sheet008.htm#_pop">pop</a></td>
+  <td class=xl75>指定位置の 値 を取得する move版（1以上の第2引数を指定した場合はその長さ分配<span
+  style='display:none'>列で返す）</span></td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_push">push</a></td>
+  <td class=xl76>指定位置に値を設定する（値はmoveされる）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_push_n">push_n</a></td>
+  <td class=xl75>同一の値に対する push の複数回適用</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_push_array">push_array</a></td>
+  <td class=xl75>配列の一括 push</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_insert_empty">insert_empty</a></td>
+  <td class=xl75>beginの位置の前にn個のEmptyを挿入する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_push_back">push_back</a></td>
+  <td class=xl75>書き込み済み末尾に対するpush（領域拡張する）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_push_back_n">push_back_n</a></td>
+  <td class=xl75>書き込み済み末尾に対する同一値の複数push（領域拡張する）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet008.htm#_push_back_array">push_back_array</a></td>
+  <td class=xl75>書き込み済み末尾に対するpush_array（領域拡張する）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl121 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet008.htm#_push_back_arrays">push_back_arrays</a></td>
+  <td class=xl75>push_back_arrayの反復</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl164 style='height:15.0pt'>Function</td>
+  <td class=xl166><a href="sheet008.htm#_filter_vh_stdvec">filter<ruby><font
+  class="font9"><rt class=font9></rt></font></ruby></a></td>
+  <td class=xl165>抽出条件を与えて配列をフィルタリングする</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl164 style='height:15.0pt'>Function</td>
+  <td class=xl166><a href="sheet008.htm#_map_vh_stdvec">map<ruby><font
+  class="font9"><rt class=font9></rt></font></ruby></a></td>
+  <td class=xl165>変換式を与えて配列を変換する</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl164 style='height:15.0pt'>Function</td>
+  <td class=xl166><a href="sheet008.htm#_orderby_vh_stdvec">orderby<ruby><font
+  class="font9"><rt class=font9></rt></font></ruby></a></td>
+  <td class=xl165>比較関数を与えて配列をソートする</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl93 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_vh_pipe">パイプライン演算クラス</a></td>
+  <td class=xl71></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet009.htm#_pipe">pipe</a></td>
+  <td class=xl98>vh_pipeオブジェクトの生成</td>
+  <td class=xl102 style='border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_">pipe_</a></td>
+  <td class=xl75>vh_pipeオブジェクトの生成（引数をmoveする）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_X">x</a></td>
+  <td class=xl75>関数適用して自分自身を返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_arrow">→</a></td>
+  <td class=xl75>関数適用して自分自身を返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Get</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_val">val</a></td>
+  <td class=xl75>結果を取得</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Get</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_pop">pop</a></td>
+  <td class=xl75>結果を取得(値はmoveされる）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_swap">swap</a></td>
+  <td class=xl75>vh_pipeどうしのswap</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet009.htm#_pipe_clone">clone</a></td>
+  <td class=xl75>同じ値を持ったオブジェクトの生成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 colspan=2 style='height:15.0pt;mso-ignore:colspan'><a
+  name="_utilities">ユーティリティ</a></td>
+  <td class=xl71><a href="https://github.com/mYmd/VBA/blob/master/misc_utility"
+  target="_parent"><span style='color:blue'>misc_utility[Github]</span></a></td>
+  <td class=xl97></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl95 style='border-top:none'><a href="sheet010.htm#_p__n"><span
+  style='color:red;font-weight:700'>p__n</span></a></td>
+  <td class=xl98>p_getNth_b(, n)の構文糖　　（関数オブジェクトのみ）</td>
+  <td class=xl123 style='border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl120><a href="sheet010.htm#_p_try"><span style='color:red;
+  font-weight:700'>p_try</span></a></td>
+  <td class=xl76>IIf(pred(a), a', b')の構文糖　　（関数オブジェクトのみ）</td>
+  <td class=xl123 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl120><a href="sheet010.htm#_p_try_not"><span style='color:red;
+  font-weight:700'>p_try_not</span></a></td>
+  <td class=xl76>IIf(Not pred(a), a', b')の構文糖　　（関数オブジェクトのみ）</td>
+  <td class=xl123 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_try_less">p_try_less</a></td>
+  <td class=xl76>p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) の構文糖</td>
+  <td class=xl123 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_typename">p_typename</a></td>
+  <td class=xl76>データ型名　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_isNumeric">p_isNumeric</a></td>
+  <td class=xl76>IsNumeric関数　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_format">p_format</a></td>
+  <td class=xl76>Format関数　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_InStr">p_InStr</a></td>
+  <td class=xl76>InStr関数　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_InStrRev">p_InStrRev</a></td>
+  <td class=xl76>InStrRev関数　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet010.htm#_p_Like">p_Like</a></td>
+  <td class=xl76>Like関数　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_StrConv">p_StrConv</a></td>
+  <td class=xl76>StrConv関数　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_Trim">p_Trim</a></td>
+  <td class=xl76>Trim関数</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_separate_string">separate_string</a></td>
+  <td class=xl75>文字列の左右分離</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_subM_R">subM_R</a></td>
+  <td class=xl76>subM(m, 行範囲) の構文糖</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_subM_R_b">subM_R_b</a></td>
+  <td class=xl76>〃（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_subM_C">subM_C</a></td>
+  <td class=xl76>subM(m, , 列範囲) の構文糖</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_subM_C_b">subM_C_b</a></td>
+  <td class=xl76>〃（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_selectRow_b">selectRow_b</a></td>
+  <td class=xl76>selectRow（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_selectCol_b">selectCol_b</a></td>
+  <td class=xl76>selectCol（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet010.htm#_fillRow_b">fillRow_b</a></td>
+  <td class=xl76>fillRow（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_fillRow_b_move">fillRow_b_move</a></td>
+  <td class=xl76>fillRow_move（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet010.htm#_fillCol_b">fillCol_b</a></td>
+  <td class=xl76>fillCol（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_fillCol_b_move">fillCol_b_move</a></td>
+  <td class=xl76>fillCol_move（オフセットアドレス）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet010.htm#_adjacent_op"><span style='color:red;
+  font-weight:700'>adjacent_op</span></a></td>
+  <td class=xl75>1次元配列vecの隣接する要素間で2項操作</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_get_unique">get_unique</a></td>
+  <td class=xl76>配列の重複要素を削除する(ソート済前提)</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet010.htm#_rowWise_change">rowWise_change</a></td>
+  <td class=xl75>2次元配列の行ごとに関数適用</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_rowWise_change_move">rowWise_change_move</a></td>
+  <td class=xl75>〃moveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl85 style='height:15.0pt'>Sub</td>
+  <td class=xl84><a href="sheet010.htm#_columnWise_change">columnWise_change</a></td>
+  <td class=xl75>2次元配列の列ごとに関数適用</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet010.htm#_columnWise_change_move">columnWise_change_move</a></td>
+  <td class=xl75>〃moveして返す</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_equal_all">equal_all</a></td>
+  <td class=xl75>1次元配列の全要素の等値比較</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_equal_all_pred">equal_all_pred</a></td>
+  <td class=xl75>〃　述語バージョン</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_filter_if">filter_if</a></td>
+  <td class=xl75>述語を与えて1次元配列をフィルタリング</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_filter_if_not">filter_if_not</a></td>
+  <td class=xl75>述語を与えて1次元配列をフィルタリング（否定形）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_Not">p_Not</a></td>
+  <td class=xl76>論理Not　　（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_p_imply">p_imply</a></td>
+  <td class=xl76>含意(A=&gt;B)<span style='mso-spacerun:yes'>&nbsp;&nbsp;
+  </span>IIF(Not A Or B, True, False)（関数オブジェクトのみ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>-</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_2pipe">pipe</a></td>
+  <td class=xl75>vh_pipeオブジェクトの生成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_2pipe_">pipe_</a></td>
+  <td class=xl75>vh_pipeオブジェクトの生成（引数をmoveする）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#____stdVec">stdVec</a></td>
+  <td class=xl75>vh_stdvecオブジェクトの生成</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_splitStr2Funs">splitStr2Funs</a></td>
+  <td class=xl75>delimiterで区切られた文字列を関数列へマッピング</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_group_by_partition_points">group_by_partition_points</a></td>
+  <td class=xl76>partition_points によるGROUP-BY</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_csv2Vector">csv2Vector</a></td>
+  <td class=xl76>csvファイルの1行を配列に分割</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet010.htm#_A_overlap_B">A_overlap_B</a></td>
+  <td class=xl76>２つの1次元配列の共有部分と非共有部分を特定</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+  <td class=xl68></td>
+  <td class=xl104></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl91 style='height:15.0pt'><a name="_randoms"><ruby>乱数<span
+  style='display:none'><rt>ランスウ</rt></span></ruby></a></td>
+  <td class=xl92>　</td>
+  <td class=xl71><a
+  href="https://github.com/mYmd/VBA/blob/master/misc_random.bas"
+  target="_parent"><span style='color:blue'>misc_random[Github]</span></a></td>
+  <td class=xl104></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl83 style='border-top:none'><a href="sheet011.htm#_seed_Engine">seed_Engine</a></td>
+  <td class=xl73>乱数シード設定</td>
+  <td class=xl102 style='border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet011.htm#_uniform_int_dist"><span
+  style='color:red;font-weight:700'>uniform_int_dist</span></a></td>
+  <td class=xl75>一様整数(Long)(個数,from,to)</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet011.htm#_uniform_real_dist">uniform_real_dist</a></td>
+  <td class=xl75>一様実数(Double)(個数,from,to)</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl96><a href="sheet011.htm#_normal_dist"><span style='color:red;
+  font-weight:700'>normal_dist</span></a></td>
+  <td class=xl75>正規分布(個数,平均,標準偏差)</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet011.htm#_bernoulli_dist">bernoulli_dist</a></td>
+  <td class=xl75>Bernoulli分布(個数,発生確率)</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet011.htm#_discrete_dist">discrete_dist</a></td>
+  <td class=xl75>離散分布(個数,発生比率配列)</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet011.htm#_random_iota">random_iota</a></td>
+  <td class=xl75>iotaのランダム版</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet011.htm#_random_shuffle">random_shuffle</a></td>
+  <td class=xl75>配列の要素をランダムに並び替えた配列を出力</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+  <td class=xl104></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl93 style='height:15.0pt'><a name="_math">（<ruby>数学<span
+  style='display:none'><rt>スウガク</rt></span></ruby>）</a></td>
+  <td class=xl92>　</td>
+  <td class=xl71><a href="https://github.com/mYmd/VBA/blob/master/misc_math.bas"
+  target="_parent"><span style='color:blue'>misc_math[Github]</span></a></td>
+  <td class=xl104></td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl89 style='border-top:none'><a href="sheet012.htm#_isPrimeNumber">isPrimeNumber</a></td>
+  <td class=xl73>素数判定</td>
+  <td class=xl102 style='border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl89 style='border-top:none'><a href="sheet012.htm#_primeNumbers">primeNumbers</a></td>
+  <td class=xl73 style='border-top:none'>素数一覧</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl72 style='height:15.0pt;border-top:none'>Function</td>
+  <td class=xl89 style='border-top:none'><a href="sheet012.htm#_sin_fun">sin_fun</a></td>
+  <td class=xl73 style='border-top:none'>Sin</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet012.htm#_cos_fun">cos_fun</a></td>
+  <td class=xl75>Cos</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl90><a href="sheet012.htm#_pow_fun">pow_fun</a></td>
+  <td class=xl75>Pow</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_make_polyCoef">make_polyCoef</a></td>
+  <td class=xl75>多項式の微分または不定積分（係数の生成）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_newton_method">newton_method</a></td>
+  <td class=xl75>ニュートン法による求根（の1ステップ）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_integral_simpson">integral_simpson</a></td>
+  <td class=xl75>シンプソン法による数値積分</td>
+  <td class=xl102 style='border-top:none;border-left:none'>　</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_make_complex">make_complex</a></td>
+  <td class=xl75>複素数の生成（x-y<ruby>座標<span style='display:none'><rt>ザヒョウ</rt></span></ruby>）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_make_complex_polar">make_complex_polar</a></td>
+  <td class=xl75>複素数の生成（<ruby>極<span style='display:none'><rt>キョク</rt></span></ruby><ruby>座標<span
+  style='display:none'><rt>ザヒョウ</rt></span></ruby>）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_show_complex">show_complex</a></td>
+  <td class=xl75>複素数の<ruby>文字列<span style='display:none'><rt>モジレツ</rt></span></ruby><ruby>化<span
+  style='display:none'><rt>カ</rt></span></ruby>（x-y座標）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_show_complex_polar">show_complex_polar</a></td>
+  <td class=xl75>複素数の<ruby>文字列<span style='display:none'><rt>モジレツ</rt></span></ruby><ruby>化<span
+  style='display:none'><rt>カ</rt></span></ruby>（極座標）</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_add">complex_add</a></td>
+  <td class=xl75>複素数の<ruby>加法<span style='display:none'><rt>カホウ</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_minus">complex_minus</a></td>
+  <td class=xl75>複素数の<ruby>減法<span style='display:none'><rt>ゲンポウ</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_mult">complex_mult</a></td>
+  <td class=xl75>複素数の<ruby>乗法<span style='display:none'><rt>ジョウホウ</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_divide">complex_divide</a></td>
+  <td class=xl75>複素数の<ruby>除法<span style='display:none'><rt>ジョホウ</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_cnj">complex_cnj</a></td>
+  <td class=xl75><ruby>共役<span style='display:none'><rt>キョウヤク</rt></span></ruby>複素数</td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_abs2">complex_abs2</a></td>
+  <td class=xl75>複素数の<ruby>絶対値<span style='display:none'><rt>ゼッタイチ</rt></span></ruby>2<ruby>乗<span
+  style='display:none'><rt>ジョウ</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_abs">complex_abs</a></td>
+  <td class=xl75>複素数の<ruby>絶対値<span style='display:none'><rt>ゼッタイチ</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl74 style='height:15.0pt'>Function</td>
+  <td class=xl84><a href="sheet012.htm#_complex_arg">complex_arg</a></td>
+  <td class=xl75>複素数の<ruby>偏角<span style='display:none'><rt>ヘンカク</rt></span></ruby></td>
+  <td class=xl102 style='border-top:none;border-left:none'>p_</td>
+  <td class=xl69></td>
+  <td class=xl69></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=76 style='width:57pt'></td>
+  <td width=253 style='width:190pt'></td>
+  <td width=549 style='width:412pt'></td>
+  <td width=22 style='width:17pt'></td>
+  <td width=72 style='width:54pt'></td>
+  <td width=72 style='width:54pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,1266 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(6);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=733 style='border-collapse:
+ collapse;table-layout:fixed;width:550pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=684 style='mso-width-source:userset;mso-width-alt:21888;width:513pt'>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 width=49 style='height:17.25pt;width:37pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl79 width=684 style='width:513pt'><a name="_sortIndex">昇順ソート後のインデックス配列</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl77><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>降順ソートはこのreverseをとる</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>key_columns は2次元配列の場合のキー列指定 Array(0,2,4)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>対象配列を実際にソートする場合は、permutate(配列, sortIndex) とするか、</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>もしくはsubV(配列, sortIndex) を取る</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font19">sortIndex</font><font
+  class="font0">(ByRef matrix As Variant, Optional ByRef key_columns As
+  Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl124><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_sortIndex</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = uniform_int_dist(20,1,10)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>7<span style='mso-spacerun:yes'>&nbsp;
+  </span>8<span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>10<span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span>6<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>7</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>s = <font class="font24">sortindex</font><font class="font0">(m)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM s</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>14<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>11<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>19<span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span>7<span style='mso-spacerun:yes'>&nbsp;
+  </span>9<span style='mso-spacerun:yes'>&nbsp; </span>18<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>13<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>10<span style='mso-spacerun:yes'>&nbsp; </span>12</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = makeM(10, 3, uniform_int_dist(30,1,10))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>10</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>5</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>6</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>5</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>10</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>3</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>4</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>最小<span style='display:none'><rt>サイショウ</rt></span></ruby> @7</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　最<ruby>大<span style='display:none'><rt>ダイ</rt></span></ruby> @8</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>s = <font class="font24">sortindex</font>(m)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← 3<ruby>列<span style='display:none'><rt>レツ</rt></span></ruby>を<ruby>左<span
+  style='display:none'><rt>ヒダリ</rt></span></ruby><ruby>優先<span
+  style='display:none'><rt>ユウセン</rt></span></ruby>で<ruby>比較<span
+  style='display:none'><rt>ヒカク</rt></span></ruby><ruby>対象<span
+  style='display:none'><rt>タイショウ</rt></span></ruby>とする</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM s</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp; </span>8</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>s = <font class="font24">sortindex</font>(m, Array(1,
+  0))<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← 1列<ruby>目<span style='display:none'><rt>メ</rt></span></ruby>、0列目をその<ruby>順<span
+  style='display:none'><rt>ジュン</rt></span></ruby>に比較する</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM s</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>7<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>8</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><a name="_sortIndex_pred">任意の比較関数 comp によるソート後のインデックス配列</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl82>Function <font class="font13">sortIndex_pred</font><font
+  class="font0">(ByRef matrix As Variant, ByRef comp As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl124><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_sortIndex_pred</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = makeM(10, 3, uniform_int_dist(30,1,10))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>1</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　最小 @1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>5</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>9</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>3</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　最<ruby>大<span style='display:none'><rt>ダイ</rt></span></ruby> @5</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>6</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>8</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>s = <font class="font24">sortIndex_pred</font>(zipC(m), <font
+  class="font24">p_greater_dic</font>)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>各<span style='display:none'><rt>カク</rt></span></ruby><ruby>行<span
+  style='display:none'><rt>ギョウ</rt></span></ruby>を<ruby>辞書<span
+  style='display:none'><rt>ジショ</rt></span></ruby><ruby>式<span style='display:
+  none'><rt>シキ</rt></span></ruby><ruby>降順<span style='display:none'><rt>コウジュン</rt></span></ruby>で<ruby>比較<span
+  style='display:none'><rt>ヒカク</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span>s</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>7<span style='mso-spacerun:yes'>&nbsp;
+  </span>9<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>1</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_permutate">1次元配列 vec の並べ換え</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>s_index は sortIndex 関数、もしくは sortIndex_pred 関数の返り値を想定</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>s_index に vec の範囲外の値もしくは重複があった場合の動作は未定義</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>（subV/subM 関数を使うより速いはず）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Sub <font class="font13">permutate</font><font class="font0">(ByRef
+  vec As Variant, ByRef s_index As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = Array(0, &quot;A&quot;, 2, &quot;B&quot;, 3)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>A<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>B<span
+  style='mso-spacerun:yes'>&nbsp; </span>4</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><font class="font24">permutate</font><font class="font0"> m,
+  Array(3, 0, 2, 4, 1)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>B<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>A</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><a name="_permutate_back">permutate で並べ換えられた1次元配列を元の順列に戻す</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Sub <font class="font13">permutate_back</font><font
+  class="font0">(ByRef vec As Variant, ByRef s_index As Variant)</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_lower_bound">ソート済み配列から指定された要素以上の値が現れる最初の位置を取得</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>（std::lower_boundと同じ）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">lower_bound</font><font
+  class="font0">(ByRef matrix As Variant, ByRef val As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_lower_bound</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = uniform_int_dist(20,1,10)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>permutate m, sortindex(m)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>実際<span style='display:none'><rt>ジッサイ</rt></span></ruby>にソートする</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>4<span style='mso-spacerun:yes'>&nbsp;
+  </span><font class="font24">5</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>6<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>10</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>? <font class="font24">lower_bound</font><font class="font0">(m,
+  </font><font class="font24">5</font><font class="font0">)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>8</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>?m(7), m(8)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>4<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp;</span></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_lower_bound_pred">ソート済み配列から指定された要素以上の値が現れる最初の位置を取得（比較関数使用）</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>（std::lower_boundと同じ）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">lower_bound_pred</font><font
+  class="font0">(ByRef matrix As Variant, ByRef val As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pred As Variant) As Variant</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_lower_bound_pred</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl122>これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl130>mapF_swap(p_lower_bound_pred(comp), matrix, values)
+  という使用方法を想定</td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = uniform_int_dist(20,1,10)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>permutate m, sortindex_pred(m, <font class="font24">p_greater</font>)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←<ruby>降順<span style='display:none'><rt>コウジュン</rt></span></ruby>でソートする</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span><font class="font29">9</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>7<span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font29">6</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font29">2</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>1</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span>mapF_swap(<font
+  class="font24">p_lower_bound_pred</font><font class="font0">(</font><font
+  class="font22">p_greater</font><font class="font0">), m, Array(2, 6, 9, 0))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>20</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_upper_bound">ソート済み配列から指定された要素より大きい値が現れる最初の位置を取得</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>（std::upper_boundと同じ）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">upper_bound</font><font
+  class="font0">(ByRef matrix As Variant, ByRef val As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_upper_bound</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = uniform_int_dist(20,1,10)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>permutate m, sortindex(m)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>実際<span style='display:none'><rt>ジッサイ</rt></span></ruby>にソートする</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>4<span style='mso-spacerun:yes'>&nbsp;
+  </span><font class="font23">5</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5 </font><font class="font24"><span
+  style='mso-spacerun:yes'>&nbsp;</span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6</font><font class="font0"><span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>10</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>?<font class="font24">upper_bound</font><font class="font0">(m,
+  </font><font class="font24">5</font><font class="font0">)</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127>15</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>?m(14), m(<font class="font29">15</font><font class="font0">)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>5<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp;</span></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_upper_bound_pred">ソート済み配列から指定された要素より大きい値が現れる最初の位置を取得（比較関数使用）</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>（std::upper_boundと同じ）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">upper_bound_pred</font><font
+  class="font0">(ByRef matrix As Variant, ByRef val As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pred As Variant) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_upper_bound_pred</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl122>これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl130>mapF_swap(p_upper_bound_pred(comp), matrix, values)
+  という使用方法を想定</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_equal_range">lower_boundとupper_boundの組</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>（std::equal_rangeと同じ）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">equal_range</font><font
+  class="font0">(ByRef matrix As Variant, ByRef val As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_equal_range</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = uniform_int_dist(20,1,10)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>permutate m, sortindex(m)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>実際<span style='display:none'><rt>ジッサイ</rt></span></ruby>にソートする</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>4<span style='mso-spacerun:yes'>&nbsp;
+  </span><font class="font23">5</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5 </font><font class="font24"><span
+  style='mso-spacerun:yes'>&nbsp;</span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6</font><font class="font0"><span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>10</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">equal_range</font><font class="font0">(m, 5)</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← [8, 15) の<ruby>区間<span style='display:none'><rt>クカン</rt></span></ruby>　：　5に<ruby>等<span
+  style='display:none'><rt>ヒト</rt></span></ruby>しい<ruby>要素<span
+  style='display:none'><rt>ヨウソ</rt></span></ruby>が7個</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">equal_range</font><font class="font0">(m, 7)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← [17, 17) の区間　：　7に等しい要素が0個</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_equal_range_pred">lower_boundとupper_boundの組（比較関数使用）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">equal_range_pred</font><font
+  class="font0">(ByRef matrix As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef val As Variant, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pred As Variant) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_equal_range_pred</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl122>これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl130>mapF_swap(p_equal_range_pred(comp), matrix, values)
+  という使用方法を想定</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_partition_points">ソート済み配列から条件によって区分化されている位置の一覧を得る</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">partition_points</font><font
+  class="font0">(ByRef vec As Variant) As Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font25">1</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span></font><font
+  class="font25">2</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font25">3</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span></font><font class="font25">4</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font25">5</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font25">6</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font25">7</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font25">8</font><font
+  class="font0"><span style='mso-spacerun:yes'>&nbsp; </span></font><font
+  class="font25">9</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span></font><font class="font25">10</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>10</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>pp = <font class="font24">partition_points</font><font
+  class="font0">(m)</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127>printM pp</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>4<span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>10<span style='mso-spacerun:yes'>&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>14<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>20<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←<span style='mso-spacerun:yes'>&nbsp;</span><ruby>最後<span
+  style='display:none'><rt>サイゴ</rt></span></ruby>の20はUBound + 1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM_<span style='mso-spacerun:yes'>&nbsp;&nbsp;
+  </span>adjacent_op(p_a__o, pp)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←<span style='mso-spacerun:yes'>&nbsp;</span><ruby>同一<span
+  style='display:none'><rt>ドウイツ</rt></span></ruby>の<ruby>値<span
+  style='display:none'><rt>アタイ</rt></span></ruby>が<ruby>続<span
+  style='display:none'><rt>ツヅ</rt></span></ruby>くインデックス<ruby>範囲<span
+  style='display:none'><rt>ハンイ</rt></span></ruby>の<ruby>集合<span
+  style='display:none'><rt>シュウゴウ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>2</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>3</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>7</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>11</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>13</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>14</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>16</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>18<span
+  style='mso-spacerun:yes'>&nbsp; </span>19</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_partition_points_pred">ソート済み配列から条件によって区分化されている位置の一覧を得る（<ruby>比較<span
+  style='display:none'><rt>ヒカク</rt></span></ruby><ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby><ruby>使用<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">partition_points_pred</font><font
+  class="font0">(ByRef vec As Variant, ByRef pred As Variant) As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_less_dic">述語 辞書式less ( &lt; )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">less_dic</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_less_dic</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>?less_dic(Array(1,2,3), Array(1,2,4))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>?less_dic(Array(1,2,3), Array(1,0,4))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>0</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_less_equal_dic">述語 辞書式less_equal ( &lt;= )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">less_equal_dic</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_less_equal_dic</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_greater_dic">述語 辞書式greater ( &gt; )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">greater_dic</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_greater_dic</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_greater_equal_dic">述語 辞書式greater_equal ( &gt;= )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Function <font class="font13">greater_equal_dic</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_greater_equal_dic</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_sorting"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_equal_dic">述語 辞書式equal ( = )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">equal_dic</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_equal_dic</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_notEqual_dic">述語 辞書式notEqual ( &lt;&gt; )</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">notEqual_dic</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_notEqual_dic</font><font class="font0">(</font></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=684 style='width:513pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

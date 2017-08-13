@@ -1,0 +1,550 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(10);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=733 style='border-collapse:
+ collapse;table-layout:fixed;width:550pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=684 style='mso-width-source:userset;mso-width-alt:21888;width:513pt'>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 width=49 style='height:17.25pt;width:37pt'><a
+  href="sheet001.htm#_randoms"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl79 width=684 style='width:513pt'><a name="_seed_Engine">乱数シード設定</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl79>Declare PtrSafe Function <font class="font14">seed_Engine</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl131><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(Optional ByRef seedN As Variant) As Long</td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>ここ<ruby>で定<span style='display:none'><rt>テイギ</rt></span></ruby>義し<ruby>た<span
+  style='display:none'><rt>ランスウ</rt></span></ruby>乱<ruby>数関<span
+  style='display:none'><rt>カンスウ</rt></span></ruby>数<ruby>を使<span
+  style='display:none'><rt>シヨウ</rt></span></ruby>用す<ruby>る<span
+  style='display:none'><rt>マエ</rt></span></ruby>前に<ruby>1<span
+  style='display:none'><rt>カイ</rt></span></ruby>回<ruby>は<span style='display:
+  none'><rt>ヨ</rt></span></ruby>呼<ruby>び<span style='display:none'><rt>ダ</rt></span></ruby>出す</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>? <font class="font24">seed_engine</font><font class="font0">(5
+  + 6)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>11</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed省略時もしくは整数として評価できないときは seed_gen によって<ruby>設定<span
+  style='display:none'><rt>セッテイ</rt></span></ruby>する。</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl132>std::random_device seed_gen;</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>? <font class="font24">seed_engine</font><font class="font0">()</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>-701731034</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><ruby>通<span style='display:none'><rt>ツウジョウ</rt></span></ruby>常<ruby>は省<span
+  style='display:none'><rt>ショウリャク</rt></span></ruby>略でいい。同<ruby>じ乱<span
+  style='display:none'><rt>ランスウ</rt></span></ruby><ruby>数<span
+  style='display:none'><rt>レツ</rt></span></ruby>列<ruby>を発<span
+  style='display:none'><rt>ハッセイ</rt></span></ruby>生させるために<ruby>は<span
+  style='display:none'><rt>オナ</rt></span></ruby>同<ruby>じ<span style='display:
+  none'><rt>アタイ</rt></span></ruby>値をseed_engine<ruby>に<span style='display:
+  none'><rt>アタ</rt></span></ruby>与える。</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><a name="_uniform_int_dist">一様整数(Long) 乱数の生成</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(個数, from, to)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl79>Declare PtrSafe Function <font class="font19">uniform_int_dist</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl77><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(ByVal n As Long, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal fromN As Long, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal toN As Long) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl124><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_uniform_int_dist</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">uniform_int_dist</font>(12, 9, 121)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>←<ruby>範囲<span
+  style='display:none'><rt>ハンイ</rt></span></ruby>[9, 121]にある<ruby>整数<span
+  style='display:none'><rt>セイスウ</rt></span></ruby><ruby>一様<span
+  style='display:none'><rt>イチヨウ</rt></span></ruby><ruby>乱数<span
+  style='display:none'><rt>ランスウ</rt></span></ruby>を12<ruby>個<span
+  style='display:none'><rt>コ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>119<span
+  style='mso-spacerun:yes'>&nbsp; </span>55<span
+  style='mso-spacerun:yes'>&nbsp; </span>20<span
+  style='mso-spacerun:yes'>&nbsp; </span>37<span
+  style='mso-spacerun:yes'>&nbsp; </span>40<span
+  style='mso-spacerun:yes'>&nbsp; </span>37<span
+  style='mso-spacerun:yes'>&nbsp; </span>77<span
+  style='mso-spacerun:yes'>&nbsp; </span>24<span
+  style='mso-spacerun:yes'>&nbsp; </span>60<span
+  style='mso-spacerun:yes'>&nbsp; </span>36<span
+  style='mso-spacerun:yes'>&nbsp; </span>96<span
+  style='mso-spacerun:yes'>&nbsp; </span>82</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>? <font class="font24">uniform_int_dist</font>(0, 0,
+  12345)<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>←0個<ruby>以下<span
+  style='display:none'><rt>イカ</rt></span></ruby>を<ruby>指定<span
+  style='display:none'><rt>シテイ</rt></span></ruby>すると<ruby>配列<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby>でなく<ruby>単一<span
+  style='display:none'><rt>タンイツ</rt></span></ruby>の<ruby>値<span
+  style='display:none'><rt>アタイ</rt></span></ruby>が<ruby>得<span
+  style='display:none'><rt>エ</rt></span></ruby>られる</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>7509</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_randoms"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_uniform_real_dist">一様実数(Double) 乱数の生成</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(個数, from, to)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl79>Declare PtrSafe Function <font class="font14">uniform_real_dist</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(ByVal n As Long, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl79><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal fromD As Double, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal toD As Double) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_uniform_real_dist</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_normal_dist">正規分布</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>(個数,
+  平均, 標準偏差)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Declare PtrSafe Function <font class="font19">normal_dist</font><font
+  class="font0"> Lib &quot;mapM.dll&quot; _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(ByVal n As Long, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal mean As Double, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal stddev As Double) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_normal_dist</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_bernoulli_dist">Bernoulli分布</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(個数, 発生確率)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Declare PtrSafe Function <font class="font13">bernoulli_dist</font><font
+  class="font0"> Lib &quot;mapM.dll&quot; _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>(ByVal n As Long, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal prob As Double) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_bernoulli_dist</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_randoms"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_discrete_dist">離散分布</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>(個数N,
+  発生比率配列)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>発生比率は非負の実数、合計が 1 にならなくても可</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>返り値は長さ N の配列で、各要素は 0～sizeof(発生比率配列)-1 の整数</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>整数iの発生比率 ～ Pi となる分布（ただし LBound(Pi) = 0 と仮定）</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">discrete_dist</font><font
+  class="font0">(ByRef n As Variant, ByRef probs As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_discrete_dist</font><font class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM discrete_dist(30, Array(1,3,5))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>2<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><ruby>母集<span style='display:none'><rt>ボシュウダン</rt></span></ruby>団30、<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>{0, 1, 2} <ruby>の出<span
+  style='display:none'><rt>シュツゲン</rt></span></ruby><ruby>現割<span
+  style='display:none'><rt>ワリアイ</rt></span></ruby>合がそれぞれ 1 : 3 : 5</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_random_iota">iotaのランダム版（from_iからto_iまでの自然数をランダムに並べたベクトル）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">random_iota</font><font
+  class="font0">(ByVal from_i As Long, ByVal to_i As Long) As Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM random_iota(10, 29)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>27<span
+  style='mso-spacerun:yes'>&nbsp; </span>19<span
+  style='mso-spacerun:yes'>&nbsp; </span>11<span
+  style='mso-spacerun:yes'>&nbsp; </span>18<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>20<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>23<span
+  style='mso-spacerun:yes'>&nbsp; </span>28<span
+  style='mso-spacerun:yes'>&nbsp; </span>29<span
+  style='mso-spacerun:yes'>&nbsp; </span>22<span
+  style='mso-spacerun:yes'>&nbsp; </span>14<span
+  style='mso-spacerun:yes'>&nbsp; </span>25<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>24<span
+  style='mso-spacerun:yes'>&nbsp; </span>21<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>26</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>(<ruby>重<span style='display:none'><rt>チョウフク</rt></span></ruby>複<ruby>と<span
+  style='display:none'><rt>モ</rt></span></ruby>漏れはない)</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_random_shuffle">配列の要素をランダムに並び替えた配列を出力</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">random_shuffle</font><font
+  class="font0">(ByRef vec As Variant, Optional ByRef dummy As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_random_shuffle</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>m = Array(1, 2, 3, 4, 5, 6, &quot;A&quot;, &quot;B&quot;,
+  &quot;C&quot;, &quot;D&quot;, &quot;E&quot;)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM random_shuffle(m)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>E<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span style='mso-spacerun:yes'>&nbsp;
+  </span>C<span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>6<span style='mso-spacerun:yes'>&nbsp;
+  </span>A<span style='mso-spacerun:yes'>&nbsp; </span>B<span
+  style='mso-spacerun:yes'>&nbsp; </span>D</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=684 style='width:513pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

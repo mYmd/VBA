@@ -1,0 +1,2131 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+x\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(9);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=760 style='border-collapse:
+ collapse;table-layout:fixed;width:570pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=711 style='mso-width-source:userset;mso-width-alt:22752;width:533pt'>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 width=49 style='height:17.25pt;width:37pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl79 width=711 style='width:533pt'><a name="_p__n">p_getNth_b(,
+  n)の構文糖　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl125>Public Function <font class="font19">p__n</font><font
+  class="font10">(ByVal n As Long) As Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM_ mapF(p_a__o(<font class="font24">p__n</font><font
+  class="font0">(0), </font><font class="font24">p__n</font><font class="font0">(1)),
+  Array(Array(1, 4), Array(4, 8), Array(8, 10)))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>7</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_try">IIf(pred(a), a', b')の構文糖　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font19">p_try</font><font
+  class="font0">(ByRef pred As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl116><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant</td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM zipWith(<font class="font24">p_try</font><font
+  class="font0">(p_less( ,6)) , iota(1,10), iota(21,30))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>26<span style='mso-spacerun:yes'>&nbsp; </span>27<span
+  style='mso-spacerun:yes'>&nbsp; </span>28<span
+  style='mso-spacerun:yes'>&nbsp; </span>29<span
+  style='mso-spacerun:yes'>&nbsp; </span>30</td>
+ </tr>
+ <tr height=9 style='mso-height-source:userset;height:6.75pt'>
+  <td height=9 style='height:6.75pt'></td>
+  <td align=left valign=top><!--[if gte vml 1]><v:shapetype id="_x0000_t75"
+   coordsize="21600,21600" o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe"
+   filled="f" stroked="f">
+   <v:stroke joinstyle="miter"/>
+   <v:formulas>
+    <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+    <v:f eqn="sum @0 1 0"/>
+    <v:f eqn="sum 0 0 @1"/>
+    <v:f eqn="prod @2 1 2"/>
+    <v:f eqn="prod @3 21600 pixelWidth"/>
+    <v:f eqn="prod @3 21600 pixelHeight"/>
+    <v:f eqn="sum @0 0 1"/>
+    <v:f eqn="prod @6 1 2"/>
+    <v:f eqn="prod @7 21600 pixelWidth"/>
+    <v:f eqn="sum @8 21600 0"/>
+    <v:f eqn="prod @7 21600 pixelHeight"/>
+    <v:f eqn="sum @10 21600 0"/>
+   </v:formulas>
+   <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+   <o:lock v:ext="edit" aspectratio="t"/>
+  </v:shapetype><v:shape id="角丸四角形_x0020_2" o:spid="_x0000_s2049" type="#_x0000_t75"
+   style='position:absolute;margin-left:8.25pt;margin-top:2.25pt;width:520.5pt;
+   height:39.75pt;z-index:1;visibility:visible;mso-wrap-style:square;
+   v-text-anchor:top' o:gfxdata="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
+" o:insetmode="auto">
+   <v:imagedata src="image020.png" o:title=""/>
+   <o:lock v:ext="edit" aspectratio="f"/>
+   <x:ClientData ObjectType="Pict">
+    <x:SizeWithCells/>
+    <x:CF>Bitmap</x:CF>
+    <x:AutoPict/>
+   </x:ClientData>
+  </v:shape><![endif]--><![if !vml]><span style='mso-ignore:vglayout;
+  position:absolute;z-index:1;margin-left:11px;margin-top:3px;width:694px;
+  height:53px'><img width=694 height=53 src=image021.png v:shapes="角丸四角形_x0020_2"></span><![endif]><span
+  style='mso-ignore:vglayout2'>
+  <table cellpadding=0 cellspacing=0>
+   <tr>
+    <td height=9 class=xl127 width=711 style='height:6.75pt;width:533pt'>　</td>
+   </tr>
+  </table>
+  </span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span><font
+  class="font12"><span style='mso-spacerun:yes'>&nbsp;</span></font><font
+  class="font30">1</font><font class="font12"><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span></font><font class="font30">2</font><font
+  class="font12"><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span></font><font
+  class="font30">3</font><font class="font12"><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span></font><font class="font30">4</font><font
+  class="font12"><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span></font><font
+  class="font30">5</font><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←<ruby>第<span style='display:none'><rt>ダイ</rt></span></ruby>1<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>の<ruby>各要素<span
+  style='display:none'><rt>カクヨウソ</rt></span></ruby>が p_less(, 6) でチェックされる</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>21<span
+  style='mso-spacerun:yes'>&nbsp; </span>22<span
+  style='mso-spacerun:yes'>&nbsp; </span>23<span
+  style='mso-spacerun:yes'>&nbsp; </span>24<span
+  style='mso-spacerun:yes'>&nbsp; </span>25<span
+  style='mso-spacerun:yes'>&nbsp; </span><font class="font30">26</font><font
+  class="font12"><span style='mso-spacerun:yes'>&nbsp; </span></font><font
+  class="font30">27</font><font class="font12"><span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font30">28</font><font
+  class="font12"><span style='mso-spacerun:yes'>&nbsp; </span></font><font
+  class="font30">29</font><font class="font12"><span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font30">30</font><font
+  class="font23"><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>←</font><ruby><font
+  class="font23">条件</font><span style='display:none'><rt>ジョウケン</rt></span></ruby><font
+  class="font23">を</font><ruby><font class="font23">満</font><span
+  style='display:none'><rt>ミ</rt></span></ruby><font class="font23">たさない</font><ruby><font
+  class="font23">場合</font><span style='display:none'><rt>バアイ</rt></span></ruby><font
+  class="font23">は</font><ruby><font class="font23">第</font><span
+  style='display:none'><rt>ダイ</rt></span></ruby><font class="font23">2</font><ruby><font
+  class="font23">引数</font><span style='display:none'><rt>ヒキスウ</rt></span></ruby><font
+  class="font23">の</font><ruby><font class="font23">各要素</font><span
+  style='display:none'><rt>カクヨウソ</rt></span></ruby><font class="font23">を</font><ruby><font
+  class="font23">選</font><span style='display:none'><rt>エラ</rt></span></ruby><font
+  class="font23">ぶ</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><ruby><span
+  style='mso-spacerun:yes'>&nbsp;</span><span style='display:none'><rt>ダイ</rt></span></ruby>第<ruby>1引<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>数<ruby>に<span
+  style='display:none'><rt>タイ</rt></span></ruby>対す<ruby>る変<span
+  style='display:none'><rt>ヘンカン</rt></span></ruby>換<ruby>を定<span
+  style='display:none'><rt>テイギ</rt></span></ruby>義し<ruby>た場<span
+  style='display:none'><rt>バアイ</rt></span></ruby>合</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM zipWith(<font class="font24">p_try</font><font
+  class="font0">(p_less( ,6)</font><font class="font29">, p_mult(10)</font><font
+  class="font0">) , iota(1,10), iota(21,30))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>20<span
+  style='mso-spacerun:yes'>&nbsp; </span>30<span
+  style='mso-spacerun:yes'>&nbsp; </span>40<span
+  style='mso-spacerun:yes'>&nbsp; </span>50<span
+  style='mso-spacerun:yes'>&nbsp; </span>26<span
+  style='mso-spacerun:yes'>&nbsp; </span>27<span
+  style='mso-spacerun:yes'>&nbsp; </span>28<span
+  style='mso-spacerun:yes'>&nbsp; </span>29<span
+  style='mso-spacerun:yes'>&nbsp; </span>30</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><ruby><span
+  style='mso-spacerun:yes'>&nbsp;</span><span style='display:none'><rt>ダイ</rt></span></ruby>第2<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby><ruby>に<span
+  style='display:none'><rt>タイ</rt></span></ruby>対す<ruby>る変<span
+  style='display:none'><rt>ヘンカン</rt></span></ruby>換<ruby>を定<span
+  style='display:none'><rt>テイギ</rt></span></ruby>義し<ruby>た場<span
+  style='display:none'><rt>バアイ</rt></span></ruby>合</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM zipWith(<font class="font24">p_try</font><font
+  class="font0">(p_less( ,6)</font><font class="font29">, , p_mult(100)</font><font
+  class="font0">) , iota(1,10), iota(21,30))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>2600<span style='mso-spacerun:yes'>&nbsp; </span>2700<span
+  style='mso-spacerun:yes'>&nbsp; </span>2800<span
+  style='mso-spacerun:yes'>&nbsp; </span>2900<span
+  style='mso-spacerun:yes'>&nbsp; </span>3000</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><ruby><span
+  style='mso-spacerun:yes'>&nbsp;</span><span style='display:none'><rt>ダイ</rt></span></ruby><ruby>第<span
+  style='display:none'><rt>ダイ</rt></span></ruby>1<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>、<ruby>第<span
+  style='display:none'><rt>ダイ</rt></span></ruby>2<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>ともに<ruby>変換<span
+  style='display:none'><rt>ヘンカン</rt></span></ruby><ruby>を定<span
+  style='display:none'><rt>テイギ</rt></span></ruby>義し<ruby>た場<span
+  style='display:none'><rt>バアイ</rt></span></ruby>合</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127>printM zipWith(<font class="font24">p_try</font><font
+  class="font0">(p_less( ,6)</font><font class="font29">, p_mult(10),
+  p_mult(100)</font><font class="font0">) , iota(1,10), iota(21,30))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>20<span
+  style='mso-spacerun:yes'>&nbsp; </span>30<span
+  style='mso-spacerun:yes'>&nbsp; </span>40<span
+  style='mso-spacerun:yes'>&nbsp; </span>50<span
+  style='mso-spacerun:yes'>&nbsp; </span>2600<span
+  style='mso-spacerun:yes'>&nbsp; </span>2700<span
+  style='mso-spacerun:yes'>&nbsp; </span>2800<span
+  style='mso-spacerun:yes'>&nbsp; </span>2900<span
+  style='mso-spacerun:yes'>&nbsp; </span>3000</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>mapFなのでひとつ<ruby>の集<span style='display:none'><rt>シュウゴウ</rt></span></ruby>合<ruby>が対<span
+  style='display:none'><rt>タイショウ</rt></span></ruby>象</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM mapF(<font class="font24">p_try</font><font
+  class="font0">(p_less( ,6), p_mult(-1)), iota(1,10))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>-1<span
+  style='mso-spacerun:yes'>&nbsp; </span>-2<span
+  style='mso-spacerun:yes'>&nbsp; </span>-3<span
+  style='mso-spacerun:yes'>&nbsp; </span>-4<span
+  style='mso-spacerun:yes'>&nbsp; </span>-5<span
+  style='mso-spacerun:yes'>&nbsp; </span>6<span style='mso-spacerun:yes'>&nbsp;
+  </span>7<span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>10</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_p_try_not">IIf(Not pred(a), a',
+  b')の構文糖　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font19">p_try_not</font><font
+  class="font0">(ByRef pred As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl116><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_try_less">p_try(p_less(p__n(0), p__n(1)), p__n(0),
+  Null) の構文糖　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">p_try_less</font><font
+  class="font0">()</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>「first &lt; second のときはfirstをとり、そうでなければNull<ruby>値<span
+  style='display:none'><rt>アタイ</rt></span></ruby>」</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><font class="font29">equal_range</font><font class="font0">
+  の値を subV_if に代入するとき等に便利</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>seed_engine()</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>a = uniform_int_dist(100, 0, 23)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　0～23の<ruby>範囲<span style='display:none'><rt>ハンイ</rt></span></ruby>の<ruby>整数<span
+  style='display:none'><rt>セイスウ</rt></span></ruby><ruby>乱数<span
+  style='display:none'><rt>ランスウ</rt></span></ruby>100<ruby>個<span
+  style='display:none'><rt>コ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>permutate a, sortindex(a)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>昇順<span style='display:none'><rt>ショウジュン</rt></span></ruby>ソート</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>er=mapF_swap(<font class="font29">p_equal_range</font>, a,
+  Array(2, 9, 11 ,13, 19, 20))<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp; </span>←ジャグ<ruby>配列<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM_<span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>er</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font29">13</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>16</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font29">39</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>47</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font29">56</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>57</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>64<span
+  style='mso-spacerun:yes'>&nbsp; </span>64<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　範囲が[64, 64)なので、13に<ruby>該当<span style='display:none'><rt>ガイトウ</rt></span></ruby><ruby>値<span
+  style='display:none'><rt>チ</rt></span></ruby>なし</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font29">76</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>79</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font29">79</font><font class="font0"><span
+  style='mso-spacerun:yes'>&nbsp; </span>84</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM subV_if(a, mapF(<font class="font24">p_try_less</font>,
+  er))<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>上記<span style='display:none'><rt>ジョウキ</rt></span></ruby><ruby>太字<span
+  style='display:none'><rt>フトジ</rt></span></ruby><ruby>部分<span
+  style='display:none'><rt>ブブン</rt></span></ruby>をとる（64のかわりにNull<ruby>値<span
+  style='display:none'><rt>チ</rt></span></ruby>）</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>11<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>19<span
+  style='mso-spacerun:yes'>&nbsp; </span>20</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><a name="_p_typename">データ型名　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Public Function <font class="font13">p_typename</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><a name="_p_isNumeric">IsNumeric関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Public Function <font class="font13">p_isNumeric</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><ruby>組<span style='display:none'><rt>ク</rt></span></ruby>み<ruby>込<span
+  style='display:none'><rt>コ</rt></span></ruby>みのIsNumeric<ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby>より<ruby>厳密<span
+  style='display:none'><rt>ゲンミツ</rt></span></ruby>に<ruby>判定<span
+  style='display:none'><rt>ハンテイ</rt></span></ruby>する</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>Empt<ruby>y<span style='display:none'><rt>カタ</rt></span></ruby>型<ruby>と数<span
+  style='display:none'><rt>スウチ</rt></span></ruby>値<ruby>と<span
+  style='display:none'><rt>ミ</rt></span></ruby>見なせ<ruby>る文字<span
+  style='display:none'><rt>モジレツ</rt></span></ruby>列（&quot;123&quot;<ruby>等<span
+  style='display:none'><rt>トウ</rt></span></ruby>）<ruby>は数<span
+  style='display:none'><rt>スウチ</rt></span></ruby><ruby>値<span style='display:
+  none'><rt>ケイ</rt></span></ruby><ruby>型<span style='display:none'><rt>カタ</rt></span></ruby>ではみなさない</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><a name="_p_format">Format関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Public Function <font class="font13">p_format</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_InStr">InStr関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font13">p_InStr</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl117><a name="_p_InStrRev">InStrRev関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80>Public Function <font class="font13">p_InStrRev</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><a name="_p_Like">Like関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Public Function <font class="font41">p_Like</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl88><a name="_p_StrConv">StrConv関数　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Public Function <font class="font41">p_StrConv</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_Trim">Tri<ruby>m関<span style='display:none'><rt>カンスウ</rt></span></ruby>数　　　(<ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby>オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Public Function <font class="font41">p_Trim</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>p_Trim<span
+  style='mso-spacerun:yes'>&nbsp; </span>もしくは p_Trim(, 0)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp; </span>Trim</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>p_Trim(, 1)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp; </span>LTrim</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>p_Trim(,
+  -1)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp; </span>RTrim</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_separate_string">文字列の左右分離</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Function <font class="font13">separate_string</font><font
+  class="font0">(ByRef expr As Variant, ByRef n As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Function <font class="font13">p_separate_string</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">separate_string</font><font class="font0">(&quot;abcdefghij123456&quot;,
+  10)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>abcdefghij<span
+  style='mso-spacerun:yes'>&nbsp; </span>123456</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_subM_R">subM(m, 行範囲) の構文糖</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">subM_R</font><font
+  class="font0">(ByRef m As Variant, ByRef rRange As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_subM_R</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_subM_R_b">subM(m, 行範囲) の構文糖（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">subM_R_b</font><font
+  class="font0">(ByRef m As Variant, ByRef rRange As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_subM_R_b</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl78><a name="_subM_C">subM(m, , 列範囲) の構文糖</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">subM_C</font><font
+  class="font0">(ByRef m As Variant, ByRef cRange As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_subM_C</font><font class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_subM_C_b">subM(m, , 列範囲) の構文糖（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">subM_C_b</font><font
+  class="font0">(ByRef m As Variant, ByRef cRange As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_subM_C_b</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_selectRow_b">特定行の取得（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>index &lt; 0 の場合は後ろから取得</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">selectRow_b</font><font
+  class="font0">(ByRef matrix As Variant, ByRef i As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_selectRow_b</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl80><a name="_selectCol_b">特定列の取得（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>index &lt; 0 の場合は後ろから取得</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">selectCol_b</font><font
+  class="font0">(ByRef matrix As Variant, ByRef j As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_selectCol_b</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_fillRow_b">配列の特定行をデータで埋める（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Sub <font class="font13">fillRow_b</font><font
+  class="font0">(ByRef matrix As Variant, ByVal i As Long, ByRef data As
+  Variant)</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_fillRow_b_move">配列の特定行をデータで埋めてmoveして返す（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Function <font class="font13">fillRow_b_move</font><font
+  class="font0">(ByRef matrix As Variant, ByVal i As Long, ByRef data As
+  Variant) As Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_fillCol_b">配列の特定列をデータで埋める（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Sub <font class="font13">fillCol_b</font><font
+  class="font0">(ByRef matrix As Variant, ByVal j As Long, ByRef data As
+  Variant)</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_fillCol_b_move">配列の特定列をデータで埋めてmoveして返す（オフセットアドレス）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Function <font class="font13">fillCol_b_move</font><font
+  class="font0">(ByRef matrix As Variant, ByVal j As Long, ByRef data As
+  Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>1次元配列vecの隣接する要素間で2項操作opを行う</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_adjacent_op">出力列の要素数は元の要素数 - 1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>(LBound = 0)</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font19">adjacent_op</font><font
+  class="font0">(ByRef op As Variant, ByRef vec As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_adjacent_op</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">adjacent_op</font><font class="font0">(p_plus, iota(1,10))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>7<span style='mso-spacerun:yes'>&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp; </span>11<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>19<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>← 1+2,
+  2+3,<span style='mso-spacerun:yes'>&nbsp; </span>・・・<span
+  style='mso-spacerun:yes'>&nbsp; </span>, 9 + 10</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_get_unique"><span
+  style='mso-spacerun:yes'>&nbsp;</span>1次元配列の重複要素を削除する (ソート済前提、compは等値条件)</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font13">get_unique</font><font class="font0">(ByRef vec As Variant,
+  Optional ByRef comp As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_get_unique</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_rowWise_change">2次元配列の行ごとに関数適用</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Sub <font class="font13">rowWise_change</font><font
+  class="font0">(ByRef matrix As Variant, ByRef funcs As Variant)</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><a name="_rowWise_change_move">2次元配列の行ごとに関数適用しmoveして返す</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">rowWise_change_move</font><font
+  class="font0">(ByRef matrix As Variant, ByRef funcs As Variant) As Variant</font></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_rowWise_change_move</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_columnWise_change">2次元配列の列ごとに関数適用</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Sub <font class="font13">columnWise_change</font><font
+  class="font0">(ByRef matrix As Variant, ByRef funcs As Variant)</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_columnWise_change_move">2次元配列の列ごとに関数適用しmoveして返す</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font13">columnWise_change_move</font><font
+  class="font0">(ByRef matrix As Variant, ByRef funcs As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_columnWise_change_move</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_equal_all">1次元配列の全要素の等値比較</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl78>Public Function <font class="font13">equal_all</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant) As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78>　</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>Public Function <font class="font13">p_equal_all</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=54 style='height:40.5pt;mso-xlrowspan:3'>
+  <td height=54 colspan=2 style='height:40.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_equal_all_pred">1次元配列の全要素の等値比較（述語バージョン）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Public Function <font class="font13">equal_all_pred</font><font
+  class="font0">(ByRef pred As Variant, ByRef a As Variant, ByRef b As Variant)
+  As Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_filter_if">述語を与えて1次元配列をフィルタリング</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font41">filter_if</font><font
+  class="font0">(ByRef fun As Variant, ByRef vec As Variant) As Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font45">fil</font><font class="font24">ter_if</font><font class="font0">(p_less(,
+  10), iota(1, 20))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>9</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_filter_if_not">述語を与えて1次元配列をフィルタリング（否定形）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font41">filter_if_not</font><font
+  class="font0">(ByRef fun As Variant, ByRef vec As Variant) As Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font45">fil</font><font class="font24">ter_if_not</font><font
+  class="font0">(p_less(, 10), iota(1, 20))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>11<span
+  style='mso-spacerun:yes'>&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>14<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>18<span
+  style='mso-spacerun:yes'>&nbsp; </span>19<span
+  style='mso-spacerun:yes'>&nbsp; </span>20</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_Not">論理Not　　（関数オブジェクトのみ）(0, Null, Empty, Nothing,
+  CDate(0) はFalseとみなす)</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font41">p_Not</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_p_imply">含意(A=&gt;B)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>IIF(Not A Or B, True,
+  False)　　（関数オブジェクトのみ）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font41">p_imply</font><font
+  class="font0">(</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_2pipe">vh_pipeオブジェクトの生成</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117>Public Function <font class="font13">pipe</font><font
+  class="font0">(ByRef x As Variant) As vh_pipe</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>? <font class="font45">pipe</font><font class="font0">(3) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.→(p_plus(10)) _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.→(p_mult(10)) _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.→(p_minus(, 3))
+  _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.val</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>127<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>&lt;-<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>((3 + 10) * 10) - 3<span style='mso-spacerun:yes'>&nbsp;</span></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_2pipe_">vh_pipeオブジェクトの生成（引数をmoveする）</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">pipe_</font><font
+  class="font0">(ByRef x As Variant) As vh_pipe</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM<font class="font24"> pipe_</font><font class="font0">(iota(1,
+  20)) _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;</span>.→(p_filter_if(p_less(yield_1, 10))) _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;</span>.→(p_mapF(p_mult(yield_1, 100))) _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;</span>.pop</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>100<span
+  style='mso-spacerun:yes'>&nbsp; </span>200<span
+  style='mso-spacerun:yes'>&nbsp; </span>300<span
+  style='mso-spacerun:yes'>&nbsp; </span>400<span
+  style='mso-spacerun:yes'>&nbsp; </span>500<span
+  style='mso-spacerun:yes'>&nbsp; </span>600<span
+  style='mso-spacerun:yes'>&nbsp; </span>700<span
+  style='mso-spacerun:yes'>&nbsp; </span>800<span
+  style='mso-spacerun:yes'>&nbsp; </span>900</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="____stdVec">vh_stdvecオブジェクトの生成</a></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl117>Public Function <font class="font41">stdVec</font><font
+  class="font0">(Optional ByRef x As Variant) As vh_stdvec</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>set x = <font class="font24">stdVec</font><font class="font0">(iota(1,10))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>x.push_back(31)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>x.printM</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>9<span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>31</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_splitStr2Funs">delimiterで区切られた文字列を関数列へマッピング</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>strFuns<span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>:
+  関数を表す文字列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>my_str2Fun: 文字列から関数へのマッピング関数</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>delimiter : strFunsの区切り文字</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>例）%f%d%s%n → Array(f, d, s, n)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font13">splitStr2Funs</font><font
+  class="font0">(ByVal strFuns As String, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl78><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef my_str2Fun As Variant, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl116><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal delimiter As String) As Variant</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 colspan=2 style='height:13.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_group_by_partition_points">partition_points
+  によるGROUP-BY</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>matrix<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>: 対象配列（2次元配列またはジャグ配列）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>pp<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>:
+  partition_points （集計する行範囲を区切る行番号の集合）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>strFuns<span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>:
+  列ごとの集計関数を表す文字列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>my_str2Fun: 文字列から集計関数へのマッピング関数（str2SummaryFunがデフォルト）</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80>例）group_by_partition_points(matrix, pp,
+  &quot;%t%c%s%a%min%max&quot;)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl80>Public Function <font class="font13">group_by_partition_points</font><font
+  class="font0">(ByRef matrix As Variant, _</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pp As Variant, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef strFuns As String, _</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl116><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal my_str2Fun As Variant) As Variant</td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM m</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td rowspan=28 height=509 class=xl127 width=711 style='mso-ignore:colspan-rowspan;
+  height:381.75pt;width:533pt'><!--[if gte vml 1]><v:shape id="図_x0020_4"
+   o:spid="_x0000_s2050" type="#_x0000_t75" style='position:absolute;
+   margin-left:40.5pt;margin-top:3.75pt;width:221.25pt;height:366.75pt;
+   z-index:2;visibility:visible' o:gfxdata="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
+SFlzAAAOwwAADsMBx2+oZAAANUpJREFUeF7tmE+qZUmT3Gv/IHoB2kYPBZpoC40kEBoIIRA96qmQ
++FSehWf482v+J+LEpTgRlvDj1jE3D55b3uOV8f74b//r3/5BnvGv//bfScIff/wBdUIyuJw2gIIl
+Ay4nsgKX0wZQsGQgf5BOSAaX0wZQsGTA5URW4HLaAAqWDHitIytwOW0ABUsGXE5khVcuJ/myI73L
+034PCpYMeK0jK7SWk7zMymod6UrVb0GeHf1eUx3hfSjYm5BMkK6cvJz8d2O2fgLZfFlNiTzlcpKG
+p89es1T9nsq/0h/1VGcpNtDb0PxQTanqbwXNZbWqfgJ+nmz+Th4/+tHLpogx01Dd6vKpeI/WkR7h
+/ag/OxP1K1a3daR7bLg3YfNDdaWqvxU0l9Wq+tt5On+VxVeXU/TsdflUvMfi68ifnRHVMt2CPAIK
+9iYkG6QrJ1/rPFUWVf1NoFms1q3Lp6K1Xzp62SKkOXuO9My3eiYi86zUvB75bKA3IrkgXTl9Ocn8
+ykr9FPx86Nlq/lm13/+NXjaENHU0pHd9M5on81T9nfMV5LXh3ohkgnSlqp/ErVlEc4mu6LOt6X8j
+rbWcpOGJPtPf1SzfrluQ14Z7I5IJ0pWqfhI3ZjEzk/Wivh91/6J5xIx0Iap5vetDWtSrPK0LkQfp
+SLPh3ohkgnTl1GsdmttqVf0Esnme5jP9C3GP96Ce7Jyqf6YX8cTT/VlsuDciuSBd4XLC9bdTzeLr
+nTzsc7mcEJnP17SOdCXqn+mz2Lr1R2Q+dK7Hhnsjkg3Slar+Zuz3A81Z1d+Mn02JPFa3RJ72L8RJ
+jA2UfJJ9MQmJ4HLaAAqWDE691pHvwuW0ARQsGXA5kRW4nDaAgiUDXuvIClxOG0DBkgGXE1mBy2kD
+KFgy4LWOrMDltAEULBlwOZEVuJw2gIIlA17ryApcThtAwZIBlxNZ4ZXLSb7sSO/ytN+DgiUDXuvI
+Cq3lJC+zslpHulL1W5BnR7/XVEd4Hwr2JiQTpCunLyf73Vipv51qvqouoHq5nKTh6bPXLFW/p/Kv
+9Ec91VmKDfQ2ND9UU6r6m/GzzT6/nV3zi/7hRS+bIuZMQ3Wry6fiPVpHeoT3o/7sTNSvWN3Wke6x
+gd6EzQ/Vlar+VtBcVovmPiWPXfPr84eOXjZFzJmG6kivfPKpeI/F15E/OyOqZboFeQQb6I1INkhX
+Tr3WobmtFuVS5fUWds2vzx86etkipDl7jvTMt3omIvOs1Lwe+WygNyK5IF05dTl5fA5RLlVeb2Vl
+/ui/fz2jlw0hjR0N6V3fjObJPFV/53wFeW2gNyKZIF2p6ieAZozmPjGPlfl9/ePZv2gIaXqiz/R3
+Ncu36xbktYHeiGSCdKWqv51ovln9razOL5+I3z7/onnEjHQhqnm960Na1Ks8rQuRB+lI0zBvRTJB
+unLytS6bPapVeb2JnfN7ffoX4h7vQT3ZOVX/TC/iiaf7s9hAb0RyQbpy6nKq5ha8p9PzFnbP/+FF
+L5siZkTm8zWtI12J+mf6LLZu/RGZD53rsYHeiGSDdKWqvxX73bBkPl97M3YuS+bzNYuvt38hTmJs
+oOST6ktJCILLaQMoWDI49VpHvguX0wZQsGTA5URW4HLaAAqWDHitIytwOW0ABUsGXE5kBS6nDaBg
+yYDXOrICl9MGULBkwOVEVuBy2gAKlgx4rSMrcDltAAVLBlxOZIVXLif5siO9y9N+DwqWDHitIyu0
+lpO8zMpqHelK1W9Bnh39XlMd4X0o2JuQTJCunLqc/PdCyXy+9nbsbNF82dxZf7mcpOHps9csVb+n
+8q/0Rz3VWYoN9DY0P1RTqvpJ+Fmr5zeDZkHzRjNX/elyEmOmobrV5VPxHq0jPcL7UX92JupXrG7r
+SPfYcG/C5ofqSlU/BT9nNPcpeaA5rCb/rViPrWfaV5dT9Ox1+VS8x+LryJ+dEdUy3YI8gg33RiQb
+pCunXus8PocolyqvN4Nmm5nXeqd+IS6N2XOkZ77VMxGZZ6Xm9chnw70RyQXpCpfTT6q83obMo0R1
+pCtRf3s5SWNHQ3rXN6N5Mk/V3zlfQV4b6I1IJkhXqvoJoBmjuU/OYyYHhPW2lpM0PNFn+rua5dt1
+C/LacG9EMkG6UtVPAM0YzX1yHjM5IKy3XE5iRroQ1bze9SEt6lWe1oXIg3Sk2XBvRDJBunLDtQ5l
+EOVS5fUWujPP5GC16V+Ie7wH9WTnVP0zvYgnnu7PYsO9EckF6crpyymb39eqrN4EmqWrRbrVyuWE
+yHy+pnWkK1H/TJ/F1q0/IvOhcz023BuRbJCuVPW305lfQfU3Y2eL5svmzvrbvxAnMTZQ8kn25SQk
+gstpAyhYMjj9Wke+A5fTBlCwZMDlRFb481/cf9319A+f+cxnPuufv/OZ/3LawH/5n/+BJMiXDemE
+ZHA5bQAFSwbyB+mEZHA5bQAFSwZcTmQFLqcNoGDJgNc6sgKX0wZQsGTA5URWeOVyki870rs87feg
+YMmA1zqyQms5ycusrNaRrlT9FuTZ0e811RHeh4K9CZsNqp++nKr5q/pbsXNZunXk+VHzL5pHGp4+
+e81S9Xsq/0p/1FOdpdhAb0Myyp4j7RSq+Tv5vJVqlpW61dLlJMZMQ3Wry6fiPVpHeoT3o/7sTNSv
+WN3Wke6x4d6E5LOqnUA1azT3KXlUc6zUrfbV5RQ9e10+Fe+x+DryZ2dEtUy3II9gw70JyaSjnXqt
+q+ZH9Ux/GzKHZaWeaVO/EJfG7DnSM9/qmYjMs1LzeuSz4d6M5IP0U5eTx88f5RHpb6Oat5OHaJYf
+NfSyIaSxoyG965vRPJmn6u+cryCvDfRWJBekC1ntFNCM0dwn51HNZutVZq3lJA1P9Jn+rmb5dt2C
+vDbcG5FMkK5U9bcTzTern8DMdwF5f9T9i+YRM9KFqOb1rg9pUa/ytC5EHqQjzYZ7G5IH0i0nX+uy
++aNaJ7M3gOaw2uO6f9EsYkS6xXtQT3ZO1T/Ti3ji6f4sNtybkDyQ7jl1OXXm955uZm+gmm322Wvl
+ckJkPl/TOtKVqH+mz2Lr1h+R+dC5HhvuTdhsLMjntRPwcyuZz9feTjXbTN172r8QJzE2UPJJ9MUk
+JIPLaQMoWDI49VpHvguX0wZQsGTA5URW4HLaAAqWDHitIytwOW0ABUsGXE5kBS6nDaBgyYDXOrIC
+l9MGULBkwOVEVuBy2gAKlgx4rSMrcDltAAVLBlxOZIVXLif5siO9y9N+DwqWDHitIyu0lpO8zMpq
+HelK1W9Bnh39XlMd4X0o2Juw2aD66cspmtvmYkHeN4JmE7bV/YvmEfPTZ69Zqn5P5V/pj3qqsxQN
+80Yko+w50k5BZovmO3luYWU+21P1p8tJmjMN1a0un4r3aB3pEd6P+rMzUb9idVtHugcFewOSz6p2
+AjKXEtWRfgqz83l/1f/V5RQ9e10+Fe+x+DryZ2dEtUy3II+Agr0ByaSj8Vr3F8jzZmbn856qf+oX
+4nJA9hzpmW/1TETmWal5PfL5UG9F8kH6zcspe347s/NV/o9n9LIhpLGjIb3rm9E8mafq75yvIK8N
+9FYkF6QLWe0EZua7NYvu3NbXWk7S8ESf6e9qlm/XLchrw70RyQTpSlV/OzPz3ZpFd27rK5eTmJEu
+RDWvd31Ii3qVp3Uh8iAdaTbc25A8kG7htS7X3srMfF2v1aZ/Ie7xHtSTnVP1z/Qinni6P4sN9yYk
+D6R7uJzw89vpzreaT7mcEJnP17SOdCXqn+mz2Lr1R2Q+dK7HBnoTNhsL8nntJLL5slxOoDNfVYv6
+278QJzE+VPKT7MtJSASX0wZQsGRw+rWOfAcupw2gYMmAy4mswOW0ARQsGfBaR1bgctoACpYMuJzI
+ClxOG0DBkgGvdWQFLqcNoGDJgMuJrMDltAEULBnwWkdW4HLaAAqWDLicyAqvXE7yZUd6l6f9HhQs
+GfBaR1ZoLSd5mZXVOtKVqt+CPDv6vaY6wvtQsDdhs0H125dTlMspZPNV3w0hqpXLSRqfPnvNUvV7
+Kv9Kf9RTnaWgYG9BMsqeI+0WZPaT58/m8zrypf3oZVOkKdNQ3eryqXiP1pEe4f2oPzsT9StWt3Wk
+e1CwNyD5rGo3IHMrqP52qvmQbrWyH71sijRlGqojvfLJp+I9Fl9H/uyMqJbpFuQRULA3IJl0NF7r
+8Mt3CtF83e9H2I9etgg5JHuO9My3eiYi86zUvB75ULA3IvkgncsJ53IK0Xxel2fkDfvRy4aQAzoa
+0ru+Gc2Tear+zvkK8qJgb0NyQbqQ1W7g9Pmrv3tFn5HHa790/6IhpPmJPtPf1SzfrluQFwV7E5IJ
+0pWqfjqnzz8zH/JG/eVykkakC1HN610f0qJe5WldiDxIRxoK9hYkD6RbeK27czkhvav90v2LZpEm
+pFu8B/Vk51T9M72IJ57uz4KCvQHJA+keLqdeTm8lms/rXd9vHb1sijQhMp+vaR3pStQ/02exdeuP
+yHzoXA8K9gZsNhbk89pNnD5/Np9+JyoP1NHLRuZAwZJB9sUkJILLaQMoWDK4/VpH1uBy2gAKlgy4
+nMgKXE4bQMGSAa91ZAUupw2gYMmAy4mswOW0ARQsGfBaR1bgctoACpYMuJzIClxOG0DBkgGvdWQF
+LqcNoGDJgMuJrPDK5SRfdqR3edrvQcGSAa91ZIXWcpKXWVmtI12p+i3Is6Pfa6ojvA8FexM2G1S/
+YTlF89tsUP3tVPNlNQvylMtJGp4+e81S9Xsq/0p/1FOdpdhAb0Myyp4j7TRkxtuyqObr5KFI7cOP
+XjZFzJmG6laXT8V7tI70CO9H/dmZqF+xuq0j3WMDvQnJZ1U7CZ3Pz3l6FtV83flV87WvLqfo2evy
+qXiPxdeRPzsjqmW6BXkEG+hNSCYd7fRrnc7sZ+/mcxJ2vu78qvna1C/EpTl7jvTMt3omIvOs1Lwe
++WygNyP5IP3k5WRnRvOLZvH1E4jmQ8+Z56OGXjaENHY0pHd9M5on81T9nfMV5LWB3orkgnQhq70Z
+P1f1HGkngTJQfB15fzz7Fw0hTU/0mf6uZvl23YK8NtAbkUyQrlT1tyJzIWzd+iPtJKr5fD6I33X/
+onnEjHQhqnm960Na1Ks8rQuRB+lI0zBvRPJAuuXka53FZ4Gy6eT1Fqr5Zuf3telfiHu8B/Vk51T9
+M72IJ57uz2IDvQnJA+keLqdceyvVfJ08LB9+9LIpYkZkPl/TOtKVqH+mz2Lr1h+R+dC5HhvoTdhs
+LMjntROJZrf4+tup5stqHu9p/0KcxNhAySedLyYhHi6nDaBgyeCWax3ZC5fTBlCwZMDlRFbgctoA
+CpYMeK0jK3A5bQAFSwZcTmQFLqcNoGDJgNc6sgKX0wZQsGTA5URW4HLaAAqWDHitIytwOW0ABUsG
+XE5khVcuJ/myI73L034PCpYMeK0jK7SWk7zMymod6UrVb0GeHf1eUx3hfSjYm7DZoPrNy8lmE+Xz
+drL5bA3VveeH7l80jzQ8ffaaper3VP6V/qinOkuxgd6GZJQ9R9oN3JBF9vffmT/tRy+bIsZMQ3Wr
+y6fiPVpHeoT3o/7sTNSvWN3Wke6x4d6E5LOq3cDpWVSzVPNH/ap/dTlFz16XT8V7LL6O/NkZUS3T
+Lcgj+HBvQTLpaDdf6zwon7eis8inguqRhupWn/qFuDRlz5Ge+VbPRGSelZrXI58P91YkH6Tfvpwk
+FwXV3wqaCT1bfM0+e729nKShoyG965vRPJmn6u+cryCvD/dGJBekC1ntNk7KAs1itZW61VvLScxP
+9Jn+rmb5dt2CvD7c25BMkK5U9Zs4KQs0i9VW6lYvl5MYkS5ENa93fUiLepWndSHyIB1pPtybkDyQ
+brn1Woey6eT1Fqr5VupWn/6FuMd7UE92TtU/04t44un+LD7cW5A8kO7hcsq1N+Pnsc+d+dN+9LIp
+YkRkPl/TOtKVqH+mz2Lr1h+R+dC5HhvuTdhsLMjntVuosjmBbD5bQ3Xv+aGjl43MYQMln0RfSkIy
+uJw2gIIlg1uvdeQZXE4bQMGSAZcTWeHPf3H/ddfTP3zmM5/5rH/+zmf+y2kD/+k//3uSIF82pBOS
+weW0ARQsGcgfpBOSweW0ARQsGXA5kRW4nDaAgiUDXuvIClxOG0DBkgGXE1nhlctJvuxI7/K034OC
+JQNe68gKreUkL7OyWke6UvVbkGdHv9dUR3gfCvYWfDbIc/pyquav6m+nMx+q2z7L77p/0Txifvrs
+NUvV76n8K/1RT3WWYgO/CclnVTsFP9vs89vpzif6bBbpcpLmTEN1q8un4j1aR3qE96P+7EzUr1jd
+1pHuQcHegOSzqp1ANWs09yl5dOdQn/dX/V9dTtGz1+VT8R6LryN/dkZUy3QL8ggo2FuRnLx26rUO
+zWo1VM/0t6FzyKfiPVq3n1a32NqvOnrZIuSA7DnSM9/qmYjMs1LzeuTzod6G5KKg+qnLyePnj/KI
+9LeB/s6z5xnvr2f0siGksaMhveub0TyZp+rvnK8grw30diSfjnYaM3Ofkkc1s6935v7R7180hDQ8
+0Wf6u5rl23UL8tpwb0fy6WgnEc03q7+N6u9a/hth/R5bL5eTmJEuRDWvd31Ii3qVp3Uh8iAdaTbc
+m5AsOtrJ1zo0rxLVsp430f37V3yt6p/+hbjHe1BPdk7VP9OLeOLp/iw23JuQPDraqcsJzerxnk7P
+m5iZr/J+PKOXTREzIvP5mtaRrkT9M30WW7f+iMyHzvXYQG/D5iNEHqS/HT+7kvl87QS686F61tv+
+hTiJ8aGSn1RfWkIQXE4bQMGSwanXOvJduJw2gIIlAy4nsgKX0wZQsGTAax1ZgctpAyhYMuByIitw
+OW0ABUsGvNaRFbicNoCCJQMuJ7ICl9MGULBkwGsdWYHLaQMoWDLgciIrvHI5yZcd6V2e9ntQsGTA
+ax1ZobWc5GVWVutIV6p+C/Ls6Pea6gjvQ8Hegs8GeU5fTtn8We0kOvOjuvf80P2L5pGGp89es1T9
+nsq/0h/1VGcpNtCbkHxWtVPws9nnrHYaMltn3spjn9PlJMZMQ3Wry6fiPVpHeoT3o/7sTNSvWN3W
+ke6x4d6E5LOqnUA16y1Z6Ex+tmr+KIvf56GXTRFTpqE60iuffCreY/F15M/OiGqZbkEewYd7M5KT
+10691qFZrVbVT0Fn8rNV80dZ/D4PvWwR0pQ9R3rmWz0TkXlWal6PfD7c25BcFFQ/dTl5/PzoOcro
+rdh50Gw6s+Jr9tnr7eUkDR0N6V3fjObJPFV/53wFeX24NyP5dLTTiGYUXdFn73krfpbq2WtRFqq3
+lpOYn+gz/V3N8u26BXl9uDcj+XS0k5iZ76QsZBaErVu/11Dd6uVyEiPShajm9a4PaVGv8rQuRB6k
+I82HewuSRUc7+VqH5lW6+ZyCn62aP8pC9elfiHu8B/Vk51T9M72IJ57uz+LDvQXJo6OdupzQrBZf
+r/xvpzNv5bHP5XJCZD5f0zrSlah/ps9i69YfkfnQuR4b7m3YfITIg/S342dXIo/VTwTNaOePMojq
+7V+IkxgbKPkk+lISksHltAEULBmceq0j34XLaQMoWDLgciIrcDltAAVLBrzWkRW4nDaAgiUDLiey
+ApfTBlCwZMBrHVmBy2kDKFgy4HIiK3A5bQAFSwa81pEVuJw2gIIlAy4nssIrl5N82ZHe5Wm/BwVL
+BrzWkRVay0leZmW1jnSl6rcgz45+r6mO8D4U7C34bJDnhuUUzV9l83bsfNGMWd3WfL1cTtLw9Nlr
+lqrfU/lX+qOe6izFBnoTks+qdhoyo5+zen47aJ6ZDKr+dDmJMdNQ3eryqXiP1pEe4f2oPzsT9StW
+t3Wke2y4NyH5rGonofP5OU/PopovmlX1sh+9bIoYMw3VkV755FPxHouvI392RlTLdAvyCDbc25Gc
+vHb6tU5n9rOjLJB2Ena+aFbVq3ymfiEujdlzpGe+1TMRmWel5vXIZ8O9EclFQfWTl5Od2c+PnqOM
+3ozOhea1z0i3vd7fXk7S2NGQ3vXNaJ7MU/V3zleQ1wZ6O5JPRzsBP1c0uxJ5TsLOF82aZfGj379o
+CGl4os/0dzXLt+sW5LXh3o7k09FOQOZCIK9S1d+OnS+aVXVU/9HvXzSPmJEuRDWvd31Ii3qVp3Uh
+8iAdaTbcm5AsOtrJ1zqLn72bz1up5otmVb3s9y+aRYxIt3gP6snOqfpnehFPPN2fxYZ7E5JHR+Ny
+ws9vp/P3nz1X/eVyQmQ+X9M60pWof6bPYuvWH5H50LkeG+5t2HyEyIP000BzVtm8HTtfNGNWtzVf
+b/9CnMTYQMkn6EtJSAWX0wZQsGRwy7WO7IXLaQMoWDLgciIrcDltAAVLBrzWkRW4nDaAgiUDLiey
+ApfTBlCwZMBrHVmBy2kDKFgy4HIiK3A5bQAFSwa81pEVuJw2gIIlAy4nssIrl5N82ZHe5Wm/BwVL
+BrzWkRVay0leZmW1jnSl6rcgz45+r6mO8D4U7C34bJDnhuUUzW+zQfUTiOazusV6vO+H7l80jzQ8
+ffaaper3VP6V/qinOkuxgd6E5LOqnYbM6Oe8IYts5s6saT962RQxZhqqW10+Fe/ROtIjvB/1Z2ei
+fsXqto50jw33JiSfVe0kdD4/5+lZVLOs1K321eUUPXtdPhXvsfg68mdnRLVMtyCPYMO9HcnJa6df
+63RmNLun43kLdm7F16Oa1jNt6hfi0pg9R3rmWz0TkXlWal6PfDbcG5FcFFQ/eTnZmaP5q3zeCprJ
+Pmc1xIcfvWwIaexoSO/6ZjRP5qn6O+cryGsDvR3Jp6OdgJ+rM+dJWaz8XUd1eJZ/0RDS+ESf6e9q
+lm/XLcjrQ70ZyaejnYDMhUBepaq/CTTLyvxRT7mcpBHpQlTzeteHtKhXeVoXIg/SkYaCvQHJoqOd
+fK2z+Nm7+byVar7O/Fke078Q93gP6snOqfpnehFPPN2fBQV7A5JHR+NyyrU3k81c5VFlUS4nRObz
+Na0jXYn6Z/ostm79EZkPnetBwd6CzUeIPEg/DTSnzebUHLL5ujXL7zp62cgcNnDyif3CEdKFy2kD
+KFgyuOVaR/bC5bQBFCwZcDmRFbicNoCCJQNe68gKXE4bQMGSAZcTWYHLaQMoWDLgtY6swOW0ARQs
+GXA5kRW4nDaAgiUDXuvIClxOG0DBkgGXE1nhlctJvuxI7/K034OCJQNe68gKreUkL7OyWke6UvVb
+kGdHv9dUR3gfCvYWfDbIc/NyqrI5hWzGLIO05l80jzQ9ffaaper3VP6V/qinOkvxod6C5LOq3YCf
+++QcZLbO3719zmq/ntHLpog501Dd6vKpeI/WkR7h/ag/OxP1K1a3daR7bKA3IfmsajdwSxY6k5+t
+mr+so5dNEWOmoTrSK598Kt5j8XXkz86IapluQR7Bhns7kpPXbr3WoSyQ9nZ0Jj9bNX9ZRy9bhDRm
+z5Ge+VbPRGSelZrXI58N90YkFwXVuZzGc5TRW7HzVLOhPPzzj/PQy4aQpo6G9K5vRvNknqq/c76C
+vDbg25F8OtotyOyKPnvPW/GzZLNFNdEVff5d8y8aQhqe6DP9Xc3y7boFeTVMgr+ESLuVk7KQWRDI
+57UI6y2Xk5iRLkQ1r3d9SIt6lad1IfIgHWk23JuQLDoar3W5dgqz81b+6V+Ie7wH9WTnVP0zvYgn
+nu7PYsO9Ccmjo3E54efTmJ238pfLCZH5fE3rSFei/pk+i61bf0TmQ+d6bKC3YfMRIg/Sb6DK5iT8
+jHZ2S+Sx+q8aetnIHD5U8hP0xSOkgstpAyhYMrj1WkeeweW0ARQsGXA5kRX+/Bf3X/c9/cNnPvOZ
+z/rn73z+49/98//4B3nG//vf/5UkyJcN6YRkcDltAAVLBvIH6YRkcDltAAVLBlxOZAUupw2gYMmA
+1zqyApfTBlCwZMDlRFZ45XKSLzvSuzzt96BgyYDXOrJCaznJy6ys1pGuVP0W5NnR7zVLdT4K9iYk
+F6QrNywn/X4gzWM9J1DNFM1udcvvOnrZLGJ++uw1S9Xvqfwr/VlP53wb+G1ofqimVPUTQDncOrcl
+y6TKJ11O0pxpqG51+VS8R+tIj/B+1J+difoVq9s60j0o2Buw+aG6UtXfjs7n57xhbiWqZ3pUV766
+nKJnr8un4j0WX0f+7IyoVunyqXiPgIK9CckF6crp1zqd3+eg3xnF1k4imq3SNRflw4detgg5IHuO
+9My3eiYi86zURPc15PWh3oZkgnTl5OVkZ/c5VM+nEM1V6VU+7eUkjR0N6V3fjObJPFV/VO/+LDbQ
+G5FMkK5U9bfi5+rMeWIW0UyzumBrreUkDU/0mf6uZvlWvfuz2HBvRDJBulLV34rMhUBepaq/kWim
+WV2wtXI5iRnpQlTzeteHtKhXeVoXIg/SkWbDvRHJBOnKydc6i88B5VJl9UaimSq9ymf6F+Ie70E9
+2TlV/0wv4qmn8/PYcG9EMkG6wuWEn08hmyvLoMqnXE6IzOdrWke6EvXP9Fls3fojKh8622IDvRHJ
+BelKVT8FNKd+b07OoJotyyCtoZeNzOFDJT9BXzxCKricNoCCJYNbrnVkL1xOG0DBkgGXE1mBy2kD
+KFgy4LWOrMDltAEULBlwOZEVuJw2gIIlA17ryApcThtAwZIBlxNZgctpAyhYMuC1jqzA5bQBFCwZ
+cDmRFV65nOTLjvQuT/s9KFgy4LWOrNBaTvIyK6t1pCtVvwV5dvR7zVKdj4K9CckF6cqpy8l+LyyZ
+x9ZOIZvP1lBdQfVyOUnD02evWap+T+Vf6c96OufbQG9D80M1paq/lZW5T8vCz2OfZ+YX/eMs/6JZ
+xJxpqG51+VS8R+tIj/B+1J+difoVq9s60j020Juw+aG6UtXfysrcJ2VRzdedXzVf++pyip69Lp+K
+91h8HfmzM6Japcun4j2CDfRGJBekK7dc65DH0/W9ATSL1aq613xt6hfi0pw9R3rmWz0TkXlWaqL7
+GvLaQG9EMkG6cvJyyp6trqD6KaD57OxRHf33r2f/okVIY0dDetc3o3kyT9Uf1bs/iw30RiQTpCtV
+/SRuzQLNVWm+/vHsXzSEND3RZ/q7muVb9e7PYgO9EckE6UpVP4kbs4hmQrrV5L8Rv+v+RfOIGelC
+VPN614e0qFd5WhciD9KRpmHeimSCdOWWa53XqvoJZPPMzu9r078Q93gP6snOqfpnehFPPZ2fxwZ6
+I5IJ0pVbllP1HGlvpZpldn5fK5cTIvP5mtaRrkT9M30WW7f+iMqHzrbYQG9EckG6UtXfjP1uVPXI
+81b8bErmsTXPRy962cgcNlDySfWlJATB5bQBFCwZnHqtI9+Fy2kDKFgy4HIiK3A5bQAFSwa81pEV
+uJw2gIIlAy4nsgKX0wZQsGTAax1ZgctpAyhYMuByIitwOW0ABUsGvNaRFbicNoCCJQMuJ7LCK5eT
+fNmR3uVpvwcFSwa81pEVWstJXmZltY50peq3IM+Ofq9ZqvNRsDchuSBduXk52e9OldPb8LMpmcfW
+fP2jhl42izQ9ffaaper3VP6V/qync74P9SY0P1RTqvqpoLlPymLl791qvv7x7F80i5gzDdWtLp+K
+92gd6RHej/qzM1G/YnVbR7rHBnoTNj9UV6r6qaC5T8pi5e/damUdvWyKGDMN1ZFe+eRT8R6LryN/
+dkZUq3T5VLxHsOHeiOSCdOXma52nyupN2PcCzVVpZR29bBHSmD1HeuZbPROReVZqovsa8tpwb0Qy
+Qbpy+3LS71GV09vw86D57OyV33vay0maOhrSu74ZzZN5qv6o3v1ZbMA3IpkgXanqN3F6FnY+NKvX
+5Fnx9dZykoYn+kx/V7N8q979WTTMW5FMkK5U9Zs4PQs7H5p15rtSLicxI12Ial7v+pAW9SpP60Lk
+QTrSbLg3IpkgXbn1WodyqbJ6E9V8j+v+RbOIEekW70E92TlV/0wv4qmn8/PYcG9EMkG6wuWUa2/F
+z1I9e63s9y+aRcyIzOdrWke6EvXP9Fls3fojKh8622IDvRHJBelKVT8Z+905MYdqNltHnrSGXjYy
+hw+V/AR98Qip4HLaAAqWDG691pFncDltAAVLBlxOZAUupw2gYMmA1zqyApfTBlCwZMDlRFbgctoA
+CpYMeK0jK3A5bQAFSwZcTmQFLqcNoGDJgNc6sgKX0wZQsGTA5URWeOVyki870rs87fegYMmA1zqy
+Qms5ycusrNaRrlT9FuTZ0e81S3U+CvYmJBekKzcsJ/1+ZLUqp1OJ5re65XcdvWwWMT999pql6vdU
+/pX+rKdzvg38NjQ/VFOq+glEOXjthiws2fxVFulykuZMQ3Wry6fiPVpHeoT3o/7sTNSvWN3Wke5B
+wd6AzQ/Vlar+dnQ+P+fpc1c8/V58dTlFz16XT8V7LL6O/NkZUa3S5VPxHgEFexOSC9KV0691Or/P
+weqKrZ9ONb/Vfe1XHb1sEXJA9hzpmW/1TETmWamJ7mvI60O9DckE6crJy8nO7nOQZ6TZ55Op5q+y
+aS8naexoSO/6ZjRP5qn6o3r3Z7GB3ohkgnSlqr8VP1f1HGmnsjK/rbeWkzQ80Wf6u5rlW/Xuz2LD
+vRHJBOlKVX8rMhfC1q0/0k5lZf4f+fkXzSNmpAtRzetdH9KiXuVpXYg8SEeaDfdGJBOkKydf6yw+
+B5RLldVJVPOXdf+iWcSIdIv3oJ7snKp/phfx1NP5eWy4NyKZIF25dTkhrcrqNLL5q2zK5YTIfL6m
+daQrUf9Mn8XWrT+i8qGzLTbQG5FckK5U9VOI5tTvzi05eLL50xp62cgcPlTyE/TFI6SCy2kDKFgy
+uOVaR/bC5bQBFCwZcDmRFbicNoCCJQNe68gKXE4bQMGSAZcTWYHLaQMoWDLgtY6swOW0ARQsGXA5
+kRW4nDaAgiUDXuvIClxOG0DBkgGXE1nhlctJvuxI7/K034OCJQNe68gKreUkL7OyWke6UvVbkGdH
+v9cs1fko2JuQXJCunL6cqvnt9wfV34qdy5J5s5qvl8tJGp4+e81S9Xsq/0p/1tM53wZ6G5ofqilV
+/c1U8/vaSVnMzBLllOWTLicxZhqqW10+Fe/ROtIjvB/1Z2eifsXqto50jw33Jmx+qK5U9bdSzY/0
+k7LozqI+74/6f/vRy6aIKdNQHemVTz4V77H4OvJnZ0S1SpdPxXsEH+5tSC5IV2691iG9yupNyCwW
+5BG05j1Rz28/etkipCl7jvTMt3omIvOs1ET3NeT14d6GZIJ05dbl5On63oKfB81ntY7f6u3lJA0d
+Deld34zmyTxVf1Tv/iw+3NuQTJCuVPW305nv9AwUO6efuXr2ems5ifmJPtPf1Szfqnd/Fh/ubUgm
+SFeq+tu5fX6LnVX+G4G8FtXL5SRGpAtRzetdH9KiXuVpXYg8SEeaD/c2JBOkKzdf66ps3gyabSaL
+yKv69C/EPd6DerJzqv6ZXsRTT+fn8eHehmSCdOXW5VTl8nb8fNW8qJ6dUS4nRObzNa0jXYn6Z/os
+tm79EZUPnW2x4d6I5IJ0paq/nWg+/c54kPetzMwVeaIz2r8QJzE2UPJJ54tLiIfLaQMoWDI4/VpH
+vgOX0wZQsGTA5URW+PNf3H/d9fQPn/nMZz7rn7/zmf9y2sD//Zd/JgnyZUM6IRlcThtAwZKB/EE6
+IRlcThtAwZIBlxNZgctpAyhYMuC1jqzA5bQBFCwZcDmRFV65nOTLjvQuT/s9KFgy4LWOrNBaTvIy
+K6t1pCtVvwV5dvR7zVKdj4K9CZsPqp+6nOzclszna6eQzZfNb2u+Xi4naXj67DVL1e+p/Cv9WU/n
+fBvobUge2XOknUqVx6lZyFxotmz+yp8uJzFmGqpbXT4V79E60iO8H/VnZ6J+xeq2jnSPDfcmJJ9V
+7UT8nNHcp+Wh83Tmt1pZRy+bIsZMQ3WkVz75VLzH4uvIn50R1SpdPhXvEWy4NyF5dLRTr3UePzvK
+ItPfis7Tmb+a3danfiEujdlzpGe+1TMRmWelJrqvIa8N92YkG6RzOf0k0t+InaWaK8tD+aH7Fy1C
+Gjsa0ru+Gc2Tear+qN79WWygtyK5IF3IaqeAZozmPiUPP0c2V3dm62stJ2l4os/0dzXLt+rdn8WG
+eyOSCdKVqn4CaMZo7lPykDkQyOe1COstl5OYkS5ENa93fUiLepWndSHyIB1pNtzbkDyQbrnhWody
+iLLpZPZGZjIQKv/0L8Q93oN6snOq/plexFNP5+ex4d6EZIF0z+nLKcvB17qZvZHZWVHdauVyQmQ+
+X9M60pWof6bPYuvWH1H50NkWG+5N2FwsyOe1k6jmy7I5CT+fnduSeX7U0MtG5rCBkk/8l46QDlxO
+G0DBksHp1zryHbicNoCCJQMuJ7ICl9MGULBkwGsdWYHLaQMoWDLgciIrcDltAAVLBrzWkRW4nDaA
+giUDLieyApfTBlCwZMBrHVmBy2kDKFgy4HIiK3A5bQAFSwa81pEVXrmc5P/ESO/ytN+DgiUDLiey
+Qms5ycusrNaRrlT9FuTZ0e81S3U+CvYmbD5RHeknEc2velR/M342JfPYGvL80NHLZpGGp89es1T9
+nsq/0p/1dM63gd6G5JE9R9ppyIy3ZVHN0pk/e06XkxgzDdWtLp+K92gd6RHej/qzM1G/YnVbR7rH
+hnsTkk9HO/1apzP72bv5vJVqlmr+so5eNkWMmYbqSK988ql4j8XXkT87I6pVunwq3iPYcG9C8uho
+ty4nRMfzFmQWC/J4rA/1/Kijly1CGrPnSM98q2ciMs9KTXRfQ14b7s1INjP6CdjZsvkVVH8rfp6n
+83+c51+0CGnsaEjv+mY0T+ap+qN692exgd6K5IJ0Iau9GT9XZ85Ts1Cq+aI60lvLSRqf6DP9Xc3y
+rXr3Z/Gh3oZkgnTl1GudzI1AXqWqv52V+aOecjlJI9KFqOb1rg9pUa/ytC5EHqQjDQV7C5IH0i2n
+LiePzwJl08nrLVTzdebP8pj+hbjHe1BPdk7VP9OLeOrp/Dwo2BuQLJDu6frejp8TzX1SFtW81fxV
+FuVyQmQ+X9M60pWof6bPYuvWH1H50NkWFOwN2FwsyOe1E4lmt/j626lms3Xv8TXldx29bGQOGzj5
+5JZrHdkLl9MGULBkwOVEVuBy2gAKlgzsP9UJ6cLltAEULBlwOZEVuJw2gIIlA17ryApcThtAwZIB
+lxNZgctpAyhYMuC1jqzA5bQBFCwZcDmRFbicNoCCJQNe68gKXE4bQMGSAZcTWYHLaQMoWDLgtY6s
+wOW0ARQsGXA5kRVeuZzky470Lk/7PShYMuC1jqzQWk7yMiurdaQrVb8FeXb0e81SnY+CvQmbD6rf
+sJyi+atsTiCb0dZQ3Xt+6Ohls0jD02evWap+T+Vf6c96OufbQG9D8sieI+00ZMYqixNzyGZE81aZ
+/Oj3L5pFjJmG6laXT8V7tI70CO9H/dmZqF+xuq0j3WPDvQnJZ1U7CZ3Pz3l6FtUs1fxlHb1sihgz
+DdWRXvnkU/Eei68jf3ZGVKt0+VS8R7Dh3oTk0dFOv9bpzH72bj5vxc6teI/HepD/Rx29bBHSmD1H
+euZbPROReVZqovsa8tpwb0ayQfrJy8nO7OdHz1FGbwTNg+ZTH6pZPs7yL1qENHY0pHd9M5on81T9
+Ub37s9hAb0VyQbqQ1d6MnwvNKZoSed5KNK/XLFEdnuVfNIQ0PtFn+rua5Vv17s/iQ70NyQTpSlV/
+KzIXAnmVqv4m0Cwr80c95XKSRqQLUc3rXR/Sol7laV2IPEhHGgr2FiQPpFtOvtZZfBYom05eb6Ga
+rzN/lsf0L8Q93oN6snOq/plexFNP5+dBwd6AZIF0D5cTfj6BbEY0b1W3lMsJkfl8TetIV6L+mT6L
+rVt/ROVDZ1tQsDdgc7Egn9dOJJo9yuUUshltzdd9TfldRy8bmcMGTj6xXzhCunA5bQAFSwa3XOvI
+XricNoCCJQMuJ7ICl9MGULBkwGsdWYHLaQMoWDLgciIr/PHr39x//tHflOsfPvOZz3zWP3/LM/qX
+AJnj//zHfyIJ8gfphGRwOW0ABUsG8n9BpBOSweW0ARQsGXA5kRW4nDaAgiUDXuvIClxOG0DBkgGX
+E1mBy2kDKFgy4LWOrPDK5SRfdqR3edrvQcGSAZcTWaG1nOTLpazWka5U/Rbk2dHvNUt1Pgr2Fmw2
+AvKcfK2r5q/qb8bPpmTeqAZ19LJZpPHps9csVb+n8q/0Zz2d81GwNyBZdLRTl1M1fzeftzIzi3ij
+PKJz0uUkTZmG6laXT8V7tI70CO9H/dmZqF+xuq0j3YOCvQHJZ1U7gWrW07PozqI+75dnxeq/6+hl
+U6Qp01Ad6ZVPPhXvsfg68mdnRLVKl0/FewQU7K1IRh3tVOysp2chs1iQR9Ba5Al19LJFyCHZc6Rn
+vtUzEZlnpSa6ryEvCvYmNCcB1U+91inZ/LaG6m/Gz4Pms1o0f6j7Fy1CDuhoSO/6ZjRP5qn6o3r3
+Z0HB3ork47XTl5PFzo+yQNpJZPNHs4e6f9EQ0vxEn+nvapZv1bs/Cwr2ViSfjnYqdtYbs/DzI6xf
+fV77pfsXzSONSBeimte7PqRFvcrTuhB5kI40FOwNSBar2glUs56exex8US3U/YtmkSakW7wH9WTn
+VP0zvYinns7Pg4K9Acmio516ravm7+bzVvws1WxRPdT9i2aRJkTm8zWtI12J+mf6LLZu/RGVD51t
+QcHegs1GQJ5Tl5NQzV/V387MbJEn1NHLRuZAwZJB54tLiIfLaQMoWDLgciIrcDltAAVLBidf68j3
+4HLaAAqWDLicyApcThtAwZIBr3VkBS6nDaBgyYDLiazA5bQBFCwZ8FpHVuBy2gAKlgy4nMgKXE4b
+QMGSAa91ZAUupw2gYMmAy4ms8MrlJF92pHd52u9BwZIBr3VkhdZykpdZWa0jXan6Lcizo99rlup8
+FOwt2GwE5Dl1OfnZlcxjayeRzZfNb2u+Xi4naXj67DVL1e+p/Cv9WU/nfBvoTUgWq9oJVHPdlkVn
+Xvtc+dPlJMZMQ3Wry6fiPVpHeoT3o/7sTNSvWN3Wke6x4d6E5LOqnUA11y1Z6Ex+tmjWyO+1ry6n
+6Nnr8ql4j8XXkT87I6pVunwq3iPYcG9HMvLaLdc6VO9ob0dn8rNFs2YZ2NrUL8SlMXuO9My3eiYi
+86zURPc15LXh3ojmJKD6ycspe1bN4utvx87k54vmRT7lh+5ftAhp7GhI7/pmNE/mqfqjevdnsYHe
+juTT0U7Fznp6Fn6W6rnSBVtrLSdpeKLP9Hc1y7fq3Z/Fhns7kk9HOxU76+lZyCwIW7f+Shd+9PsX
+zSNmpAtRzetdH9KiXuVpXYg8SEeaDfcmJIuOdsu1zmvdfE7BzxbNqnqVz/QvxD3eg3qyc6r+mV7E
+U0/n57Hh3oRk0dFuWU7Vc6SdQmde+1z5y+WEyHy+pnWkK1H/TJ/F1q0/ovKhsy023Nuw2QiRB+kn
+0Jm98pxCJ4Os5uvtX4iTGBso+QR9KQmp4HLaAAqWDE691pHvwuW0ARQsGXA5kRW4nDaAgiUDXuvI
+ClxOG0DBkgGXE1mBy2kDKFgy4LWOrMDltAEULBlwOZEVXrmc5JqA9C5P+z0oWDLgtY6s0FpO8uVS
+VutIV6p+C/Ls6PeapTofBXsLNhsh8iD9BKr5q/opZPNV80f1cjlJw9Nnr1mqfk/lX+nPejrn20Bv
+QrLoaKde66r5u/mcgMzVmXfmOV1OYsw0VLe6fCreo3WkR3g/6s/ORP2K1W0d6R4b7k1IPh2NywnX
+T0Fn8rNVs1b5fHU5Rc9el0/Feyy+jvzZGVGt0uVT8R7Bhns7klFHOxU76y1Z6Ex+NqsrqB5pU78Q
+l8bsOdIz3+qZiMyzUhPd15DXhnsjmpMQ1ZF+Ctn8tobqb8fO5OdDM2cZfHj9ixYhjR0N6V3fjObJ
+PFV/VO/+LDbQ25F8vHbqtQ5h50dZIO2t+Fmq50iL9NZyksYn+kx/V7N8q979WXyoNyP5eI3LCdff
+jsyCsHXrn9F+6f5F80gj0oWo5vWuD2lRr/K0LkQepCMNBXsDksWqdgLVrDdlIfjZOvNneUz/Qtzj
+PagnO6fqn+lFPPV0fh4U7A1IFqvaCVSz3pSF0Jm3ysdSLidE5vM1rSNdifpn+iy2bv0RlQ+dbUHB
+3oLNRkCek6911fxV/SSi+aL5rW75XUcvG5nDBk4+OXk5ke/B5bQBFCwZ2P8bEtKFy2kDKFgy4HIi
+K3A5bQAFSwa81pEVuJw2gIIlAy4nsgKX0wZQsGTAax2Z55/+8f8Brbq5vagZ9ygAAAAASUVORK5C
+YIJQSwECLQAUAAYACAAAACEAWpitwgwBAAAYAgAAEwAAAAAAAAAAAAAAAAAAAAAAW0NvbnRlbnRf
+VHlwZXNdLnhtbFBLAQItABQABgAIAAAAIQAIwxik1AAAAJMBAAALAAAAAAAAAAAAAAAAAD0BAABf
+cmVscy8ucmVsc1BLAQItABQABgAIAAAAIQDZIAJwCQIAAOkEAAASAAAAAAAAAAAAAAAAADoCAABk
+cnMvcGljdHVyZXhtbC54bWxQSwECLQAUAAYACAAAACEAqiYOvrwAAAAhAQAAHQAAAAAAAAAAAAAA
+AABzBAAAZHJzL19yZWxzL3BpY3R1cmV4bWwueG1sLnJlbHNQSwECLQAUAAYACAAAACEA827E3xQB
+AACMAQAADwAAAAAAAAAAAAAAAABqBQAAZHJzL2Rvd25yZXYueG1sUEsBAi0ACgAAAAAAAAAhACW7
+lhy1NQAAtTUAABQAAAAAAAAAAAAAAAAAqwYAAGRycy9tZWRpYS9pbWFnZTEucG5nUEsFBgAAAAAG
+AAYAhAEAAJI8AAAAAA==
+">
+   <v:imagedata src="image022.png" o:title=""/>
+   <x:ClientData ObjectType="Pict">
+    <x:SizeWithCells/>
+    <x:CF>Bitmap</x:CF>
+    <x:AutoPict/>
+   </x:ClientData>
+  </v:shape><![endif]--><![if !vml]><span style='mso-ignore:vglayout'>
+  <table cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=54 height=5></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td><img width=295 height=489 src=image023.png v:shapes="図_x0020_4"></td>
+    <td width=362></td>
+   </tr>
+   <tr>
+    <td height=15></td>
+   </tr>
+  </table>
+  </span><![endif]><!--[if !mso & vml]><span style='width:533.25pt;height:381.75pt'></span><![endif]--></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>pp = partition_points_pred(zipC(subM(m, , Array(0, 1))),
+  p_less_dic)<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>←<span
+  style='mso-spacerun:yes'>&nbsp;</span><ruby>左<span style='display:none'><rt>ヒダリ</rt></span></ruby>2<ruby>列<span
+  style='display:none'><rt>レツ</rt></span></ruby>で<ruby>区分<span
+  style='display:none'><rt>クブン</rt></span></ruby><ruby>化<span style='display:
+  none'><rt>カ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM pp</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>8<span style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>18<span
+  style='mso-spacerun:yes'>&nbsp; </span>21<span
+  style='mso-spacerun:yes'>&nbsp; </span>24<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>←　<ruby>区切<span style='display:none'><rt>クギ</rt></span></ruby>り<ruby>位置<span
+  style='display:none'><rt>イチ</rt></span></ruby></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl127>summary = <font class="font24">group_by_partition_points</font><font
+  class="font0">(m, pp, &quot;%t%t%s%a&quot;)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>printM summary</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2016/02/15<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>123<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>271</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2016/02/15<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp; </span>87<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>479.6</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2016/02/15<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>150<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>502.8</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2016/02/16<span
+  style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>159<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>316.6</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp; </span>2016/02/16<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>162<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>529</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl160><span style='mso-spacerun:yes'>&nbsp; </span>2016/02/16<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>134<span
+  style='mso-spacerun:yes'>&nbsp; </span>468.666666666667</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>↑<span style='mso-spacerun:yes'>&nbsp; </span>　　　↑<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp; </span>↑<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>　　　↑</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>top(t)<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>top(t)<span style='mso-spacerun:yes'>&nbsp;</span><ruby>小計<span
+  style='display:none'><rt>ショウケイ</rt></span></ruby>(s)　　　<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span><ruby>平均<span
+  style='display:none'><rt>ヘイキン</rt></span></ruby>(a)</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_csv2Vector">csvファイルの1行を配列に分割</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl116>Function <font class="font13">csv2Vector</font><font
+  class="font0">(ByRef expr As Variant, Optional ByRef delimiter As Variant) As
+  Variant</font></td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl80><a name="_A_overlap_B">２つの1次元配列の共有部分と非共有部分を特定</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl117>Public Function <font class="font13">A_overlap_B</font><font
+  class="font0">(ByRef a As Variant, ByRef b As Variant, Optional ByRef comp As
+  Variant) As Varia</font><span style='display:none'><font class="font0">nt</font></span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_utilities"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>a =
+  uniform_int_dist(20, 0, 20):<span style='mso-spacerun:yes'>&nbsp;
+  </span>permutate a, sortIndex(a)<span style='mso-spacerun:yes'>&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp; </span>[ 0～20] の<ruby>範囲<span
+  style='display:none'><rt>ハンイ</rt></span></ruby>の<ruby>昇順<span
+  style='display:none'><rt>ショウジュン</rt></span></ruby><ruby>整数<span
+  style='display:none'><rt>セイスウ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>b =
+  uniform_int_dist(20, 10, 30): permutate b, sortIndex(b)<span
+  style='mso-spacerun:yes'>&nbsp; </span>'<span style='mso-spacerun:yes'>&nbsp;
+  </span>[10～30] の範囲の昇順整数</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp;</span><ruby>重<span
+  style='display:none'><rt>カサ</rt></span></ruby>なり<ruby>合<span
+  style='display:none'><rt>ア</rt></span></ruby>った<ruby>部分<span
+  style='display:none'><rt>ブブン</rt></span></ruby>を<ruby>特定<span
+  style='display:none'><rt>トクテイ</rt></span></ruby>する</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>x =
+  A_overlap_B(a, b)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>' &lt;- Jag<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>' -----------------------------------</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl173><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>printM
+  catR(a, x(0))<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp;</span><ruby>上段<span
+  style='display:none'><rt>ジョウダン</rt></span></ruby>：a<ruby>自身<span
+  style='display:none'><rt>ジシン</rt></span></ruby> <ruby>下段<span
+  style='display:none'><rt>ゲダン</rt></span></ruby>：bと<ruby>重<span
+  style='display:none'><rt>カサ</rt></span></ruby>なっている<ruby>部分<span
+  style='display:none'><rt>ブブン</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl173><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>1<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>6<span style='mso-spacerun:yes'>&nbsp;
+  </span>9<span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>19</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl129><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp; </span>0<span style='mso-spacerun:yes'>&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127><span
+  style='mso-spacerun:yes'>&nbsp;</span>-----------------------------------</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl129><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>printM
+  catR(b, x(1))<span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp; </span>'
+  上段：b自身 下段：aと重なっている部分</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl129><span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>13<span
+  style='mso-spacerun:yes'>&nbsp; </span>14<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>16<span
+  style='mso-spacerun:yes'>&nbsp; </span>17<span
+  style='mso-spacerun:yes'>&nbsp; </span>18<span
+  style='mso-spacerun:yes'>&nbsp; </span>19<span
+  style='mso-spacerun:yes'>&nbsp; </span>21<span
+  style='mso-spacerun:yes'>&nbsp; </span>22<span
+  style='mso-spacerun:yes'>&nbsp; </span>22<span
+  style='mso-spacerun:yes'>&nbsp; </span>23<span
+  style='mso-spacerun:yes'>&nbsp; </span>23<span
+  style='mso-spacerun:yes'>&nbsp; </span>24<span
+  style='mso-spacerun:yes'>&nbsp; </span>26<span
+  style='mso-spacerun:yes'>&nbsp; </span>26<span
+  style='mso-spacerun:yes'>&nbsp; </span>28<span
+  style='mso-spacerun:yes'>&nbsp; </span>30</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl129><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>0<span style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp; </span>0</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl127>　</td>
+ </tr>
+ <tr height=126 style='height:94.5pt;mso-xlrowspan:7'>
+  <td height=126 colspan=2 style='height:94.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'></td>
+  <td></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=711 style='width:533pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

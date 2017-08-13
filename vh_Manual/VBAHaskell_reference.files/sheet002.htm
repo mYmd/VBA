@@ -1,0 +1,1217 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(1);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple class=xl69>
+
+<table border=0 cellpadding=0 cellspacing=0 width=698 style='border-collapse:
+ collapse;table-layout:fixed;width:524pt'>
+ <col class=xl69 width=49 style='mso-width-source:userset;mso-width-alt:1568;
+ width:37pt'>
+ <col class=xl69 width=649 style='mso-width-source:userset;mso-width-alt:20768;
+ width:487pt'>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 width=49 style='height:15.0pt;width:37pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl70 width=649 style='width:487pt'><a name="_Dimension">配列の次元取得</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl112>Declare PtrSafe Function<font class="font20"> </font><font
+  class="font19">Dimension</font><font class="font21"> Lib &quot;mapM.dll&quot;
+  </font><font class="font10">(ByRef v As Variant) As Long</font></td>
+ </tr>
+ <tr height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl108><ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>の<ruby>上限<span
+  style='display:none'><rt>ジョウゲン</rt></span></ruby>なし。配列でなければ0。</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><a name="_placeholder">'プレースホルダ・オブジェクトの生成</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl112>Declare PtrSafe Function <font class="font14">placeholder</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; (Optional ByVal n As Long = 0) As
+  Variant</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><a name="_is_placeholder">プレースホルダ・オブジェクト判定</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl112>Declare PtrSafe Function <font class="font14">is_placeholder</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; (ByRef v As Variant) As Long</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_unbind_invoke">bindされていないVBA関数を2引数で呼び出す</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font14">unbind_invoke</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef param1 As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef param2 As Variant) As Variant</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl81><a name="_mapF_imple">配列matrixの各要素elemに関数を適用する</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font14">mapF_imple</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant) As Variant</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl67 style='height:15.0pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_zipWith">配列matrix1とmatrix2の各要素に2変数の関数を適用する</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">zipWith</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix1 As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix2 As Variant) As Variant</td>
+ </tr>
+ <tr height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl109>printM<span style='mso-spacerun:yes'>&nbsp;
+  </span>zipWith(p_plus, iota(1, 5), iota(100, 104))</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>101<span
+  style='mso-spacerun:yes'>&nbsp; </span>103<span
+  style='mso-spacerun:yes'>&nbsp; </span>105<span
+  style='mso-spacerun:yes'>&nbsp; </span>107<span
+  style='mso-spacerun:yes'>&nbsp; </span>109</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl111>↑　Array(1 + 100, 2 + 101, 3 + 102, 4 + 103, 5 + 104)　と<ruby>同<span
+  style='display:none'><rt>オナ</rt></span></ruby>じ </td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl111>matrix1とmatrix2は<ruby>同<span style='display:none'><rt>オナ</rt></span></ruby>じ<ruby>次元<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>の<ruby>配列<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl111>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値はそれら<ruby>と<span
+  style='display:none'><rt>オナ</rt></span></ruby>同<ruby>じ次<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>元<ruby>の配<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby>列で<ruby>各<span
+  style='display:none'><rt>カク</rt></span></ruby><ruby>軸<span style='display:
+  none'><rt>ジク</rt></span></ruby>の<ruby>長<span style='display:none'><rt>ナガ</rt></span></ruby>さは<ruby>短<span
+  style='display:none'><rt>ミジカ</rt></span></ruby>い<ruby>方<span
+  style='display:none'><rt>ホウ</rt></span></ruby>に<ruby>合<span style='display:
+  none'><rt>ア</rt></span></ruby>わせられる</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl81><a name="_foldl">3次元までの配列に対する特定の軸に沿った<font class="font25">左</font><font
+  class="font10">畳み込み（初期値指定あり）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">foldl</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef init As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl109>?foldl(p_minus, 100, iota(1, 5))</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>85</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>↑　((((100 - 1) - 2) - 3) - 4) - 5<ruby>　<span
+  style='display:none'><rt>オナ</rt></span></ruby>と同じ</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixの<ruby>次元<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>に<ruby>従<span
+  style='display:none'><rt>シタガ</rt></span></ruby>い<ruby>以下<span
+  style='display:none'><rt>イカ</rt></span></ruby>の<ruby>形<span style='display:
+  none'><rt>カタチ</rt></span></ruby>になる</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><ruby>1次<span style='display:none'><rt>ジゲン</rt></span></ruby>元
+  ： スカラー</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>2<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 1次元<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>3<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 2次元配列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_foldr">3次元までの配列に対する特定の軸に沿った<font class="font25">右</font><font
+  class="font10">畳み込み（初期値指定あり）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">foldr</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef init As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl109>?foldr(p_minus, 100, iota(1, 5))</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl108>-97</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>↑　1 - (2 - (3 - (4 - (5 - 100))))<ruby>　<span
+  style='display:none'><rt>オナ</rt></span></ruby>と同じ</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixの<ruby>次元<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>に<ruby>従<span
+  style='display:none'><rt>シタガ</rt></span></ruby>い<ruby>以下<span
+  style='display:none'><rt>イカ</rt></span></ruby>の<ruby>形<span style='display:
+  none'><rt>カタチ</rt></span></ruby>になる</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><ruby>1次<span style='display:none'><rt>ジゲン</rt></span></ruby>元
+  ： スカラー</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>2<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 1次元<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>3<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 2次元配列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_foldl1">3次元までの配列に対する特定の軸に沿った<font class="font25">左</font><font
+  class="font10">畳み込み（先頭要素を初期値とする）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">foldl1</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111>m = makeM(3, 3, iota(1, 9)) : printM<span
+  style='mso-spacerun:yes'>&nbsp; </span>m</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>9</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">foldl1</font>(p_plus, m, 1)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>' ↓<ruby>方向<span
+  style='display:none'><rt>ホウコウ</rt></span></ruby>にfold</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>18</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">foldl1</font><font class="font23">(p_plus, m, 2)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>' →方向にfold</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>6<span
+  style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>24</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixの<ruby>次元<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>に<ruby>従<span
+  style='display:none'><rt>シタガ</rt></span></ruby>い<ruby>以下<span
+  style='display:none'><rt>イカ</rt></span></ruby>の<ruby>形<span style='display:
+  none'><rt>カタチ</rt></span></ruby>になる</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><ruby>1次<span style='display:none'><rt>ジゲン</rt></span></ruby>元
+  ： スカラー</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>2<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 1次元<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>3<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 2次元配列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_foldr1">3次元までの配列に対する特定の軸に沿った<font class="font25">右</font><font
+  class="font10">畳み込み（末尾要素を初期値とする）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">foldr1</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111>m = makeM(3, 3, iota(1, 9)) : printM<span
+  style='mso-spacerun:yes'>&nbsp; </span>m</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>9</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl111>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">foldr1</font><font class="font23">(p_minus, m, 1)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>' ↑方向にfold</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111>printM<span style='mso-spacerun:yes'>&nbsp; </span><font
+  class="font24">foldr1</font><font class="font23">(p_minus, m, 2)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>' ←方向にfold</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl111><span style='mso-spacerun:yes'>&nbsp; </span>2<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>8</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixの<ruby>次元<span
+  style='display:none'><rt>ジゲン</rt></span></ruby>に<ruby>従<span
+  style='display:none'><rt>シタガ</rt></span></ruby>い<ruby>以下<span
+  style='display:none'><rt>イカ</rt></span></ruby>の<ruby>形<span style='display:
+  none'><rt>カタチ</rt></span></ruby>になる</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><ruby>1次<span style='display:none'><rt>ジゲン</rt></span></ruby>元
+  ： スカラー</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>2<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 1次元<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>3<ruby>次元<span style='display:none'><rt>ジゲン</rt></span></ruby>
+  ： 2次元配列</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl81><a name="_scanl">3次元までの配列に対する特定の軸に沿った<font class="font25">左</font><font
+  class="font10">scan（初期値指定あり）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">scanl</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef init As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl109>printM<span style='mso-spacerun:yes'>&nbsp;
+  </span>scanl(p_plus, 100, iota(1, 5))</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>100<span
+  style='mso-spacerun:yes'>&nbsp; </span>101<span
+  style='mso-spacerun:yes'>&nbsp; </span>103<span
+  style='mso-spacerun:yes'>&nbsp; </span>106<span
+  style='mso-spacerun:yes'>&nbsp; </span>110<span
+  style='mso-spacerun:yes'>&nbsp; </span>115</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixと<ruby>同<span
+  style='display:none'><rt>オナ</rt></span></ruby><ruby>次元<span style='display:
+  none'><rt>ジゲン</rt></span></ruby>の<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_scanr">3次元までの配列に対する特定の軸に沿った<font class="font25">右</font><font
+  class="font10">scan（初期値指定あり）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">scanr</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef init As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl109>printM<span style='mso-spacerun:yes'>&nbsp;
+  </span>scanr(p_plus, 100, iota(1, 5))</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>115<span
+  style='mso-spacerun:yes'>&nbsp; </span>114<span
+  style='mso-spacerun:yes'>&nbsp; </span>112<span
+  style='mso-spacerun:yes'>&nbsp; </span>109<span
+  style='mso-spacerun:yes'>&nbsp; </span>105<span
+  style='mso-spacerun:yes'>&nbsp; </span>100</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixと<ruby>同<span
+  style='display:none'><rt>オナ</rt></span></ruby><ruby>次元<span style='display:
+  none'><rt>ジゲン</rt></span></ruby>の<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_scanl1">3次元までの配列に対する特定の軸に沿った<font class="font25">左</font><font
+  class="font10">scan（先頭要素を初期値とする）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">scanl1</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl109>printM<span style='mso-spacerun:yes'>&nbsp;
+  </span>scanl1(p_plus, iota(1, 5))</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>10<span
+  style='mso-spacerun:yes'>&nbsp; </span>15</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixと<ruby>同<span
+  style='display:none'><rt>オナ</rt></span></ruby><ruby>次元<span style='display:
+  none'><rt>ジゲン</rt></span></ruby>の<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl68 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81><a name="_scanr1">3次元までの配列に対する特定の軸に沿った<font class="font25">右</font><font
+  class="font10">scan（末尾要素を初期値とする）</font></a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font19">scanr1</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>Optional ByVal axis As Long = 1) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl68 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl109>printM<span style='mso-spacerun:yes'>&nbsp;
+  </span>scanr1(p_plus, iota(1, 5))</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl68 style='height:15.0pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>15<span
+  style='mso-spacerun:yes'>&nbsp; </span>14<span
+  style='mso-spacerun:yes'>&nbsp; </span>12<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>5</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl108>返<ruby>り<span style='display:none'><rt>チ</rt></span></ruby>値は<ruby>引数<span
+  style='display:none'><rt>ヒキスウ</rt></span></ruby>matrixと<ruby>同<span
+  style='display:none'><rt>オナ</rt></span></ruby><ruby>次元<span style='display:
+  none'><rt>ジゲン</rt></span></ruby>の<ruby>配列<span style='display:none'><rt>ハイレツ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><a name="_stdsort">1次元配列のソートインデックス出力</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font14">stdsort</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; (ByRef ary As Variant, _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal defaultFlag As Long, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pComp As Variant) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl69 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl113><a href="sheet007.htm#_sortIndex">→sortIndex</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><a name="_find_imple">述語による検索</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font14">find_imple</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pCallback As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef matrix As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl110><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal def As Long) As Long</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl69 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl113><a href="sheet003.htm#_find_pred">→find_pred</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><a name="_repeat_imple">関数適用のループ（+ 終了条件）</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl81>Declare PtrSafe Function <font class="font14">repeat_imple</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; ( _</font></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef init As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef pred As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef trans As Variant, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal maxN As Long, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal scan As Long, _</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl110><span style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;
+  </span>ByVal stopCondition As Long) As Variant</td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl69 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl87 style='height:15.0pt'><a
+  href="sheet001.htm#_DLL_Declare"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl113><a href="sheet003.htm#_repeat_while">→repeat_while</a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl70><a name="_swapVariant">VARIANT変数どうしのスワップ</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl112>Declare PtrSafe Function <font class="font19">swapVariant</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; (ByRef a As Variant, ByRef b As
+  Variant) As Lo</font><span style='display:none'><font class="font10">ng</font></span></td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl69 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl114>a = Array(1, 2, 3)</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl114>b<span style='mso-spacerun:yes'>&nbsp;</span><ruby>は<span
+  style='display:none'><rt>オオ</rt></span></ruby>大き<ruby>な配<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby>列</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl114>a(0) = b<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>← コピ<ruby>ー発<span style='display:none'><rt>ハッセイ</rt></span></ruby>生</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl114><font class="font24">swapVariant a(0), b</font><font
+  class="font10"><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>←
+  コピーなし　（b = 1 となる）</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl68></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl81><a name="_changeLBound">配列のLBound変更</a></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl112>Declare PtrSafe Sub <font class="font14">changeLBound</font><font
+  class="font10"> Lib &quot;mapM.dll&quot; (ByRef v As Variant, ByVal lbound_v
+  As Long)</font></td>
+ </tr>
+ <tr height=11 style='mso-height-source:userset;height:8.25pt'>
+  <td height=11 class=xl69 style='height:8.25pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl69 style='height:15.0pt'></td>
+  <td class=xl114><ruby>次<span style='display:none'><rt>ジゲン</rt></span></ruby><ruby>元<span
+  style='display:none'><rt>ベツ</rt></span></ruby>別に<ruby>設定<span
+  style='display:none'><rt>セッテイ</rt></span></ruby>はできない</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl69></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl167>1次元配列の離れた要素間で2項操作を適用する</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl167><a name="_self_zipWith">Declare PtrSafe Function <font
+  class="font20">self_zipWith</font><font class="font0"> Lib
+  &quot;mapM.dll&quot; (ByRef pCallback As Variant, _</font><ruby><font
+  class="font9"><rt class=font9></rt></font></ruby></a></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl167><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByRef vec As Variant, _<ruby><font class="font9"><rt class=font9></rt></font></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl168><span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>ByVal shift As Long) As Variant<ruby><font class="font9"><rt
+  class=font9></rt></font></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl169>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl169>vec = Array(1, 2, 3, 4, 5, 6)<ruby><font class="font9"><rt
+  class=font9></rt></font></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl170>printM self_zipWith(p_plus, vec, 1)<ruby><font class="font9"><rt
+  class=font9></rt></font></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl169><span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>7<span style='mso-spacerun:yes'>&nbsp; </span>9<span
+  style='mso-spacerun:yes'>&nbsp; </span>11<span
+  style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp; </span>&lt;=<span
+  style='mso-spacerun:yes'>&nbsp; </span>vec と rotation(vec, 1) との<ruby>操作<span
+  style='display:none'><rt class=font9>ソウサ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl170>printM self_zipWith(p_plus, vec, -1)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 class=xl69 style='height:13.5pt'></td>
+  <td class=xl169><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>3<span style='mso-spacerun:yes'>&nbsp;
+  </span>5<span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>11<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>'<span style='mso-spacerun:yes'>&nbsp; </span>&lt;=<span
+  style='mso-spacerun:yes'>&nbsp; </span>vec と rotation(vec, -1) との操作<ruby><font
+  class="font9"><rt class=font9></rt></font></ruby></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=649 style='width:487pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

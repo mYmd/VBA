@@ -1,0 +1,320 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 14">
+<link id=Main-File rel=Main-File href="../VBAHaskell_reference.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"ＭＳ Ｐゴシック", monospace;
+	mso-font-charset:128;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(4);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../VBAHaskell_reference.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link=blue vlink=purple>
+
+<table border=0 cellpadding=0 cellspacing=0 width=715 style='border-collapse:
+ collapse;table-layout:fixed;width:537pt'>
+ <col width=49 style='mso-width-source:userset;mso-width-alt:1568;width:37pt'>
+ <col width=666 style='mso-width-source:userset;mso-width-alt:21312;width:500pt'>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 width=49 style='height:17.25pt;width:37pt'><a
+  href="sheet001.htm#_debug_print"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl77 width=666 style='width:500pt'><a name="_printS">デバッグウィンドウに配列のサイズを表示する</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl125>Sub <font class="font19">printS</font><font class="font10">(ParamArray
+  m() As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>次<span style='display:none'><rt>ジゲン</rt></span></ruby>元<ruby>の上<span
+  style='display:none'><rt>ジョウゲン</rt></span></ruby>限なし</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><font class="font24">printS</font><font class="font10">
+  makeM(4, 2), iota(1, 10)</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>[Dim1]: 0 -&gt; 3<span style='mso-spacerun:yes'>&nbsp;
+  </span>[Dim2]: 0 -&gt; 1<span style='mso-spacerun:yes'>&nbsp; </span>: Total
+  Size = 8</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>[Dim1]: 0 -&gt; 9<span style='mso-spacerun:yes'>&nbsp;
+  </span>: Total Size = 10</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82><a name="_printM">デバッグウィンドウに２次元配列を表示する</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl126>Sub <font class="font19">printM</font><font class="font0">(ByRef
+  m As Variant, Optional ByVal R As Variant, Optional ByVal c As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>一次<span style='display:none'><rt>ジゲン</rt></span></ruby><ruby>元配<span
+  style='display:none'><rt>ハイレツ</rt></span></ruby>列でも<ruby>表示<span
+  style='display:none'><rt>ヒョウジ</rt></span></ruby><ruby>可能<span
+  style='display:none'><rt>カノウ</rt></span></ruby></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><font class="font24">printM</font><font class="font10"><span
+  style='mso-spacerun:yes'>&nbsp; </span>makeM(4, 2, iota(1, 8))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>3<span
+  style='mso-spacerun:yes'>&nbsp; </span>4</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>5<span
+  style='mso-spacerun:yes'>&nbsp; </span>6</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl82><a name="_dumpFun">ネストした関数を文字列化</a></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 style='height:14.25pt'></td>
+  <td class=xl124>Function <font class="font13">dumpFun</font><font
+  class="font0">(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As
+  Variant</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>? <font class="font24">dumpFun</font><font class="font10">(p_plus),
+  </font><font class="font24">dumpFun</font><font class="font10">(p_plus(8)),<span
+  style='mso-spacerun:yes'>&nbsp; </span></font><font class="font24">dumpFun</font><font
+  class="font10">(p_plus(, 9))</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>F7220(_1, _2)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>F7220(8, _2)<span
+  style='mso-spacerun:yes'>&nbsp;&nbsp;&nbsp; </span>F7220(_1, 9)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><ruby>（最<span style='display:none'><rt>サイショ</rt></span></ruby>初の<ruby>4文<span
+  style='display:none'><rt>モジ</rt></span></ruby>字は<ruby>不特定<span
+  style='display:none'><rt>フトクテイ</rt></span></ruby>の<ruby>関数<span
+  style='display:none'><rt>カンスウ</rt></span></ruby><ruby>数固<span
+  style='display:none'><rt>コユウ</rt></span></ruby><ruby>有番<span
+  style='display:none'><rt>バンゴウ</rt></span></ruby>号）</td>
+ </tr>
+ <tr height=36 style='height:27.0pt;mso-xlrowspan:2'>
+  <td height=36 colspan=2 style='height:27.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=23 style='height:17.25pt'>
+  <td height=23 class=xl87 style='height:17.25pt'><a
+  href="sheet001.htm#_debug_print"><span style='font-size:14.0pt'><ruby>戻<span
+  style='display:none'><rt class=font9>モド</rt></span></ruby>る</span></a></td>
+  <td class=xl78><a name="_printM_">デバッグウィンドウに1次元ジャグ配列を展開して表示する</a></td>
+ </tr>
+ <tr height=27 style='mso-height-source:userset;height:20.25pt'>
+  <td height=27 style='height:20.25pt'></td>
+  <td class=xl128>Sub <font class="font13">printM_</font><font class="font0">(ByRef
+  vec As Variant, Optional ByVal r As Variant, Optional ByVal c As Variant)</font></td>
+ </tr>
+ <tr class=xl69 height=10 style='mso-height-source:userset;height:7.5pt'>
+  <td height=10 class=xl68 style='height:7.5pt'></td>
+  <td class=xl108>　</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>a = iota(1, 10)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>b = iota(121, 125)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108>c = iota(55, 61)<span style='mso-spacerun:yes'>&nbsp;</span></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl119>m = Array(a, b, c)</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><font class="font20">printM</font><font class="font10"><span
+  style='mso-spacerun:yes'>&nbsp; </span>m</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>[0]<span
+  style='mso-spacerun:yes'>&nbsp; </span>[1]<span
+  style='mso-spacerun:yes'>&nbsp; </span>[2]</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><font class="font24">printM_</font><font class="font10"><span
+  style='mso-spacerun:yes'>&nbsp; </span>m</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3<span style='mso-spacerun:yes'>&nbsp; </span>4<span
+  style='mso-spacerun:yes'>&nbsp; </span>5<span style='mso-spacerun:yes'>&nbsp;
+  </span>6<span style='mso-spacerun:yes'>&nbsp; </span>7<span
+  style='mso-spacerun:yes'>&nbsp; </span>8<span style='mso-spacerun:yes'>&nbsp;
+  </span>9<span style='mso-spacerun:yes'>&nbsp; </span>10</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>121<span
+  style='mso-spacerun:yes'>&nbsp; </span>122<span
+  style='mso-spacerun:yes'>&nbsp; </span>123<span
+  style='mso-spacerun:yes'>&nbsp; </span>124<span
+  style='mso-spacerun:yes'>&nbsp; </span>125</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>55<span
+  style='mso-spacerun:yes'>&nbsp; </span>56<span
+  style='mso-spacerun:yes'>&nbsp; </span>57<span
+  style='mso-spacerun:yes'>&nbsp; </span>58<span
+  style='mso-spacerun:yes'>&nbsp; </span>59<span
+  style='mso-spacerun:yes'>&nbsp; </span>60<span
+  style='mso-spacerun:yes'>&nbsp; </span>61</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><font class="font24">printM_</font><font class="font10"><span
+  style='mso-spacerun:yes'>&nbsp; </span>m, , 3</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>1<span
+  style='mso-spacerun:yes'>&nbsp; </span>2<span style='mso-spacerun:yes'>&nbsp;
+  </span>3</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>121<span
+  style='mso-spacerun:yes'>&nbsp; </span>122<span
+  style='mso-spacerun:yes'>&nbsp; </span>123</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>55<span
+  style='mso-spacerun:yes'>&nbsp; </span>56<span
+  style='mso-spacerun:yes'>&nbsp; </span>57</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><font class="font24">printM_</font><font class="font10"><span
+  style='mso-spacerun:yes'>&nbsp; </span>m, , -3</font></td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>8<span
+  style='mso-spacerun:yes'>&nbsp; </span>9<span style='mso-spacerun:yes'>&nbsp;
+  </span>10</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>123<span
+  style='mso-spacerun:yes'>&nbsp; </span>124<span
+  style='mso-spacerun:yes'>&nbsp; </span>125</td>
+ </tr>
+ <tr height=18 style='height:13.5pt'>
+  <td height=18 style='height:13.5pt'></td>
+  <td class=xl108><span style='mso-spacerun:yes'>&nbsp; </span>59<span
+  style='mso-spacerun:yes'>&nbsp; </span>60<span
+  style='mso-spacerun:yes'>&nbsp; </span>61</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=49 style='width:37pt'></td>
+  <td width=666 style='width:500pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>
