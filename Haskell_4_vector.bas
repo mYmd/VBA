@@ -4,65 +4,65 @@ Attribute VB_Name = "Haskell_4_vector"
 Option Explicit
 
 '====================================================================================================
-' *_moveç³»ä»¥å¤–ã®PublicãªFunctionã¯å‰¯ä½œç”¨ãªã—
-' å¤§å¤šæ•°ã®Function ã«å¯¾ã—ã¦ä»˜éšã—ã¦ã„ã‚‹ p_Function ã¯é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã€‚
-'     mapF ã‚„ zipWith ã®å¼•æ•°ã¨ã—ã¦ä½¿ãˆã‚‹ã€‚
-'     p_Function : è£¸ã®é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã€p_Function(a) : ç¬¬ï¼‘å¼•æ•°ã‚’æŸç¸›ã€p_Function(, b) : ç¬¬ï¼’å¼•æ•°ã‚’æŸç¸›
+' *_moveŒnˆÈŠO‚ÌPublic‚ÈFunction‚Í•›ì—p‚È‚µ
+' ‘å‘½”‚ÌFunction ‚É‘Î‚µ‚Ä•t‚µ‚Ä‚¢‚é p_Function ‚ÍŠÖ”ƒ|ƒCƒ“ƒ^B
+'     mapF ‚â zipWith ‚Ìˆø”‚Æ‚µ‚Äg‚¦‚éB
+'     p_Function : —‡‚ÌŠÖ”ƒ|ƒCƒ“ƒ^Ap_Function(a) : ‘æ‚Pˆø”‚ğ‘©”›Ap_Function(, b) : ‘æ‚Qˆø”‚ğ‘©”›
 '====================================================================================================
-    ' Function  a_rows              å…¨è¡Œç•ªå·ã®åˆ—æŒ™
-    ' Function  a_cols              å…¨åˆ—ç•ªå·ã®åˆ—æŒ™
-    ' Function  repeat              Nå€‹ã®å€¤ã‚’ä¸¦ã¹ã‚‹
-    ' Function  iota                è‡ªç„¶æ•°ã®é€£ç¶šãƒ‡ãƒ¼ã‚¿ï¼ˆæ­£é †ãƒ»é€†é †ï¼‰
-    ' Function  a__a                è‡ªç„¶æ•°åˆ— [from, to]
-    ' Function  a__o                è‡ªç„¶æ•°åˆ— [from, to)
-    ' Function  o__a                è‡ªç„¶æ•°åˆ— (from, to]
-    ' Function  o__o                è‡ªç„¶æ•°åˆ— (from, to)
-    ' Function  headN               ãƒ™ã‚¯ãƒˆãƒ«ã®æœ€åˆã®Nå€‹
-    ' Function  tailN               ãƒ™ã‚¯ãƒˆãƒ«ã®æœ€å¾Œã®Nå€‹
-    ' Function  vector              ã‚¹ã‚«ãƒ©ãƒ¼ã€é…åˆ—ã®1æ¬¡å…ƒé…åˆ—åŒ–
-    ' Function  reverse             ãƒ™ã‚¯ãƒˆãƒ«ã‚’é€†é †ã«ä¸¦ã¹ã‚‹
-    ' Sub       rotate              1æ¬¡å…ƒé…åˆ—ã®å›è»¢
-    ' Function  rotation            rotateã—ãŸé…åˆ—ã‚’è¿”ã™
-    ' Function  rotate_move         rotateã—ã¦moveã—ã¦è¿”ã™
-    ' Function  selectRow           ç‰¹å®šè¡Œã®å–å¾—
-    ' Function  selectCol           ç‰¹å®šåˆ—ã®å–å¾—
-    ' Function  makeM               é…åˆ—ã®ä½œæˆ
-    ' Sub       fillM               é…åˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹
-    ' Function  fillM_move          fillMã—ã¦moveã—ã¦è¿”ã™
-    ' Sub       fillRow             é…åˆ—ã®ç‰¹å®šè¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹
-    ' Function  fillRow_move        fillRowã—ã¦moveã—ã¦è¿”ã™
-    ' Sub       fillCol             é…åˆ—ã®ç‰¹å®šåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹
-    ' Function  fillCol_move        fillColã—ã¦moveã—ã¦è¿”ã™
-    ' Sub       fillPattern         1æ¬¡å…ƒé…åˆ—ã‚’ä»–ã®1æ¬¡å…ƒé…åˆ—ã®ç¹°ã‚Šè¿”ã—ã§åŸ‹ã‚ã‚‹ï¼ˆå›æ•°æŒ‡å®šå¯ï¼‰
-    ' Function  fillPattern_move    fillPatternã—ã¦moveã—ã¦è¿”ã™
-    ' Function  subV                1æ¬¡å…ƒé…åˆ—ã®éƒ¨åˆ†é…åˆ—ã‚’ä½œæˆã™ã‚‹
-    ' Function  subV_if            ã€€ã€ƒï¼ˆç¯„å›²å¤–ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦EmptyãŒå…¥ã‚‹ï¼‰
-    ' Function  subM                é…åˆ—ã®éƒ¨åˆ†é…åˆ—ã‚’ä½œæˆã™ã‚‹
-    ' Function  subM_if            ã€€ã€ƒï¼ˆç¯„å›²å¤–ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦EmptyãŒå…¥ã‚‹ï¼‰
-    ' Function  filterR             ãƒ™ã‚¯ãƒˆãƒ«ãƒ»é…åˆ—ã®ï¼ˆè¡Œã®ï¼‰ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
-    ' Function  filterC             ãƒ™ã‚¯ãƒˆãƒ«ãƒ»é…åˆ—ã®ï¼ˆåˆ—ã®ï¼‰ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
-    ' Function  catV                ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆ
-    ' Function  catV_move           ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆï¼ˆå¼•æ•°ã‚’moveï¼‰
-    ' Function  catVs               ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆï¼ˆå¯å¤‰é•·å¼•æ•°ï¼‰
-    ' Function  catVs_move          ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆï¼ˆå¯å¤‰é•·å¼•æ•°ï¼šå¼•æ•°ã‚’moveï¼‰
-    ' Function  catR                è¡Œæ–¹å‘ã«çµåˆ
-    ' Function  catC                åˆ—æ–¹å‘ã«çµåˆ
-    ' Function  transpose           é…åˆ—ã®è»¢ç½®
-    ' Function  zip                 ãµãŸã¤ã®é…åˆ—ã®å¯¾å¿œã™ã‚‹è¦ç´ ã©ã†ã—ã‚’makePairã—ã¦ã‚¸ãƒ£ã‚°é…åˆ—ã‚’ä½œã‚‹
-    ' Function  zipVs               è¤‡æ•°ã®1æ¬¡å…ƒé…åˆ—ã‚’zip
-    ' Function  unzip               'zipVsã•ã‚ŒãŸã‚¸ãƒ£ã‚°é…åˆ—ã‚’ã»ã©ã„ã¦zipVså‰ã®1æ¬¡å…ƒé…åˆ—ã¾ãŸã¯2æ¬¡å…ƒé…åˆ—ã«ã™ã‚‹
-    ' Function  zipR                2æ¬¡å…ƒé…åˆ—ã®å„è¡Œãƒ™ã‚¯ãƒˆãƒ«ã‚’zipVs
-    ' Function  zipC                2æ¬¡å…ƒé…åˆ—ã®å„åˆ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’zipVs
-    ' Function  makeSole            Array(a)ä½œæˆ
-    ' Function  makePair            Array(a, b)ä½œæˆ
-    ' Function  cons                é…åˆ—ã®å…ˆé ­ã«è¦ç´ ã‚’è¿½åŠ 
-    ' Sub       push_back           1æ¬¡å…ƒã®é…åˆ—ã®æœ«å°¾ã«è¦ç´ ã‚’è¿½åŠ ï¼ˆLBoundã¯0ã«å¤‰æ›´ã™ã‚‹ï¼‰
-    ' Function  push_back_move      push_backã—ã¦moveã—ã¦è¿”ã™
-    ' Function  flatten             é…åˆ—ã‚’å¹³å¦ãª1æ¬¡å…ƒé…åˆ—åŒ–ã™ã‚‹
-    ' Function  product_set         ãµãŸã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®ç›´ç©ã«é–¢æ•°ã‚’é©ç”¨ã—ãŸè¡Œåˆ—ã‚’ä½œã‚‹
+    ' Function  a_rows              ‘Ss”Ô†‚Ì—ñ‹“
+    ' Function  a_cols              ‘S—ñ”Ô†‚Ì—ñ‹“
+    ' Function  repeat              NŒÂ‚Ì’l‚ğ•À‚×‚é
+    ' Function  iota                ©‘R”‚Ì˜A‘±ƒf[ƒ^i³‡E‹t‡j
+    ' Function  a__a                ©‘R”—ñ [from, to]
+    ' Function  a__o                ©‘R”—ñ [from, to)
+    ' Function  o__a                ©‘R”—ñ (from, to]
+    ' Function  o__o                ©‘R”—ñ (from, to)
+    ' Function  headN               ƒxƒNƒgƒ‹‚ÌÅ‰‚ÌNŒÂ
+    ' Function  tailN               ƒxƒNƒgƒ‹‚ÌÅŒã‚ÌNŒÂ
+    ' Function  vector              ƒXƒJƒ‰[A”z—ñ‚Ì1ŸŒ³”z—ñ‰»
+    ' Function  reverse             ƒxƒNƒgƒ‹‚ğ‹t‡‚É•À‚×‚é
+    ' Sub       rotate              1ŸŒ³”z—ñ‚Ì‰ñ“]
+    ' Function  rotation            rotate‚µ‚½”z—ñ‚ğ•Ô‚·
+    ' Function  rotate_move         rotate‚µ‚Ämove‚µ‚Ä•Ô‚·
+    ' Function  selectRow           “Á’ès‚Ìæ“¾
+    ' Function  selectCol           “Á’è—ñ‚Ìæ“¾
+    ' Function  makeM               ”z—ñ‚Ìì¬
+    ' Sub       fillM               ”z—ñ‚ğƒf[ƒ^‚Å–„‚ß‚é
+    ' Function  fillM_move          fillM‚µ‚Ämove‚µ‚Ä•Ô‚·
+    ' Sub       fillRow             ”z—ñ‚Ì“Á’ès‚ğƒf[ƒ^‚Å–„‚ß‚é
+    ' Function  fillRow_move        fillRow‚µ‚Ämove‚µ‚Ä•Ô‚·
+    ' Sub       fillCol             ”z—ñ‚Ì“Á’è—ñ‚ğƒf[ƒ^‚Å–„‚ß‚é
+    ' Function  fillCol_move        fillCol‚µ‚Ämove‚µ‚Ä•Ô‚·
+    ' Sub       fillPattern         1ŸŒ³”z—ñ‚ğ‘¼‚Ì1ŸŒ³”z—ñ‚ÌŒJ‚è•Ô‚µ‚Å–„‚ß‚éi‰ñ”w’è‰Âj
+    ' Function  fillPattern_move    fillPattern‚µ‚Ämove‚µ‚Ä•Ô‚·
+    ' Function  subV                1ŸŒ³”z—ñ‚Ì•”•ª”z—ñ‚ğì¬‚·‚é
+    ' Function  subV_if            @Vi”ÍˆÍŠO‚ÌƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚ÄEmpty‚ª“ü‚éj
+    ' Function  subM                ”z—ñ‚Ì•”•ª”z—ñ‚ğì¬‚·‚é
+    ' Function  subM_if            @Vi”ÍˆÍŠO‚ÌƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚ÄEmpty‚ª“ü‚éj
+    ' Function  filterR             ƒxƒNƒgƒ‹E”z—ñ‚Ìis‚ÌjƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+    ' Function  filterC             ƒxƒNƒgƒ‹E”z—ñ‚Ìi—ñ‚ÌjƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+    ' Function  catV                ƒxƒNƒgƒ‹‚ğŒ‹‡
+    ' Function  catV_move           ƒxƒNƒgƒ‹‚ğŒ‹‡iˆø”‚ğmovej
+    ' Function  catVs               ƒxƒNƒgƒ‹‚ğŒ‹‡i‰Â•Ï’·ˆø”j
+    ' Function  catVs_move          ƒxƒNƒgƒ‹‚ğŒ‹‡i‰Â•Ï’·ˆø”Fˆø”‚ğmovej
+    ' Function  catR                s•ûŒü‚ÉŒ‹‡
+    ' Function  catC                —ñ•ûŒü‚ÉŒ‹‡
+    ' Function  transpose           ”z—ñ‚Ì“]’u
+    ' Function  zip                 ‚Ó‚½‚Â‚Ì”z—ñ‚Ì‘Î‰‚·‚é—v‘f‚Ç‚¤‚µ‚ğmakePair‚µ‚ÄƒWƒƒƒO”z—ñ‚ğì‚é
+    ' Function  zipVs               •¡”‚Ì1ŸŒ³”z—ñ‚ğzip
+    ' Function  unzip               'zipVs‚³‚ê‚½ƒWƒƒƒO”z—ñ‚ğ‚Ù‚Ç‚¢‚ÄzipVs‘O‚Ì1ŸŒ³”z—ñ‚Ü‚½‚Í2ŸŒ³”z—ñ‚É‚·‚é
+    ' Function  zipR                2ŸŒ³”z—ñ‚ÌŠesƒxƒNƒgƒ‹‚ğzipVs
+    ' Function  zipC                2ŸŒ³”z—ñ‚ÌŠe—ñƒxƒNƒgƒ‹‚ğzipVs
+    ' Function  makeSole            Array(a)ì¬
+    ' Function  makePair            Array(a, b)ì¬
+    ' Function  cons                ”z—ñ‚Ìæ“ª‚É—v‘f‚ğ’Ç‰Á
+    ' Sub       push_back           1ŸŒ³‚Ì”z—ñ‚Ì––”ö‚É—v‘f‚ğ’Ç‰ÁiLBound‚Í0‚É•ÏX‚·‚éj
+    ' Function  push_back_move      push_back‚µ‚Ämove‚µ‚Ä•Ô‚·
+    ' Function  flatten             ”z—ñ‚ğ•½’R‚È1ŸŒ³”z—ñ‰»‚·‚é
+    ' Function  product_set         ‚Ó‚½‚Â‚ÌƒxƒNƒgƒ‹‚Ì’¼Ï‚ÉŠÖ”‚ğ“K—p‚µ‚½s—ñ‚ğì‚é
 '====================================================================================================
 
-'å…¨è¡Œç•ªå·ã®åˆ—æŒ™
+'‘Ss”Ô†‚Ì—ñ‹“
 Public Function a_rows(ByRef matrix As Variant, Optional ByRef dummy As Variant) As Variant
     a_rows = a__a(LBound(matrix, 1), UBound(matrix, 1))
 End Function
@@ -70,7 +70,7 @@ End Function
         p_a_rows = make_funPointer(AddressOf a_rows, firstParam, secondParam)
     End Function
 
-'å…¨åˆ—ç•ªå·ã®åˆ—æŒ™
+'‘S—ñ”Ô†‚Ì—ñ‹“
 Public Function a_cols(ByRef matrix As Variant, Optional ByRef dummy As Variant) As Variant
     If 2 <= Dimension(matrix) Then
         a_cols = iota(LBound(matrix, 2), UBound(matrix, 2))
@@ -82,19 +82,19 @@ End Function
         p_a_cols = make_funPointer(AddressOf a_cols, firstParam, secondParam)
     End Function
 
-'Nå€‹ã®å€¤ã‚’ä¸¦ã¹ã‚‹
-Public Function repeat(ByRef v As Variant, ByRef n As Variant) As Variant
-    If n < 1 Then
+'NŒÂ‚Ì’l‚ğ•À‚×‚é
+Public Function repeat(ByRef v As Variant, ByRef N As Variant) As Variant
+    If N < 1 Then
         repeat = VBA.Array()
     Else
         Dim i As Long
-        Dim ret As Variant:     ReDim ret(0 To n - 1)
+        Dim ret As Variant:     ReDim ret(0 To N - 1)
         If IsObject(v) Then
-            For i = 0 To n - 1 Step 1
+            For i = 0 To N - 1 Step 1
                 Set ret(i) = v
             Next i
         Else
-            For i = 0 To n - 1 Step 1
+            For i = 0 To N - 1 Step 1
                 ret(i) = v
             Next i
         End If
@@ -105,8 +105,8 @@ End Function
         p_repeat = make_funPointer(AddressOf repeat, firstParam, secondParam)
     End Function
 
-' fromã‹ã‚‰toã¾ã§ã®è‡ªç„¶æ•°ã‚’ä¸¦ã¹ãŸãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
-' ä¸¡ç«¯å…¥ã‚Šã€‚from <= to ã§ã¯æ˜‡é †ã€from > to ã§ã¯é€†é †
+' from‚©‚çto‚Ü‚Å‚Ì©‘R”‚ğ•À‚×‚½ƒxƒNƒgƒ‹‚ğ•Ô‚·
+' —¼’[“ü‚èBfrom <= to ‚Å‚Í¸‡Afrom > to ‚Å‚Í‹t‡
 Public Function iota(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     Dim i As Long, k As Long:   k = 0
     Dim ret As Variant:         ReDim ret(0 To VBA.Abs(to_i - from_i))
@@ -121,7 +121,7 @@ End Function
         p_iota = make_funPointer(AddressOf iota, firstParam, secondParam)
     End Function
 
-' è‡ªç„¶æ•°åˆ— [from, to]
+' ©‘R”—ñ [from, to]
 Public Function a__a(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i <= to_i Then
         a__a = iota(from_i, to_i)
@@ -133,7 +133,7 @@ End Function
         p_a__a = make_funPointer(AddressOf a__a, firstParam, secondParam)
     End Function
 
-' è‡ªç„¶æ•°åˆ— [from, to)
+' ©‘R”—ñ [from, to)
 Public Function a__o(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i < to_i Then
         Dim i As Long, k As Long:   k = 0
@@ -151,7 +151,7 @@ End Function
         p_a__o = make_funPointer(AddressOf a__o, firstParam, secondParam)
     End Function
 
-' è‡ªç„¶æ•°åˆ— (from, to]
+' ©‘R”—ñ (from, to]
 Public Function o__a(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i < to_i Then
         Dim i As Long, k As Long:   k = 0
@@ -169,7 +169,7 @@ End Function
         p_o__a = make_funPointer(AddressOf o__a, firstParam, secondParam)
     End Function
 
-' è‡ªç„¶æ•°åˆ— (from, to)
+' ©‘R”—ñ (from, to)
 Public Function o__o(ByRef from_i As Variant, ByRef to_i As Variant) As Variant
     If from_i + 1 < to_i Then
         Dim i As Long, k As Long:   k = 0
@@ -187,27 +187,29 @@ End Function
         p_o__o = make_funPointer(AddressOf o__o, firstParam, secondParam)
     End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã®æœ€åˆã®Nå€‹
-Public Function headN(ByRef vec As Variant, ByRef n As Variant) As Variant
+'ƒxƒNƒgƒ‹‚ÌÅ‰‚ÌNŒÂ
+Public Function headN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
-    If n = 0 Then
+    If N = 0 Then
         headN = VBA.Array()
-    ElseIf n < 0 Then
-        If 0 < sizeof(vec) + n Then
-            headN = headN(vec, sizeof(vec) + n)
+    ElseIf N < 0 Then
+        If 0 < sizeof(vec) + N Then
+            headN = headN(vec, sizeof(vec) + N)
         Else
             headN = VBA.Array()
         End If
-    ElseIf sizeof(vec) <= n Then
+    ElseIf sizeof(vec) = 0 Then
+        headN = makeM(N)
+    ElseIf sizeof(vec) <= N Then
         ret = vec
         changeLBound ret, 0
-        ReDim Preserve ret(0 To n - 1)
+        ReDim Preserve ret(0 To N - 1)
         Call swapVariant(headN, ret)
     Else
         lb = LBound(vec)
-        ReDim ret(0 To n - 1)
-        For i = 0 To n - 1 Step 1
+        ReDim ret(0 To N - 1)
+        For i = 0 To N - 1 Step 1
             Call assignVar(ret(i), vec(i + lb))
         Next i
         Call swapVariant(headN, ret)
@@ -217,27 +219,29 @@ End Function
         p_headN = make_funPointer(AddressOf headN, firstParam, secondParam)
     End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã®æœ€å¾Œã®Nå€‹
-Public Function tailN(ByRef vec As Variant, ByRef n As Variant) As Variant
+'ƒxƒNƒgƒ‹‚ÌÅŒã‚ÌNŒÂ
+Public Function tailN(ByRef vec As Variant, ByRef N As Variant) As Variant
     Dim lb As Long, i As Long
     Dim ret As Variant
-    If n = 0 Then
+    If N = 0 Then
         tailN = VBA.Array()
-    ElseIf n < 0 Then
-        If 0 < sizeof(vec) + n Then
-            tailN = tailN(vec, sizeof(vec) + n)
+    ElseIf N < 0 Then
+        If 0 < sizeof(vec) + N Then
+            tailN = tailN(vec, sizeof(vec) + N)
         Else
             tailN = VBA.Array()
         End If
-    ElseIf sizeof(vec) = n Then
+    ElseIf sizeof(vec) = 0 Then
+        tailN = makeM(N)
+    ElseIf sizeof(vec) = N Then
         tailN = vec
         changeLBound tailN, 0
-    ElseIf sizeof(vec) < n Then
-        tailN = catV(makeM(n - sizeof(vec)), vec)
+    ElseIf sizeof(vec) < N Then
+        tailN = catV(makeM(N - sizeof(vec)), vec)
     Else
-        lb = UBound(vec) - n + 1
-        ReDim ret(0 To n - 1)
-        For i = 0 To n - 1 Step 1
+        lb = UBound(vec) - N + 1
+        ReDim ret(0 To N - 1)
+        For i = 0 To N - 1 Step 1
             Call assignVar(ret(i), vec(i + lb))
         Next i
         Call swapVariant(tailN, ret)
@@ -247,8 +251,8 @@ End Function
         p_tailN = make_funPointer(AddressOf tailN, firstParam, secondParam)
     End Function
 
-'ã‚¹ã‚«ãƒ©ãƒ¼ã€é…åˆ—ã®ãƒ™ã‚¯ãƒˆãƒ«åŒ–
-'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§Cè¨€èªã‚ªãƒ¼ãƒ€ãƒ¼å±•é–‹ã€orderãŒFalseã«è§£é‡ˆã§ãã‚‹å ´åˆã¯VBã‚ªãƒ¼ãƒ€ãƒ¼å±•é–‹
+'ƒXƒJƒ‰[A”z—ñ‚ÌƒxƒNƒgƒ‹‰»
+'ƒfƒtƒHƒ‹ƒg‚ÅCŒ¾ŒêƒI[ƒ_[“WŠJAorder‚ªFalse‚É‰ğß‚Å‚«‚éê‡‚ÍVBƒI[ƒ_[“WŠJ
 Public Function vector(ByRef data As Variant, Optional ByRef order As Variant) As Variant
     Dim dimen As Long: dimen = Dimension(data)
     If dimen = 0 Then
@@ -317,7 +321,7 @@ End Function
         End If
     End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã‚’é€†é †ã«ä¸¦ã¹ã‚‹
+'ƒxƒNƒgƒ‹‚ğ‹t‡‚É•À‚×‚é
 Public Function reverse(ByRef vec As Variant) As Variant
     Dim ret As Variant
     Dim i As Long, j As Long
@@ -352,7 +356,7 @@ Public Function reverse(ByRef vec As Variant) As Variant
     Call swapVariant(reverse, ret)
 End Function
 
-'1æ¬¡å…ƒé…åˆ—ã®å›è»¢
+'1ŸŒ³”z—ñ‚Ì‰ñ“]
 '[0,1,2,3,4,5] -> [1,2,3,4,5,0] (r=1)
 '[0,1,2,3,4,5] -> [5,0,1,2,3,4] (r=-1)
 Sub rotate(ByRef vec As Variant, ByVal shift As Long)
@@ -370,7 +374,7 @@ Sub rotate(ByRef vec As Variant, ByVal shift As Long)
     End If
 End Sub
 
-'1æ¬¡å…ƒé…åˆ—ã‚’å›è»¢ã—ãŸé…åˆ—
+'1ŸŒ³”z—ñ‚ğ‰ñ“]‚µ‚½”z—ñ
 Public Function rotation(ByRef vec As Variant, ByRef shift As Variant) As Variant
     Dim tmp As Variant
     tmp = vec
@@ -380,7 +384,7 @@ End Function
         p_rotation = make_funPointer(AddressOf rotation, firstParam, secondParam)
     End Function
 
-'rotationã—ã¦moveã—ã¦è¿”ã™
+'rotation‚µ‚Ämove‚µ‚Ä•Ô‚·
 Public Function rotate_move(ByRef vec As Variant, ByRef shift As Variant) As Variant
     Call rotate(vec, shift)
     Call swapVariant(rotate_move, vec)
@@ -432,7 +436,7 @@ End Function
         Call swapVariant(vec, tmp)
     End Sub
 
-'ç‰¹å®šè¡Œã®å–å¾—
+'“Á’ès‚Ìæ“¾
 Public Function selectRow(ByRef matrix As Variant, ByRef i As Variant) As Variant
     selectRow = VBA.Array()
     If Dimension(matrix) = 2 Then
@@ -451,7 +455,7 @@ End Function
         p_selectRow = make_funPointer(AddressOf selectRow, firstParam, secondParam)
     End Function
 
-'ç‰¹å®šåˆ—ã®å–å¾—
+'“Á’è—ñ‚Ìæ“¾
 Public Function selectCol(ByRef matrix As Variant, ByRef j As Variant) As Variant
     selectCol = VBA.Array()
     If Dimension(matrix) = 2 Then
@@ -470,7 +474,7 @@ End Function
         p_selectCol = make_funPointer(AddressOf selectCol, firstParam, secondParam)
     End Function
 
-'é…åˆ—ã®ä½œæˆ      makeM(6, 3) => 6è¡Œ(0,1,2,3,4,5) x 3åˆ—(0,1,2)
+'”z—ñ‚Ìì¬      makeM(6, 3) => 6s(0,1,2,3,4,5) x 3—ñ(0,1,2)
 Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByRef data As Variant) As Variant
     Dim ret   As Variant
     ret = VBA.Array()
@@ -483,7 +487,7 @@ Public Function makeM(ByVal r As Long, Optional ByVal c As Variant, Optional ByR
     Call swapVariant(makeM, ret)
 End Function
 
-'é…åˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹
+'”z—ñ‚ğƒf[ƒ^‚Å–„‚ß‚é
 Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
     Dim data_2  As Variant
     Dim stepN As Long: stepN = 1
@@ -519,13 +523,13 @@ Public Sub fillM(ByRef matrix As Variant, ByRef data As Variant)
     If swapFlag Then Call swapVariant(data_2, data)
 End Sub
 
-'é…åˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã¦moveã—ã¦è¿”ã™
+'”z—ñ‚ğƒf[ƒ^‚Å–„‚ß‚Ämove‚µ‚Ä•Ô‚·
 Public Function fillM_move(ByRef matrix As Variant, ByRef data As Variant) As Variant
     Call fillM(matrix, data)
     Call swapVariant(fillM_move, matrix)
 End Function
 
-'é…åˆ—ã®ç‰¹å®šè¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹
+'”z—ñ‚Ì“Á’ès‚ğƒf[ƒ^‚Å–„‚ß‚é
 Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
     Dim j As Long, k As Long
     If Dimension(data) = 0 Then
@@ -542,13 +546,13 @@ Public Sub fillRow(ByRef matrix As Variant, ByVal i As Long, ByRef data As Varia
     End If
 End Sub
 
-'é…åˆ—ã®ç‰¹å®šè¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã¦moveã—ã¦è¿”ã™
+'”z—ñ‚Ì“Á’ès‚ğƒf[ƒ^‚Å–„‚ß‚Ämove‚µ‚Ä•Ô‚·
 Public Function fillRow_move(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
     Call fillRow(matrix, i, data)
     Call swapVariant(fillRow_move, matrix)
 End Function
 
-    '((((é…åˆ—ã®ç‰¹å®šè¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹))))
+    '((((”z—ñ‚Ì“Á’ès‚ğƒf[ƒ^‚Å–„‚ß‚é))))
     Private Sub fillRow_imple(ByRef matrix As Variant, _
                             ByVal i As Long, _
                         ByRef data As Variant, _
@@ -561,7 +565,7 @@ End Function
         Next j
     End Sub
 
-'é…åˆ—ã®ç‰¹å®šåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹
+'”z—ñ‚Ì“Á’è—ñ‚ğƒf[ƒ^‚Å–„‚ß‚é
 Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant)
     Dim i As Long, k As Long
     If Dimension(data) = 0 Then
@@ -578,13 +582,13 @@ Public Sub fillCol(ByRef matrix As Variant, ByVal j As Long, ByRef data As Varia
     End If
 End Sub
 
-'é…åˆ—ã®ç‰¹å®šåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã¦moveã—ã¦è¿”ã™
+'”z—ñ‚Ì“Á’è—ñ‚ğƒf[ƒ^‚Å–„‚ß‚Ämove‚µ‚Ä•Ô‚·
 Public Function fillCol_move(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
     Call fillCol(matrix, j, data)
     Call swapVariant(fillCol_move, matrix)
 End Function
     
-    '((((é…åˆ—ã®ç‰¹å®šåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹))))
+    '((((”z—ñ‚Ì“Á’è—ñ‚ğƒf[ƒ^‚Å–„‚ß‚é))))
     Private Sub fillCol_imple(ByRef matrix As Variant, _
                             ByVal j As Long, _
                         ByRef data As Variant, _
@@ -597,7 +601,7 @@ End Function
         Next i
     End Sub
 
-'1æ¬¡å…ƒé…åˆ—ã‚’ä»–ã®1æ¬¡å…ƒé…åˆ—ã®ç¹°ã‚Šè¿”ã—ã§åŸ‹ã‚ã‚‹ï¼ˆå›æ•°æŒ‡å®šå¯ï¼‰
+'1ŸŒ³”z—ñ‚ğ‘¼‚Ì1ŸŒ³”z—ñ‚ÌŒJ‚è•Ô‚µ‚Å–„‚ß‚éi‰ñ”w’è‰Âj
 Sub fillPattern(ByRef vec As Variant, ByRef Pattern As Variant, Optional ByVal counter As Long = -1)
     Dim ubm As Long:    ubm = UBound(vec)
     Dim ubp As Long:    ubp = UBound(Pattern)
@@ -615,13 +619,13 @@ Sub fillPattern(ByRef vec As Variant, ByRef Pattern As Variant, Optional ByVal c
     Loop
 End Sub
 
-'1æ¬¡å…ƒé…åˆ—ã‚’ä»–ã®1æ¬¡å…ƒé…åˆ—ã®ç¹°ã‚Šè¿”ã—ã§åŸ‹ã‚ã¦moveã—ã¦è¿”ã™
+'1ŸŒ³”z—ñ‚ğ‘¼‚Ì1ŸŒ³”z—ñ‚ÌŒJ‚è•Ô‚µ‚Å–„‚ß‚Ämove‚µ‚Ä•Ô‚·
 Public Function fillPattern_move(ByRef vec As Variant, ByRef Pattern As Variant, Optional ByVal counter As Long = -1) As Variant
     fillPattern vec, Pattern, counter
     Call swapVariant(fillPattern_move, vec)
 End Function
 
-'1æ¬¡å…ƒé…åˆ—ã®éƒ¨åˆ†é…åˆ—ã‚’ä½œæˆã™ã‚‹
+'1ŸŒ³”z—ñ‚Ì•”•ª”z—ñ‚ğì¬‚·‚é
 Public Function subV(ByRef vec As Variant, ByRef index As Variant) As Variant
     subV = mapF_swap(p_getNth, vec, , index)
     changeLBound subV, LBound(vec)
@@ -630,7 +634,7 @@ End Function
         p_subV = make_funPointer(AddressOf subV, firstParam, secondParam)
     End Function
 
-'1æ¬¡å…ƒé…åˆ—ã®éƒ¨åˆ†é…åˆ—ã‚’ä½œæˆã™ã‚‹ï¼ˆç¯„å›²å¤–ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦EmptyãŒå…¥ã‚‹ï¼‰
+'1ŸŒ³”z—ñ‚Ì•”•ª”z—ñ‚ğì¬‚·‚éi”ÍˆÍŠO‚ÌƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚ÄEmpty‚ª“ü‚éj
 Public Function subV_if(ByRef vec As Variant, ByRef index As Variant) As Variant
     subV_if = mapF_swap(p_getNth_if, vec, , index)
     changeLBound subV_if, LBound(vec)
@@ -647,12 +651,12 @@ End Function
         p_getNth_if = make_funPointer(AddressOf getNth_if, firstParam, secondParam)
     End Function
 
-'é…åˆ—ã®éƒ¨åˆ†é…åˆ—ã‚’ä½œæˆã™ã‚‹
+'”z—ñ‚Ì•”•ª”z—ñ‚ğì¬‚·‚é
 Public Function subM(ByRef matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
     subM = subM_imple(matrix, False, rows, cols)
 End Function
 
-'é…åˆ—ã®éƒ¨åˆ†é…åˆ—ã‚’ä½œæˆã™ã‚‹ï¼ˆç¯„å›²å¤–ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦EmptyãŒå…¥ã‚‹ï¼‰
+'”z—ñ‚Ì•”•ª”z—ñ‚ğì¬‚·‚éi”ÍˆÍŠO‚ÌƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚ÄEmpty‚ª“ü‚éj
 Public Function subM_if(ByRef matrix As Variant, Optional ByRef rows As Variant, Optional ByRef cols As Variant) As Variant
     subM_if = subM_imple(matrix, True, rows, cols)
 End Function
@@ -673,7 +677,7 @@ End Function
             End If
         Case 2
             If IsMissing(rows) Then
-                If IsArray(rows) Then   ' æ„å›³çš„ã« Array() ã‚’ä¸ãˆã‚‰ã‚ŒãŸã‚±ãƒ¼ã‚¹
+                If IsArray(rows) Then   ' ˆÓ}“I‚É Array() ‚ğ—^‚¦‚ç‚ê‚½ƒP[ƒX
                     subM_imple = VBA.Array()
                     Exit Function
                 Else
@@ -681,7 +685,7 @@ End Function
                 End If
             End If
             If IsMissing(cols) Then
-                If IsArray(cols) Then   ' æ„å›³çš„ã« Array() ã‚’ä¸ãˆã‚‰ã‚ŒãŸã‚±ãƒ¼ã‚¹
+                If IsArray(cols) Then   ' ˆÓ}“I‚É Array() ‚ğ—^‚¦‚ç‚ê‚½ƒP[ƒX
                     subM_imple = VBA.Array()
                     Exit Function
                 Else
@@ -721,16 +725,16 @@ End Function
         Call swapVariant(subM_imple, ret)
     End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ãƒ»é…åˆ—ã®ï¼ˆè¡Œã®ï¼‰ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
-'Flgã¯ 0/1
+'ƒxƒNƒgƒ‹E”z—ñ‚Ìis‚ÌjƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+'Flg‚Í 0/1
 Public Function filterR(ByRef data As Variant, ByRef flg As Variant) As Variant
     Dim indice As Variant
-    Dim i As Long, j As Long, counter As Long, NN As Long
-    NN = min_fun(sizeof(flg), rowSize(data))
-    indice = makeM(NN)
+    Dim i As Long, j As Long, counter As Long, nn As Long
+    nn = min_fun(sizeof(flg), rowSize(data))
+    indice = makeM(nn)
     i = LBound(data, 1)
     counter = -1
-    For j = LBound(flg) To LBound(flg) + NN - 1 Step 1
+    For j = LBound(flg) To LBound(flg) + nn - 1 Step 1
         If flg(j) <> 0 Then
             counter = counter + 1
             indice(counter) = i
@@ -748,17 +752,17 @@ End Function
         p_filterR = make_funPointer(AddressOf filterR, firstParam, secondParam)
     End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ãƒ»é…åˆ—ã®ï¼ˆåˆ—ã®ï¼‰ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
-'Flgã¯ 0/1
+'ƒxƒNƒgƒ‹E”z—ñ‚Ìi—ñ‚ÌjƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+'Flg‚Í 0/1
 Public Function filterC(ByRef data As Variant, ByRef flg As Variant) As Variant
     If Dimension(data) = 2 Then
         Dim indice As Variant
-        Dim i As Long, j As Long, counter As Long, NN As Long
-        NN = min_fun(sizeof(flg), colSize(data))
-        indice = makeM(NN)
+        Dim i As Long, j As Long, counter As Long, nn As Long
+        nn = min_fun(sizeof(flg), colSize(data))
+        indice = makeM(nn)
         i = LBound(data, 2)
         counter = -1
-        For j = LBound(flg) To LBound(flg) + NN - 1 Step 1
+        For j = LBound(flg) To LBound(flg) + nn - 1 Step 1
             If flg(j) <> 0 Then
                 counter = counter + 1
                 indice(counter) = i
@@ -779,7 +783,7 @@ End Function
         p_filterC = make_funPointer(AddressOf filterC, firstParam, secondParam)
     End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆ
+'ƒxƒNƒgƒ‹‚ğŒ‹‡
 Public Function catV(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     catV = catV_move((v1), (v2))
 End Function
@@ -797,7 +801,7 @@ End Function
         End If
     End Sub
 
-' ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆï¼ˆå¼•æ•°ã‚’moveï¼‰
+' ƒxƒNƒgƒ‹‚ğŒ‹‡iˆø”‚ğmovej
 Public Function catV_move(ByRef v1 As Variant, ByRef v2 As Variant) As Variant
     Dim i As Long, dim1 As Long, dim2 As Long, counter1 As Long, counter2 As Long
     dim1 = Dimension(v1):   dim2 = Dimension(v2)
@@ -829,7 +833,7 @@ End Function
         p_catV_move = make_funPointer(AddressOf catV_move, firstParam, secondParam)
     End Function
 
-    ' å¤‰æ•°ã‚³ãƒ”ãƒ¼ or move
+    ' •Ï”ƒRƒs[ or move
     Private Sub assign_or_move_(ByRef Target As Variant, ByRef source As Variant)
         If IsArray(source) Then
             Call swapVariant(Target, source)
@@ -840,20 +844,20 @@ End Function
         End If
     End Sub
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆï¼ˆå¯å¤‰é•·å¼•æ•°ï¼‰
+'ƒxƒNƒgƒ‹‚ğŒ‹‡i‰Â•Ï’·ˆø”j
 Public Function catVs(ParamArray vectors() As Variant) As Variant
     Dim i As Long
     Dim tmp As Variant
     If LBound(vectors) <= UBound(vectors) Then
         ReDim tmp(LBound(vectors) To UBound(vectors))
         For i = LBound(vectors) To UBound(vectors)
-            Call assignVar(tmp(i), vectors(i))  ' ã“ã“ã¯ã‚³ãƒ”ãƒ¼
+            Call assignVar(tmp(i), vectors(i))  ' ‚±‚±‚ÍƒRƒs[
         Next i
         catVs = foldl1(p_catV_move, tmp)
     End If
 End Function
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã‚’çµåˆï¼ˆå¯å¤‰é•·å¼•æ•°ï¼šå¼•æ•°ã‚’moveï¼‰
+'ƒxƒNƒgƒ‹‚ğŒ‹‡i‰Â•Ï’·ˆø”Fˆø”‚ğmovej
 Public Function catVs_move(ParamArray vectors() As Variant) As Variant
     Dim i As Long
     Dim tmp As Variant
@@ -866,10 +870,10 @@ Public Function catVs_move(ParamArray vectors() As Variant) As Variant
     End If
 End Function
 
-'è¡Œæ–¹å‘ã«çµåˆ
+'s•ûŒü‚ÉŒ‹‡
 Public Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    If rowSize(matrix1) = 0 Then        ' éé…åˆ—ã¾ãŸã¯ç©ºã®é…åˆ—
-        If rowSize(matrix2) = 0 Then        ' éé…åˆ—ã¾ãŸã¯ç©ºã®é…åˆ—
+    If rowSize(matrix1) = 0 Then        ' ”ñ”z—ñ‚Ü‚½‚Í‹ó‚Ì”z—ñ
+        If rowSize(matrix2) = 0 Then        ' ”ñ”z—ñ‚Ü‚½‚Í‹ó‚Ì”z—ñ
             catR = VBA.Array()
         ElseIf Dimension(matrix2) = 1 Then
             catR = makeM(1, rowSize(matrix2), matrix2)
@@ -879,7 +883,7 @@ Public Function catR(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Vari
     ElseIf Dimension(matrix1) = 1 Then
         catR = catR(makeM(1, rowSize(matrix1), matrix1), matrix2)
     Else
-        If rowSize(matrix2) = 0 Then        ' éé…åˆ—ã¾ãŸã¯ç©ºã®é…åˆ—
+        If rowSize(matrix2) = 0 Then        ' ”ñ”z—ñ‚Ü‚½‚Í‹ó‚Ì”z—ñ
             catR = matrix1
         ElseIf Dimension(matrix2) = 1 Then
             catR = catR(matrix1, makeM(1, rowSize(matrix2), matrix2))
@@ -906,10 +910,10 @@ End Function
         p_catR = make_funPointer(AddressOf catR, firstParam, secondParam)
     End Function
 
-'åˆ—æ–¹å‘ã«çµåˆ
+'—ñ•ûŒü‚ÉŒ‹‡
 Public Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Variant
-    If rowSize(matrix1) = 0 Then        ' éé…åˆ—ã¾ãŸã¯ç©ºã®é…åˆ—
-        If rowSize(matrix2) = 0 Then        ' éé…åˆ—ã¾ãŸã¯ç©ºã®é…åˆ—
+    If rowSize(matrix1) = 0 Then        ' ”ñ”z—ñ‚Ü‚½‚Í‹ó‚Ì”z—ñ
+        If rowSize(matrix2) = 0 Then        ' ”ñ”z—ñ‚Ü‚½‚Í‹ó‚Ì”z—ñ
             catC = VBA.Array()
         ElseIf Dimension(matrix2) = 1 Then
             catC = makeM(rowSize(matrix2), 1, matrix2)
@@ -919,7 +923,7 @@ Public Function catC(ByRef matrix1 As Variant, ByRef matrix2 As Variant) As Vari
     ElseIf Dimension(matrix1) = 1 Then
         catC = catC(makeM(rowSize(matrix1), 1, matrix1), matrix2)
     Else
-        If rowSize(matrix2) = 0 Then        ' éé…åˆ—ã¾ãŸã¯ç©ºã®é…åˆ—
+        If rowSize(matrix2) = 0 Then        ' ”ñ”z—ñ‚Ü‚½‚Í‹ó‚Ì”z—ñ
             catC = matrix1
         ElseIf Dimension(matrix2) = 1 Then
             catC = catC(matrix1, makeM(rowSize(matrix2), 1, matrix2))
@@ -946,7 +950,7 @@ End Function
         p_catC = make_funPointer(AddressOf catC, firstParam, secondParam)
     End Function
 
-'é…åˆ—ã®è¡Œ/åˆ—ã®è»¢ç½®
+'”z—ñ‚Ìs/—ñ‚Ì“]’u
 Public Function transpose(ByRef matrix As Variant) As Variant
     Dim i As Long, j As Long
     Dim ret As Variant
@@ -972,7 +976,7 @@ Public Function transpose(ByRef matrix As Variant) As Variant
     End Select
 End Function
 
-'ãµãŸã¤ã®é…åˆ—ã®å¯¾å¿œã™ã‚‹è¦ç´ ã©ã†ã—ã‚’makePairã—ã¦ã‚¸ãƒ£ã‚°é…åˆ—ã‚’ä½œã‚‹
+'‚Ó‚½‚Â‚Ì”z—ñ‚Ì‘Î‰‚·‚é—v‘f‚Ç‚¤‚µ‚ğmakePair‚µ‚ÄƒWƒƒƒO”z—ñ‚ğì‚é
 Public Function zip(ByRef a As Variant, ByRef b As Variant) As Variant
     zip = zipWith(p_makePair, a, b)
 End Function
@@ -980,7 +984,7 @@ End Function
         p_zip = make_funPointer(AddressOf zip, firstParam, secondParam)
     End Function
 
-    ' zipVsã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³
+    ' zipVs‚ÌƒTƒuƒ‹[ƒ`ƒ“
     Private Function zipVs_imple(ByRef m As Variant, ByRef a As Variant) As Variant
         Dim i As Long, j As Long: j = m(0)
         Dim k As Long: k = 0
@@ -995,7 +999,7 @@ End Function
             p_zipVs_imple = make_funPointer(AddressOf zipVs_imple, firstParam, secondParam)
         End Function
 
-'è¤‡æ•°ã®1æ¬¡å…ƒé…åˆ—ã‚’zip
+'•¡”‚Ì1ŸŒ³”z—ñ‚ğzip
 Public Function zipVs(ByRef vectors As Variant) As Variant
     Dim ret As Variant
     ret = VBA.Array(0, repeat(makeM(sizeof(vectors)), sizeof(vectors(LBound(vectors)))))
@@ -1003,7 +1007,7 @@ Public Function zipVs(ByRef vectors As Variant) As Variant
     Call swapVariant(zipVs, ret(1))
 End Function
 
-'ï¼’æ¬¡å…ƒé…åˆ—ã®å„è¡Œãƒ™ã‚¯ãƒˆãƒ«ã‚’zipVs
+'‚QŸŒ³”z—ñ‚ÌŠesƒxƒNƒgƒ‹‚ğzipVs
 Public Function zipR(ByRef m As Variant, Optional ByRef Target As Variant) As Variant
     If IsMissing(Target) Then
         Dim ret As Variant
@@ -1018,7 +1022,7 @@ Public Function zipR(ByRef m As Variant, Optional ByRef Target As Variant) As Va
     End If
 End Function
 
-'ï¼’æ¬¡å…ƒé…åˆ—ã®å„åˆ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’zipVs
+'‚QŸŒ³”z—ñ‚ÌŠe—ñƒxƒNƒgƒ‹‚ğzipVs
 Public Function zipC(ByRef m As Variant, Optional ByRef Target As Variant) As Variant
     If IsMissing(Target) Then
         Dim ret As Variant
@@ -1033,7 +1037,7 @@ Public Function zipC(ByRef m As Variant, Optional ByRef Target As Variant) As Va
     End If
 End Function
 
-'zipVsã•ã‚ŒãŸã‚¸ãƒ£ã‚°é…åˆ—ã‚’ã»ã©ã„ã¦zipVså‰ã®1æ¬¡å…ƒé…åˆ—ã¾ãŸã¯2æ¬¡å…ƒé…åˆ—ã«ã™ã‚‹
+'zipVs‚³‚ê‚½ƒWƒƒƒO”z—ñ‚ğ‚Ù‚Ç‚¢‚ÄzipVs‘O‚Ì1ŸŒ³”z—ñ‚Ü‚½‚Í2ŸŒ³”z—ñ‚É‚·‚é
 Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As Variant
     Dim colLen As Long, i As Long, j As Long, counter As Long
     Dim ret As Variant, z As Variant
@@ -1065,7 +1069,7 @@ Public Function unzip(ByRef vec As Variant, Optional ByVal dimen As Long = 1) As
     Call swapVariant(unzip, ret)
 End Function
 
-' Array(a)ä½œæˆ
+' Array(a)ì¬
 Public Function makeSole(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
     makeSole = VBA.Array(a)
 End Function
@@ -1073,7 +1077,7 @@ End Function
         p_makeSole = make_funPointer(AddressOf makeSole, firstParam, secondParam)
     End Function
 
-' Array(a, b)ä½œæˆ
+' Array(a, b)ì¬
 Public Function makePair(ByRef a As Variant, ByRef b As Variant) As Variant
     makePair = VBA.Array(a, b)
 End Function
@@ -1081,7 +1085,7 @@ End Function
         p_makePair = make_funPointer(AddressOf makePair, firstParam, secondParam)
     End Function
 
-' é…åˆ—ã®å…ˆé ­ã«è¦ç´ ã‚’è¿½åŠ 
+' ”z—ñ‚Ìæ“ª‚É—v‘f‚ğ’Ç‰Á
 Public Function cons(ByRef a As Variant, ByRef vec As Variant) As Variant
     cons = catV(Array(a), vec)
 End Function
@@ -1089,7 +1093,7 @@ End Function
         p_cons = make_funPointer(AddressOf cons, firstParam, secondParam)
     End Function
 
-' ï¼‘æ¬¡å…ƒé…åˆ—ã®æœ«å°¾ã«è¦ç´ ã‚’è¿½åŠ ï¼ˆLBoundã¯0ã«å¤‰æ›´ã™ã‚‹ï¼‰
+' ‚PŸŒ³”z—ñ‚Ì––”ö‚É—v‘f‚ğ’Ç‰ÁiLBound‚Í0‚É•ÏX‚·‚éj
 Public Sub push_back(ByRef vec As Variant, ByRef a As Variant)
     If Dimension(vec) = 1 Then
         changeLBound vec, 0
@@ -1102,7 +1106,7 @@ Public Sub push_back(ByRef vec As Variant, ByRef a As Variant)
     End If
 End Sub
 
-' push_backã—ã¦moveã—ã¦è¿”ã™
+' push_back‚µ‚Ämove‚µ‚Ä•Ô‚·
 Public Function push_back_move(ByRef vec As Variant, ByRef a As Variant) As Variant
     push_back vec, a
     Call swapVariant(push_back_move, vec)
@@ -1111,7 +1115,7 @@ End Function
         p_push_back_move = make_funPointer(AddressOf push_back_move, firstParam, secondParam)
     End Function
 
-' é…åˆ—ã‚’å¹³å¦ãª1æ¬¡å…ƒé…åˆ—åŒ–ã™ã‚‹
+' ”z—ñ‚ğ•½’R‚È1ŸŒ³”z—ñ‰»‚·‚é
 Public Function flatten(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
     flatten = VBA.Array()
     flatten_imple flatten, vec
@@ -1127,13 +1131,13 @@ End Function
         Case 1
             Dim i As Long
             For i = LBound(x) To UBound(x) Step 1
-                flatten_imple vec, x(i)    ' å†å¸°
+                flatten_imple vec, x(i)    ' Ä‹A
             Next i
         Case 2
             Dim j As Long
             For i = LBound(x, 1) To UBound(x, 1) Step 1
                 For j = LBound(x, 2) To UBound(x, 2) Step 1
-                    flatten_imple vec, x(i, j)    ' å†å¸°
+                    flatten_imple vec, x(i, j)    ' Ä‹A
                 Next j
             Next i
         Case Else
@@ -1141,7 +1145,7 @@ End Function
         End Select
     End Sub
 
-'ãƒ™ã‚¯ãƒˆãƒ«ã®ç›´ç©ã«é–¢æ•°ã‚’é©ç”¨ã—ãŸè¡Œåˆ—ã‚’ä½œã‚‹
+'ƒxƒNƒgƒ‹‚Ì’¼Ï‚ÉŠÖ”‚ğ“K—p‚µ‚½s—ñ‚ğì‚é
 Public Function product_set(ByRef pCallback As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
     Dim z As Variant, k As Long
     Dim ret As Variant:     ReDim ret(LBound(a) To UBound(a), LBound(b) To UBound(b))
