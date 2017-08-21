@@ -43,51 +43,51 @@ namespace   {
 // target : 対象オブジェクト（meと同一クラス）
 // dir    : 0 < dir : meからtargetへコピー、 dir < 0 : targetからmeへコピー、　dir == 0 : swap
 VARIANT_BOOL __stdcall copy_valueMember(IDispatch*  me      ,
-                                        VARIANT*    mbr     ,
+                                        VARIANT&    mbr     ,
                                         IDispatch*  target  ,
                                         __int32     dir     ) noexcept
 {
-    const auto vt = mbr->vt;
+    const auto vt = mbr.vt;
     if ( vt & VT_BYREF )
     {
         if ( vt & VT_ARRAY )
         {
-            if ( redimCheck(*mbr->pparray) == S_OK )
+            if ( redimCheck(*mbr.pparray) == S_OK )
             {
-                auto d = reinterpret_cast<char*>(mbr->pparray) - reinterpret_cast<char*>(me);
+                auto d = reinterpret_cast<char*>(mbr.pparray) - reinterpret_cast<char*>(me);
                 auto p = reinterpret_cast<SAFEARRAY**>(reinterpret_cast<char*>(target) + d);
                 if ( 0 < dir )
                 {
                     ::SafeArrayDestroy(*p);
-                    ::SafeArrayCopy(*mbr->pparray, p);
+                    ::SafeArrayCopy(*mbr.pparray, p);
                 }
                 else if ( dir < 0 )
                 {
-                    ::SafeArrayDestroy(*mbr->pparray);
-                    ::SafeArrayCopy(*p, mbr->pparray);
+                    ::SafeArrayDestroy(*mbr.pparray);
+                    ::SafeArrayCopy(*p, mbr.pparray);
                 }
                 else
                 {
-                    std::swap(*p, *mbr->pparray);
+                    std::swap(*p, *mbr.pparray);
                 }
             }
             else
             {
-                auto d = reinterpret_cast<char*>(*mbr->pparray) - reinterpret_cast<char*>(me);
+                auto d = reinterpret_cast<char*>(*mbr.pparray) - reinterpret_cast<char*>(me);
                 auto p = reinterpret_cast<SAFEARRAY*>(reinterpret_cast<char*>(target) + d);
                 if ( 0 < dir )
                 {
-                    ::SafeArrayCopyData(*mbr->pparray, p);
+                    ::SafeArrayCopyData(*mbr.pparray, p);
                 }
                 else if ( dir < 0 )
                 {
-                    ::SafeArrayCopyData(p, *mbr->pparray);
+                    ::SafeArrayCopyData(p, *mbr.pparray);
                 }
                 else
                 {
                     SAFEARRAY* tmp = nullptr;
                     ::SafeArrayCopy(p, &tmp);
-                    ::SafeArrayCopyData(*mbr->pparray, p);
+                    ::SafeArrayCopyData(*mbr.pparray, p);
                     ::SafeArrayCopyData(tmp, p);
                     ::SafeArrayDestroy(tmp);
                 }
@@ -95,22 +95,22 @@ VARIANT_BOOL __stdcall copy_valueMember(IDispatch*  me      ,
         }
         else switch ( vt % VT_ARRAY )
         {
-            case    VT_UI1:     copy_or_swap(mbr->pbVal, me, target, dir);      break;
-            case    VT_I2:      copy_or_swap(mbr->piVal, me, target, dir);      break;
-            case    VT_I4:      copy_or_swap(mbr->plVal, me, target, dir);      break;
-            case    VT_I8:      copy_or_swap(mbr->pllVal, me, target, dir);     break;
-            case    VT_R4:      copy_or_swap(mbr->pfltVal, me, target, dir);    break;
-            case    VT_R8:      copy_or_swap(mbr->pdblVal, me, target, dir);    break;
-            case    VT_CY:      copy_or_swap(mbr->pcyVal, me, target, dir);     break;
-            case    VT_DATE:    copy_or_swap(mbr->pdate, me, target, dir);      break;
-            case    VT_BOOL:    copy_or_swap(mbr->pboolVal, me, target, dir);   break;
+            case    VT_UI1:     copy_or_swap(mbr.pbVal, me, target, dir);       break;
+            case    VT_I2:      copy_or_swap(mbr.piVal, me, target, dir);       break;
+            case    VT_I4:      copy_or_swap(mbr.plVal, me, target, dir);       break;
+            case    VT_I8:      copy_or_swap(mbr.pllVal, me, target, dir);      break;
+            case    VT_R4:      copy_or_swap(mbr.pfltVal, me, target, dir);     break;
+            case    VT_R8:      copy_or_swap(mbr.pdblVal, me, target, dir);     break;
+            case    VT_CY:      copy_or_swap(mbr.pcyVal, me, target, dir);      break;
+            case    VT_DATE:    copy_or_swap(mbr.pdate, me, target, dir);       break;
+            case    VT_BOOL:    copy_or_swap(mbr.pboolVal, me, target, dir);    break;
             case    VT_BSTR:    /////////////
             {
-                auto n = reinterpret_cast<char*>(mbr->pbstrVal) - reinterpret_cast<char*>(me);
+                auto n = reinterpret_cast<char*>(mbr.pbstrVal) - reinterpret_cast<char*>(me);
                 auto p = reinterpret_cast<BSTR*>(reinterpret_cast<char*>(target) + n);
-                if ( 0 < dir )          ::SysReAllocString(p, *mbr->pbstrVal);
-                else if ( dir < 0 )     ::SysReAllocString(mbr->pbstrVal, *p);
-                else                    std::swap(*p, *mbr->pbstrVal);
+                if ( 0 < dir )          ::SysReAllocString(p, *mbr.pbstrVal);
+                else if ( dir < 0 )     ::SysReAllocString(mbr.pbstrVal, *p);
+                else                    std::swap(*p, *mbr.pbstrVal);
                 break;
             }
             default:                return 0;
@@ -118,11 +118,11 @@ VARIANT_BOOL __stdcall copy_valueMember(IDispatch*  me      ,
     }
     else
     {
-        auto n = reinterpret_cast<char*>(mbr) - reinterpret_cast<char*>(me);
+        auto n = reinterpret_cast<char*>(&mbr) - reinterpret_cast<char*>(me);
         auto p = reinterpret_cast<VARIANT*>(reinterpret_cast<char*>(target) + n);
-        if ( 0 < dir )      { ::VariantCopy(p, mbr); }
-        else if ( dir < 0 ) { ::VariantCopy(mbr, p); }
-        else                { std::swap(*p, *mbr); }
+        if ( 0 < dir )      { ::VariantCopy(p, &mbr); }
+        else if ( dir < 0 ) { ::VariantCopy(&mbr, p); }
+        else                { std::swap(*p, mbr); }
     }
     return -1;
 }
@@ -137,7 +137,7 @@ VARIANT_BOOL __stdcall copy_objectMember(   IDispatch*  me      ,
                                             IDispatch** pmbr    ,
                                             IDispatch*  target  ,
                                             __int32     dir     ,
-                                            VARIANT*    method  ) noexcept
+                                            VARIANT&    method  ) noexcept
 {
     auto n = reinterpret_cast<char*>(pmbr) - reinterpret_cast<char*>(me);
     auto p = reinterpret_cast<IDispatch**>(reinterpret_cast<char*>(target) + n);
@@ -148,9 +148,9 @@ VARIANT_BOOL __stdcall copy_objectMember(   IDispatch*  me      ,
     }
     else
     {
-        BSTR name = (method->vt & VT_BYREF )?
-                ( ((method->vt & VT_BSTR) && method->pbstrVal )? *method->pbstrVal : nullptr ) :
-                ( ((method->vt & VT_BSTR) && method->bstrVal ) ? method->bstrVal  : nullptr );
+        BSTR name = (method.vt & VT_BYREF )?
+                ( ((method.vt & VT_BSTR) && method.pbstrVal )? *method.pbstrVal : nullptr ) :
+                ( ((method.vt & VT_BSTR) && method.bstrVal ) ? method.bstrVal  : nullptr );
         if ( !name )    return 0;
         VARIANT tmp;
         ::VariantInit(&tmp);

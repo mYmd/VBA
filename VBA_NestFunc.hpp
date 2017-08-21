@@ -9,16 +9,16 @@
 #endif
 
 //VBA配列の次元取得
-__int32 __stdcall   Dimension(const VARIANT* pv) noexcept;
+__int32 __stdcall   Dimension(VARIANT const& v) noexcept;
 
 //プレースホルダの生成
 VARIANT __stdcall   placeholder(__int32) noexcept;
 
 //プレースホルダの判定
-__int32 __stdcall   is_placeholder(const VARIANT* pv) noexcept;
+__int32 __stdcall   is_placeholder(VARIANT const& v) noexcept;
 
 //bindされていないVBA関数を2引数で呼び出す
-VARIANT __stdcall   unbind_invoke(VARIANT const* bfun, VARIANT* param1, VARIANT* param2) noexcept;
+VARIANT __stdcall   unbind_invoke(VARIANT const& bfun, VARIANT& param1, VARIANT& param2) noexcept;
 
 //--------------------------------------------------------
 VARIANT iVariant(VARTYPE t = VT_EMPTY) noexcept;
@@ -33,7 +33,7 @@ class safearrayRef {
     VARIANT         val_;
     std::array<std::size_t, 3>  size;
 public:
-    explicit safearrayRef(const VARIANT* pv) noexcept;
+    explicit safearrayRef(VARIANT const& v) noexcept;
     ~safearrayRef();
     safearrayRef(safearrayRef const&) = delete;
     safearrayRef(safearrayRef&&) = delete;
@@ -48,7 +48,7 @@ public:
 class funcExpr_i {
 public:
     virtual ~funcExpr_i() = default;
-    virtual VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept = 0;
+    virtual VARIANT& eval(VARIANT&, VARIANT&, int left_right) noexcept = 0;
 };
 
 //--------------------------------------------------------
@@ -57,7 +57,7 @@ public:
 // Function fun(ByRef elem As Variant, ByRef dummy As Variant) As Variant
 // もしくは
 // Function fun(ByRef elem As Variant, Optional ByRef dummy As Variant) As Variant
-using vbCallbackFunc_t = VARIANT(__stdcall *)(VARIANT*, VARIANT*);
+using vbCallbackFunc_t = VARIANT(__stdcall *)(VARIANT&, VARIANT&);
 
 namespace {
     struct VBCallbackStruct;
@@ -72,10 +72,10 @@ class functionExpr : public funcExpr_i {
     functionExpr(functionExpr const&) = delete;
     functionExpr(functionExpr&&) = delete;
 public:
-    explicit functionExpr(const VARIANT*) noexcept;
+    explicit functionExpr(VARIANT const&) noexcept;
     explicit functionExpr(const VBCallbackStruct&) noexcept;
     ~functionExpr();
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept override;
+    VARIANT& eval(VARIANT&, VARIANT&, int left_right = 0) noexcept override;
     bool isValid() const noexcept;
 };
 
@@ -89,9 +89,9 @@ class innerFunction : public funcExpr_i {
     std::unique_ptr<innerFunction>  arg2;
     innerFunction(innerFunction const&) = delete;
     innerFunction(innerFunction&&) = delete;
-    void eval_imple(VARIANT*, VARIANT*, VARIANT*, int, int) noexcept;
+    void eval_imple(VARIANT&, VARIANT&, VARIANT&, int, int) noexcept;
 public:
-    innerFunction(VARIANT*, bool) noexcept;
+    innerFunction(VARIANT&, bool) noexcept;
     ~innerFunction();
-    VARIANT* eval(VARIANT*, VARIANT*, int left_right = 0) noexcept override;
+    VARIANT& eval(VARIANT&, VARIANT&, int left_right) noexcept override;
 };

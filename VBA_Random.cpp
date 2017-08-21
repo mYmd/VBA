@@ -49,7 +49,7 @@ namespace   {
             ret.vt = VT_ARRAY | VT_VARIANT;
             SAFEARRAYBOUND Bound = { static_cast<ULONG>(N), 0 };
             ret.parray = ::SafeArrayCreate(VT_VARIANT, 1, &Bound);
-            safearrayRef arOut{&ret};
+            safearrayRef arOut{ret};
             for ( int i = 0; i < N; ++i )
             {
                 ::VariantInit(&arOut(i));
