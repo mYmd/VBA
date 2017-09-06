@@ -46,7 +46,7 @@ End Function
 Public Sub m2sheet(ByRef matrix As Variant, _
                    ByVal r As Object, _
                    Optional ByVal vertical As Boolean = False)
-    If StrConv(Application.name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" Then
+    If StrConv(Application.name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" And 0 < sizeof(matrix) Then
         Select Case Dimension(matrix)
         Case 0:
             r.value = matrix
