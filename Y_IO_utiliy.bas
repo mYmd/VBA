@@ -11,6 +11,7 @@ Option Explicit
 '   Function    getRangeMatrix      Excelシートのセル範囲からRangeオブジェクトの配列を取得
 '   Function    getInterior         オブジェクトのInteriorプロパティを取得
 '   Function    getTextFile         テキストファイルの配列読み込み
+'   Function    mapTextLine         テキストファイルの行単位での処理
 '   Sub         writeTextFile       配列のテキストファイル書き込み
 '   Function    getURLText          URLで指定されたテキストの配列読み込み
 '   Function    urlEncode           URLエンコード
@@ -127,6 +128,45 @@ closeAdoStream:
     If 0 < Len(line_end) And VarType(getTextFile) = vbString Then
         getTextFile = Split(getTextFile, line_end)
     End If
+End Function
+
+' テキストファイルの行単位での処理
+' fn       : VBAHaskellの関数（0を返したときbreak）
+' Charsetはshift-jisは明示的に指定しないとダメ
+' head_n   : 先頭行数指定
+' head_cut : 先頭削除行数指定
+' 戻り値   : 処理行数
+Public Function mapTextLine(ByRef fn As Variant, _
+                            ByVal fileName As String, _
+                            ByVal line_end As String, _
+                            Optional ByVal Charset As String = "_autodetect_all", _
+                            Optional ByVal head_n As Long = -1, _
+                            Optional ByVal head_cut As Long = 0) As Long
+    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
+    On Error GoTo closeAdoStream
+    Dim i As Long
+    Dim lineS As Variant
+    If head_n < 0 Then head_n = 2 ^ 30
+    With ado
+        .Open
+        .Position = 0
+        .Type = 2    'ADODB.Stream.adTypeText
+        .Charset = Charset
+        .LoadFromFile fileName
+        .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
+        For i = 1 To head_cut Step 1
+            .SkipLine
+        Next i
+        Do While i <= head_n And Not .EOS
+            lineS = .ReadText(-2)   'adReadLine
+            If 0 = applyFun(lineS, fn) Then Exit Do
+            mapTextLine = mapTextLine + 1
+            i = i + 1
+        Loop
+    End With
+closeAdoStream:
+    ado.Close
+    Set ado = Nothing
 End Function
 
 ' 配列のテキストファイル書き込み
@@ -528,4 +568,3 @@ Function decodeBase64(ByVal fromFile As String, ByVal toFile As String) As Boole
     End With
     decodeBase64 = True
 End Function
-
