@@ -12,35 +12,35 @@ Option Explicit
 'Copyright (c) 2016 mmYYmmdd
 
 '*********************************************************************************
-'   æ¨™æº–ãƒ™ã‚¯ãƒˆãƒ«
+'   •W€ƒxƒNƒgƒ‹
 ' --------------------------------------------------------------------------------
-'   Function        from                Variantã®1æ¬¡å…ƒé…åˆ—ã‚’moveã—ã¦VECTORã‚’ä½œæˆ
-'   Function        clear               å…¨ã¦ã®è¦ç´ ã‚’å‰Šé™¤
-'   Function        free                é…åˆ—éƒ¨åˆ†ã‚’æˆ»ã—ã¦è‡ªèº«ã¯è§£æ”¾
-'   Function        swap                vh_stdvecã©ã†ã—ã®swap
-'   Function        clone               åŒã˜é…åˆ—ã‚’æŒã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
-'   Property Get    size                æ›¸ãè¾¼ã¿æ¸ˆã¿è¦ç´ æ•°ã‚’å–å¾—
-'   Property Get    capacity            ReDimã›ãšã«æ ¼ç´ã§ãã‚‹æœ€å¤§ã®è¦ç´ æ•°ã‚’å–å¾—
-'   Function        shrink              é ˜åŸŸã‚’æŒ‡å®šã®é•·ã•ã¾ãŸã¯sizeã¾ã§åˆ‡ã‚Šè©°ã‚ã‚‹
-'   Function        erase_n             æŒ‡å®šã—ãŸä½ç½®ã‹ã‚‰å€‹æ•°ã‚’æŒ‡å®šã—ã¦ç¯„å›²ã‚’å‰Šé™¤ã™ã‚‹
-'   Sub             printS              ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã« size ã¨ capacity ã‚’è¡¨ç¤ºã™ã‚‹
-'   Sub             printM              ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã« æ›¸ãè¾¼ã¿æ¸ˆã¿é ˜åŸŸå…¨ä½“ã‚’è¡¨ç¤ºã™ã‚‹
-'   Sub             printM_             ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã‚¸ãƒ£ã‚°é…åˆ—ã‚’å±•é–‹ã—ã¦è¡¨ç¤ºã™ã‚‹
-'   Property Get    val                 æŒ‡å®šä½ç½®ã®å€¤ã‚’å–å¾—
-'   Property Get    pop                 valã®moveç‰ˆï¼ˆå€¤ã¯moveã•ã‚Œã‚‹ï¼‰
-'   Function        push                æŒ‡å®šä½ç½®ã«å€¤ã‚’è¨­å®šï¼ˆå€¤ã¯moveã•ã‚Œã‚‹ï¼‰
-'   Function        push_n              åŒä¸€ã®å€¤ã«å¯¾ã™ã‚‹pushã®è¤‡æ•°å›é©ç”¨
-'   Function        push_array          é…åˆ—ã®ä¸€æ‹¬ pushï¼ˆé…åˆ—ã®å„è¦ç´ ã¯moveã•ã‚Œã‚‹ï¼‰
-'   Function        insert_empty        beginã®ä½ç½®ã®å‰ã«nå€‹ã®Emptyã‚’æŒ¿å…¥ï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
-'   Function        push_back           æ›¸ãè¾¼ã¿æ¸ˆã¿æœ«å°¾ã«å¯¾ã™ã‚‹pushï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
-'   Function        push_back_n         æ›¸ãè¾¼ã¿æ¸ˆã¿æœ«å°¾ã«å¯¾ã™ã‚‹push_nï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
-'   Function        push_back_array     æ›¸ãè¾¼ã¿æ¸ˆã¿æœ«å°¾ã«å¯¾ã™ã‚‹push_arrayï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
-'   Function        push_back_arrays    push_back_arrayã®åå¾©
-'   Function        filter              æŠ½å‡ºæ¡ä»¶ã‚’ä¸ãˆã¦é…åˆ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹
-'   Function        map                 å¤‰æ›å¼ã‚’ä¸ãˆã¦é…åˆ—ã‚’å¤‰æ›ã™ã‚‹
-'   Function        orderby             æ¯”è¼ƒé–¢æ•°ã‚’ä¸ãˆã¦é…åˆ—ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹
-'   Function        zipWith             ä»–ã®ãƒ™ã‚¯ãƒˆãƒ«ã¨ã® zipWith
-'   Function        inner_join          ä»–ã®ãƒ™ã‚¯ãƒˆãƒ«ã¨ã® Inner Join
+'   Function        from                Variant‚Ì1ŸŒ³”z—ñ‚ğmove‚µ‚ÄVECTOR‚ğì¬
+'   Function        clear               ‘S‚Ä‚Ì—v‘f‚ğíœ
+'   Function        free                ”z—ñ•”•ª‚ğ–ß‚µ‚Ä©g‚Í‰ğ•ú
+'   Function        swap                vh_stdvec‚Ç‚¤‚µ‚Ìswap
+'   Function        clone               “¯‚¶”z—ñ‚ğ‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+'   Property Get    size                ‘‚«‚İÏ‚İ—v‘f”‚ğæ“¾
+'   Property Get    capacity            ReDim‚¹‚¸‚ÉŠi”[‚Å‚«‚éÅ‘å‚Ì—v‘f”‚ğæ“¾
+'   Function        shrink              —Ìˆæ‚ğw’è‚Ì’·‚³‚Ü‚½‚Ísize‚Ü‚ÅØ‚è‹l‚ß‚é
+'   Function        erase_n             w’è‚µ‚½ˆÊ’u‚©‚çŒÂ”‚ğw’è‚µ‚Ä”ÍˆÍ‚ğíœ‚·‚é
+'   Sub             printS              ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É size ‚Æ capacity ‚ğ•\¦‚·‚é
+'   Sub             printM              ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É ‘‚«‚İÏ‚İ—Ìˆæ‘S‘Ì‚ğ•\¦‚·‚é
+'   Sub             printM_             ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚ÉƒWƒƒƒO”z—ñ‚ğ“WŠJ‚µ‚Ä•\¦‚·‚é
+'   Property Get    val                 w’èˆÊ’u‚Ì’l‚ğæ“¾
+'   Property Get    pop                 val‚Ìmove”Åi’l‚Ímove‚³‚ê‚éj
+'   Function        push                w’èˆÊ’u‚É’l‚ğİ’èi’l‚Ímove‚³‚ê‚éj
+'   Function        push_n              “¯ˆê‚Ì’l‚É‘Î‚·‚épush‚Ì•¡”‰ñ“K—p
+'   Function        push_array          ”z—ñ‚ÌˆêŠ‡ pushi”z—ñ‚ÌŠe—v‘f‚Ímove‚³‚ê‚éj
+'   Function        insert_empty        begin‚ÌˆÊ’u‚Ì‘O‚ÉnŒÂ‚ÌEmpty‚ğ‘}“üi—ÌˆæŠg’£‚·‚éj
+'   Function        push_back           ‘‚«‚İÏ‚İ––”ö‚É‘Î‚·‚épushi—ÌˆæŠg’£‚·‚éj
+'   Function        push_back_n         ‘‚«‚İÏ‚İ––”ö‚É‘Î‚·‚épush_ni—ÌˆæŠg’£‚·‚éj
+'   Function        push_back_array     ‘‚«‚İÏ‚İ––”ö‚É‘Î‚·‚épush_arrayi—ÌˆæŠg’£‚·‚éj
+'   Function        push_back_arrays    push_back_array‚Ì”½•œ
+'   Function        filter              ’ŠoğŒ‚ğ—^‚¦‚Ä”z—ñ‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚·‚é
+'   Function        map                 •ÏŠ·®‚ğ—^‚¦‚Ä”z—ñ‚ğ•ÏŠ·‚·‚é
+'   Function        orderby             ”äŠrŠÖ”‚ğ—^‚¦‚Ä”z—ñ‚ğƒ\[ƒg‚·‚é
+'   Function        zipWith             ‘¼‚ÌƒxƒNƒgƒ‹‚Æ‚Ì zipWith
+'   Function        inner_join          ‘¼‚ÌƒxƒNƒgƒ‹‚Æ‚Ì Inner Join
 '*********************************************************************************
     Private Declare PtrSafe Function copy_valueMember Lib "mapM.dll" _
                                             (ByVal source As vh_stdvec, _
@@ -60,8 +60,8 @@ Option Explicit
         vec_ = Empty
     End Sub
 
-' Variantã®1æ¬¡å…ƒé…åˆ—ã‚’moveã—ã¦è‡ªèº«ã®ãƒ‡ãƒ¼ã‚¿ã¨ã™ã‚‹ï¼ˆLBound = 0ã«ã™ã‚‹ï¼‰
-' 2æ¬¡å…ƒé…åˆ—ã‚’æ¸¡ã—ãŸå ´åˆã¯ zipC ã™ã‚‹
+' Variant‚Ì1ŸŒ³”z—ñ‚ğmove‚µ‚Ä©g‚Ìƒf[ƒ^‚Æ‚·‚éiLBound = 0‚É‚·‚éj
+' 2ŸŒ³”z—ñ‚ğ“n‚µ‚½ê‡‚Í zipC ‚·‚é
 Public Function from(ByRef v As Variant) As vh_stdvec
     If VarType(v) = VarType(Array()) Then
         vec_ = Empty
@@ -83,57 +83,61 @@ Public Function from(ByRef v As Variant) As vh_stdvec
     Set from = Me
 End Function
 
-' å…¨ã¦ã®è¦ç´ ã‚’å‰Šé™¤
+' ‘S‚Ä‚Ì—v‘f‚ğíœ
 Public Function clear() As vh_stdvec
     ReDim vec_(0 To 0)
     pos_write = -1
     Set clear = Me
 End Function
 
-' é…åˆ—éƒ¨åˆ†ã‚’æˆ»ã—ã¦è‡ªèº«ã¯è§£æ”¾
+' ”z—ñ•”•ª‚ğ–ß‚µ‚Ä©g‚Í‰ğ•ú
 Public Function free() As Variant
-    shrink
-    swapVariant free, vec_
+    Dim ret As Variant, i As Long
+    ret = makeM(size())
+    For i = 0 To UBound(ret) Step 1
+        swapVariant ret(i), vec_(i)
+    Next i
+    swapVariant free, ret
     ReDim vec_(0 To 0)
     pos_write = -1
 End Function
 
-'vh_stdvecã©ã†ã—ã®swap
+'vh_stdvec‚Ç‚¤‚µ‚Ìswap
 Public Function swap(ByVal Target As vh_stdvec) As vh_stdvec
     Call copy_valueMember(Me, vec_, Target, 0)
     Call copy_valueMember(Me, pos_write, Target, 0)
     Set swap = Me
 End Function
 
-' åŒã˜é…åˆ—ã‚’æŒã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+' “¯‚¶”z—ñ‚ğ‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ì¶¬
 Public Function clone() As vh_stdvec
     Set clone = New vh_stdvec
     Call copy_valueMember(Me, vec_, clone, 1)
     Call copy_valueMember(Me, pos_write, clone, 1)
 End Function
 
-' æ›¸ãè¾¼ã¿æ¸ˆã¿è¦ç´ æ•°ã‚’å–å¾—
+' ‘‚«‚İÏ‚İ—v‘f”‚ğæ“¾
 Public Property Get size() As Long
     size = 1 + pos_write
 End Property
 
-' ReDimã›ãšã«æ ¼ç´ã§ãã‚‹æœ€å¤§ã®è¦ç´ æ•°ã‚’å–å¾—
+' ReDim‚¹‚¸‚ÉŠi”[‚Å‚«‚éÅ‘å‚Ì—v‘f”‚ğæ“¾
 Public Property Get capacity() As Long
     capacity = rowSize(vec_)
 End Property
 
-' é ˜åŸŸã‚’æŒ‡å®šã®é•·ã•ã¾ãŸã¯sizeã¾ã§åˆ‡ã‚Šè©°ã‚ã‚‹
+' —Ìˆæ‚ğw’è‚Ì’·‚³‚Ü‚½‚Ísize‚Ü‚ÅØ‚è‹l‚ß‚é
 Public Function shrink(Optional ByVal size_ As Long = -1) As vh_stdvec
     If 0 < size_ Then pos_write = min_fun(pos_write, size_ - 1)
     If 0 <= pos_write Then ReDim Preserve vec_(0 To pos_write)
     Set shrink = Me
 End Function
 
-' æŒ‡å®šã—ãŸä½ç½®ã‹ã‚‰å€‹æ•°ã‚’æŒ‡å®šã—ã¦ç¯„å›²ã‚’å‰Šé™¤ã™ã‚‹
-Public Function erase_n(ByVal begin As Long, ByVal n As Long) As vh_stdvec
-    If 0 <= begin And begin <= pos_write And 0 < n Then
+' w’è‚µ‚½ˆÊ’u‚©‚çŒÂ”‚ğw’è‚µ‚Ä”ÍˆÍ‚ğíœ‚·‚é
+Public Function erase_n(ByVal begin As Long, ByVal N As Long) As vh_stdvec
+    If 0 <= begin And begin <= pos_write And 0 < N Then
         Dim kkk As Long
-        kkk = begin + n
+        kkk = begin + N
         If begin < kkk Then
             Do While kkk <= pos_write
                 swapVariant vec_(begin), vec_(kkk)
@@ -151,12 +155,12 @@ Public Function erase_n(ByVal begin As Long, ByVal n As Long) As vh_stdvec
     Set erase_n = Me
 End Function
 
-' ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æ›¸ãè¾¼ã¿æ¸ˆã¿é ˜åŸŸã¨é…åˆ—é ˜åŸŸã‚’è¡¨ç¤ºã™ã‚‹
+' ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É‘‚«‚İÏ‚İ—Ìˆæ‚Æ”z—ñ—Ìˆæ‚ğ•\¦‚·‚é
 Public Sub printS()
     Debug.Print "[Data]: 0 -> " & pos_write & " : [Accessible]: 0 -> " & UBound(vec_)
 End Sub
 
-' ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã« æ›¸ãè¾¼ã¿æ¸ˆã¿é ˜åŸŸã®å…¨ä½“ã¾ãŸã¯ä¸€éƒ¨ã‚’è¡¨ç¤ºã™ã‚‹
+' ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É ‘‚«‚İÏ‚İ—Ìˆæ‚Ì‘S‘Ì‚Ü‚½‚Íˆê•”‚ğ•\¦‚·‚é
 Public Sub printM(Optional ByRef r As Variant)
     If 0 < rowSize(vec_) Then
         If IsMissing(r) Then
@@ -171,7 +175,7 @@ Public Sub printM(Optional ByRef r As Variant)
     End If
 End Sub
 
-' ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ã‚¸ãƒ£ã‚°é…åˆ—ã‚’å±•é–‹ã—ã¦è¡¨ç¤ºã™ã‚‹
+' ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚ÉƒWƒƒƒO”z—ñ‚ğ“WŠJ‚µ‚Ä•\¦‚·‚é
 Sub printM_(Optional ByRef r As Variant, Optional ByRef c As Variant)
     Dim begin_ As Long, end_   As Long
     If IsMissing(r) Then
@@ -187,7 +191,7 @@ Sub printM_(Optional ByRef r As Variant, Optional ByRef c As Variant)
     Haskell_3_printM.printM_ vec_, VBA.Array(begin_, end_), c
 End Sub
 
-' æŒ‡å®šä½ç½®ã® å€¤ ã‚’å–å¾—ã™ã‚‹ï¼ˆ1ä»¥ä¸Šã®ç¬¬2å¼•æ•°ã‚’æŒ‡å®šã—ãŸå ´åˆã¯ãã®é•·ã•åˆ†é…åˆ—ã§è¿”ã™ï¼‰
+' w’èˆÊ’u‚Ì ’l ‚ğæ“¾‚·‚éi1ˆÈã‚Ì‘æ2ˆø”‚ğw’è‚µ‚½ê‡‚Í‚»‚Ì’·‚³•ª”z—ñ‚Å•Ô‚·j
 Public Property Get val(ByVal begin As Long, Optional ByVal len_ As Long = 0) As Variant
     If 0 < len_ Then
         Dim ret As Variant, i As Long
@@ -201,7 +205,7 @@ Public Property Get val(ByVal begin As Long, Optional ByVal len_ As Long = 0) As
     End If
 End Property
 
-' æŒ‡å®šä½ç½®ã® å€¤ ã‚’å–å¾—ã™ã‚‹ moveç‰ˆï¼ˆ1ä»¥ä¸Šã®ç¬¬2å¼•æ•°ã‚’æŒ‡å®šã—ãŸå ´åˆã¯ãã®é•·ã•åˆ†é…åˆ—ã§è¿”ã™ï¼‰
+' w’èˆÊ’u‚Ì ’l ‚ğæ“¾‚·‚é move”Åi1ˆÈã‚Ì‘æ2ˆø”‚ğw’è‚µ‚½ê‡‚Í‚»‚Ì’·‚³•ª”z—ñ‚Å•Ô‚·j
 Public Property Get pop(ByVal begin As Long, Optional ByVal len_ As Long = 0) As Variant
     If 0 < len_ Then
         Dim ret As Variant, i As Long
@@ -215,7 +219,7 @@ Public Property Get pop(ByVal begin As Long, Optional ByVal len_ As Long = 0) As
     End If
 End Property
 
-' æŒ‡å®šä½ç½®ã«å€¤ã‚’è¨­å®šã™ã‚‹ï¼ˆå€¤ã¯moveã•ã‚Œã‚‹ï¼‰
+' w’èˆÊ’u‚É’l‚ğİ’è‚·‚éi’l‚Ímove‚³‚ê‚éj
 Public Function push(ByVal pos As Long, ByRef x As Variant) As vh_stdvec
     vec_(pos) = Empty
     swapVariant vec_(pos), x
@@ -223,16 +227,16 @@ Public Function push(ByVal pos As Long, ByRef x As Variant) As vh_stdvec
     Set push = Me
 End Function
 
-' åŒä¸€ã®å€¤ã«å¯¾ã™ã‚‹ push ã®è¤‡æ•°å›é©ç”¨
-Public Function push_n(ByVal pos As Long, ByRef x As Variant, ByVal n As Long) As vh_stdvec
-    If 0 < n Then
-        Set push_n = Me.push_array(pos, repeat(x, n))
+' “¯ˆê‚Ì’l‚É‘Î‚·‚é push ‚Ì•¡”‰ñ“K—p
+Public Function push_n(ByVal pos As Long, ByRef x As Variant, ByVal N As Long) As vh_stdvec
+    If 0 < N Then
+        Set push_n = Me.push_array(pos, repeat(x, N))
     Else
         Set push_n = Me
     End If
 End Function
 
-' é…åˆ—ã®ä¸€æ‹¬ pushï¼ˆé…åˆ—ã¯moveã•ã‚Œã‚‹ï¼‰
+' ”z—ñ‚ÌˆêŠ‡ pushi”z—ñ‚Ímove‚³‚ê‚éj
 Public Function push_array(ByVal pos As Long, ByRef x As Variant) As vh_stdvec
     Dim i As Long
     If Dimension(x) = 1 Then
@@ -246,47 +250,47 @@ Public Function push_array(ByVal pos As Long, ByRef x As Variant) As vh_stdvec
     Set push_array = Me
 End Function
 
-' beginã®ä½ç½®ã®å‰ã«nå€‹ã®Emptyã‚’æŒ¿å…¥ã™ã‚‹
-Public Function insert_empty(ByVal begin As Long, ByVal n As Long) As vh_stdvec
-    If begin < 0 Or n < 1 Then
+' begin‚ÌˆÊ’u‚Ì‘O‚ÉnŒÂ‚ÌEmpty‚ğ‘}“ü‚·‚é
+Public Function insert_empty(ByVal begin As Long, ByVal N As Long) As vh_stdvec
+    If begin < 0 Or N < 1 Then
         Set insert_empty = Me
         Exit Function
     End If
     Dim NNN As Long
-    NNN = max_fun(begin, pos_write) + n
+    NNN = max_fun(begin, pos_write) + N
     If UBound(vec_) < NNN Then
         ReDim Preserve vec_(0 To max_fun(1 + 2 * UBound(vec_), NNN))
     End If
     If begin <= pos_write Then
         Dim b As Long, e As Long
         b = pos_write
-        e = b + n
+        e = b + N
         Do While begin <= b
             swapVariant vec_(e), vec_(b)
             vec_(b) = Empty
             e = e - 1
             b = b - 1
         Loop
-        pos_write = pos_write + n
+        pos_write = pos_write + N
     End If
     Set insert_empty = Me
 End Function
 
-' æ›¸ãè¾¼ã¿æ¸ˆã¿æœ«å°¾ã«å¯¾ã™ã‚‹pushï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
+' ‘‚«‚İÏ‚İ––”ö‚É‘Î‚·‚épushi—ÌˆæŠg’£‚·‚éj
 Public Function push_back(ByRef x As Variant) As vh_stdvec
     Set push_back = Me.insert_empty(pos_write + 1, 1).push(pos_write + 1, x)
 End Function
 
-' æ›¸ãè¾¼ã¿æ¸ˆã¿æœ«å°¾ã«å¯¾ã™ã‚‹åŒä¸€å€¤ã®è¤‡æ•°pushï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
-Public Function push_back_n(ByRef x As Variant, ByVal n As Long) As vh_stdvec
-    If 0 < n Then
-        Set push_back_n = push_back_array(repeat(x, n))
+' ‘‚«‚İÏ‚İ––”ö‚É‘Î‚·‚é“¯ˆê’l‚Ì•¡”pushi—ÌˆæŠg’£‚·‚éj
+Public Function push_back_n(ByRef x As Variant, ByVal N As Long) As vh_stdvec
+    If 0 < N Then
+        Set push_back_n = push_back_array(repeat(x, N))
     Else
         Set push_back_n = Me
     End If
 End Function
 
-' æ›¸ãè¾¼ã¿æ¸ˆã¿æœ«å°¾ã«å¯¾ã™ã‚‹push_arrayï¼ˆé ˜åŸŸæ‹¡å¼µã™ã‚‹ï¼‰
+' ‘‚«‚İÏ‚İ––”ö‚É‘Î‚·‚épush_arrayi—ÌˆæŠg’£‚·‚éj
 Public Function push_back_array(ByRef arr As Variant) As vh_stdvec
     If Dimension(arr) = 1 And 0 < rowSize(arr) Then
         Set push_back_array = insert_empty(pos_write + 1, rowSize(arr)).push_array(pos_write + 1, arr)
@@ -295,7 +299,7 @@ Public Function push_back_array(ByRef arr As Variant) As vh_stdvec
     End If
 End Function
 
-' push_back_arrayã®åå¾©
+' push_back_array‚Ì”½•œ
 Public Function push_back_arrays(ByRef arrays As Variant) As vh_stdvec
     Dim i As Long
     For i = LBound(arrays) To UBound(arrays) Step 1
@@ -304,21 +308,21 @@ Public Function push_back_arrays(ByRef arrays As Variant) As vh_stdvec
     Set push_back_arrays = Me
 End Function
 
-' æŠ½å‡ºæ¡ä»¶ã‚’ä¸ãˆã¦é…åˆ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹
+' ’ŠoğŒ‚ğ—^‚¦‚Ä”z—ñ‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚·‚é
 Public Function filter(ByRef pred As Variant) As vh_stdvec
     shrink
     Set filter = New vh_stdvec
     filter.from filterR(vec_, mapF(pred, vec_))
 End Function
 
-' å¤‰æ›å¼ã‚’ä¸ãˆã¦é…åˆ—ã‚’å¤‰æ›ã™ã‚‹
+' •ÏŠ·®‚ğ—^‚¦‚Ä”z—ñ‚ğ•ÏŠ·‚·‚é
 Public Function map(ByRef fun As Variant) As vh_stdvec
     shrink
     Set map = New vh_stdvec
     map.from mapF(fun, vec_)
 End Function
 
-' æ¯”è¼ƒé–¢æ•°ã‚’ä¸ãˆã¦é…åˆ—ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹
+' ”äŠrŠÖ”‚ğ—^‚¦‚Ä”z—ñ‚ğƒ\[ƒg‚·‚é
 Public Function orderby(Optional ByRef comp As Variant) As vh_stdvec
     shrink
     Dim tmp As Variant
@@ -332,16 +336,16 @@ Public Function orderby(Optional ByRef comp As Variant) As vh_stdvec
     orderby.from tmp
 End Function
 
-' ä»–ã®ãƒ™ã‚¯ãƒˆãƒ«ã¨ã® zipWith
+' ‘¼‚ÌƒxƒNƒgƒ‹‚Æ‚Ì zipWith
 Public Function zipWith(ByRef fun As Variant, ByVal other As vh_stdvec) As vh_stdvec
     shrink
     Set zipWith = New vh_stdvec
     zipWith.from Haskell_0_declare.zipWith(fun, vec_, other.clone().free())
 End Function
 
-' ä»–ã®ãƒ™ã‚¯ãƒˆãƒ«ã¨ã® Inner Join
-' key1 : è‡ªèº«ã®ã‚­ãƒ¼åˆ—ç•ªå·
-' key2 : å¯¾è±¡ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚­ãƒ¼åˆ—ç•ªå·
+' ‘¼‚ÌƒxƒNƒgƒ‹‚Æ‚Ì Inner Join
+' key1 : ©g‚ÌƒL[—ñ”Ô†
+' key2 : ‘ÎÛƒxƒNƒgƒ‹‚ÌƒL[—ñ”Ô†
 Public Function inner_join(ByVal other As vh_stdvec, _
                      ByVal key1 As Long, _
                      ByVal key2 As Long, _
