@@ -305,6 +305,27 @@ find_imple(VARIANT const& bfun, VARIANT& matrix, __int32 const def) noexcept
     return      def;
 }
 
+//èqåÍÇ…ÇÊÇÈ1éüå≥îzóÒÇ©ÇÁÇÃç≈ó«ílåüçı
+__int32  __stdcall
+find_best_imple(VARIANT const& bfun, VARIANT& matrix, __int32 const def) noexcept
+{
+    safearrayRef arIn{matrix}, arIn_b{matrix};
+    if (arIn.getDim() != 1)                       return def;
+    functionExpr func{bfun};
+    if (!func.isValid())                          return def;
+    std::size_t best_i = 0;
+    for (std::size_t i = 1; i < arIn.getSize(1); ++i)
+    {
+        auto& elem = arIn(i);
+        auto& elem_b = arIn_b(best_i);
+        auto ret = iVariant();
+        ::VariantChangeType(&ret, &func.eval(elem, elem_b), 0, VT_I4);
+        if (ret.lVal != 0)      best_i = i;
+        ::VariantClear(&ret);
+    }
+    return static_cast<__int32>(best_i + arIn.getOriginalLBound(1));
+}
+
 //repeat_while Ç∆ repeat_while_not Ç∆ generate_while Ç∆ generate_while_not
 VARIANT __stdcall
 repeat_imple(VARIANT const&       init,

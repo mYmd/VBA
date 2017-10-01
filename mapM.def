@@ -1,9 +1,9 @@
-; mapM.def : DLL ç”¨ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ« ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å®£è¨€
+; mapM.def : DLL —p‚Ìƒ‚ƒWƒ…[ƒ‹ ƒpƒ‰ƒ[ƒ^éŒ¾
 
 LIBRARY      "mapM"
 
 EXPORTS
-    ; æ˜ç¤ºçš„ãªã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã¯ã“ã“ã¸è¨˜è¿°ã§ãã¾ã™
+    ; –¾¦“I‚ÈƒGƒNƒXƒ|[ƒg‚Í‚±‚±‚Ö‹Lq‚Å‚«‚Ü‚·
 
 	Dimension = Dimension
 	placeholder = placeholder
@@ -21,6 +21,7 @@ EXPORTS
 	scanr1 = scanr1
 	stdsort = stdsort
 	find_imple = find_imple
+	find_best_imple = find_best_imple
 	repeat_imple = repeat_imple
 	self_zipWith = self_zipWith
 	swapVariant = swapVariant

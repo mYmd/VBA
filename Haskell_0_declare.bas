@@ -4,123 +4,130 @@ Attribute VB_Name = "Haskell_0_declare"
 Option Explicit
 
 '======================================================
-'          APIå®£è¨€
-'   Function Dimension          é…åˆ—ã®æ¬¡å…ƒå–å¾—
-'   Function placeholder        ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
-'   Function is_placeholder     ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆ¤å®š
-'   Function unbind_invoke      bindã•ã‚Œã¦ã„ãªã„VBAé–¢æ•°ã‚’2å¼•æ•°ã§å‘¼ã³å‡ºã™
-'   Function mapF_imple         é…åˆ—matrixã®å„è¦ç´ elemã«Callbacké–¢æ•°ã‚’é©ç”¨ã™ã‚‹
-'   Function zipWith            2ã¤ã®é…åˆ—ã®å„è¦ç´ ã«é–¢æ•°ã‚’é©ç”¨ã™ã‚‹
-'   Function foldl              é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦ç•³ã¿è¾¼ã¿ï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
-'   Function foldr              é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³ç•³ã¿è¾¼ã¿ï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
-'   Function foldl1             é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦ç•³ã¿è¾¼ã¿ï¼ˆå…ˆé ­è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
-'   Function foldr1             é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³ç•³ã¿è¾¼ã¿ï¼ˆæœ«å°¾è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
-'   Function scanl              é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦scanï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
-'   Function scanr              é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³scanï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
-'   Function scanl1             é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦scanï¼ˆå…ˆé ­è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
-'   Function scanr1             é…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³scanï¼ˆæœ«å°¾è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
-'   Function stdsort            1æ¬¡å…ƒé…åˆ—ã®ã‚½ãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å‡ºåŠ›
-'   Function find_imple         è¿°èªã«ã‚ˆã‚‹æ¤œç´¢
-'   Function repeat_imple       é–¢æ•°é©ç”¨ã®ãƒ«ãƒ¼ãƒ—ï¼ˆ+ çµ‚äº†æ¡ä»¶ï¼‰
-'   Function swapVariant        VARIANTå¤‰æ•°ã©ã†ã—ã®ã‚¹ãƒ¯ãƒƒãƒ—
-'   Sub      changeLBound       VBAé…åˆ—ã®LBoundå¤‰æ›´
-'   Function self_zipWith       1æ¬¡å…ƒé…åˆ—ã®é›¢ã‚ŒãŸè¦ç´ é–“ã§2é …æ“ä½œã‚’é©ç”¨ã™ã‚‹
+'          APIéŒ¾
+'   Function Dimension          ”z—ñ‚ÌŸŒ³æ“¾
+'   Function placeholder        ƒvƒŒ[ƒXƒzƒ‹ƒ_EƒIƒuƒWƒFƒNƒg‚Ì¶¬
+'   Function is_placeholder     ƒvƒŒ[ƒXƒzƒ‹ƒ_EƒIƒuƒWƒFƒNƒg”»’è
+'   Function unbind_invoke      bind‚³‚ê‚Ä‚¢‚È‚¢VBAŠÖ”‚ğ2ˆø”‚ÅŒÄ‚Ño‚·
+'   Function mapF_imple         ”z—ñmatrix‚ÌŠe—v‘felem‚ÉCallbackŠÖ”‚ğ“K—p‚·‚é
+'   Function zipWith            2‚Â‚Ì”z—ñ‚ÌŠe—v‘f‚ÉŠÖ”‚ğ“K—p‚·‚é
+'   Function foldl              ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶ô‚İ‚İi‰Šú’lw’è‚ ‚èj
+'   Function foldr              ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Eô‚İ‚İi‰Šú’lw’è‚ ‚èj
+'   Function foldl1             ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶ô‚İ‚İiæ“ª—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
+'   Function foldr1             ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Eô‚İ‚İi––”ö—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
+'   Function scanl              ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶scani‰Šú’lw’è‚ ‚èj
+'   Function scanr              ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Escani‰Šú’lw’è‚ ‚èj
+'   Function scanl1             ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶scaniæ“ª—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
+'   Function scanr1             ”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Escani––”ö—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
+'   Function stdsort            1ŸŒ³”z—ñ‚Ìƒ\[ƒgƒCƒ“ƒfƒbƒNƒXo—Í
+'   Function find_imple         qŒê‚É‚æ‚éŒŸõ
+'   Function find_best_imple    qŒê‚É‚æ‚éÅ—Ç’lˆÊ’uŒŸõ
+'   Function repeat_imple       ŠÖ”“K—p‚Ìƒ‹[ƒvi+ I—¹ğŒj
+'   Function swapVariant        VARIANT•Ï”‚Ç‚¤‚µ‚ÌƒXƒƒbƒv
+'   Sub      changeLBound       VBA”z—ñ‚ÌLBound•ÏX
+'   Function self_zipWith       1ŸŒ³”z—ñ‚Ì—£‚ê‚½—v‘fŠÔ‚Å2€‘€ì‚ğ“K—p‚·‚é
 '======================================================
-' Callbackã¨ã—ã¦ä½¿ãˆã‚‹é–¢æ•°ã®ã‚·ã‚°ãƒãƒãƒ£ã¯
+' Callback‚Æ‚µ‚Äg‚¦‚éŠÖ”‚ÌƒVƒOƒlƒ`ƒƒ‚Í
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
-' ã‚‚ã—ãã¯
+' ‚à‚µ‚­‚Í
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '======================================================
-' VBAé…åˆ—ã®æ¬¡å…ƒå–å¾—
+' VBA”z—ñ‚ÌŸŒ³æ“¾
 Declare PtrSafe Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
-'ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
-Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal n As Long = 0) As Variant
+'ƒvƒŒ[ƒXƒzƒ‹ƒ_EƒIƒuƒWƒFƒNƒg‚Ì¶¬
+Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal N As Long = 0) As Variant
 
-'ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆ¤å®š
+'ƒvƒŒ[ƒXƒzƒ‹ƒ_EƒIƒuƒWƒFƒNƒg”»’è
 Declare PtrSafe Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
 
-'bindã•ã‚Œã¦ã„ãªã„VBAé–¢æ•°ã‚’2å¼•æ•°ã§å‘¼ã³å‡ºã™
+'bind‚³‚ê‚Ä‚¢‚È‚¢VBAŠÖ”‚ğ2ˆø”‚ÅŒÄ‚Ño‚·
 Declare PtrSafe Function unbind_invoke Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef param1 As Variant, _
         ByRef param2 As Variant) As Variant
 
-' é…åˆ—matrixã®å„è¦ç´ elemã«Callbacké–¢æ•°ã‚’é©ç”¨ã™ã‚‹
+' ”z—ñmatrix‚ÌŠe—v‘felem‚ÉCallbackŠÖ”‚ğ“K—p‚·‚é
 Declare PtrSafe Function mapF_imple Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant) As Variant
 
-'é…åˆ—matrix1ã¨matrix2ã®å„è¦ç´ ã«2å¤‰æ•°ã®Callbacké–¢æ•°ã‚’é©ç”¨ã™ã‚‹
+'”z—ñmatrix1‚Æmatrix2‚ÌŠe—v‘f‚É2•Ï”‚ÌCallbackŠÖ”‚ğ“K—p‚·‚é
 Declare PtrSafe Function zipWith Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix1 As Variant, _
         ByRef matrix2 As Variant) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦ç•³ã¿è¾¼ã¿ï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶ô‚İ‚İi‰Šú’lw’è‚ ‚èj
 Declare PtrSafe Function foldl Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³ç•³ã¿è¾¼ã¿ï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Eô‚İ‚İi‰Šú’lw’è‚ ‚èj
 Declare PtrSafe Function foldr Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦ç•³ã¿è¾¼ã¿ï¼ˆå…ˆé ­è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶ô‚İ‚İiæ“ª—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
 Declare PtrSafe Function foldl1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³ç•³ã¿è¾¼ã¿ï¼ˆæœ«å°¾è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Eô‚İ‚İi––”ö—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
 Declare PtrSafe Function foldr1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦scanï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶scani‰Šú’lw’è‚ ‚èj
 Declare PtrSafe Function scanl Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³scanï¼ˆåˆæœŸå€¤æŒ‡å®šã‚ã‚Šï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Escani‰Šú’lw’è‚ ‚èj
 Declare PtrSafe Function scanr Lib "mapM.dll" ( _
                     ByRef pCallback As Variant, _
                 ByRef init As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå·¦scanï¼ˆå…ˆé ­è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½¶scaniæ“ª—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
 Declare PtrSafe Function scanl1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 3æ¬¡å…ƒã¾ã§ã®VBAé…åˆ—ã«å¯¾ã™ã‚‹ç‰¹å®šã®è»¸ã«æ²¿ã£ãŸå³scanï¼ˆæœ«å°¾è¦ç´ ã‚’åˆæœŸå€¤ã¨ã™ã‚‹ï¼‰
+' 3ŸŒ³‚Ü‚Å‚ÌVBA”z—ñ‚É‘Î‚·‚é“Á’è‚Ì²‚É‰ˆ‚Á‚½‰Escani––”ö—v‘f‚ğ‰Šú’l‚Æ‚·‚éj
 Declare PtrSafe Function scanr1 Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         Optional ByVal axis As Long = 1) As Variant
 
-' 1æ¬¡å…ƒé…åˆ—ã®ã‚½ãƒ¼ãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å‡ºåŠ›
+' 1ŸŒ³”z—ñ‚Ìƒ\[ƒgƒCƒ“ƒfƒbƒNƒXo—Í
 Declare PtrSafe Function stdsort Lib "mapM.dll" (ByRef ary As Variant, _
                                          ByVal defaultFlag As Long, _
                                          ByRef pComp As Variant) As Variant
 
-' è¿°èªã«ã‚ˆã‚‹æ¤œç´¢
+' qŒê‚É‚æ‚éˆÊ’uŒŸõ
 Declare PtrSafe Function find_imple Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         ByVal def As Long) As Long
 
-'é–¢æ•°é©ç”¨ã®ãƒ«ãƒ¼ãƒ—ï¼ˆ+ çµ‚äº†æ¡ä»¶ï¼‰
+' qŒê‚É‚æ‚éÅ—Ç’lˆÊ’uŒŸõ
+Declare PtrSafe Function find_best_imple Lib "mapM.dll" ( _
+                ByRef pCallback As Variant, _
+            ByRef matrix As Variant, _
+        ByVal def As Long) As Long
+
+'ŠÖ”“K—p‚Ìƒ‹[ƒvi+ I—¹ğŒj
 Declare PtrSafe Function repeat_imple Lib "mapM.dll" ( _
                         ByRef init As Variant, _
                     ByRef pred As Variant, _
@@ -129,13 +136,13 @@ Declare PtrSafe Function repeat_imple Lib "mapM.dll" ( _
         ByVal scan As Long, _
     ByVal stopCondition As Long) As Variant
 
-'VARIANTå¤‰æ•°ã©ã†ã—ã®ã‚¹ãƒ¯ãƒƒãƒ—
-Declare PtrSafe Function swapVariant Lib "mapM.dll" (ByRef A As Variant, ByRef B As Variant) As Long
+'VARIANT•Ï”‚Ç‚¤‚µ‚ÌƒXƒƒbƒv
+Declare PtrSafe Function swapVariant Lib "mapM.dll" (ByRef a As Variant, ByRef b As Variant) As Long
 
-' VBAé…åˆ—ã®LBoundå¤‰æ›´
+' VBA”z—ñ‚ÌLBound•ÏX
 Declare PtrSafe Sub changeLBound Lib "mapM.dll" (ByRef v As Variant, ByVal lbound_v As Long)
 
-' 1æ¬¡å…ƒé…åˆ—ã®é›¢ã‚ŒãŸè¦ç´ é–“ã§2é …æ“ä½œã‚’é©ç”¨ã™ã‚‹
+' 1ŸŒ³”z—ñ‚Ì—£‚ê‚½—v‘fŠÔ‚Å2€‘€ì‚ğ“K—p‚·‚é
 Declare PtrSafe Function self_zipWith Lib "mapM.dll" ( _
                                 ByRef pCallback As Variant, _
                             ByRef vec As Variant, _

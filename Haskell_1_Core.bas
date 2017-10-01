@@ -4,61 +4,62 @@ Attribute VB_Name = "Haskell_1_Core"
 Option Explicit
 
 '***********************************************************************************
-'   é–¢æ•°å‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
-' APIã«Callbackã¨ã—ã¦æ¸¡ã›ã‚‹é–¢æ•°ã®ã‚·ã‚°ãƒãƒãƒ£ã¯
+'   ŠÖ”Œ^ƒvƒƒOƒ‰ƒ€
+' API‚ÉCallback‚Æ‚µ‚Ä“n‚¹‚éŠÖ”‚ÌƒVƒOƒlƒ`ƒƒ‚Í
 ' Function fun(ByRef x As Variant, ByRef y As Variant) As Variant
-' ã‚‚ã—ãã¯
+' ‚à‚µ‚­‚Í
 ' Function fun(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
 '===================================================================================
-'   Function moveVariant        sourceã®VARIANTå¤‰æ•°ã‚’targetã®VARIANTã¸moveã™ã‚‹
-'   Function ph_0               ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€
-'   Function ph_1               ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€
-'   Function ph_2               ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€
-'   Function yield_0            é–¢æ•°è©•ä¾¡æ™‚ã« ph_0 ã‚’ç”Ÿæˆã™ã‚‹
-'   Function yield_1            é–¢æ•°è©•ä¾¡æ™‚ã« ph_1 ã‚’ç”Ÿæˆã™ã‚‹
-'   Function yield_2            é–¢æ•°è©•ä¾¡æ™‚ã« ph_2 ã‚’ç”Ÿæˆã™ã‚‹
-'   Function make_funPointer    ãƒ¦ãƒ¼ã‚¶é–¢æ•°ã‚’bindãƒ•ã‚¡ãƒ³ã‚¯ã‚¿åŒ–ã™ã‚‹ï¼ˆé–¢æ•°ã®éƒ¨åˆ†é©ç”¨ï¼‰
-'   Function make_funPointer_with_2nd_Default  2ç•ªç›®ã®å¼•æ•°ã«ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šã™ã‚‹å ´åˆ
-'   Function is_bindFun         bindã•ã‚ŒãŸé–¢æ•°ã§ã‚ã‚‹ã“ã¨ã®åˆ¤å®š
-'   Function bind1st            1ç•ªç›®ã®å¼•æ•°ã‚’å†æŸç¸›ã™ã‚‹
-'   Function bind2nd            2ç•ªç›®ã®å¼•æ•°ã‚’å†æŸç¸›ã™ã‚‹
-'   Sub      swap1st            ç¬¬1å¼•æ•°ã®swapï¼ˆå¤§ããªå¤‰æ•°ã®å ´åˆã«ä½¿ç”¨ï¼‰
-'   Sub      swap2nd            ç¬¬2å¼•æ•°ã®swapï¼ˆå¤§ããªå¤‰æ•°ã®å ´åˆã«ä½¿ç”¨ï¼‰
-' * Function mapF               é…åˆ—ã®å„è¦ç´ ã«é–¢æ•°ã‚’é©ç”¨ã™ã‚‹
-'   Function mapF_swap          mapF(fun(a), m) ã¾ãŸã¯ mapF(fun(, a), m)ã®æ§‹æ–‡ç³–
-'   Function applyFun           é–¢æ•°é©ç”¨é–¢æ•°
-'   Function setParam           é–¢æ•°ã«å¼•æ•°ã‚’ä»£å…¥
-'   Function foldl_Funs         é–¢æ•°åˆæˆï¼ˆfoldlï¼‰
-'   Function scanl_Funs         é–¢æ•°åˆæˆï¼ˆscanlï¼‰
-'   Function foldr_Funs         é–¢æ•°åˆæˆï¼ˆfoldrï¼‰
-'   Function scanr_Funs         é–¢æ•°åˆæˆï¼ˆscanrï¼‰
+'   Function moveVariant        source‚ÌVARIANT•Ï”‚ğtarget‚ÌVARIANT‚Ömove‚·‚é
+'   Function ph_0               ƒvƒŒ[ƒXƒzƒ‹ƒ_
+'   Function ph_1               ƒvƒŒ[ƒXƒzƒ‹ƒ_
+'   Function ph_2               ƒvƒŒ[ƒXƒzƒ‹ƒ_
+'   Function yield_0            ŠÖ”•]‰¿‚É ph_0 ‚ğ¶¬‚·‚é
+'   Function yield_1            ŠÖ”•]‰¿‚É ph_1 ‚ğ¶¬‚·‚é
+'   Function yield_2            ŠÖ”•]‰¿‚É ph_2 ‚ğ¶¬‚·‚é
+'   Function make_funPointer    ƒ†[ƒUŠÖ”‚ğbindƒtƒ@ƒ“ƒNƒ^‰»‚·‚éiŠÖ”‚Ì•”•ª“K—pj
+'   Function make_funPointer_with_2nd_Default  2”Ô–Ú‚Ìˆø”‚ÉƒfƒtƒHƒ‹ƒg’l‚ğİ’è‚·‚éê‡
+'   Function is_bindFun         bind‚³‚ê‚½ŠÖ”‚Å‚ ‚é‚±‚Æ‚Ì”»’è
+'   Function bind1st            1”Ô–Ú‚Ìˆø”‚ğÄ‘©”›‚·‚é
+'   Function bind2nd            2”Ô–Ú‚Ìˆø”‚ğÄ‘©”›‚·‚é
+'   Sub      swap1st            ‘æ1ˆø”‚Ìswapi‘å‚«‚È•Ï”‚Ìê‡‚Ég—pj
+'   Sub      swap2nd            ‘æ2ˆø”‚Ìswapi‘å‚«‚È•Ï”‚Ìê‡‚Ég—pj
+' * Function mapF               ”z—ñ‚ÌŠe—v‘f‚ÉŠÖ”‚ğ“K—p‚·‚é
+'   Function mapF_swap          mapF(fun(a), m) ‚Ü‚½‚Í mapF(fun(, a), m)‚Ì\•¶“œ
+'   Function applyFun           ŠÖ”“K—pŠÖ”
+'   Function setParam           ŠÖ”‚Éˆø”‚ğ‘ã“ü
+'   Function foldl_Funs         ŠÖ”‡¬ifoldlj
+'   Function scanl_Funs         ŠÖ”‡¬iscanlj
+'   Function foldr_Funs         ŠÖ”‡¬ifoldrj
+'   Function scanr_Funs         ŠÖ”‡¬iscanrj
 '   Function applyFun2by2       ((x, y), (f1, f2, ...)) -> Array(f1(x, y), f2(x, y), ...)
 '   Function setParam2by2       ((f1, f2, ...), (x, y)) -> Array(f1(x, y), f2(x, y), ...)
-'   Function count_if           é…åˆ—ã®å„è¦ç´ ã§è¿°èªã«ã‚ˆã‚‹è©•ä¾¡çµæœãŒã‚¼ãƒ­ã§ãªã„ã‚‚ã®ã®æ•°
-'   Function find_pred          1æ¬¡å…ƒé…åˆ—ã‹ã‚‰æ¡ä»¶ã«åˆè‡´ã™ã‚‹ã‚‚ã®ã‚’æ¤œç´¢
-'   Function repeat_while       è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œã‚‹é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨
-'   Function repeat_while_not   è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œãªã„é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨
-'   Function generate_while     è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œã‚‹é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨ã®å±¥æ­´ã‚’ç”Ÿæˆ
-'   Function generate_while_not è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œãªã„é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨ã®å±¥æ­´ã‚’ç”Ÿæˆ
-'   Function p_foldl            1æ¬¡å…ƒé…åˆ—é™å®šã®foldl
-'   Function p_foldr            1æ¬¡å…ƒé…åˆ—é™å®šã®foldr
-'   Function p_foldl1           1æ¬¡å…ƒé…åˆ—ã®foldl1
-'   Function p_foldr1           1æ¬¡å…ƒé…åˆ—ã®foldr1
-'   Function p_scanl            1æ¬¡å…ƒé…åˆ—é™å®šã®scanl
-'   Function p_scanr            1æ¬¡å…ƒé…åˆ—é™å®šã®scanr
-'   Function p_scanl1           1æ¬¡å…ƒé…åˆ—ã®scanl1
-'   Function p_scanr1           1æ¬¡å…ƒé…åˆ—ã®scanr1
-'   Function foldl_zipWith      zipWithã‚’foldlã™ã‚‹
-'   Function foldl1_zipWith     zipWithã‚’foldl1ã™ã‚‹
-'   Function foldr_zipWith      zipWithã‚’foldrã™ã‚‹
-'   Function foldr1_zipWith     zipWithã‚’foldr1ã™ã‚‹
-'   Function scanl_zipWith      zipWithã‚’scanlã™ã‚‹
-'   Function scanr_zipWith      zipWithã‚’scanrã™ã‚‹
-'   Function scanl1_zipWith     zipWithã‚’scanl1ã™ã‚‹
-'   Function scanr1_zipWith     zipWithã‚’scanr1ã™ã‚‹
+'   Function count_if           ”z—ñ‚ÌŠe—v‘f‚ÅqŒê‚É‚æ‚é•]‰¿Œ‹‰Ê‚ªƒ[ƒ‚Å‚È‚¢‚à‚Ì‚Ì”
+'   Function find_pred          1ŸŒ³”z—ñ‚©‚çğŒ‚É‡’v‚·‚é‚à‚Ì‚ğŒŸõ
+'   Function find_best_pred     1ŸŒ³”z—ñ‚©‚çğŒ‚ÉÅ—Ç‡’v‚·‚é‚à‚Ì‚ğŒŸõ
+'   Function repeat_while       qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚éŠÔŒJ‚è•Ô‚µŠÖ”“K—p
+'   Function repeat_while_not   qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚È‚¢ŠÔŒJ‚è•Ô‚µŠÖ”“K—p
+'   Function generate_while     qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚éŠÔŒJ‚è•Ô‚µŠÖ”“K—p‚Ì—š—ğ‚ğ¶¬
+'   Function generate_while_not qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚È‚¢ŠÔŒJ‚è•Ô‚µŠÖ”“K—p‚Ì—š—ğ‚ğ¶¬
+'   Function p_foldl            1ŸŒ³”z—ñŒÀ’è‚Ìfoldl
+'   Function p_foldr            1ŸŒ³”z—ñŒÀ’è‚Ìfoldr
+'   Function p_foldl1           1ŸŒ³”z—ñ‚Ìfoldl1
+'   Function p_foldr1           1ŸŒ³”z—ñ‚Ìfoldr1
+'   Function p_scanl            1ŸŒ³”z—ñŒÀ’è‚Ìscanl
+'   Function p_scanr            1ŸŒ³”z—ñŒÀ’è‚Ìscanr
+'   Function p_scanl1           1ŸŒ³”z—ñ‚Ìscanl1
+'   Function p_scanr1           1ŸŒ³”z—ñ‚Ìscanr1
+'   Function foldl_zipWith      zipWith‚ğfoldl‚·‚é
+'   Function foldl1_zipWith     zipWith‚ğfoldl1‚·‚é
+'   Function foldr_zipWith      zipWith‚ğfoldr‚·‚é
+'   Function foldr1_zipWith     zipWith‚ğfoldr1‚·‚é
+'   Function scanl_zipWith      zipWith‚ğscanl‚·‚é
+'   Function scanr_zipWith      zipWith‚ğscanr‚·‚é
+'   Function scanl1_zipWith     zipWith‚ğscanl1‚·‚é
+'   Function scanr1_zipWith     zipWith‚ğscanr1‚·‚é
 '***********************************************************************************
 
-'sourceã®VARIANTå¤‰æ•°ã‚’targetã®VARIANTã¸moveã™ã‚‹
+'source‚ÌVARIANT•Ï”‚ğtarget‚ÌVARIANT‚Ömove‚·‚é
 Function moveVariant(ByRef source As Variant, Optional ByRef dummy As Variant) As Variant
     swapVariant moveVariant, source
 End Function
@@ -67,49 +68,49 @@ End Function
     End Function
 '***********************************************************************************
 
-'ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ï¼ˆç½®ã‹ã‚ŒãŸä½ç½®ã«ã‚ˆã£ã¦ç¬¬1å¼•æ•°ã‚‚ã—ãã¯ç¬¬2å¼•æ•°ã‚’å—ã‘å–ã‚‹ï¼‰
+'ƒvƒŒ[ƒXƒzƒ‹ƒ_i’u‚©‚ê‚½ˆÊ’u‚É‚æ‚Á‚Ä‘æ1ˆø”‚à‚µ‚­‚Í‘æ2ˆø”‚ğó‚¯æ‚éj
 Function ph_0() As Variant
     ph_0 = placeholder(0)
 End Function
 
-'ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ï¼ˆç¬¬1å¼•æ•°ã‚’å—ã‘å–ã‚‹ï¼‰
+'ƒvƒŒ[ƒXƒzƒ‹ƒ_i‘æ1ˆø”‚ğó‚¯æ‚éj
 Function ph_1() As Variant
     ph_1 = placeholder(1)
 End Function
 
-'ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ï¼ˆç¬¬2å¼•æ•°ã‚’å—ã‘å–ã‚‹ï¼‰
+'ƒvƒŒ[ƒXƒzƒ‹ƒ_i‘æ2ˆø”‚ğó‚¯æ‚éj
 Function ph_2() As Variant
     ph_2 = placeholder(2)
 End Function
 
-'é–¢æ•°è©•ä¾¡æ™‚ã« ph_0 ã‚’ç”Ÿæˆã™ã‚‹
+'ŠÖ”•]‰¿‚É ph_0 ‚ğ¶¬‚·‚é
 Function yield_0() As Variant
     yield_0 = placeholder(800)
 End Function
 
-'é–¢æ•°è©•ä¾¡æ™‚ã« ph_1 ã‚’ç”Ÿæˆã™ã‚‹
+'ŠÖ”•]‰¿‚É ph_1 ‚ğ¶¬‚·‚é
 Function yield_1() As Variant
     yield_1 = placeholder(801)
 End Function
 
-'é–¢æ•°è©•ä¾¡æ™‚ã« ph_2 ã‚’ç”Ÿæˆã™ã‚‹
+'ŠÖ”•]‰¿‚É ph_2 ‚ğ¶¬‚·‚é
 Function yield_2() As Variant
     yield_2 = placeholder(802)
 End Function
 
-    ' Array() ãŒ IsMissing = True ã«ãªã‚‹ã“ã¨ã®WorkAround
+    ' Array() ‚ª IsMissing = True ‚É‚È‚é‚±‚Æ‚ÌWorkAround
     Function Is_Missing_(Optional ByRef x As Variant) As Boolean
         Is_Missing_ = IIf(IsMissing(x) And Not IsArray(x), True, False)
     End Function
 
-'ãƒ¦ãƒ¼ã‚¶é–¢æ•°ã‚’bindãƒ•ã‚¡ãƒ³ã‚¯ã‚¿åŒ–ã™ã‚‹ï¼ˆé–¢æ•°ã®éƒ¨åˆ†é©ç”¨ï¼‰
-'make_funPointer(func)                              å¼•æ•°ã®æŸç¸›ãªã—
-'make_funPointer(func, firstParam)                  1ç•ªç›®ã®å¼•æ•°ã‚’æŸç¸›
-'make_funPointer(func, , secondParam)               2ç•ªç›®ã®å¼•æ•°ã‚’æŸç¸›
-'make_funPointer(func, firstParam, secondParam)     ä¸¡æ–¹ã®å¼•æ•°ã‚’æŸç¸›ï¼ˆé…å»¶è©•ä¾¡ï¼‰
-'functionParamPoint = 1 : firstParamãŒé–¢æ•°
-'functionParamPoint = 2 : secondParamãŒé–¢æ•°
-'functionParamPoint = 0 : firstParamã€secondParamãŒå€¤ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆï¼‰
+'ƒ†[ƒUŠÖ”‚ğbindƒtƒ@ƒ“ƒNƒ^‰»‚·‚éiŠÖ”‚Ì•”•ª“K—pj
+'make_funPointer(func)                              ˆø”‚Ì‘©”›‚È‚µ
+'make_funPointer(func, firstParam)                  1”Ô–Ú‚Ìˆø”‚ğ‘©”›
+'make_funPointer(func, , secondParam)               2”Ô–Ú‚Ìˆø”‚ğ‘©”›
+'make_funPointer(func, firstParam, secondParam)     —¼•û‚Ìˆø”‚ğ‘©”›i’x‰„•]‰¿j
+'functionParamPoint = 1 : firstParam‚ªŠÖ”
+'functionParamPoint = 2 : secondParam‚ªŠÖ”
+'functionParamPoint = 0 : firstParamAsecondParam‚ª’liƒfƒtƒHƒ‹ƒgj
 Function make_funPointer(ByVal func As LongPtr, _
                          ByRef firstParam As Variant, _
                          ByRef secondParam As Variant, _
@@ -121,7 +122,7 @@ Function make_funPointer(ByVal func As LongPtr, _
                    )
 End Function
 
-'ãƒ¦ãƒ¼ã‚¶é–¢æ•°ã‚’bindãƒ•ã‚¡ãƒ³ã‚¯ã‚¿åŒ–ã™ã‚‹ï¼ˆ2ç•ªç›®ã®å¼•æ•°ã«ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šã™ã‚‹å ´åˆï¼‰
+'ƒ†[ƒUŠÖ”‚ğbindƒtƒ@ƒ“ƒNƒ^‰»‚·‚éi2”Ô–Ú‚Ìˆø”‚ÉƒfƒtƒHƒ‹ƒg’l‚ğİ’è‚·‚éê‡j
 Function make_funPointer_with_2nd_Default(ByVal func As LongPtr, _
                          ByRef firstParam As Variant, _
                          ByRef secondParam As Variant, _
@@ -133,13 +134,13 @@ Function make_funPointer_with_2nd_Default(ByVal func As LongPtr, _
                                 )
 End Function
 
-'bindã•ã‚ŒãŸé–¢æ•°ã§ã‚ã‚‹ã“ã¨ã®åˆ¤å®š
+'bind‚³‚ê‚½ŠÖ”‚Å‚ ‚é‚±‚Æ‚Ì”»’è
 Function is_bindFun(ByRef val As Variant) As Boolean
     is_bindFun = False
     If Dimension(val) = 1 And sizeof(val) = 4 Then is_bindFun = is_placeholder(val(3))
 End Function
 
-'å¼•æ•°ã‚’å†æŸç¸›ã™ã‚‹
+'ˆø”‚ğÄ‘©”›‚·‚é
     Private Function bind_imple(ByRef func As Variant, _
                                 ByRef param As Variant, _
                                 ByVal pA As Long, _
@@ -192,18 +193,18 @@ Function bind2nd(ByRef func As Variant, ByRef secondParam As Variant, _
     End If
 End Function
 
-'ç¬¬1å¼•æ•°ã®swapï¼ˆå¤§ããªå¤‰æ•°ã®å ´åˆã«ä½¿ç”¨ï¼‰
+'‘æ1ˆø”‚Ìswapi‘å‚«‚È•Ï”‚Ìê‡‚Ég—pj
 Sub swap1st(ByRef func As Variant, ByRef firstParam As Variant)
     If is_bindFun(func) Then swapVariant func(1), firstParam
 End Sub
 
-'ç¬¬2å¼•æ•°ã®swapï¼ˆå¤§ããªå¤‰æ•°ã®å ´åˆã«ä½¿ç”¨ï¼‰
+'‘æ2ˆø”‚Ìswapi‘å‚«‚È•Ï”‚Ìê‡‚Ég—pj
 Sub swap2nd(ByRef func As Variant, ByRef secondParam As Variant)
     If is_bindFun(func) Then swapVariant func(2), secondParam
 End Sub
 
 '*************************************************************************
-' é…åˆ—ã®å„è¦ç´ ã«é–¢æ•°ã‚’é©ç”¨ã™ã‚‹
+' ”z—ñ‚ÌŠe—v‘f‚ÉŠÖ”‚ğ“K—p‚·‚é
 Function mapF(ByRef func As Variant, ByRef matrix As Variant) As Variant
     mapF = mapF_imple(func, matrix)
 End Function
@@ -211,30 +212,30 @@ End Function
         p_mapF = make_funPointer(AddressOf mapF, firstParam, secondParam, 1)
     End Function
 
-' mapF(fun(a), m) ã¾ãŸã¯ mapF(fun(, a), m)ã®æ§‹æ–‡ç³–
-' ãŸã ã—aã¯moveã•ã‚Œã€å‡¦ç†å¾Œæˆ»ã•ã‚Œã‚‹ã€‚å¤§ããªé…åˆ—ã®ã‚³ãƒ”ãƒ¼ãŒé¿ã‘ã‚‰ã‚Œã‚‹ã€‚
-' ãƒ‘ã‚¿ãƒ¼ãƒ³1  mapF_swap(fun, a, m)      -> mapF(fun(a), m)
-' ãƒ‘ã‚¿ãƒ¼ãƒ³2  mapF_swap(fun, , b, m)    -> mapF(fun(, b), m)
-' ãƒ‘ã‚¿ãƒ¼ãƒ³3  mapF_swap(fun, a, , m)    -> mapF(fun(a), m)    ï¼ˆãƒ‘ã‚¿ãƒ¼ãƒ³1ã¨åŒã˜ï¼‰
-' ãƒ‘ã‚¿ãƒ¼ãƒ³4  mapF_swap(fun, a, b, m)   -> mapF(fun(a, b), m) ï¼ˆç¦æ­¢ï¼‰
+' mapF(fun(a), m) ‚Ü‚½‚Í mapF(fun(, a), m)‚Ì\•¶“œ
+' ‚½‚¾‚µa‚Ímove‚³‚êAˆ—Œã–ß‚³‚ê‚éB‘å‚«‚È”z—ñ‚ÌƒRƒs[‚ª”ğ‚¯‚ç‚ê‚éB
+' ƒpƒ^[ƒ“1  mapF_swap(fun, a, m)      -> mapF(fun(a), m)
+' ƒpƒ^[ƒ“2  mapF_swap(fun, , b, m)    -> mapF(fun(, b), m)
+' ƒpƒ^[ƒ“3  mapF_swap(fun, a, , m)    -> mapF(fun(a), m)    iƒpƒ^[ƒ“1‚Æ“¯‚¶j
+' ƒpƒ^[ƒ“4  mapF_swap(fun, a, b, m)   -> mapF(fun(a, b), m) i‹Ö~j
 Function mapF_swap(ByRef fun As Variant, _
                         Optional ByRef x As Variant, _
                         Optional ByRef y As Variant, _
                         Optional ByRef z As Variant) As Variant
-    If Is_Missing_(z) Then          ' ãƒ‘ã‚¿ãƒ¼ãƒ³1
+    If Is_Missing_(z) Then          ' ƒpƒ^[ƒ“1
         swap1st fun, x
         mapF_swap = mapF(fun, y)
         swap1st fun, x
     Else
-        If Is_Missing_(x) Then      ' ãƒ‘ã‚¿ãƒ¼ãƒ³2
+        If Is_Missing_(x) Then      ' ƒpƒ^[ƒ“2
             swap2nd fun, y
             mapF_swap = mapF(fun, z)
             swap2nd fun, y
-        ElseIf Is_Missing_(y) Then  ' ãƒ‘ã‚¿ãƒ¼ãƒ³3
+        ElseIf Is_Missing_(y) Then  ' ƒpƒ^[ƒ“3
             swap1st fun, x
             mapF_swap = mapF(fun, z)
             swap1st fun, x
-        Else                        ' ãƒ‘ã‚¿ãƒ¼ãƒ³4
+        Else                        ' ƒpƒ^[ƒ“4
             '
         End If
     End If
@@ -242,7 +243,7 @@ End Function
 
 
 '*************************************************************************
-'é–¢æ•°é©ç”¨é–¢æ•°  1å¼•æ•°ã«å¯¾ã—ã¦é–¢æ•°ã‚’é©ç”¨ã™ã‚‹   é–¢æ•°ã¯Bindå¼
+'ŠÖ”“K—pŠÖ”  1ˆø”‚É‘Î‚µ‚ÄŠÖ”‚ğ“K—p‚·‚é   ŠÖ”‚ÍBind®
 '1. applyFun(x     ,  Null          )     ->  x
 '2. applyFun(x     ,  Empty         )     ->  x
 '3. applyFun(x     , (f, a, b)      )     ->  f(a, b)
@@ -259,7 +260,7 @@ End Function
         p_applyFun = make_funPointer(AddressOf applyFun, firstParam, secondParam, 2)
     End Function
 
-'é–¢æ•°ã«1å¼•æ•°ã‚’ä»£å…¥ã™ã‚‹é–¢æ•°
+'ŠÖ”‚É1ˆø”‚ğ‘ã“ü‚·‚éŠÖ”
 '1. setParam(f              , x     )  ->  f(x)
 '2. setParam((f, a, placeholder), x )  ->  f(a, x)
 '3. setParam((f, placeholder, b), x )  ->  f(x, b)
@@ -270,7 +271,7 @@ End Function
         p_setParam = make_funPointer(AddressOf setParam, firstParam, secondParam, 1)
     End Function
 
-'é–¢æ•°åˆæˆï¼ˆfoldlï¼‰
+'ŠÖ”‡¬ifoldlj
 Function foldl_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     foldl_Funs = foldl(p_applyFun, init, funcArray)
 End Function
@@ -278,7 +279,7 @@ End Function
         p_foldl_Funs = make_funPointer(AddressOf foldl_Funs, firstParam, secondParam)
     End Function
 
-'é–¢æ•°åˆæˆï¼ˆscanlï¼‰
+'ŠÖ”‡¬iscanlj
 Function scanl_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     scanl_Funs = scanl(p_applyFun, init, funcArray)
 End Function
@@ -286,7 +287,7 @@ End Function
         p_scanl_Funs = make_funPointer(AddressOf scanl_Funs, firstParam, secondParam)
     End Function
 
-'é–¢æ•°åˆæˆï¼ˆfoldrï¼‰
+'ŠÖ”‡¬ifoldrj
 Function foldr_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     foldr_Funs = foldr(p_setParam, init, funcArray)
 End Function
@@ -294,7 +295,7 @@ End Function
         p_foldr_Funs = make_funPointer(AddressOf foldr_Funs, firstParam, secondParam)
     End Function
 
-'é–¢æ•°åˆæˆï¼ˆscanrï¼‰
+'ŠÖ”‡¬iscanrj
 Function scanr_Funs(ByRef init As Variant, ByRef funcArray As Variant) As Variant
     scanr_Funs = scanr(p_setParam, init, funcArray)
 End Function
@@ -302,8 +303,8 @@ End Function
         p_scanr_Funs = make_funPointer(AddressOf scanr_Funs, firstParam, secondParam)
     End Function
 
-'((x, y), f)  ã«å¯¾ã—ã¦  f(x, y)     ã‚’è¿”ã™
-'((x, y), (f1, f2, ...))  ã«å¯¾ã—ã¦  Array(f1(x, y), f2(x, y), ...)     ã‚’è¿”ã™
+'((x, y), f)  ‚É‘Î‚µ‚Ä  f(x, y)     ‚ğ•Ô‚·
+'((x, y), (f1, f2, ...))  ‚É‘Î‚µ‚Ä  Array(f1(x, y), f2(x, y), ...)     ‚ğ•Ô‚·
 Function applyFun2by2(ByRef params As Variant, ByRef funcs As Variant) As Variant
     Dim ret As Variant, z As Variant, k As Long: k = 0
     If is_bindFun(funcs) Then
@@ -321,8 +322,8 @@ End Function
         p_applyFun2by2 = make_funPointer(AddressOf applyFun2by2, firstParam, secondParam)
     End Function
 
-'(f, (x, y))  ã«å¯¾ã—ã¦  f(x, y)     ã‚’è¿”ã™
-'((f1, f2, ...), (x, y))  ã«å¯¾ã—ã¦  Array(f1(x, y), f2(x, y), ...)     ã‚’è¿”ã™
+'(f, (x, y))  ‚É‘Î‚µ‚Ä  f(x, y)     ‚ğ•Ô‚·
+'((f1, f2, ...), (x, y))  ‚É‘Î‚µ‚Ä  Array(f1(x, y), f2(x, y), ...)     ‚ğ•Ô‚·
 Function setParam2by2(ByRef funcs As Variant, ByRef params As Variant) As Variant
     setParam2by2 = applyFun2by2(params, funcs)
 End Function
@@ -330,7 +331,7 @@ End Function
         p_setParam2by2 = make_funPointer(AddressOf setParam2by2, firstParam, secondParam)
     End Function
 
-' é…åˆ— matrix ã®å„è¦ç´ ã§è¿°èªã«ã‚ˆã‚‹è©•ä¾¡çµæœãŒã‚¼ãƒ­ã§ãªã„ã‚‚ã®ã®æ•°
+' ”z—ñ matrix ‚ÌŠe—v‘f‚ÅqŒê‚É‚æ‚é•]‰¿Œ‹‰Ê‚ªƒ[ƒ‚Å‚È‚¢‚à‚Ì‚Ì”
 Function count_if(ByRef pred As Variant, ByRef matrix As Variant) As Variant
     Dim z As Variant
     count_if = 0&
@@ -342,8 +343,8 @@ End Function
         p_count_if = make_funPointer(AddressOf count_if, firstParam, secondParam, 1)
     End Function
 
-'1æ¬¡å…ƒé…åˆ—ã‹ã‚‰æ¡ä»¶ã«åˆè‡´ã™ã‚‹ã‚‚ã®ã‚’æ¤œç´¢(æœ€åˆã«ãƒ’ãƒƒãƒˆã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¿”ã™)
-'1æ¬¡å…ƒé…åˆ—ä»¥å¤–ã§ã‚ã‚Œã°è¿”ã‚Šå€¤ã¯Emptyã€ç„¡ã‹ã£ãŸå ´åˆã¯ UBound + 1 ã‚’è¿”ã™
+'1ŸŒ³”z—ñ‚©‚çğŒ‚É‡’v‚·‚é‚à‚Ì‚ğŒŸõ(Å‰‚Éƒqƒbƒg‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·)
+'1ŸŒ³”z—ñˆÈŠO‚Å‚ ‚ê‚Î•Ô‚è’l‚ÍEmptyA–³‚©‚Á‚½ê‡‚Í UBound + 1 ‚ğ•Ô‚·
 Function find_pred(ByRef pred As Variant, ByRef vec As Variant) As Variant
     If Dimension(vec) = 1 Then
         find_pred = find_imple(pred, vec, UBound(vec) + 1)
@@ -353,39 +354,51 @@ End Function
         p_find_pred = make_funPointer(AddressOf find_pred, firstParam, secondParam, 1)
     End Function
 
-' è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œã‚‹é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨
+'1ŸŒ³”z—ñ‚©‚çğŒ‚ÉÅ—Ç‡’v‚·‚é‚à‚Ì‚ğŒŸõ(Å‰‚Éƒqƒbƒg‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·)
+'1ŸŒ³”z—ñˆÈŠO‚Å‚ ‚ê‚Î•Ô‚è’l‚ÍEmpty
+Function find_best_pred(ByRef pred As Variant, ByRef vec As Variant) As Variant
+    If Dimension(vec) = 1 Then
+        find_best_pred = find_best_imple(pred, vec, UBound(vec) + 1)
+        If find_best_pred = UBound(vec) + 1 Then find_best_pred = Empty
+    End If
+End Function
+    Function p_find_best_pred(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_find_best_pred = make_funPointer(AddressOf find_best_pred, firstParam, secondParam, 1)
+    End Function
+
+' qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚éŠÔŒJ‚è•Ô‚µŠÖ”“K—p
 Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
-                      Optional ByVal n As Long = -1) As Variant
-    repeat_while = repeat_imple(val, pred, fun, n, 0, 0)
+                      Optional ByVal N As Long = -1) As Variant
+    repeat_while = repeat_imple(val, pred, fun, N, 0, 0)
 End Function
 
-' è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œãªã„é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨
+' qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚È‚¢ŠÔŒJ‚è•Ô‚µŠÖ”“K—p
 Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
-                          Optional ByVal n As Long = -1) As Variant
-    repeat_while_not = repeat_imple(val, pred, fun, n, 0, 1)
+                          Optional ByVal N As Long = -1) As Variant
+    repeat_while_not = repeat_imple(val, pred, fun, N, 0, 1)
 End Function
 
-' è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œã‚‹é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨ã®å±¥æ­´ã‚’ç”Ÿæˆ
+' qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚éŠÔŒJ‚è•Ô‚µŠÖ”“K—p‚Ì—š—ğ‚ğ¶¬
 Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
-                        Optional ByVal n As Long = -1) As Variant
-    generate_while = repeat_imple(val, pred, fun, n, 1, 0)
+                        Optional ByVal N As Long = -1) As Variant
+    generate_while = repeat_imple(val, pred, fun, N, 1, 0)
 End Function
 
-' è¿°èªã«ã‚ˆã‚‹æ¡ä»¶ãŒæº€ãŸã•ã‚Œãªã„é–“ç¹°ã‚Šè¿”ã—é–¢æ•°é©ç”¨ã®å±¥æ­´ã‚’ç”Ÿæˆ
+' qŒê‚É‚æ‚éğŒ‚ª–‚½‚³‚ê‚È‚¢ŠÔŒJ‚è•Ô‚µŠÖ”“K—p‚Ì—š—ğ‚ğ¶¬
 Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
-                            Optional ByVal n As Long = -1) As Variant
-    generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
+                            Optional ByVal N As Long = -1) As Variant
+    generate_while_not = repeat_imple(val, pred, fun, N, 1, 1)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® foldl (p_foldl ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì foldl (p_foldl ‚Ì‚İPublic)
     Private Function foldl_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
         Dim fun As Variant
         fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
@@ -398,7 +411,7 @@ Public Function p_foldl(ByRef fun As Variant, ByRef init As Variant) As Variant
                         placeholder)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® foldr (p_foldr ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì foldr (p_foldr ‚Ì‚İPublic)
     Private Function foldr_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
         Dim fun As Variant
         fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
@@ -411,7 +424,7 @@ Public Function p_foldr(ByRef fun As Variant, ByRef init As Variant) As Variant
                         placeholder)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® foldl1 (p_foldl1 ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì foldl1 (p_foldl1 ‚Ì‚İPublic)
     Private Function foldl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
         foldl1_v = foldl1(fun, vec)
     End Function
@@ -419,7 +432,7 @@ Public Function p_foldl1(Optional ByRef firstParam As Variant, Optional ByRef se
     p_foldl1 = make_funPointer(AddressOf foldl1_v, firstParam, secondParam, 1)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® foldr1 (p_foldr1 ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì foldr1 (p_foldr1 ‚Ì‚İPublic)
     Private Function foldr1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
         foldr1_v = foldr1(fun, vec)
     End Function
@@ -427,7 +440,7 @@ Public Function p_foldr1(Optional ByRef firstParam As Variant, Optional ByRef se
     p_foldr1 = make_funPointer(AddressOf foldr1_v, firstParam, secondParam, 1)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® scanl (p_scanl ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì scanl (p_scanl ‚Ì‚İPublic)
     Private Function scanl_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
         Dim fun As Variant
         fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
@@ -440,7 +453,7 @@ Public Function p_scanl(ByRef fun As Variant, ByRef init As Variant) As Variant
                         placeholder)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® scanr (p_scanr ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì scanr (p_scanr ‚Ì‚İPublic)
     Private Function scanr_v(ByRef fun_init As Variant, ByRef vec As Variant) As Variant
         Dim fun As Variant
         fun = bind2nd(bind1st(fun_init(0), vec, True), vec, True)
@@ -453,7 +466,7 @@ Public Function p_scanr(ByRef fun As Variant, ByRef init As Variant) As Variant
                         placeholder)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® scanl1 (p_scanl1 ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì scanl1 (p_scanl1 ‚Ì‚İPublic)
     Private Function scanl1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
         scanl1_v = scanl1(fun, vec)
     End Function
@@ -461,7 +474,7 @@ Public Function p_scanl1(Optional ByRef firstParam As Variant, Optional ByRef se
     p_scanl1 = make_funPointer(AddressOf scanl1_v, firstParam, secondParam, 1)
 End Function
 
-' 1æ¬¡å…ƒé…åˆ—é™å®šã® scanr1 (p_scanr1 ã®ã¿Public)
+' 1ŸŒ³”z—ñŒÀ’è‚Ì scanr1 (p_scanr1 ‚Ì‚İPublic)
     Private Function scanr1_v(ByRef fun As Variant, ByRef vec As Variant) As Variant
         scanr1_v = scanr1(fun, vec)
     End Function
@@ -469,7 +482,7 @@ Public Function p_scanr1(Optional ByRef firstParam As Variant, Optional ByRef se
     p_scanr1 = make_funPointer(AddressOf scanr1_v, firstParam, secondParam, 1)
 End Function
 
-' zipWithã‚’foldlã™ã‚‹
+' zipWith‚ğfoldl‚·‚é
 Function foldl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
     If LBound(vec) <= UBound(vec) Then
         foldl_zipWith = zipWith(fun, init, vec(LBound(vec)))
@@ -480,7 +493,7 @@ Function foldl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As
     End If
 End Function
 
-' zipWithã‚’foldrã™ã‚‹
+' zipWith‚ğfoldr‚·‚é
 Function foldr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
     If LBound(vec) <= UBound(vec) Then
         foldr_zipWith = zipWith(fun, vec(UBound(vec)), init)
@@ -491,7 +504,7 @@ Function foldr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As
     End If
 End Function
 
-' zipWithã‚’foldl1ã™ã‚‹
+' zipWith‚ğfoldl1‚·‚é
 Function foldl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     If LBound(vec) < UBound(vec) Then
         foldl1_zipWith = zipWith(fun, vec(LBound(vec)), vec(LBound(vec) + 1))
@@ -502,7 +515,7 @@ Function foldl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     End If
 End Function
 
-' zipWithã‚’foldr1ã™ã‚‹
+' zipWith‚ğfoldr1‚·‚é
 Function foldr1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     If LBound(vec) < UBound(vec) Then
         foldr1_zipWith = zipWith(fun, vec(UBound(vec) - 1), vec(UBound(vec)))
@@ -513,7 +526,7 @@ Function foldr1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     End If
 End Function
 
-' zipWithã‚’scanlã™ã‚‹
+' zipWith‚ğscanl‚·‚é
 Function scanl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
     Dim ret As Variant: ret = makeM(1 + sizeof(vec))
     Dim i As Long, k As Long: k = 0
@@ -525,7 +538,7 @@ Function scanl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As
     scanl_zipWith = moveVariant(ret)
 End Function
 
-' zipWithã‚’scanrã™ã‚‹
+' zipWith‚ğscanr‚·‚é
 Function scanr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
     Dim ret As Variant: ret = makeM(1 + sizeof(vec))
     Dim i As Long, k As Long: k = UBound(ret)
@@ -537,7 +550,7 @@ Function scanr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As
     scanr_zipWith = moveVariant(ret)
 End Function
 
-' zipWithã‚’scanl1ã™ã‚‹
+' zipWith‚ğscanl1‚·‚é
 Function scanl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     Dim ret As Variant: ret = makeM(sizeof(vec))
     Dim i As Long, k As Long: k = 0
@@ -549,7 +562,7 @@ Function scanl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     scanl1_zipWith = moveVariant(ret)
 End Function
 
-' zipWithã‚’scanr1ã™ã‚‹
+' zipWith‚ğscanr1‚·‚é
 Function scanr1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
     Dim ret As Variant: ret = makeM(sizeof(vec))
     Dim i As Long, k As Long: k = UBound(ret)
