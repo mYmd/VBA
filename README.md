@@ -51,6 +51,9 @@ http://home.b07.itscom.net/m-yamada/VBA/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、  
 Declare文についている 'PtrSafe'宣言をすべて削除すれば使用可能。  
 '=============================================================  
+2017/10/01<br>
+C++APIにfind_best_imple、VBAにfind_best_predを追加<br>
+
 2017/1/15  
 dllバイナリを外部URLからここのbinフォルダに変更   
 
