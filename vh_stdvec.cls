@@ -64,21 +64,21 @@ Option Explicit
 ' 2ŸŒ³”z—ñ‚ğ“n‚µ‚½ê‡‚Í zipC ‚·‚é
 Public Function from(ByRef v As Variant) As vh_stdvec
     If VarType(v) = VarType(Array()) Then
-        vec_ = Empty
-        Select Case Dimension(v)
-        Case 1
-            swapVariant vec_, v
-            changeLBound vec_, 0
-            pos_write = UBound(vec_)
-        Case 2
-            vec_ = zipC(v)
-            changeLBound vec_, 0
-            pos_write = UBound(vec_)
-        Case Else
-            Err.Raise Number:=575, Description:="vh_stdvec::from - inproper parmater"
-        End Select
-    Else
-        Err.Raise Number:=575, Description:="vh_stdvec::from - inproper parmater"
+        Me.clear
+        If 0 < sizeof(v) Then
+            Select Case Dimension(v)
+            Case 1
+                swapVariant vec_, v
+                changeLBound vec_, 0
+                pos_write = UBound(vec_)
+            Case 2
+                vec_ = zipC(v)
+                changeLBound vec_, 0
+                pos_write = UBound(vec_)
+            Case Else
+                Err.Raise Number:=575, Description:="vh_stdvec::from - inproper parmater"
+            End Select
+        End If
     End If
     Set from = Me
 End Function
@@ -92,12 +92,8 @@ End Function
 
 ' ”z—ñ•”•ª‚ğ–ß‚µ‚Ä©g‚Í‰ğ•ú
 Public Function free() As Variant
-    Dim ret As Variant, i As Long
-    ret = makeM(size())
-    For i = 0 To UBound(ret) Step 1
-        swapVariant ret(i), vec_(i)
-    Next i
-    swapVariant free, ret
+    shrink
+    swapVariant free, vec_
     ReDim vec_(0 To 0)
     pos_write = -1
 End Function
