@@ -48,7 +48,7 @@ vh_stdvec.cls<br>
 vh_pipe.cls（パイプライン演算子）<br>
 <br>
 declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記するか<br>
-SetDefaultDllDirectoriesとAddDllDirectoryを用いてサーチパスに追加する。（VBAHaskellほぼ全部入り.xlsm 参照）<br>
+WindowsAPIのSetDefaultDllDirectoriesとAddDllDirectoryを用いてサーチパスに追加する。（VBAHaskellほぼ全部入り.xlsm 参照）<br>
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、<br>
 Declare文についている 'PtrSafe'宣言をすべて削除すれば使用可能。<br>
 =============================================================<br>
