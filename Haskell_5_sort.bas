@@ -4,30 +4,30 @@ Attribute VB_Name = "Haskell_5_sort"
 Option Explicit
 
 '====================================================================================================
-    ' Function  sortIndex           æ˜‡é †ã‚½ãƒ¼ãƒˆå¾Œã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
-    ' Function  sortIndex_pred      ä»»æ„ã®æ¯”è¼ƒé–¢æ•°ã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆå¾Œã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
-    ' Sub       permutate           1æ¬¡å…ƒé…åˆ—ã®ä¸¦ã¹æ›ãˆ
-    ' Sub       permutate_back      permutate ã§ä¸¦ã¹æ›ãˆã‚‰ã‚ŒãŸ1æ¬¡å…ƒé…åˆ—ã‚’å…ƒã®é †åˆ—ã«æˆ»ã™
-    ' Function  lower_bound         ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰ã®ã‚­ãƒ¼ã®æ¤œç´¢ï¼ˆstd::lower_boundã¨åŒã˜ï¼‰
-    ' Function  lower_bound_pred    ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰ã®ã‚­ãƒ¼ã®æ¤œç´¢ï¼ˆstd::lower_boundã¨åŒã˜ï¼‰
-    ' Function  upper_bound         ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰ã®ã‚­ãƒ¼ã®æ¤œç´¢ï¼ˆstd::upper_boundã¨åŒã˜ï¼‰
-    ' Function  upper_bound_pred    ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰ã®ã‚­ãƒ¼ã®æ¤œç´¢ï¼ˆstd::upper_boundã¨åŒã˜ï¼‰
-    ' Function  equal_range         ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰ã®ã‚­ãƒ¼ã®æ¤œç´¢ï¼ˆstd::equal_rangeã¨åŒã˜ï¼‰
-    ' Function  equal_range_pred    ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰ã®ã‚­ãƒ¼ã®æ¤œç´¢ï¼ˆstd::equal_rangeã¨åŒã˜ï¼‰
-    ' Function  partition_points    ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æ¡ä»¶ã«ã‚ˆã£ã¦åŒºåˆ†åŒ–ã•ã‚Œã¦ã„ã‚‹ä½ç½®ã®ä¸€è¦§ã‚’å¾—ã‚‹
+    ' Function  sortIndex           ¸‡ƒ\[ƒgŒã‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñ
+    ' Function  sortIndex_pred      ”CˆÓ‚Ì”äŠrŠÖ”‚É‚æ‚éƒ\[ƒgŒã‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñ
+    ' Sub       permutate           1ŸŒ³”z—ñ‚Ì•À‚×Š·‚¦
+    ' Sub       permutate_back      permutate ‚Å•À‚×Š·‚¦‚ç‚ê‚½1ŸŒ³”z—ñ‚ğŒ³‚Ì‡—ñ‚É–ß‚·
+    ' Function  lower_bound         ƒ\[ƒgÏ‚İ”z—ñ‚©‚ç‚ÌƒL[‚ÌŒŸõistd::lower_bound‚Æ“¯‚¶j
+    ' Function  lower_bound_pred    ƒ\[ƒgÏ‚İ”z—ñ‚©‚ç‚ÌƒL[‚ÌŒŸõistd::lower_bound‚Æ“¯‚¶j
+    ' Function  upper_bound         ƒ\[ƒgÏ‚İ”z—ñ‚©‚ç‚ÌƒL[‚ÌŒŸõistd::upper_bound‚Æ“¯‚¶j
+    ' Function  upper_bound_pred    ƒ\[ƒgÏ‚İ”z—ñ‚©‚ç‚ÌƒL[‚ÌŒŸõistd::upper_bound‚Æ“¯‚¶j
+    ' Function  equal_range         ƒ\[ƒgÏ‚İ”z—ñ‚©‚ç‚ÌƒL[‚ÌŒŸõistd::equal_range‚Æ“¯‚¶j
+    ' Function  equal_range_pred    ƒ\[ƒgÏ‚İ”z—ñ‚©‚ç‚ÌƒL[‚ÌŒŸõistd::equal_range‚Æ“¯‚¶j
+    ' Function  partition_points    ƒ\[ƒgÏ‚İ”z—ñ‚©‚çğŒ‚É‚æ‚Á‚Ä‹æ•ª‰»‚³‚ê‚Ä‚¢‚éˆÊ’u‚Ìˆê——‚ğ“¾‚é
     ' Function  partition_points_pred
-    ' Function  less_dic            è¿°èª è¾æ›¸å¼less
-    ' Function  less_equal_dic      è¿°èª è¾æ›¸å¼less_equal
-    ' Function  greater_dic         è¿°èª è¾æ›¸å¼greater
-    ' Function  greater_equal_dic   è¿°èª è¾æ›¸å¼greater_equal
-    ' Function  equal_dic           è¿°èª è¾æ›¸å¼equal
-    ' Function  notEqual_dic        è¿°èª è¾æ›¸å¼notEqual
+    ' Function  less_dic            qŒê «‘®less
+    ' Function  less_equal_dic      qŒê «‘®less_equal
+    ' Function  greater_dic         qŒê «‘®greater
+    ' Function  greater_equal_dic   qŒê «‘®greater_equal
+    ' Function  equal_dic           qŒê «‘®equal
+    ' Function  notEqual_dic        qŒê «‘®notEqual
 '====================================================================================================
 
-'æ˜‡é †ã‚½ãƒ¼ãƒˆå¾Œã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—ï¼ˆé™é †ã‚½ãƒ¼ãƒˆã¯ã“ã®reverseã‚’ã¨ã‚‹ï¼‰
-'key_columns ã¯2æ¬¡å…ƒé…åˆ—ã®å ´åˆã®ã‚­ãƒ¼åˆ—æŒ‡å®š Array(0,2,4)
-' å¯¾è±¡é…åˆ—ã‚’å®Ÿéš›ã«ã‚½ãƒ¼ãƒˆã™ã‚‹å ´åˆã¯ã€permutate(é…åˆ—, sortIndex) ã¨ã™ã‚‹ã‹ã€
-' ã‚‚ã—ãã¯subV(é…åˆ—, sortIndex) ã‚’å–ã‚‹
+'¸‡ƒ\[ƒgŒã‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñi~‡ƒ\[ƒg‚Í‚±‚Ìreverse‚ğ‚Æ‚éj
+'key_columns ‚Í2ŸŒ³”z—ñ‚Ìê‡‚ÌƒL[—ñw’è Array(0,2,4)
+' ‘ÎÛ”z—ñ‚ğÀÛ‚Éƒ\[ƒg‚·‚éê‡‚ÍApermutate(”z—ñ, sortIndex) ‚Æ‚·‚é‚©A
+' ‚à‚µ‚­‚ÍsubV(”z—ñ, sortIndex) ‚ğæ‚é
 Function sortIndex(ByRef matrix As Variant, Optional ByRef key_columns As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
@@ -51,7 +51,7 @@ End Function
         p_sortIndex = make_funPointer_with_2nd_Default(AddressOf sortIndex, firstParam, secondParam)
     End Function
 
-'ä»»æ„ã®æ¯”è¼ƒé–¢æ•° comp ã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆå¾Œã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
+'”CˆÓ‚Ì”äŠrŠÖ” comp ‚É‚æ‚éƒ\[ƒgŒã‚ÌƒCƒ“ƒfƒbƒNƒX”z—ñ
 Function sortIndex_pred(ByRef matrix As Variant, ByRef comp As Variant) As Variant
     Select Case Dimension(matrix)
     Case 1
@@ -64,10 +64,10 @@ End Function
         p_sortIndex_pred = make_funPointer(AddressOf sortIndex_pred, firstParam, secondParam, 2)
     End Function
 
-' 1æ¬¡å…ƒé…åˆ— vec ã®ä¸¦ã¹æ›ãˆ
-' s_index ã¯ sortIndex é–¢æ•°ã€ã‚‚ã—ãã¯ sortIndex_pred é–¢æ•°ã®è¿”ã‚Šå€¤ã‚’æƒ³å®š
-' s_index ã« vec ã®ç¯„å›²å¤–ã®å€¤ã‚‚ã—ãã¯é‡è¤‡ãŒã‚ã£ãŸå ´åˆã®å‹•ä½œã¯æœªå®šç¾©
-' subV/subM é–¢æ•°ã‚’ä½¿ã†ã‚ˆã‚Šé€Ÿã„ã¯ãš
+' 1ŸŒ³”z—ñ vec ‚Ì•À‚×Š·‚¦
+' s_index ‚Í sortIndex ŠÖ”A‚à‚µ‚­‚Í sortIndex_pred ŠÖ”‚Ì•Ô‚è’l‚ğ‘z’è
+' s_index ‚É vec ‚Ì”ÍˆÍŠO‚Ì’l‚à‚µ‚­‚Íd•¡‚ª‚ ‚Á‚½ê‡‚Ì“®ì‚Í–¢’è‹`
+' subV/subM ŠÖ”‚ğg‚¤‚æ‚è‘¬‚¢‚Í‚¸
 Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
     If Dimension(vec) <> 1 Or Dimension(s_index) <> 1 Then Exit Sub
     If rowSize(vec) = 0 Or rowSize(vec) <> rowSize(s_index) Then Exit Sub
@@ -101,7 +101,7 @@ Sub permutate(ByRef vec As Variant, ByRef s_index As Variant)
     End If
 End Sub
 
-' permutate ã§ä¸¦ã¹æ›ãˆã‚‰ã‚ŒãŸ1æ¬¡å…ƒé…åˆ—ã‚’å…ƒã®é †åˆ—ã«æˆ»ã™
+' permutate ‚Å•À‚×Š·‚¦‚ç‚ê‚½1ŸŒ³”z—ñ‚ğŒ³‚Ì‡—ñ‚É–ß‚·
 Sub permutate_back(ByRef vec As Variant, ByRef s_index As Variant)
     Dim k As Long:          k = LBound(vec)
     Dim index2() As Long:   ReDim index2(LBound(vec) To UBound(vec))
@@ -113,7 +113,7 @@ Sub permutate_back(ByRef vec As Variant, ByRef s_index As Variant)
     permutate vec, index2
 End Sub
 
-'ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸè¦ç´ ä»¥ä¸Šã®å€¤ãŒç¾ã‚Œã‚‹æœ€åˆã®ä½ç½®ã‚’å–å¾—
+'ƒ\[ƒgÏ‚İ”z—ñ‚©‚çw’è‚³‚ê‚½—v‘fˆÈã‚Ì’l‚ªŒ»‚ê‚éÅ‰‚ÌˆÊ’u‚ğæ“¾
 Function lower_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
     lower_bound = lower_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
@@ -121,26 +121,26 @@ End Function
         p_lower_bound = make_funPointer(AddressOf lower_bound, firstParam, secondParam)
     End Function
 
-'ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸè¦ç´ ä»¥ä¸Šã®å€¤ãŒç¾ã‚Œã‚‹æœ€åˆã®ä½ç½®ã‚’å–å¾—ï¼ˆæ¯”è¼ƒé–¢æ•°ä½¿ç”¨ï¼‰
+'ƒ\[ƒgÏ‚İ”z—ñ‚©‚çw’è‚³‚ê‚½—v‘fˆÈã‚Ì’l‚ªŒ»‚ê‚éÅ‰‚ÌˆÊ’u‚ğæ“¾i”äŠrŠÖ”g—pj
 Function lower_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
     lower_bound_pred = lower_bound_imple(matrix, _
                                          val, _
                                          pred, _
                                          LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
-    ' ã“ã‚Œã¯é€šå¸¸ã®é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã¯ç•°ãªã‚‹ï¼ˆæ¯”è¼ƒé–¢æ•°ã®ã¿ã‚’å¼•æ•°ã«å–ã‚‹ï¼‰
-    ' mapF_swap(p_lower_bound_pred(comp), matrix, values) ã¨ã„ã†ä½¿ç”¨æ–¹æ³•ã‚’æƒ³å®š
+    ' ‚±‚ê‚Í’Êí‚ÌŠÖ”ƒIƒuƒWƒFƒNƒg‚Æ‚ÍˆÙ‚È‚éi”äŠrŠÖ”‚Ì‚İ‚ğˆø”‚Éæ‚éj
+    ' mapF_swap(p_lower_bound_pred(comp), matrix, values) ‚Æ‚¢‚¤g—p•û–@‚ğ‘z’è
     Function p_lower_bound_pred(ByRef comp As Variant) As Variant
         p_lower_bound_pred = make_funPointer( _
                     AddressOf lower_bound_pred_zzz, _
                     Empty, _
                     make_funPointer(AddressOf makePair, yield_0, comp, 2))
     End Function
-    Private Function lower_bound_pred_zzz(ByRef matrix As Variant, ByRef comp_val As Variant) As Variant
-        lower_bound_pred_zzz = lower_bound_pred(matrix, comp_val(0), comp_val(1))
+    Private Function lower_bound_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
+        lower_bound_pred_zzz = lower_bound_pred(matrix, val_comp(0), val_comp(1))
     End Function
 
-'ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸè¦ç´ ã‚ˆã‚Šå¤§ãã„å€¤ãŒç¾ã‚Œã‚‹æœ€åˆã®ä½ç½®ã‚’å–å¾—
+'ƒ\[ƒgÏ‚İ”z—ñ‚©‚çw’è‚³‚ê‚½—v‘f‚æ‚è‘å‚«‚¢’l‚ªŒ»‚ê‚éÅ‰‚ÌˆÊ’u‚ğæ“¾
 Function upper_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
     upper_bound = upper_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
@@ -148,26 +148,26 @@ End Function
         p_upper_bound = make_funPointer(AddressOf upper_bound, firstParam, secondParam)
     End Function
 
-'ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸè¦ç´ ã‚ˆã‚Šå¤§ãã„å€¤ãŒç¾ã‚Œã‚‹æœ€åˆã®ä½ç½®ã‚’å–å¾—ï¼ˆæ¯”è¼ƒé–¢æ•°ä½¿ç”¨ï¼‰
+'ƒ\[ƒgÏ‚İ”z—ñ‚©‚çw’è‚³‚ê‚½—v‘f‚æ‚è‘å‚«‚¢’l‚ªŒ»‚ê‚éÅ‰‚ÌˆÊ’u‚ğæ“¾i”äŠrŠÖ”g—pj
 Function upper_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
     upper_bound_pred = upper_bound_imple(matrix, _
                                          val, _
                                          pred, _
                                          LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
-    ' ã“ã‚Œã¯é€šå¸¸ã®é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã¯ç•°ãªã‚‹ï¼ˆæ¯”è¼ƒé–¢æ•°ã®ã¿ã‚’å¼•æ•°ã«å–ã‚‹ï¼‰
-    ' mapF_swap(p_upper_bound_pred(comp), matrix, values) ã¨ã„ã†ä½¿ç”¨æ–¹æ³•ã‚’æƒ³å®š
+    ' ‚±‚ê‚Í’Êí‚ÌŠÖ”ƒIƒuƒWƒFƒNƒg‚Æ‚ÍˆÙ‚È‚éi”äŠrŠÖ”‚Ì‚İ‚ğˆø”‚Éæ‚éj
+    ' mapF_swap(p_upper_bound_pred(comp), matrix, values) ‚Æ‚¢‚¤g—p•û–@‚ğ‘z’è
     Function p_upper_bound_pred(ByRef comp As Variant) As Variant
         p_upper_bound_pred = make_funPointer( _
                     AddressOf upper_bound_pred_zzz, _
                     Empty, _
                     make_funPointer(AddressOf makePair, yield_0, comp, 2))
     End Function
-    Private Function upper_bound_pred_zzz(ByRef matrix As Variant, ByRef comp_val As Variant) As Variant
-        upper_bound_pred_zzz = upper_bound_pred(matrix, comp_val(0), comp_val(1))
+    Private Function upper_bound_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
+        upper_bound_pred_zzz = upper_bound_pred(matrix, val_comp(0), val_comp(1))
     End Function
 
-'lower_boundã¨upper_boundã®çµ„
+'lower_bound‚Æupper_bound‚Ì‘g
 Function equal_range(ByRef matrix As Variant, ByRef val As Variant) As Variant
     equal_range = VBA.Array(lower_bound(matrix, val), upper_bound(matrix, val))
 End Function
@@ -175,28 +175,28 @@ End Function
         p_equal_range = make_funPointer(AddressOf equal_range, firstParam, secondParam)
     End Function
 
-'lower_boundã¨upper_boundã®çµ„ï¼ˆæ¯”è¼ƒé–¢æ•°ä½¿ç”¨ï¼‰
+'lower_bound‚Æupper_bound‚Ì‘gi”äŠrŠÖ”g—pj
 Function equal_range_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
     equal_range_pred = VBA.Array(lower_bound_pred(matrix, val, pred), upper_bound_pred(matrix, val, pred))
 End Function
-    ' ã“ã‚Œã¯é€šå¸¸ã®é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã¯ç•°ãªã‚‹ï¼ˆæ¯”è¼ƒé–¢æ•°ã®ã¿ã‚’å¼•æ•°ã«å–ã‚‹ï¼‰
-    ' mapF_swap(p_equal_range_pred(comp), matrix, values) ã¨ã„ã†ä½¿ç”¨æ–¹æ³•ã‚’æƒ³å®š
+    ' ‚±‚ê‚Í’Êí‚ÌŠÖ”ƒIƒuƒWƒFƒNƒg‚Æ‚ÍˆÙ‚È‚éi”äŠrŠÖ”‚Ì‚İ‚ğˆø”‚Éæ‚éj
+    ' mapF_swap(p_equal_range_pred(comp), matrix, values) ‚Æ‚¢‚¤g—p•û–@‚ğ‘z’è
     Function p_equal_range_pred(ByRef comp As Variant) As Variant
         p_equal_range_pred = make_funPointer( _
                     AddressOf equal_range_pred_zzz, _
                     Empty, _
                     make_funPointer(AddressOf makePair, yield_0, comp, 2))
     End Function
-    Private Function equal_range_pred_zzz(ByRef matrix As Variant, ByRef comp_val As Variant) As Variant
-        equal_range_pred_zzz = equal_range_pred(matrix, comp_val(0), comp_val(1))
+    Private Function equal_range_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
+        equal_range_pred_zzz = equal_range_pred(matrix, val_comp(0), val_comp(1))
     End Function
 
-'ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æ¡ä»¶ã«ã‚ˆã£ã¦åŒºåˆ†åŒ–ã•ã‚Œã¦ã„ã‚‹ä½ç½®ã®ä¸€è¦§ã‚’å¾—ã‚‹
+'ƒ\[ƒgÏ‚İ”z—ñ‚©‚çğŒ‚É‚æ‚Á‚Ä‹æ•ª‰»‚³‚ê‚Ä‚¢‚éˆÊ’u‚Ìˆê——‚ğ“¾‚é
 Function partition_points(ByRef vec As Variant) As Variant
     partition_points = partition_points_pred(vec, p_less)
 End Function
 
-'ã‚½ãƒ¼ãƒˆæ¸ˆã¿é…åˆ—ã‹ã‚‰æ¡ä»¶ã«ã‚ˆã£ã¦åŒºåˆ†åŒ–ã•ã‚Œã¦ã„ã‚‹ä½ç½®ã®ä¸€è¦§ã‚’å¾—ã‚‹
+'ƒ\[ƒgÏ‚İ”z—ñ‚©‚çğŒ‚É‚æ‚Á‚Ä‹æ•ª‰»‚³‚ê‚Ä‚¢‚éˆÊ’u‚Ìˆê——‚ğ“¾‚é
 Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As Variant
     Dim ret As Variant
     ret = makeM(sizeof(vec) + 1)
@@ -212,7 +212,7 @@ Function partition_points_pred(ByRef vec As Variant, ByRef pred As Variant) As V
     swapVariant partition_points_pred, ret
 End Function
 
-'è¿°èª è¾æ›¸å¼less
+'qŒê «‘®less
 Function less_dic(ByRef a As Variant, ByRef b As Variant) As Variant
     less_dic = 0&
     Dim i As Long
@@ -229,7 +229,7 @@ End Function
         p_less_dic = make_funPointer(AddressOf less_dic, firstParam, secondParam)
     End Function
 
-'è¿°èª è¾æ›¸å¼less_equal
+'qŒê «‘®less_equal
 Function less_equal_dic(ByRef a As Variant, ByRef b As Variant) As Variant
     less_equal_dic = IIf(0 = less_dic(b, a), 1&, 0&)
 End Function
@@ -237,7 +237,7 @@ End Function
         p_less_equal_dic = make_funPointer(AddressOf less_equal_dic, firstParam, secondParam)
     End Function
 
-'è¿°èª è¾æ›¸å¼greater
+'qŒê «‘®greater
 Function greater_dic(ByRef a As Variant, ByRef b As Variant) As Variant
     greater_dic = less_dic(b, a)
 End Function
@@ -245,7 +245,7 @@ End Function
         p_greater_dic = make_funPointer(AddressOf greater_dic, firstParam, secondParam)
     End Function
 
-'è¿°èª è¾æ›¸å¼greater_equal
+'qŒê «‘®greater_equal
 Function greater_equal_dic(ByRef a As Variant, ByRef b As Variant) As Variant
     greater_equal_dic = IIf(0 = less_dic(a, b), 1&, 0&)
 End Function
@@ -253,7 +253,7 @@ End Function
         p_greater_equal_dic = make_funPointer(AddressOf greater_equal_dic, firstParam, secondParam)
     End Function
 
-'è¿°èª è¾æ›¸å¼equal
+'qŒê «‘®equal
 Function equal_dic(ByRef a As Variant, ByRef b As Variant) As Variant
     equal_dic = IIf(0 = less_dic(a, b) And 0 = less_dic(b, a), 1&, 0&)
 End Function
@@ -261,7 +261,7 @@ End Function
         p_equal_dic = make_funPointer(AddressOf equal_dic, firstParam, secondParam)
     End Function
 
-'è¿°èª è¾æ›¸å¼notEqual
+'qŒê «‘®notEqual
 Function notEqual_dic(ByRef a As Variant, ByRef b As Variant) As Variant
     notEqual_dic = IIf(0 = equal_dic(b, a), 1&, 0&)
 End Function
@@ -314,3 +314,4 @@ Private Function upper_bound_imple(ByRef matrix As Variant, _
     End If
 End Function
 '####################
+
