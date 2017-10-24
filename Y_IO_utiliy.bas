@@ -12,6 +12,7 @@ Option Explicit
 '   Function    getInterior         オブジェクトのInteriorプロパティを取得
 '   Function    getTextFile         テキストファイルの配列読み込み
 '   Function    mapTextLine         テキストファイルの行単位での処理
+'   Function    mapTextLines        テキストファイルを複数行まとめて処理
 '   Sub         writeTextFile       配列のテキストファイル書き込み
 '   Function    getURLText          URLで指定されたテキストの配列読み込み
 '   Function    urlEncode           URLエンコード
@@ -163,6 +164,51 @@ Public Function mapTextLine(ByRef fn As Variant, _
             mapTextLine = mapTextLine + 1
             i = i + 1
         Loop
+    End With
+closeAdoStream:
+    ado.Close
+    Set ado = Nothing
+End Function
+
+' テキストファイルを複数行まとめて処理
+' lineN : 処理単位行数
+Public Function mapTextLines(ByVal lineN As Long, _
+                             ByRef fn As Variant, _
+                             ByVal fileName As String, _
+                             ByVal line_end As String, _
+                             Optional ByVal Charset As String = "_autodetect_all", _
+                             Optional ByVal head_n As Long = -1, _
+                             Optional ByVal head_cut As Long = 0) As Long
+    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
+    On Error GoTo closeAdoStream
+    If lineN < 1 Then lineN = 1
+    If head_n < 0 Then head_n = 2 ^ 30
+    With ado
+        .Open
+        .Position = 0
+        .Type = 2    'ADODB.Stream.adTypeText
+        .Charset = Charset
+        .LoadFromFile fileName
+        .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
+        Dim i As Long, k As Long: k = 0
+        For i = 1 To head_cut Step 1
+            .SkipLine
+        Next i
+        Dim buffer As Variant
+        buffer = makeM(lineN)
+        Do While i <= head_n And Not .EOS
+            buffer(k) = .ReadText(-2)   'adReadLine
+            k = k + 1
+            If k = lineN Then
+                If 0 = applyFun(buffer, fn) Then Exit Do
+                k = 0
+            End If
+            mapTextLines = mapTextLines + 1
+            i = i + 1
+        Loop
+        If 0 < k Then
+            Call applyFun(headN(buffer, k), fn)
+        End If
     End With
 closeAdoStream:
     ado.Close
