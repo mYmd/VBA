@@ -25,6 +25,7 @@ Option Explicit
 '   Function    downloadFiles       URLで指定したファイルのダウンロード
 '   Function    encodeBase64        ファイルをBase64エンコード（binary -> text）
 '   Function    decodeBase64        ファイルをBase64デコード（text -> binary）
+'   Function    str2Base64          文字列をBase64エンコード
 '*********************************************************************************
 
 ' Excelシートのセル範囲から配列を取得（値のみ）
@@ -481,7 +482,7 @@ Public Function wTable2m(ByVal t As Object, Optional ByVal cutHeader As Boolean 
             Dim i As Long, j As Long
             For i = 1 To .rows.Count Step 1
                 For j = 1 To .Columns.Count Step 1
-                    tmp = .Cell(i, j).Range.Text
+                    tmp = .Cell(i, j).Range.text
                     ret(i - 1, j - 1) = Left(tmp, Len(tmp) - 2)
                 Next j
             Next i
@@ -578,7 +579,7 @@ Function encodeBase64(ByVal fromFile As String, ByVal toFile As String) As Boole
         .Position = 0
         .Type = 2    'ADODB.Stream.adTypeText
         .Charset = "UTF-8"
-        .WriteText elm.Text, 0          ' adWriteChar
+        .WriteText elm.text, 0          ' adWriteChar
         .SaveToFile toFile, 2   ' adSaveCreateOverWrite
         .Close
     End With
@@ -602,7 +603,7 @@ Function decodeBase64(ByVal fromFile As String, ByVal toFile As String) As Boole
         .Charset = "UTF-8"
         .LoadFromFile fromFile
         elm.DataType = "bin.base64"
-        elm.Text = .ReadText  'adReadAll
+        elm.text = .ReadText  'adReadAll
         .Close
     End With
     With CreateObject("ADODB.Stream")
@@ -613,4 +614,28 @@ Function decodeBase64(ByVal fromFile As String, ByVal toFile As String) As Boole
         .Close
     End With
     decodeBase64 = True
+End Function
+
+' 文字列をBase64エンコード
+Function str2Base64(ByVal text As String, _
+                        Optional ByVal charactor_set As String = "ASCII") As String
+    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
+    With ado
+        .Open
+        .Position = 0
+        .Charset = charactor_set
+        .Type = 2   'adTypeTest
+        .WriteText text
+        .Position = 0
+        .Type = 1   'adTypeBinary
+    End With
+    Dim dom As Object:  Set dom = CreateObject("MSXML2.DOMDocument").CreateElement("base64")
+    With dom
+        .DataType = "bin.base64"
+        .nodeTypedValue = ado.Read
+        str2Base64 = .text
+    End With
+    ado.Close
+    Set ado = Nothing
+    Set dom = Nothing
 End Function
