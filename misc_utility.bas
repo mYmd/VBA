@@ -4,68 +4,71 @@ Attribute VB_Name = "misc_utility"
 Option Explicit
 
 '*********************************************************************************
-'   ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
+'   ƒ†[ƒeƒBƒŠƒeƒB
 '*********************************************************************************
-'   Function  p__n                      p_getNth_b(, n)ã®æ§‹æ–‡ç³–
+'   Function  p__n                      p_getNth_b(, n)‚Ì\•¶“œ
 '   Function  p_try                     IIf(pred(a), a', b')
-'   Function  p_try_not                 IIf(Not pred(a), a', b')ã®æ§‹æ–‡ç³–
-'   Function  p_try_less                p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) ã®æ§‹æ–‡ç³–
-'   Function  p_typename                ãƒ‡ãƒ¼ã‚¿å‹å
-'   Function  p_isNumeric               IsNumericé–¢æ•°
-'   Function  p_format                  Formaté–¢æ•°
-'   Function  p_InStr                   InStré–¢æ•°
-'   Function  p_InStrRev                InStrRevé–¢æ•°
-'   Function  p_Like                    Likeé–¢æ•°
-'   Function  p_StrConv                 StrConvé–¢æ•°
-'   Function  p_Trim                    Trimé–¢æ•°
-'   Function  separate_string           æ–‡å­—åˆ—ã®å·¦å³åˆ†é›¢
-'   Function  subM_R                    subM(m, è¡Œç¯„å›²) ã®æ§‹æ–‡ç³–
-'   Function  subM_R_b                  ã€ƒï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Function  subM_C                    subM(m, , åˆ—ç¯„å›²) ã®æ§‹æ–‡ç³–
-'   Function  subM_C_b                  ã€ƒï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Function  selectRow_b               selectRowï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Function  selectCol_b               selectColï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Sub       fillRow_b                 fillRowï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Function  fillRow_b_move            fillRow_moveï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Sub       fillCol_b                 fillColï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Function  fillCol_b_move            ã®fillCol_moveï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'   Function  adjacent_op               1æ¬¡å…ƒé…åˆ—ã®éš£æ¥ã™ã‚‹è¦ç´ é–“ã§2é …æ“ä½œ
-'   Function  get_unique                1æ¬¡å…ƒé…åˆ—ã®é‡è¤‡è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹ (ã‚½ãƒ¼ãƒˆæ¸ˆå‰æ)
+'   Function  p_try_not                 IIf(Not pred(a), a', b')‚Ì\•¶“œ
+'   Function  p_try_less                p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) ‚Ì\•¶“œ
+'   Function  p_vartype                 VarType’l
+'   Function  p_typename                ƒf[ƒ^Œ^–¼
+'   Function  p_isNumeric               IsNumericŠÖ”
+'   Function  p_format                  FormatŠÖ”
+'   Function  p_InStr                   InStrŠÖ”
+'   Function  p_InStrRev                InStrRevŠÖ”
+'   Function  p_Like                    LikeŠÖ”
+'   Function  p_StrConv                 StrConvŠÖ”
+'   Function  p_Trim                    TrimŠÖ”
+'   Function  separate_string           •¶š—ñ‚Ì¶‰E•ª—£
+'   Function  subM_R                    subM(m, s”ÍˆÍ) ‚Ì\•¶“œ
+'   Function  subM_R_b                  ViƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Function  subM_C                    subM(m, , —ñ”ÍˆÍ) ‚Ì\•¶“œ
+'   Function  subM_C_b                  ViƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Function  selectRow_b               selectRowiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Function  selectCol_b               selectColiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Sub       fillRow_b                 fillRowiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Function  fillRow_b_move            fillRow_moveiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Sub       fillCol_b                 fillColiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Function  fillCol_b_move            ‚ÌfillCol_moveiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'   Function  adjacent_op               1ŸŒ³”z—ñ‚Ì—×Ú‚·‚é—v‘fŠÔ‚Å2€‘€ì
+'   Function  get_unique                1ŸŒ³”z—ñ‚Ìd•¡—v‘f‚ğíœ‚·‚é (ƒ\[ƒgÏ‘O’ñ)
 '  -----------------------------------------------------------------------------
-'   Sub       rowWise_change            2æ¬¡å…ƒé…åˆ—ã®è¡Œã”ã¨ã«é–¢æ•°é©ç”¨
-'   Function  rowWise_change_move       ã€ƒmoveã—ã¦è¿”ã™
-'   Sub       columnWise_change         2æ¬¡å…ƒé…åˆ—ã®åˆ—ã”ã¨ã«é–¢æ•°é©ç”¨
-'   Function  columnWise_change_move    ã€ƒmoveã—ã¦è¿”ã™
-'   Function  equal_all                 1æ¬¡å…ƒé…åˆ—ã®å…¨è¦ç´ ã®ç­‰å€¤æ¯”è¼ƒ
-'   Function  equal_all_pred            ã€ƒã€€è¿°èªãƒãƒ¼ã‚¸ãƒ§ãƒ³
-'   Function  filter_if                 è¿°èªã‚’ä¸ãˆã¦1æ¬¡å…ƒé…åˆ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
-'   Function  filter_if_not             è¿°èªã‚’ä¸ãˆã¦1æ¬¡å…ƒé…åˆ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ï¼ˆå¦å®šå½¢ï¼‰
+'   Sub       rowWise_change            2ŸŒ³”z—ñ‚Ìs‚²‚Æ‚ÉŠÖ”“K—p
+'   Function  rowWise_change_move       Vmove‚µ‚Ä•Ô‚·
+'   Sub       columnWise_change         2ŸŒ³”z—ñ‚Ì—ñ‚²‚Æ‚ÉŠÖ”“K—p
+'   Function  columnWise_change_move    Vmove‚µ‚Ä•Ô‚·
+'   Function  equal_all                 1ŸŒ³”z—ñ‚Ì‘S—v‘f‚Ì“™’l”äŠr
+'   Function  equal_all_pred            V@qŒêƒo[ƒWƒ‡ƒ“
+'   Function  filter_if                 qŒê‚ğ—^‚¦‚Ä1ŸŒ³”z—ñ‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+'   Function  filter_if_not             qŒê‚ğ—^‚¦‚Ä1ŸŒ³”z—ñ‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒOi”Û’èŒ`j
 '  -----------------------------------------------------------------------------
-'   Function  p_not                     è«–ç†Not
-'   Function  p_imply                   å«æ„(A=>B)   IIF(Not A Or B, True, False)
+'   Function  p_not                     ˜_—Not
+'   Function  p_imply                   ŠÜˆÓ(A=>B)   IIF(Not A Or B, True, False)
 '  -----------------------------------------------------------------------------
-'   Function  pipe                      vh_pipeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
-'   Function  pipe_                     vh_pipeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆï¼ˆå¼•æ•°ã‚’moveã™ã‚‹ï¼‰
+'   Function  pipe                      vh_pipeƒIƒuƒWƒFƒNƒg‚Ì¶¬
+'   Function  pipe_                     vh_pipeƒIƒuƒWƒFƒNƒg‚Ì¶¬iˆø”‚ğmove‚·‚éj
 '  -----------------------------------------------------------------------------
-'   Function  stdVec                    vh_stdvecã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+'   Function  stdVec                    vh_stdvecƒIƒuƒWƒFƒNƒg‚Ì¶¬
 '  -----------------------------------------------------------------------------
-'   Function  splitStr2Funs             delimiterã§åŒºåˆ‡ã‚‰ã‚ŒãŸæ–‡å­—åˆ—ã‚’é–¢æ•°åˆ—ã¸ãƒãƒƒãƒ”ãƒ³ã‚°
-'   Function  str2SummaryFun            æ–‡å­—åˆ—ã‹ã‚‰é›†è¨ˆé–¢æ•°ã¸å¤‰æ›
-'   Function  str2ConvertFun            æ–‡å­—åˆ—ã‹ã‚‰å‹å¤‰æ›é–¢æ•°ã¸å¤‰æ›
+'   Function  splitStr2Funs             delimiter‚Å‹æØ‚ç‚ê‚½•¶š—ñ‚ğŠÖ”—ñ‚Öƒ}ƒbƒsƒ“ƒO
+'   Function  str2SummaryFun            •¶š—ñ‚©‚çWŒvŠÖ”‚Ö•ÏŠ·
+'   Function  str2ConvertFun            •¶š—ñ‚©‚çŒ^•ÏŠ·ŠÖ”‚Ö•ÏŠ·
 '  -----------------------------------------------------------------------------
-'   Function  group_by_partition_points partition_points ã«ã‚ˆã‚‹GROUP-BY
+'   Function  group_by_partition_points partition_points ‚É‚æ‚éGROUP-BY
 '  -----------------------------------------------------------------------------
-'   Function  csv2Vector                csvãƒ•ã‚¡ã‚¤ãƒ«ã®1è¡Œã‚’é…åˆ—ã«åˆ†å‰²
+'   Function  group_by_pred             ‘®«‚²‚Æ‚Ì”z—ñ‚É•ªŠ„
 '  -----------------------------------------------------------------------------
-'   Function  A_overlap_B               ï¼’ã¤ã®1æ¬¡å…ƒé…åˆ—ã®å…±æœ‰éƒ¨åˆ†ã¨éå…±æœ‰éƒ¨åˆ†ã‚’ç‰¹å®š
+'   Function  csv2Vector                csvƒtƒ@ƒCƒ‹‚Ì1s‚ğ”z—ñ‚É•ªŠ„
+'  -----------------------------------------------------------------------------
+'   Function  A_overlap_B               ‚Q‚Â‚Ì1ŸŒ³”z—ñ‚Ì‹¤—L•”•ª‚Æ”ñ‹¤—L•”•ª‚ğ“Á’è
 '*********************************************************************************
 
-' p_getNth_b(, n)ã®æ§‹æ–‡ç³–
+' p_getNth_b(, n)‚Ì\•¶“œ
 Public Function p__n(ByVal n As Long) As Variant
     p__n = p_getNth_b(, n)
 End Function
 
-' IIf(pred(a), a', b')ã®æ§‹æ–‡ç³–
+' IIf(pred(a), a', b')‚Ì\•¶“œ
 Public Function p_try(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
@@ -83,7 +86,7 @@ Public Function p_try(ByRef pred As Variant, _
     End If
 End Function
 
-' IIf(Not pred(a), a', b')ã®æ§‹æ–‡ç³–
+' IIf(Not pred(a), a', b')‚Ì\•¶“œ
 Public Function p_try_not(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
@@ -112,13 +115,21 @@ End Function
         p_replace_0 = make_funPointer(AddressOf replace_0, firstParam, secondParam)
     End Function
 
-' p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) ã®æ§‹æ–‡ç³–
-' equal_range ã®å€¤ã‚’ subV_if ã«ä»£å…¥ã™ã‚‹ã¨ãç­‰ã«ä¾¿åˆ©
+' p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) ‚Ì\•¶“œ
+' equal_range ‚Ì’l‚ğ subV_if ‚É‘ã“ü‚·‚é‚Æ‚«“™‚É•Ö—˜
 Public Function p_try_less()
     p_try_less = p_try(p_less(p__n(0), p__n(1)), p__n(0), Null)
 End Function
 
-' ãƒ‡ãƒ¼ã‚¿å‹å
+' VarType’l
+    Private Function vartype_(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
+        vartype_ = VarType(x)
+    End Function
+Public Function p_vartype(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+    p_vartype = make_funPointer(AddressOf vartype_, firstParam, secondParam)
+End Function
+
+' ƒf[ƒ^Œ^–¼
     Private Function typename_(ByRef x As Variant, Optional ByRef dummy As Variant) As Variant
         typename_ = TypeName(x)
     End Function
@@ -126,7 +137,7 @@ Public Function p_typename(Optional ByRef firstParam As Variant, Optional ByRef 
     p_typename = make_funPointer(AddressOf typename_, firstParam, secondParam)
 End Function
 
-' IsNumericé–¢æ•°
+' IsNumericŠÖ”
         Private Function IsNumeric_(ByRef expr As Variant, Optional ByRef strict As Variant) As Variant
             IsNumeric_ = IIf(IsNumeric(expr) Or IsDate(expr), 1&, 0&)
             If Not IsMissing(strict) Then
@@ -139,7 +150,7 @@ Public Function p_isNumeric(Optional ByRef firstParam As Variant, Optional ByRef
     p_isNumeric = make_funPointer_with_2nd_Default(AddressOf IsNumeric_, firstParam, secondParam)
 End Function
 
-' Formaté–¢æ•°
+' FormatŠÖ”
     Private Function format_(ByRef expr As Variant, ByRef fmt As Variant) As Variant
         format_ = Format(expr, fmt)
     End Function
@@ -147,7 +158,7 @@ Public Function p_format(Optional ByRef firstParam As Variant, Optional ByRef se
     p_format = make_funPointer(AddressOf format_, firstParam, secondParam)
 End Function
 
-' InStré–¢æ•°
+' InStrŠÖ”
      Private Function InStr_(ByRef s As Variant, ByRef expr As Variant) As Variant
         InStr_ = InStr(s, expr)
         If IsNull(InStr_) Then InStr_ = 0
@@ -156,7 +167,7 @@ Public Function p_InStr(Optional ByRef firstParam As Variant, Optional ByRef sec
     p_InStr = make_funPointer(AddressOf InStr_, firstParam, secondParam)
 End Function
 
-' InStrRevé–¢æ•°
+' InStrRevŠÖ”
     Private Function InStrRev_(ByRef s As Variant, ByRef expr As Variant) As Variant
         InStrRev_ = InStrRev(s, expr)
         If IsNull(InStrRev_) Then InStrRev_ = 0
@@ -165,7 +176,7 @@ Public Function p_InStrRev(Optional ByRef firstParam As Variant, Optional ByRef 
     p_InStrRev = make_funPointer(AddressOf InStrRev_, firstParam, secondParam)
 End Function
 
-' Likeé–¢æ•°
+' LikeŠÖ”
     Private Function Like_(ByRef s As Variant, ByRef expr As Variant) As Variant
         Like_ = IIf(s Like expr, 1, 0)
     End Function
@@ -173,7 +184,7 @@ Public Function p_Like(Optional ByRef firstParam As Variant, Optional ByRef seco
     p_Like = make_funPointer(AddressOf Like_, firstParam, secondParam)
 End Function
 
-' StrConvé–¢æ•°
+' StrConvŠÖ”
      Private Function StrConv_(ByRef s As Variant, ByRef expr As Variant) As Variant
         StrConv_ = StrConv(s, expr)
      End Function
@@ -181,7 +192,7 @@ Public Function p_StrConv(Optional ByRef firstParam As Variant, Optional ByRef s
     p_StrConv = make_funPointer(AddressOf StrConv_, firstParam, secondParam)
 End Function
 
-' Trimé–¢æ•°
+' TrimŠÖ”
      Private Function Trim_(ByRef expr As Variant, Optional ByRef left_right As Variant) As Variant
         If IsNumeric(left_right) Then
             If left_right < 0 Then
@@ -199,19 +210,19 @@ Public Function p_Trim(Optional ByRef firstParam As Variant, Optional ByRef seco
     p_Trim = make_funPointer_with_2nd_Default(AddressOf Trim_, firstParam, secondParam)
 End Function
 
-' æ–‡å­—åˆ—ã®å·¦å³åˆ†é›¢
+' •¶š—ñ‚Ì¶‰E•ª—£
 Function separate_string(ByRef expr As Variant, ByRef n As Variant) As Variant
     If 0 < n Then
-        separate_string = VBA.Array(left(expr, n), str_right(expr, -n))
+        separate_string = VBA.Array(Left(expr, n), str_right(expr, -n))
     Else
-        separate_string = VBA.Array(str_left(expr, n), right(expr, -n))
+        separate_string = VBA.Array(str_left(expr, n), Right(expr, -n))
     End If
 End Function
     Function p_separate_string(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_separate_string = make_funPointer(AddressOf separate_string, firstParam, secondParam)
     End Function
 
-' subM(m, è¡Œç¯„å›²) ã®æ§‹æ–‡ç³–
+' subM(m, s”ÍˆÍ) ‚Ì\•¶“œ
 Public Function subM_R(ByRef m As Variant, ByRef rRange As Variant) As Variant
     If IsArray(rRange) Then
         subM_R = subM(m, rRange)
@@ -223,7 +234,7 @@ End Function
         p_subM_R = make_funPointer(AddressOf subM_R, firstParam, secondParam)
     End Function
 
-' subM(m, è¡Œç¯„å›²) ã®æ§‹æ–‡ç³–ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+' subM(m, s”ÍˆÍ) ‚Ì\•¶“œiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
 Public Function subM_R_b(ByRef m As Variant, ByRef rRange As Variant) As Variant
     Dim range_b As Variant
     range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 1)), p_plus(1 + UBound(m, 1)))), rRange)
@@ -233,7 +244,7 @@ End Function
         p_subM_R_b = make_funPointer(AddressOf subM_R_b, firstParam, secondParam)
     End Function
 
-' subM(m, , åˆ—ç¯„å›²) ã®æ§‹æ–‡ç³–
+' subM(m, , —ñ”ÍˆÍ) ‚Ì\•¶“œ
 Public Function subM_C(ByRef m As Variant, ByRef cRange As Variant) As Variant
     If IsArray(cRange) Then
         subM_C = subM(m, , cRange)
@@ -245,7 +256,7 @@ End Function
         p_subM_C = make_funPointer(AddressOf subM_C, firstParam, secondParam)
     End Function
 
-' subM(m, , åˆ—ç¯„å›²) ã®æ§‹æ–‡ç³–ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+' subM(m, , —ñ”ÍˆÍ) ‚Ì\•¶“œiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
 Public Function subM_C_b(ByRef m As Variant, ByRef cRange As Variant) As Variant
     Dim range_b As Variant
     range_b = mapF(p_if_else(, Array(p_less_equal(0), p_plus(LBound(m, 2)), p_plus(1 + UBound(m, 2)))), cRange)
@@ -255,8 +266,8 @@ End Function
         p_subM_C_b = make_funPointer(AddressOf subM_C_b, firstParam, secondParam)
     End Function
 
-'ç‰¹å®šè¡Œã®å–å¾—ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'index < 0 ã®å ´åˆã¯å¾Œã‚ã‹ã‚‰å–å¾—
+'“Á’ès‚Ìæ“¾iƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'index < 0 ‚Ìê‡‚ÍŒã‚ë‚©‚çæ“¾
 Public Function selectRow_b(ByRef matrix As Variant, ByRef i As Variant) As Variant
     If 0 <= i Then
         selectRow_b = selectRow(matrix, i + LBound(matrix, 1))
@@ -268,8 +279,8 @@ End Function
         p_selectRow_b = make_funPointer(AddressOf selectRow_b, firstParam, secondParam)
     End Function
 
-'ç‰¹å®šåˆ—ã®å–å¾—ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'index < 0 ã®å ´åˆã¯å¾Œã‚ã‹ã‚‰å–å¾—
+'“Á’è—ñ‚Ìæ“¾iƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'index < 0 ‚Ìê‡‚ÍŒã‚ë‚©‚çæ“¾
 Public Function selectCol_b(ByRef matrix As Variant, ByRef j As Variant) As Variant
     If 0 <= j Then
         selectCol_b = selectCol(matrix, j + LBound(matrix, 2))
@@ -281,7 +292,7 @@ End Function
         p_selectCol_b = make_funPointer(AddressOf selectCol_b, firstParam, secondParam)
     End Function
 
-'é…åˆ—ã®ç‰¹å®šè¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+'”z—ñ‚Ì“Á’ès‚ğƒf[ƒ^‚Å–„‚ß‚éiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
 Public Sub fillRow_b(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant)
     If 0 <= i Then
         Call fillRow(matrix, i + LBound(matrix, 1), data)
@@ -290,13 +301,13 @@ Public Sub fillRow_b(ByRef matrix As Variant, ByVal i As Long, ByRef data As Var
     End If
 End Sub
 
-'é…åˆ—ã®ç‰¹å®šè¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã¦moveã—ã¦è¿”ã™ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+'”z—ñ‚Ì“Á’ès‚ğƒf[ƒ^‚Å–„‚ß‚Ämove‚µ‚Ä•Ô‚·iƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
 Public Function fillRow_b_move(ByRef matrix As Variant, ByVal i As Long, ByRef data As Variant) As Variant
     Call fillRow_b(matrix, i, data)
     fillRow_b_move = moveVariant(matrix)
 End Function
 
-'é…åˆ—ã®ç‰¹å®šåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã‚‹ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+'”z—ñ‚Ì“Á’è—ñ‚ğƒf[ƒ^‚Å–„‚ß‚éiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
 Public Sub fillCol_b(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant)
     If 0 <= j Then
         Call fillCol(matrix, j + LBound(matrix, 2), data)
@@ -305,15 +316,15 @@ Public Sub fillCol_b(ByRef matrix As Variant, ByVal j As Long, ByRef data As Var
     End If
 End Sub
 
-'é…åˆ—ã®ç‰¹å®šåˆ—ã‚’ãƒ‡ãƒ¼ã‚¿ã§åŸ‹ã‚ã¦moveã—ã¦è¿”ã™ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+'”z—ñ‚Ì“Á’è—ñ‚ğƒf[ƒ^‚Å–„‚ß‚Ämove‚µ‚Ä•Ô‚·iƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
 Public Function fillCol_b_move(ByRef matrix As Variant, ByVal j As Long, ByRef data As Variant) As Variant
     Call fillCol_b(matrix, j, data)
     fillCol_b_move = moveVariant(matrix)
 End Function
 
 '*********************************************************************************
-' 1æ¬¡å…ƒé…åˆ—vecã®éš£æ¥ã™ã‚‹è¦ç´ é–“ã§2é …æ“ä½œopã‚’è¡Œã†
-' å‡ºåŠ›åˆ—ã®è¦ç´ æ•°ã¯å…ƒã®è¦ç´ æ•° - 1   (LBound = 0)
+' 1ŸŒ³”z—ñvec‚Ì—×Ú‚·‚é—v‘fŠÔ‚Å2€‘€ìop‚ğs‚¤
+' o—Í—ñ‚Ì—v‘f”‚ÍŒ³‚Ì—v‘f” - 1   (LBound = 0)
 Public Function adjacent_op(ByRef op As Variant, ByRef vec As Variant) As Variant
     adjacent_op = VBA.Array()
     If is_bindFun(op) And Dimension(vec) = 1 And 1 < sizeof(vec) Then
@@ -327,7 +338,7 @@ End Function
         p_adjacent_op = make_funPointer(AddressOf adjacent_op, firstParam, secondParam, 1)
     End Function
 
-' é…åˆ—ã®é‡è¤‡è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹(ã‚½ãƒ¼ãƒˆæ¸ˆå‰æã€compã¯ç­‰å€¤æ¡ä»¶)
+' ”z—ñ‚Ìd•¡—v‘f‚ğíœ‚·‚é(ƒ\[ƒgÏ‘O’ñAcomp‚Í“™’lğŒ)
 Public Function get_unique(ByRef vec As Variant, Optional ByRef comp As Variant) As Variant
     Dim flag As Variant
     If IsMissing(comp) Then
@@ -342,7 +353,7 @@ End Function
         p_get_unique = make_funPointer_with_2nd_Default(AddressOf get_unique, firstParam, secondParam, 2)
     End Function
 
-' 2æ¬¡å…ƒé…åˆ—ã®è¡Œã”ã¨ã«é–¢æ•°é©ç”¨
+' 2ŸŒ³”z—ñ‚Ìs‚²‚Æ‚ÉŠÖ”“K—p
 Public Sub rowWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
     Dim i As Long
     For i = 0 To min_fun(rowSize(matrix), sizeof(funcs)) - 1 Step 1
@@ -352,7 +363,7 @@ Public Sub rowWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
     Next i
 End Sub
 
-' 2æ¬¡å…ƒé…åˆ—ã®è¡Œã”ã¨ã«é–¢æ•°é©ç”¨ã—moveã—ã¦è¿”ã™
+' 2ŸŒ³”z—ñ‚Ìs‚²‚Æ‚ÉŠÖ”“K—p‚µmove‚µ‚Ä•Ô‚·
 Public Function rowWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
     Call rowWise_change(matrix, funcs)
     rowWise_change_move = moveVariant(matrix)
@@ -361,7 +372,7 @@ End Function
         p_rowWise_change_move = make_funPointer(AddressOf rowWise_change_move, firstParam, secondParam)
     End Function
 
-' 2æ¬¡å…ƒé…åˆ—ã®åˆ—ã”ã¨ã«é–¢æ•°é©ç”¨
+' 2ŸŒ³”z—ñ‚Ì—ñ‚²‚Æ‚ÉŠÖ”“K—p
 Public Sub columnWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
     Dim j As Long
     For j = 0 To min_fun(colSize(matrix), sizeof(funcs)) - 1 Step 1
@@ -371,7 +382,7 @@ Public Sub columnWise_change(ByRef matrix As Variant, ByRef funcs As Variant)
     Next j
 End Sub
 
-' 2æ¬¡å…ƒé…åˆ—ã®åˆ—ã”ã¨ã«é–¢æ•°é©ç”¨ã—moveã—ã¦è¿”ã™
+' 2ŸŒ³”z—ñ‚Ì—ñ‚²‚Æ‚ÉŠÖ”“K—p‚µmove‚µ‚Ä•Ô‚·
 Public Function columnWise_change_move(ByRef matrix As Variant, ByRef funcs As Variant) As Variant
     Call columnWise_change(matrix, funcs)
     columnWise_change_move = moveVariant(matrix)
@@ -380,7 +391,7 @@ End Function
         p_columnWise_change_move = make_funPointer(AddressOf columnWise_change_move, firstParam, secondParam)
     End Function
 
-' 1æ¬¡å…ƒé…åˆ—ã®å…¨è¦ç´ ã®ç­‰å€¤æ¯”è¼ƒ
+' 1ŸŒ³”z—ñ‚Ì‘S—v‘f‚Ì“™’l”äŠr
 Public Function equal_all(ByRef a As Variant, ByRef b As Variant) As Variant
     equal_all = equal_all_pred(p_equal, a, b)
 End Function
@@ -388,7 +399,7 @@ End Function
         p_equal_all = make_funPointer(AddressOf equal_all, firstParam, secondParam)
     End Function
 
-' 1æ¬¡å…ƒé…åˆ—ã®å…¨è¦ç´ ã®ç­‰å€¤æ¯”è¼ƒï¼ˆè¿°èªãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼‰
+' 1ŸŒ³”z—ñ‚Ì‘S—v‘f‚Ì“™’l”äŠriqŒêƒo[ƒWƒ‡ƒ“j
 Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef b As Variant) As Variant
     If sizeof(a) = sizeof(b) Then
         equal_all_pred = IIf(sizeof(a) <= find_pred(p_equal(0), zipWith(pred, a, b)), _
@@ -399,7 +410,7 @@ Public Function equal_all_pred(ByRef pred As Variant, ByRef a As Variant, ByRef 
     End If
 End Function
 
-' è¿°èªã‚’ä¸ãˆã¦1æ¬¡å…ƒé…åˆ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
+' qŒê‚ğ—^‚¦‚Ä1ŸŒ³”z—ñ‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
 Public Function filter_if(ByRef fun As Variant, ByRef vec As Variant) As Variant
     filter_if = filterR(vec, mapF(fun, vec))
 End Function
@@ -407,7 +418,7 @@ End Function
         p_filter_if = make_funPointer(AddressOf filter_if, firstParam, secondParam, 1)
     End Function
 
-' è¿°èªã‚’ä¸ãˆã¦1æ¬¡å…ƒé…åˆ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ï¼ˆå¦å®šå½¢ï¼‰
+' qŒê‚ğ—^‚¦‚Ä1ŸŒ³”z—ñ‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒOi”Û’èŒ`j
 Public Function filter_if_not(ByRef fun As Variant, ByRef vec As Variant) As Variant
     filter_if_not = filter_if(p_equal(0, fun), vec)
 End Function
@@ -415,7 +426,7 @@ End Function
         p_filter_if_not = make_funPointer(AddressOf filter_if_not, firstParam, secondParam, 1)
     End Function
 
-' è«–ç†Not   (0, Null, Empty, Nothing, CDate(0) ã¯Falseã¨ã¿ãªã™)
+' ˜_—Not   (0, Null, Empty, Nothing, CDate(0) ‚ÍFalse‚Æ‚İ‚È‚·)
      Private Function Not_(ByRef expr As Variant, Optional ByRef dummy As Variant) As Variant
         If IsNull(expr) Then
             Not_ = 1
@@ -435,7 +446,7 @@ Public Function p_not(Optional ByRef firstParam As Variant, Optional ByRef secon
     p_not = make_funPointer(AddressOf Not_, firstParam, secondParam)
 End Function
 
-' å«æ„(A=>B)   IIF(Not A Or B, True, False)
+' ŠÜˆÓ(A=>B)   IIF(Not A Or B, True, False)
     Private Function Imply_(ByRef a As Variant, ByRef b As Variant) As Variant
         Imply_ = IIf(Not_(a) = 1 Or Not_(b) = 0, 1, 0)
     End Function
@@ -444,20 +455,20 @@ Public Function p_imply(Optional ByRef firstParam As Variant, Optional ByRef sec
 End Function
 
 '-----------------------------------------------------------
-' vh_pipeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+' vh_pipeƒIƒuƒWƒFƒNƒg‚Ì¶¬
 Public Function pipe(ByRef x As Variant) As vh_pipe
     Set pipe = New vh_pipe
-    pipe.swap_val_ (x)   'ã‚³ãƒ”ãƒ¼ã‚’æ¸¡ã™
+    pipe.swap_val_ (x)   'ƒRƒs[‚ğ“n‚·
 End Function
 
-' vh_pipeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆï¼ˆå¼•æ•°ã‚’moveã™ã‚‹ï¼‰
+' vh_pipeƒIƒuƒWƒFƒNƒg‚Ì¶¬iˆø”‚ğmove‚·‚éj
 Public Function pipe_(ByRef x As Variant) As vh_pipe
     Set pipe_ = New vh_pipe
     pipe_.swap_val_ x
 End Function
 
 '-----------------------------------------------------------
-' vh_stdvecã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+' vh_stdvecƒIƒuƒWƒFƒNƒg‚Ì¶¬
 Public Function stdVec(Optional ByRef x As Variant) As vh_stdvec
     Set stdVec = New vh_stdvec
     stdVec.from x
@@ -465,31 +476,31 @@ End Function
 
 
 '******************************************************************************
-' delimiterã§åŒºåˆ‡ã‚‰ã‚ŒãŸæ–‡å­—åˆ—ã‚’é–¢æ•°åˆ—ã¸ãƒãƒƒãƒ”ãƒ³ã‚°
-' strFuns   : é–¢æ•°ã‚’è¡¨ã™æ–‡å­—åˆ—
-' my_str2Fun: æ–‡å­—åˆ—ã‹ã‚‰é–¢æ•°ã¸ã®ãƒãƒƒãƒ”ãƒ³ã‚°é–¢æ•°
-' delimiter : strFunsã®åŒºåˆ‡ã‚Šæ–‡å­—
-' ä¾‹ï¼‰%f%d%s%n â†’ Array(f, d, s, n)
+' delimiter‚Å‹æØ‚ç‚ê‚½•¶š—ñ‚ğŠÖ”—ñ‚Öƒ}ƒbƒsƒ“ƒO
+' strFuns   : ŠÖ”‚ğ•\‚·•¶š—ñ
+' my_str2Fun: •¶š—ñ‚©‚çŠÖ”‚Ö‚Ìƒ}ƒbƒsƒ“ƒOŠÖ”
+' delimiter : strFuns‚Ì‹æØ‚è•¶š
+' —áj%f%d%s%n ¨ Array(f, d, s, n)
 '******************************************************************************
 Public Function splitStr2Funs(ByVal strFuns As String, _
                               ByRef my_str2Fun As Variant, _
                               ByVal delimiter As String) As Variant
-    If left(strFuns, Len(delimiter)) = delimiter Then
-        strFuns = right(strFuns, Len(strFuns) - Len(delimiter))
+    If Left(strFuns, Len(delimiter)) = delimiter Then
+        strFuns = Right(strFuns, Len(strFuns) - Len(delimiter))
     End If
     splitStr2Funs = mapF(my_str2Fun, Split(strFuns, delimiter))
 End Function
 
-' ï¼ˆsplitStr2Funs ã®å¯¾è±¡é–¢æ•°ï¼‰
-' æ–‡å­—åˆ—ã‹ã‚‰é›†è¨ˆé–¢æ•°ã¸å¤‰æ›
-' ç‹¬è‡ªã®å¤‰æ›é–¢æ•°ã‚’æ›¸ãã¨ãã¯ãã®Case Else ã®ä¸­ã§ã“ã®é–¢æ•°ã‚’å‘¼ã³å‡ºã™å½¢ã«ã™ã‚‹ã¨ã„ã„ã‹ã‚‚
-' %t %tp  %top      : å…ˆé ­
-' %b %btm %bottom   : æœ«å°¾
-' %c %cnt %count    : å€‹æ•°
-' %s %sum %è¨ˆ       : åˆè¨ˆ
-' %a %avg %average  : å¹³å‡
-' %max              : æœ€å¤§
-' %min              : æœ€å°‘
+' isplitStr2Funs ‚Ì‘ÎÛŠÖ”j
+' •¶š—ñ‚©‚çWŒvŠÖ”‚Ö•ÏŠ·
+' “Æ©‚Ì•ÏŠ·ŠÖ”‚ğ‘‚­‚Æ‚«‚Í‚»‚ÌCase Else ‚Ì’†‚Å‚±‚ÌŠÖ”‚ğŒÄ‚Ño‚·Œ`‚É‚·‚é‚Æ‚¢‚¢‚©‚à
+' %t %tp  %top      : æ“ª
+' %b %btm %bottom   : ––”ö
+' %c %cnt %count    : ŒÂ”
+' %s %sum %Œv       : ‡Œv
+' %a %avg %average  : •½‹Ï
+' %max              : Å‘å
+' %min              : Å­
 Public Function str2SummaryFun(ByRef s As Variant, Optional ByRef other As Variant) As Variant
     Select Case StrConv(s, vbNarrow + vbLowerCase)
         Case "t", "tp", "top"
@@ -498,7 +509,7 @@ Public Function str2SummaryFun(ByRef s As Variant, Optional ByRef other As Varia
             str2SummaryFun = p_getNth_b(, -1)
         Case "c", "cnt", "count"
             str2SummaryFun = p_sizeof()
-        Case "s", "sum", "è¨ˆ"
+        Case "s", "sum", "Œv"
             str2SummaryFun = p_foldl1(p_plus(yield_1, yield_2))
         Case "a", "avg", "average"
             str2SummaryFun = p_divide(p_foldl1(p_plus(yield_1, yield_2)), p_sizeof)
@@ -516,20 +527,20 @@ End Function
         p_str2SummaryFun = make_funPointer(AddressOf str2SummaryFun, firstParam, secondParam)
     End Function
 
-' ï¼ˆsplitStr2Funs ã®å¯¾è±¡é–¢æ•°ï¼‰
-' æ–‡å­—åˆ—ã‹ã‚‰å‹å¤‰æ›é–¢æ•°ã¸å¤‰æ›
-' ç‹¬è‡ªã®å¤‰æ›é–¢æ•°ã‚’æ›¸ãã¨ãã¯ãã®Case Else ã®ä¸­ã§ã“ã®é–¢æ•°ã‚’å‘¼ã³å‡ºã™å½¢ã«ã™ã‚‹ã¨ã„ã„ã‹ã‚‚
+' isplitStr2Funs ‚Ì‘ÎÛŠÖ”j
+' •¶š—ñ‚©‚çŒ^•ÏŠ·ŠÖ”‚Ö•ÏŠ·
+' “Æ©‚Ì•ÏŠ·ŠÖ”‚ğ‘‚­‚Æ‚«‚Í‚»‚ÌCase Else ‚Ì’†‚Å‚±‚ÌŠÖ”‚ğŒÄ‚Ño‚·Œ`‚É‚·‚é‚Æ‚¢‚¢‚©‚à
 ' %s*  : Format( ,*)
-' %d   : æ•´æ•°åŒ–
-' %f   : å®Ÿæ•°åŒ–
-' %s   : æ–‡å­—åˆ—åŒ–
+' %d   : ®”‰»
+' %f   : À”‰»
+' %s   : •¶š—ñ‰»
 Public Function str2ConvertFun(ByRef s As Variant, ByRef dummy As Variant) As Variant
     Dim expr As String: expr = StrConv(s, vbNarrow + vbLowerCase)
-    If left(expr, 1) = "s" Then
+    If Left(expr, 1) = "s" Then
         If expr = "s" Then
             str2ConvertFun = p_CStr
         Else
-            str2ConvertFun = p_format(, right(s, Len(s) - 1))
+            str2ConvertFun = p_format(, Right(s, Len(s) - 1))
         End If
     Else
         Select Case expr
@@ -547,18 +558,18 @@ End Function
     End Function
 
 '******************************************************************************
-' partition_points ã«ã‚ˆã‚‹GROUP-BY
-' matrix    : å¯¾è±¡é…åˆ—ï¼ˆ2æ¬¡å…ƒé…åˆ—ã¾ãŸã¯ã‚¸ãƒ£ã‚°é…åˆ—ï¼‰
-' pp        : partition_points ï¼ˆé›†è¨ˆã™ã‚‹è¡Œç¯„å›²ã‚’åŒºåˆ‡ã‚‹è¡Œç•ªå·ã®é›†åˆï¼‰
-' strFuns   : åˆ—ã”ã¨ã®é›†è¨ˆé–¢æ•°ã‚’è¡¨ã™æ–‡å­—åˆ—
-' my_str2Fun: æ–‡å­—åˆ—ã‹ã‚‰é›†è¨ˆé–¢æ•°ã¸ã®ãƒãƒƒãƒ”ãƒ³ã‚°é–¢æ•°ï¼ˆstr2SummaryFunãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆï¼‰
-' ä¾‹ï¼‰group_by_partition_points(matrix, pp, "%t%c%s%a%min%max")
+' partition_points ‚É‚æ‚éGROUP-BY
+' matrix    : ‘ÎÛ”z—ñi2ŸŒ³”z—ñ‚Ü‚½‚ÍƒWƒƒƒO”z—ñj
+' pp        : partition_points iWŒv‚·‚és”ÍˆÍ‚ğ‹æØ‚és”Ô†‚ÌW‡j
+' strFuns   : —ñ‚²‚Æ‚ÌWŒvŠÖ”‚ğ•\‚·•¶š—ñ
+' my_str2Fun: •¶š—ñ‚©‚çWŒvŠÖ”‚Ö‚Ìƒ}ƒbƒsƒ“ƒOŠÖ”istr2SummaryFun‚ªƒfƒtƒHƒ‹ƒgj
+' —ájgroup_by_partition_points(matrix, pp, "%t%c%s%a%min%max")
 '******************************************************************************
 Public Function group_by_partition_points(ByRef matrix As Variant, _
                                           ByRef pp As Variant, _
                                           ByRef strFuns As String, _
                                  Optional ByVal my_str2Fun As Variant) As Variant
-    If IsMissing(my_str2Fun) Then my_str2Fun = p_str2SummaryFun(, "-")    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®
+    If IsMissing(my_str2Fun) Then my_str2Fun = p_str2SummaryFun(, "-")    'ƒfƒtƒHƒ‹ƒg‚Ì
     Dim funs As Variant
     funs = splitStr2Funs(strFuns, my_str2Fun, "%")
     Dim intervals As Variant
@@ -567,7 +578,7 @@ Public Function group_by_partition_points(ByRef matrix As Variant, _
     ranges = mapF_swap(p_subM_R, matrix, intervals)
     group_by_partition_points = unzip(mapF_swap(p_summaryUnit, , funs, ranges), 2)
 End Function
-    ' å€‹ã€…ã®é›†è¨ˆè¡Œç¯„å›²ã®å‡¦ç†
+    ' ŒÂX‚ÌWŒvs”ÍˆÍ‚Ìˆ—
     Private Function summaryUnit(ByRef matrix As Variant, ByRef funs As Variant) As Variant
         Select Case Dimension(matrix)
             Case 1: summaryUnit = zipWith(p_applyFun, unzip(matrix, 1), funs)
@@ -579,9 +590,32 @@ End Function
     End Function
 
 '******************************************************************************
-' csvãƒ•ã‚¡ã‚¤ãƒ«ã®1è¡Œã‚’é…åˆ—ã«åˆ†å‰²
-' expr      csvãƒ•ã‚¡ã‚¤ãƒ«ã®1è¡Œ
-' delim     åŒºåˆ‡ã‚Šæ–‡å­—ï¼ˆçœç•¥æ™‚ã¯ã‚«ãƒ³ãƒï¼‰
+'‘®«‚²‚Æ‚Ì”z—ñ‚É•ªŠ„‚·‚éiv‚Ímove‚³‚ê‚éj
+Function group_by_pred(ByRef v As Variant, ByRef pred As Variant) As Variant
+    Dim prop As Variant, s As Variant, pp As Variant, ret As Variant
+    Call changeLBound(v, 0)
+    prop = mapF(pred, v)
+    s = sortIndex(prop)
+    permutate prop, s
+    permutate v, s
+    pp = partition_points(prop)
+    ret = makeM(rowSize(pp) - 1)
+    Dim i As Long, j As Long, k As Long: k = 0
+    For i = 0 To UBound(ret) Step 1
+        ret(i) = makeM(pp(i + 1) - pp(i))
+        For j = 0 To UBound(ret(i)) Step 1
+            swapVariant ret(i)(j), v(k)
+            k = k + 1
+        Next j
+    Next i
+    v = Empty
+    swapVariant group_by_pred, ret
+End Function
+
+'******************************************************************************
+' csvƒtƒ@ƒCƒ‹‚Ì1s‚ğ”z—ñ‚É•ªŠ„
+' expr      csvƒtƒ@ƒCƒ‹‚Ì1s
+' delim     ‹æØ‚è•¶šiÈ—ª‚ÍƒJƒ“ƒ}j
 '******************************************************************************
 Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) As Variant
     Dim delim As String
@@ -594,12 +628,12 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
     counter = -1
     Do
         For en = bn To LenExpr Step 1
-            If mid(expr, en, 1) = """" Then
+            If Mid(expr, en, 1) = """" Then
                 isEven = Not isEven
-            ElseIf isEven And mid(expr, en, 1) = delim Then
+            ElseIf isEven And Mid(expr, en, 1) = delim Then
                 counter = counter + 1
                 ReDim Preserve ret(0 To counter)
-                ret(counter) = mid(expr, bn, en - bn)
+                ret(counter) = Mid(expr, bn, en - bn)
                 bn = en + 1
                 Exit For
             End If
@@ -607,13 +641,13 @@ Function csv2Vector(ByRef expr As Variant, Optional ByRef delimiter As Variant) 
         If bn < en Then
             counter = counter + 1
             ReDim Preserve ret(0 To counter)
-            ret(counter) = mid(expr, bn)
+            ret(counter) = Mid(expr, bn)
             bn = en + 1
         End If
-     Loop While bn < LenExpr
+     Loop While bn <= LenExpr
      Do While 0 <= counter
-        If left(ret(counter), 1) = """" Then
-            ret(counter) = mid(ret(counter), 2, Len(ret(counter)) - 2)
+        If Left(ret(counter), 1) = """" Then
+            ret(counter) = Mid(ret(counter), 2, Len(ret(counter)) - 2)
         End If
         ret(counter) = Replace(ret(counter), """""", """")
         ret(counter) = Replace(ret(counter), "\\t", vbLf)   ' \\t -> vbLf   Chr(10)
@@ -627,9 +661,9 @@ End Function
         p_csv2Vector = make_funPointer_with_2nd_Default(AddressOf csv2Vector, firstParam, secondParam)
     End Function
 
-' ï¼’ã¤ã®1æ¬¡å…ƒé…åˆ—ã®å…±æœ‰éƒ¨åˆ†(1)ã¨éå…±æœ‰éƒ¨åˆ†(0)ã‚’ç‰¹å®š
-' ã¨ã‚‚ã«é †åºcompã§æ˜‡é †ã‚½ãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹å‰æ
-' æˆ»ã‚Šå€¤ã¯ãã‚Œãã‚Œã®é…åˆ—ã«å¯¾ã™ã‚‹çŠ¶æ³ã‚’æ ¼ç´ã—ãŸJagé…åˆ—
+' ‚Q‚Â‚Ì1ŸŒ³”z—ñ‚Ì‹¤—L•”•ª(1)‚Æ”ñ‹¤—L•”•ª(0)‚ğ“Á’è
+' ‚Æ‚à‚É‡˜comp‚Å¸‡ƒ\[ƒg‚³‚ê‚Ä‚¢‚é‘O’ñ
+' –ß‚è’l‚Í‚»‚ê‚¼‚ê‚Ì”z—ñ‚É‘Î‚·‚éó‹µ‚ğŠi”[‚µ‚½Jag”z—ñ
 Function A_overlap_B(ByRef a As Variant, ByRef b As Variant, Optional ByRef comp As Variant) As Variant
     If IsMissing(comp) Then
         A_overlap_B = A_overlap_B(a, b, p_less)
@@ -648,8 +682,8 @@ Function A_overlap_B(ByRef a As Variant, ByRef b As Variant, Optional ByRef comp
             foldl1(p_catV, zipWith(p_repeat, b2A, adjacent_op(p_minus(ph_2, ph_1), ppB))) _
         )
     End If
-    '   a = uniform_int_dist(20, 0, 20):  permutate a, sortIndex(a)  '  [ 0ï½20]
-    '   b = uniform_int_dist(20, 10, 30): permutate b, sortIndex(b)  '  [10ï½30]
+    '   a = uniform_int_dist(20, 0, 20):  permutate a, sortIndex(a)  '  [ 0`20]
+    '   b = uniform_int_dist(20, 10, 30): permutate b, sortIndex(b)  '  [10`30]
     '   x = A_overlap_B(a, b)
     ' -----------------------------------
     '   printM catR(a, x(0))
