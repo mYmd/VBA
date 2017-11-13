@@ -22,6 +22,10 @@ Option Explicit
     ' Function  greater_equal_dic   述語 辞書式greater_equal
     ' Function  equal_dic           述語 辞書式equal
     ' Function  notEqual_dic        述語 辞書式notEqual
+    ' Function  binary_less         述語 文字列をvbBinaryCompareで比較
+    ' Function  binary_less_dic     述語 辞書式binary_less
+    ' Function  text_less           述語 文字列をvbTextCompareで比較
+    ' Function  text_less_dic       述語 辞書式text_less
 '====================================================================================================
 
 '昇順ソート後のインデックス配列（降順ソートはこのreverseをとる）
@@ -315,3 +319,52 @@ Private Function upper_bound_imple(ByRef matrix As Variant, _
 End Function
 '####################
 
+' 述語 文字列をvbBinaryCompareで比較
+Function binary_less(ByRef a As Variant, ByRef b As Variant) As Variant
+    binary_less = IIf(StrComp(a, b, vbBinaryCompare) < 0, 1, 0)
+End Function
+    Function p_binary_less(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_binary_less = make_funPointer(AddressOf binary_less, firstParam, secondParam)
+    End Function
+
+'述語 辞書式binary_less
+Function binary_less_dic(ByRef a As Variant, ByRef b As Variant) As Variant
+    binary_less_dic = 0&
+    Dim i As Long
+    For i = 0 To min_fun(sizeof(a), sizeof(b)) - 1 Step 1
+        If binary_less(getNth_b(a, i), getNth_b(b, i)) Then
+            binary_less_dic = 1&
+            Exit For
+        ElseIf binary_less(getNth_b(b, i), getNth_b(a, i)) Then
+            Exit For
+        End If
+    Next i
+End Function
+    Function p_binary_less_dic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_binary_less_dic = make_funPointer(AddressOf binary_less_dic, firstParam, secondParam)
+    End Function
+
+' 述語 文字列をvbTextCompareで比較
+Function text_less(ByRef a As Variant, ByRef b As Variant) As Variant
+    text_less = IIf(StrComp(a, b, vbTextCompare) < 0, 1, 0)
+End Function
+    Function p_text_less(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_text_less = make_funPointer(AddressOf text_less, firstParam, secondParam)
+    End Function
+
+'述語 辞書式text_less
+Function text_less_dic(ByRef a As Variant, ByRef b As Variant) As Variant
+    text_less_dic = 0&
+    Dim i As Long
+    For i = 0 To min_fun(sizeof(a), sizeof(b)) - 1 Step 1
+        If text_less(getNth_b(a, i), getNth_b(b, i)) Then
+            text_less_dic = 1&
+            Exit For
+        ElseIf text_less(getNth_b(b, i), getNth_b(a, i)) Then
+            Exit For
+        End If
+    Next i
+End Function
+    Function p_text_less_dic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_text_less_dic = make_funPointer(AddressOf text_less_dic, firstParam, secondParam)
+    End Function
