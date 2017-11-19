@@ -6,9 +6,9 @@ Option Explicit
 Declare PtrSafe Function GetTickCount Lib "kernel32.dll" () As Long
 
 '***********************************************************************
-'   ãƒ†ã‚¹ãƒˆé–¢æ•°
-'   Sub vbaUnit                 åŸºæœ¬æ©Ÿèƒ½ã„ã‚ã„ã‚(1)
-'   Sub vbaUnit2                åŸºæœ¬æ©Ÿèƒ½ã„ã‚ã„ã‚(2)
+'   ƒeƒXƒgŠÖ”
+'   Sub vbaUnit                 Šî–{‹@”\‚¢‚ë‚¢‚ë(1)
+'   Sub vbaUnit2                Šî–{‹@”\‚¢‚ë‚¢‚ë(2)
 '***********************************************************************
 
 Public Sub vbaUnit()
@@ -37,7 +37,7 @@ Public Sub vbaUnit2()
     Call equal_range_test
 End Sub
 
-    ' ========== vbaUnit ã®ãƒ†ã‚¹ãƒˆ=================
+    ' ========== vbaUnit ‚ÌƒeƒXƒg=================
     Private Sub mapF_test()
         Debug.Print "------- mapF ----------"
         Debug.Print "mapF(p_log, Array(1, 2, 3, 4, 5, 6, 7))"
@@ -66,40 +66,40 @@ End Sub
     Private Sub pi_test()
         Dim n As Long
         Dim points As Variant
-        Debug.Print "------- å††å‘¨ç‡ã‚’ç¢ºç‡çš„ã«æ±‚ã‚ã‚‹ï¼ˆ2é€šã‚Šï¼‰ ------------"
+        Debug.Print "------- ‰~ü—¦‚ğŠm—¦“I‚É‹‚ß‚éi2’Ê‚èj ------------"
         n = 9999
         points = zip(uniform_real_dist(n, 0, 1), uniform_real_dist(n, 0, 1))
-        printM Array("Ï€â‰’", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), points)) / n)
-        printM Array("Ï€â‰’", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), n) / n)
+        printM Array("ƒÎà", 4 * count_if(p_less(, 1#), mapF(p_distance2(, Array(0, 0)), points)) / n)
+        printM Array("ƒÎà", 4 * repeat_while(0, p_true, p_plus(p_less(p_distance2(p_makePair(p_rnd(0, 1), p_rnd(0, 1)), Array(0, 0)), 1#)), n) / n)
     End Sub
     
     Private Sub logistic_test()
         Dim n As Long
         Dim init As Double, r As Double
-        Debug.Print "------- ãƒ­ã‚¸ã‚¹ãƒ†ã‚£ãƒƒã‚¯æ¼¸åŒ–å¼ ------------"
+        Debug.Print "------- ƒƒWƒXƒeƒBƒbƒN‘Q‰»® ------------"
         n = 10
         init = 0.1: r = 3.754
         printM scanl_Funs(init, repeat(p_Logistic(, r), n))
-             'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) ã«ç›¸å½“
+             'scanl(p_applyFun, init, repeat(p_Logistic(, r), N)) ‚É‘Š“–
         printM scanr_Funs(init, repeat(p_Logistic(, r), n))
-             'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) ã«ç›¸å½“
+             'scanr(p_setParam, init, repeat(p_Logistic(, r), N)) ‚É‘Š“–
     End Sub
 
     Private Sub fibonacci_test()
         Dim n As Long: n = 15
         Dim f As Variant
-        Debug.Print "------- ãƒ•ã‚£ãƒœãƒŠãƒƒãƒæ•°åˆ—ï¼ˆ2é€šã‚Šï¼‰ ------------"
+        Debug.Print "------- ƒtƒBƒ{ƒiƒbƒ`”—ñi2’Ê‚èj ------------"
         printM unzip(scanl(p_applyFun, Array(0, 1), repeat(p_fibonacci, n)), 1)(0)
         f = p_push_back_move(, p_foldl1(p_plus, p_tailN(, 2)))
         printM repeat_while(Array(0, 1), p_true, f, n - 1)
-        Debug.Print "------- ãƒ†ãƒˆãƒ©ãƒŠãƒƒãƒæ•°åˆ— ------------"
+        Debug.Print "------- ƒeƒgƒ‰ƒiƒbƒ`”—ñ ------------"
         f = p_push_back_move(, p_foldl1(p_plus, p_tailN(, 4)))
         printM repeat_while(Array(0, 0, 0, 1), p_true, f, n - 1)
     End Sub
     
     Private Sub FizzBuzz_test()
         Dim m As Variant
-        Debug.Print "------- FizzBuzzï¼ˆ3é€šã‚Šï¼‰ ------------"
+        Debug.Print "------- FizzBuzzi3’Ê‚èj ------------"
         m = Array(Array(p_mod(, 15), Null, "FizzBuzz"), _
                   Array(p_mod(, 5), Null, "Buzz"), _
                   Array(p_mod(, 3), placeholder, "Fizz"))
@@ -117,7 +117,7 @@ End Sub
     Private Sub zip_unzip_test()
         Dim m As Variant, z As Variant
         Debug.Print "------- zip ------------"
-        m = "æ–‡å­—ã‚’ã²ã¨ã¤ãšã¤åˆ†é›¢ã™ã‚‹"
+        m = "•¶š‚ğ‚Ğ‚Æ‚Â‚¸‚Â•ª—£‚·‚é"
         printM mapF(p_mid(m), zip(iota(1, Len(m)), repeat(1, Len(m))))
         m = zip(Array(1, 2, 3, 4, 5), Array(11, 12, 13, 14, 15))
         For Each z In m: printM z: Next z
@@ -129,40 +129,40 @@ End Sub
 
     Private Sub sort_test()
         Dim m As Variant
-        Debug.Print "------- ã‚½ãƒ¼ãƒˆ ------------"
+        Debug.Print "------- ƒ\[ƒg ------------"
         m = uniform_int_dist(30, 10, 30)
-        Debug.Print "ã‚½ãƒ¼ãƒˆå‰"
+        Debug.Print "ƒ\[ƒg‘O"
         printM m
-        Debug.Print "æ˜‡é †ã‚½ãƒ¼ãƒˆ"
+        Debug.Print "¸‡ƒ\[ƒg"
         printM subM(m, sortIndex(m))
-        Debug.Print "å„æ¡ã®æ•°å­—ã®åˆè¨ˆã§æ¯”è¼ƒã™ã‚‹ãƒ•ã‚¡ãƒ³ã‚¯ã‚¿ã§ã‚½ãƒ¼ãƒˆ"
+        Debug.Print "ŠeŒ…‚Ì”š‚Ì‡Œv‚Å”äŠr‚·‚éƒtƒ@ƒ“ƒNƒ^‚Åƒ\[ƒg"
         printM subM(m, sortIndex_pred(m, p_compareSS))
     End Sub
 
     Private Sub matrixMult_test()
-        Debug.Print "------- è¡Œåˆ—ç© ------------"
+        Debug.Print "------- s—ñÏ ------------"
         printM matrixMult_(makeM(4, 3, iota(1, 12)), makeM(3, 4, iota(1, 12)))
     End Sub
     
     Private Sub primeNumber_test()
         Dim m As Variant, z As Variant
-        Debug.Print "------- ç´ æ•°åˆ—ï¼ˆ[2,3,5]ã‹ã‚‰ã®ç”Ÿæˆã‚’3å›é©ç”¨ï¼‰ ------------"
+        Debug.Print "------- ‘f”—ñi[2,3,5]‚©‚ç‚Ì¶¬‚ğ3‰ñ“K—pj ------------"
         m = Array(2, 3, 5)
         z = iota(2, m(UBound(m)) ^ 2)
             m = filterR(z, mapF(p_isPrime_(, m), z))
-            printM catVs(headN(m, 5), Array("ãƒ»ãƒ»ãƒ»"), tailN(m, 5))
+            printM catVs(headN(m, 5), Array("EEE"), tailN(m, 5))
         z = iota(2, m(UBound(m)) ^ 2)
             m = filterR(z, mapF(p_isPrime_(, m), z))
-            printM catVs(headN(m, 5), Array("ãƒ»ãƒ»ãƒ»"), tailN(m, 5))
+            printM catVs(headN(m, 5), Array("EEE"), tailN(m, 5))
         z = iota(2, m(UBound(m)) ^ 2)
             m = filterR(z, mapF(p_isPrime_(, m), z))
-            printM catVs(headN(m, 5), Array("ãƒ»ãƒ»ãƒ»"), tailN(m, 5))
+            printM catVs(headN(m, 5), Array("EEE"), tailN(m, 5))
     End Sub
     
     Private Sub newton_test()
         Dim m As Variant, z As Variant
-        Debug.Print "------- å˜ç´”ãªNewtonæ³•ã«ã‚ˆã‚‹å¤šé …å¼ã®æ ¹ï¼ˆ2é€šã‚Šï¼‰ ------------"
-        Debug.Print " f(x) = 2x^3 + x^2 - 5x + 0.5 ã®é›¶ç‚¹"
+        Debug.Print "------- ’Pƒ‚ÈNewton–@‚É‚æ‚é‘½€®‚Ìªi2’Ê‚èj ------------"
+        Debug.Print " f(x) = 2x^3 + x^2 - 5x + 0.5 ‚Ì—ë“_"
         z = Array(2, 1, -5, 0.5)
         m = VBA.Array(p_poly(, z), p_poly(, poly_deriv(z)))
         Debug.Print "x0 = 0  -> x = " & foldl_Funs(0, repeat(p_Newton_Raphson(, m), 7))
@@ -172,18 +172,18 @@ End Sub
 
     Private Sub find_test()
         Dim points As Variant, m As Variant, z As Variant
-        Debug.Print "------- æ¡ä»¶ã«ã‚ˆã‚‹Find ------------"
-        Debug.Print "ä¹±æ•°åˆ— ( [0.0ï½100.0] * 10000å€‹ ) ã‹ã‚‰ 29.9è¶… 29.99æœªæº€ã®ã‚‚ã®ã‚’æ¢ã™"
+        Debug.Print "------- ğŒ‚É‚æ‚éFind ------------"
+        Debug.Print "—”—ñ ( [0.0`100.0] * 10000ŒÂ ) ‚©‚ç 29.9’´ 29.99–¢–‚Ì‚à‚Ì‚ğ’T‚·"
         points = uniform_real_dist(10000, 0#, 100#)
         z = p_mult(p_greater(, 29.9), p_less(, 29.99))
         m = find_pred(z, points)
-        If UBound(points) < m Then Debug.Print "ãªã—" Else Debug.Print points(m) & " (index=" & m & ")"
+        If UBound(points) < m Then Debug.Print "‚È‚µ" Else Debug.Print points(m) & " (index=" & m & ")"
     End Sub
 
-    ' ========== vbaUnit2 ã®ãƒ†ã‚¹ãƒˆ=================
+    ' ========== vbaUnit2 ‚ÌƒeƒXƒg=================
     Private Sub flatten_test()
         Dim m As Variant, z As Variant
-        Debug.Print "------- é…åˆ—ã®ãƒ•ãƒ©ãƒƒãƒˆåŒ– ------------"
+        Debug.Print "------- ”z—ñ‚Ìƒtƒ‰ƒbƒg‰» ------------"
         Debug.Print "m = makeM(3, 3, iota(1, 9))"
         m = makeM(3, 3, iota(1, 9))
         Debug.Print "m(1, 1) = m"
@@ -204,24 +204,24 @@ End Sub
 
     Private Sub sort_test2()
         Dim m As Variant:   ReDim m(0 To 9)
-        Debug.Print "------å‹ãŒãƒãƒ©ãƒãƒ©ã§é…åˆ—ã‚‚å«ã‚€é…åˆ—ã®ã‚½ãƒ¼ãƒˆ-----"
+        Debug.Print "------Œ^‚ªƒoƒ‰ƒoƒ‰‚Å”z—ñ‚àŠÜ‚Ş”z—ñ‚Ìƒ\[ƒg-----"
         m(0) = 75676786
         m(1) = "abc"
         m(2) = iota(1, 8)
-        m(3) = "é³¥å°å±‹"
+        m(3) = "’¹¬‰®"
         m(4) = 6
         m(5) = makeM(2, 2, iota(1, 4))
         m(6) = 300
         m(7) = iota(1, 15)
-        m(8) = "çŠ¬å°å±‹"
+        m(8) = "Œ¢¬‰®"
         m(9) = makeM(2, 3, iota(1, 6))
-        Debug.Print "===ã‚½ãƒ¼ãƒˆå‰==="
+        Debug.Print "===ƒ\[ƒg‘O==="
         Dim z As Variant
         For Each z In m
             Debug.Print "-+-+-+-+-+-"
             printM z
         Next z
-        Debug.Print "===ã‚½ãƒ¼ãƒˆå¾Œ==="
+        Debug.Print "===ƒ\[ƒgŒã==="
         m = subM(m, sortIndex_pred(m, p_comp000))
         For Each z In m
             Debug.Print "-+-+-+-+-+-"
@@ -231,25 +231,25 @@ End Sub
 
     Private Sub sort_test3()
         Dim comp4 As Variant, arr As Variant, tmp As Variant, result As Variant
-        Debug.Print "==== æ•°ã‚’ä¸¦ã³æ›¿ãˆã¦å¯èƒ½ãªæœ€å¤§æ•°ã‚’è¿”ã™ãƒ†ã‚¹ãƒˆ ===="
-        Debug.Print "1ï½99 ã®æ•´æ•°ä¹±æ•°ã‚’20å€‹ä½œã‚‹"
+        Debug.Print "==== ”‚ğ•À‚Ñ‘Ö‚¦‚Ä‰Â”\‚ÈÅ‘å”‚ğ•Ô‚·ƒeƒXƒg ===="
+        Debug.Print "1`99 ‚Ì®”—”‚ğ20ŒÂì‚é"
         arr = uniform_int_dist(20, 0, 99)
         printM arr
         '--------------------
         comp4 = p_less(p_CLng(p_str_cat(ph_1, ph_2)), p_CLng(p_str_cat(ph_2, ph_1)))
-        Debug.Print "æ¯”è¼ƒé–¢æ•°ã¯ã“ã‚Œâ†“  f(x, y) = CLng(x & y) < CLng(y & x)  ã«ç›¸å½“ã™ã‚‹"
+        Debug.Print "”äŠrŠÖ”‚Í‚±‚ê«  f(x, y) = CLng(x & y) < CLng(y & x)  ‚É‘Š“–‚·‚é"
         Debug.Print "  p_less(p_CLng(p_str_cat(ph_1, ph_2)), p_CLng(p_str_cat(ph_2, ph_1)))"
         '--------------------
-        tmp = mapF(p_CStr, arr)    ' æ–‡å­—åˆ—åŒ–
-        Debug.Print "æ¯”è¼ƒé–¢æ•°ã§ã‚½ãƒ¼ãƒˆï¼ˆé€†é †ï¼‰"
+        tmp = mapF(p_CStr, arr)    ' •¶š—ñ‰»
+        Debug.Print "”äŠrŠÖ”‚Åƒ\[ƒgi‹t‡j"
         result = subM(tmp, reverse(sortIndex_pred(tmp, comp4)))
         printM result
-        Debug.Print "è§£"
-        Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' æ–‡å­—åˆ—ã‚’çµåˆã—ã¦è¡¨ç¤º
+        Debug.Print "‰ğ"
+        Debug.Print "  ";: Debug.Print foldl1(p_plus, result)     ' •¶š—ñ‚ğŒ‹‡‚µ‚Ä•\¦
     End Sub
 
     Private Sub equal_range_test()
-        Debug.Print "==== equal_rangeã®ãƒ†ã‚¹ãƒˆ ===="
+        Debug.Print "==== equal_range‚ÌƒeƒXƒg ===="
         Dim m As Variant, erange As Variant
         m = uniform_int_dist(20, 1, 7)
         permutate m, sortIndex(m)
@@ -258,29 +258,29 @@ End Sub
         erange = unzip(mapF_swap(p_equal_range, m, iota(1, 7)))
         Dim n As Long:  n = rowSize(erange(0))
         Dim tmp As Variant
-        tmp = move_many(iota(1, n), repeat(":", n), repeat("[", n), erange(0), repeat("ï½", n), erange(1), repeat(")", n))
+        tmp = move_many(iota(1, n), repeat(":", n), repeat("[", n), erange(0), repeat("`", n), erange(1), repeat(")", n))
         printM foldl1(p_catC, tmp)
     End Sub
 
-    'å¼•æ•°ã®éƒ¨åˆ†æ–‡å­—åˆ—ã®ãƒªã‚¹ãƒˆã‚’å–ã‚Šå‡ºã™ã€Œé–¢æ•°ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°å®Ÿè·µå…¥é–€ã€ã®å•é¡Œ
+    'ˆø”‚Ì•”•ª•¶š—ñ‚ÌƒŠƒXƒg‚ğæ‚èo‚·uŠÖ”ƒvƒƒOƒ‰ƒ~ƒ“ƒOÀ‘H“ü–åv‚Ì–â‘è
     Private Sub segmentsTest1()
-        Debug.Print "==== å¼•æ•°ã®éƒ¨åˆ†æ–‡å­—åˆ—ã®ãƒªã‚¹ãƒˆã‚’å–ã‚Šå‡ºã™Haskellé–¢æ•°(1) ===="
-        Debug.Print "= segmentsTest1ï¼ˆãƒ˜ãƒ«ãƒ‘é–¢æ•°ä½¿ç”¨ãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼‰ ="
+        Debug.Print "==== ˆø”‚Ì•”•ª•¶š—ñ‚ÌƒŠƒXƒg‚ğæ‚èo‚·HaskellŠÖ”(1) ===="
+        Debug.Print "= segmentsTest1iƒwƒ‹ƒpŠÖ”g—pƒo[ƒWƒ‡ƒ“j ="
         Debug.Print "    segments :: [a] -> [[a]]"
         Debug.Print "    segments = foldr (++) [] . scanr (\a b -> [a] : map (a:) b) []"
         Dim a As Variant, f As Variant, m As Variant
         a = Array("A", "B", "C", "D", "E")
-        Debug.Print "ã“ã‚Œã‚’foldrã™ã‚‹â†“"
+        Debug.Print "‚±‚ê‚ğfoldr‚·‚é«"
         Debug.Print "scanr(p_cons(p_makeSole, p_consMap(ph_1, ph_2))"
         f = p_cons(p_makeSole, p_consMap(ph_1, ph_2))
         m = foldr(p_catV, Array(), scanr(f, Array(), a))
         Dim mm As Variant
         mm = scanr(f, Array(), a)
         mm = foldr(p_catV, Array(), mm)
-        Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") ã‚’å±•é–‹ã™ã‚‹"
+        Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") ‚ğ“WŠJ‚·‚é"
         printM mapF(p_join(, ""), mm)
     End Sub
-    ' \a b -> [a] : map (a:) b ã®ã†ã¡ã€map (a:) b ã®éƒ¨åˆ†
+    ' \a b -> [a] : map (a:) b ‚Ì‚¤‚¿Amap (a:) b ‚Ì•”•ª
     Private Function consMap(ByRef a As Variant, ByRef v As Variant) As Variant
         consMap = mapF(p_cons(a), v)
     End Function
@@ -288,28 +288,28 @@ End Sub
         p_consMap = make_funPointer(AddressOf consMap, firstParam, secondParam)
     End Function
     
-    'å¼•æ•°ã®éƒ¨åˆ†æ–‡å­—åˆ—ã®ãƒªã‚¹ãƒˆã‚’å–ã‚Šå‡ºã™ã€Œé–¢æ•°ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°å®Ÿè·µå…¥é–€ã€ã®å•é¡Œ
-    'ã‚¢ãƒ‰ãƒ›ãƒƒã‚¯ãªé–¢æ•° consMap ã‚’ä½¿ç”¨ã—ãªãã¦æ¸ˆã‚€ã‚ˆã†ã«ã—ãŸ
+    'ˆø”‚Ì•”•ª•¶š—ñ‚ÌƒŠƒXƒg‚ğæ‚èo‚·uŠÖ”ƒvƒƒOƒ‰ƒ~ƒ“ƒOÀ‘H“ü–åv‚Ì–â‘è
+    'ƒAƒhƒzƒbƒN‚ÈŠÖ” consMap ‚ğg—p‚µ‚È‚­‚ÄÏ‚Ş‚æ‚¤‚É‚µ‚½
     Private Sub segmentsTest2()
-        Debug.Print "==== å¼•æ•°ã®éƒ¨åˆ†æ–‡å­—åˆ—ã®ãƒªã‚¹ãƒˆã‚’å–ã‚Šå‡ºã™Haskellé–¢æ•°(2) ===="
+        Debug.Print "==== ˆø”‚Ì•”•ª•¶š—ñ‚ÌƒŠƒXƒg‚ğæ‚èo‚·HaskellŠÖ”(2) ===="
         Debug.Print "    segments :: [a] -> [[a]]"
         Debug.Print "    segments = foldr (++) [] . scanr (\a b -> [a] : map (a:) b) []"
         Dim a As Variant, f As Variant, m As Variant
         a = Array("A", "B", "C", "D", "E")
-        Debug.Print "ã“ã‚Œã‚’foldrã™ã‚‹â†“"
+        Debug.Print "‚±‚ê‚ğfoldr‚·‚é«"
         Debug.Print "scanr(p_cons(p_makeSole, p_mapF(p_cons(ph_1, yield_1), ph_2))"
         f = p_cons(p_makeSole, p_mapF(p_cons(ph_1, yield_1), ph_2))
         f = p_cons(p_makeSole, p_mapF(p_cons(ph_1, yield_1), ph_2))
         m = foldr(p_catV, Array(), scanr(f, Array(), a))
-        Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") ã‚’å±•é–‹ã™ã‚‹"
+        Debug.Print "Array(""A"", ""B"", ""C"", ""D"", ""E"") ‚ğ“WŠJ‚·‚é"
         printM mapF(p_join(, ""), m)
     End Sub
 
-    ' å°‘ã—ã ã‘å¥‡å¦™ãªå†å¸°
+    ' ­‚µ‚¾‚¯Šï–­‚ÈÄ‹A
     Private Sub curiouslyRecursiveTest()
         Dim arr As Variant
-        Debug.Print "==== å°‘ã—ã ã‘å¥‡å¦™ãªå†å¸° ===="
-        Debug.Print " Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7) ã‚’å±•é–‹"
+        Debug.Print "==== ­‚µ‚¾‚¯Šï–­‚ÈÄ‹A ===="
+        Debug.Print " Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7) ‚ğ“WŠJ"
         arr = Array(1, Array(2, Array(3, Array(4, Array(5), 6))), 7)
         Dim vec As Variant
         Set vec = curiouslyRecursive(New vh_stdvec, arr)
@@ -338,7 +338,7 @@ End Sub
         p_distance2 = make_funPointer(AddressOf distance2, firstParam, secondParam)
     End Function
 
-    'ä¹±æ•°
+    '—”
     Private Function u_real_rand(ByRef from_ As Variant, ByRef to_ As Variant) As Variant
         u_real_rand = uniform_real_dist(0, from_, to_)
     End Function
@@ -346,7 +346,7 @@ End Sub
         p_rnd = make_funPointer(AddressOf u_real_rand, firstParam, secondParam)
     End Function
 
-    'ãƒ•ã‚£ãƒœãƒŠãƒƒãƒé–¢æ•°   (0,1)->(1,1)->(1,2)->(2,3)->(3,5)->(5,8)-> ...
+    'ƒtƒBƒ{ƒiƒbƒ`ŠÖ”   (0,1)->(1,1)->(1,2)->(2,3)->(3,5)->(5,8)-> ...
     Private Function fibonacci(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
         fibonacci = Array(a(LBound(a) + 1), a(LBound(a)) + a(LBound(a) + 1))
     End Function
@@ -354,7 +354,7 @@ End Sub
         p_fibonacci = make_funPointer(AddressOf fibonacci, firstParam, secondParam)
     End Function
 
-    'ãƒ­ã‚¸ã‚¹ãƒ†ã‚£ãƒƒã‚¯å†™åƒ   (Xn, r)->Xn+1
+    'ƒƒWƒXƒeƒBƒbƒNÊ‘œ   (Xn, r)->Xn+1
     Private Function Logistic(ByRef x As Variant, ByRef r As Variant) As Variant
         Logistic = r * x * (1 - x)
     End Function
@@ -362,7 +362,7 @@ End Sub
         p_Logistic = make_funPointer(AddressOf Logistic, firstParam, secondParam)
     End Function
 
-    'å††ï¼çƒ
+    '‰~^‹…
     Private Function circle_(ByRef point As Variant, ByRef r As Variant) As Variant
         circle_ = VBA.Array(point, r)
     End Function
@@ -370,7 +370,7 @@ End Sub
         p_circle = make_funPointer(AddressOf circle_, firstParam, secondParam)
     End Function
 
-    'å††ã®é¢ç©ï¼çƒã®ä½“ç©
+    '‰~‚Ì–ÊÏ^‹…‚Ì‘ÌÏ
     Private Function circleArea(ByRef circle__ As Variant, ByRef dummy As Variant) As Variant
         Select Case sizeof(circle__(0))
         Case 1
@@ -387,7 +387,7 @@ End Sub
         p_circleArea = make_funPointer(AddressOf circleArea, firstParam, secondParam)
     End Function
 
-    'å†…ç©inner product
+    '“àÏinner product
     Private Function innerProduct_(ByRef a As Variant, ByRef b As Variant) As Variant
         innerProduct_ = foldl1(p_plus, zipWith(p_mult, a, b))
     End Function
@@ -395,7 +395,7 @@ End Sub
         p_innerProduct_ = make_funPointer(AddressOf innerProduct_, firstParam, secondParam)
     End Function
 
-    'è¡Œåˆ—ç©
+    's—ñÏ
     Private Function matrixMult_(ByRef a As Variant, ByRef b As Variant) As Variant
         matrixMult_ = product_set(p_innerProduct_, zipC(a), zipR(b))
     End Function
@@ -403,7 +403,7 @@ End Sub
         p_matrixMult_ = make_funPointer(AddressOf matrixMult_, firstParam, secondParam)
     End Function
 
-    'ç´ æ•°åˆ¤å®š(valï¼šåˆ¤å®šå¯¾è±¡ã®è‡ªç„¶æ•°ã€pm : æ—¢å­˜ã®ç´ æ•°åˆ—, valã¯pmã®æœ€å¤§æ•°ã®2ä¹—ã‚’è¶…ãˆãªã„ã“ã¨)
+    '‘f””»’è(valF”»’è‘ÎÛ‚Ì©‘R”Apm : Šù‘¶‚Ì‘f”—ñ, val‚Ípm‚ÌÅ‘å”‚Ì2æ‚ğ’´‚¦‚È‚¢‚±‚Æ)
     Private Function isPrime_(ByRef val As Variant, ByRef pm As Variant) As Variant
         Dim z As Variant
         For Each z In pm
@@ -419,8 +419,8 @@ End Sub
         p_isPrime_ = make_funPointer(AddressOf isPrime_, firstParam, secondParam)
     End Function
 
-    'ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã«ã‚ˆã‚‹æ±‚æ ¹ã®ï¼‘ã‚¹ãƒ†ãƒƒãƒ—ã€€ï¼šã€€x1 ã‹ã‚‰ x2 ã‚’å‡ºåŠ›ã™ã‚‹
-    'ç¬¬1å¼•æ•° ï¼šã€€x ,  ç¬¬2å¼•æ•° (f, df/dx)
+    'ƒjƒ…[ƒgƒ“–@‚É‚æ‚é‹ª‚Ì‚PƒXƒeƒbƒv@F@x1 ‚©‚ç x2 ‚ğo—Í‚·‚é
+    '‘æ1ˆø” F@x ,  ‘æ2ˆø” (f, df/dx)
     Private Function Newton_Raphson(ByRef x As Variant, ByRef fdf As Variant) As Variant
         Newton_Raphson = x - applyFun(x, fdf(0)) / applyFun(x, fdf(1))
     End Function
@@ -428,12 +428,12 @@ End Sub
         p_Newton_Raphson = make_funPointer(AddressOf Newton_Raphson, firstParam, secondParam)
     End Function
 
-    'å¤šé …å¼ã®å¾®åˆ†ï¼ˆä¿‚æ•°ã®ã¿ï¼‰
+    '‘½€®‚Ì”÷•ªiŒW”‚Ì‚İj
     Private Function poly_deriv(ByRef coef As Variant) As Variant
         poly_deriv = headN(zipWith(p_mult, coef, iota(sizeof(coef) - 1, 0)), sizeof(coef) - 1)
     End Function
 
-    'æ•´æ•°ã‚’å„æ¡ã®æ•°å­—ã®åˆè¨ˆã§æ¯”è¼ƒã™ã‚‹
+    '®”‚ğŠeŒ…‚Ì”š‚Ì‡Œv‚Å”äŠr‚·‚é
     Private Function compareSS(ByRef a As Variant, ByRef b As Variant) As Variant
         Dim i As Long, aa As Long, bb As Long, aaa As Long, bbb As Long
         aa = Abs(CLng(a))
@@ -452,15 +452,15 @@ End Sub
         p_compareSS = make_funPointer(AddressOf compareSS, firstParam, secondParam)
     End Function
 
-    'å‹ãŒãƒãƒ©ãƒãƒ©ã§é…åˆ—ã‚‚å«ã‚€æ¯”è¼ƒé–¢æ•°
+    'Œ^‚ªƒoƒ‰ƒoƒ‰‚Å”z—ñ‚àŠÜ‚Ş”äŠrŠÖ”
     Private Function comp000(ByRef a As Variant, ByRef b As Variant) As Variant
-        ' å‹ãŒé•ã†å ´åˆ
+        ' Œ^‚ªˆá‚¤ê‡
         If VarType(a) <> VarType(b) Then
             comp000 = IIf(VarType(a) < VarType(b), 1, 0)
         Else
-            ' é…åˆ—ã®å ´åˆ
+            ' ”z—ñ‚Ìê‡
             If IsArray(a) Then
-                ' æ¬¡å…ƒãŒç•°ãªã‚‹å ´åˆ
+                ' ŸŒ³‚ªˆÙ‚È‚éê‡
                 If Dimension(a) <> Dimension(b) Then
                     comp000 = IIf(Dimension(a) < Dimension(b), 1, 0)
                 Else
@@ -468,7 +468,7 @@ End Sub
                 End If
             ElseIf IsNull(a) Then
                 comp000 = 0
-            Else    ' æ•°å€¤ã¾ãŸã¯æ–‡å­—åˆ—
+            Else    ' ”’l‚Ü‚½‚Í•¶š—ñ
                 comp000 = IIf(a < b, 1, 0)
             End If
         End If
@@ -478,36 +478,36 @@ End Sub
     End Function
 
 
-'========æœ¨æ§‹é€ ã®ãƒ†ã‚¹ãƒˆ======================
-'å‹ãŒãƒãƒ©ãƒãƒ©ã§é…åˆ—ã‚‚å«ã‚€æœ¨æ§‹é€ ã®ãƒ†ã‚¹ãƒˆ (é€Ÿåº¦çš„ã«å®Ÿç”¨æ€§ã¯ç„¡ã—)
+'========–Ø\‘¢‚ÌƒeƒXƒg======================
+'Œ^‚ªƒoƒ‰ƒoƒ‰‚Å”z—ñ‚àŠÜ‚Ş–Ø\‘¢‚ÌƒeƒXƒg (‘¬“x“I‚ÉÀ—p«‚Í–³‚µ)
 Sub treeTest()
     Dim nodes As Variant, tree As Variant, n As Long, t As Long
     Dim DIC As Variant, i As Long
-    Debug.Print "==== å‹ãŒãƒãƒ©ãƒãƒ©ã§é…åˆ—ã‚‚å«ã‚€ã‚­ãƒ¼ã«ã‚ˆã‚‹æœ¨æ§‹é€ ã®ãƒ†ã‚¹ãƒˆ ===="
-    '===============ãƒãƒ¼ãƒ‰ã®é›†åˆ===============
+    Debug.Print "==== Œ^‚ªƒoƒ‰ƒoƒ‰‚Å”z—ñ‚àŠÜ‚ŞƒL[‚É‚æ‚é–Ø\‘¢‚ÌƒeƒXƒg ===="
+    '===============ƒm[ƒh‚ÌW‡===============
     nodes = Array(makeNode(75676786, "A", p_comp000) _
                 , makeNode("abc", "B", p_comp000) _
                 , makeNode(iota(1, 8), "C", p_comp000) _
-                , makeNode("é³¥å°å±‹", "D", p_comp000) _
+                , makeNode("’¹¬‰®", "D", p_comp000) _
                 , makeNode(6, "E", p_comp000) _
                 , makeNode(makeM(2, 2, iota(1, 4)), "F", p_comp000) _
                 , makeNode(300, "G", p_comp000) _
                 , makeNode(iota(1, 15), "H", p_comp000) _
-                , makeNode("çŠ¬å°å±‹", "I", p_comp000) _
+                , makeNode("Œ¢¬‰®", "I", p_comp000) _
                 , makeNode(makeM(2, 3, iota(1, 6)), "J", p_comp000) _
               )
-    '===============ç•³ã¿è¾¼ã¿ã«ã‚ˆã‚‹æœ¨ã®æ§‹ç¯‰===============
+    '===============ô‚İ‚İ‚É‚æ‚é–Ø‚Ì\’z===============
     tree = foldr(p_insertNode, Empty, nodes)
-    '===============ã‚­ãƒ¼ã®é¸æŠ===============
+    '===============ƒL[‚Ì‘I‘ğ===============
     Debug.Print """abc"" => ";
     printM getNode("abc", tree)
-    Debug.Print """çŠ¬å°å±‹"" => ";
-    printM getNode("çŠ¬å°å±‹", tree)
+    Debug.Print """Œ¢¬‰®"" => ";
+    printM getNode("Œ¢¬‰®", tree)
     Debug.Print "iota(1, 8) => ";
     printM getNode(iota(1, 8), tree)
     '==========================================================
     n = 10000
-    Debug.Print "==== 0ï½" & n & " ãƒ©ãƒ³ãƒ€ãƒ æ•´æ•°ã‚­ãƒ¼ ===="
+    Debug.Print "==== 0`" & n & " ƒ‰ƒ“ƒ_ƒ€®”ƒL[ ===="
     nodes = zipWith(p_makeNode0, uniform_int_dist(n, 0, n), iota(1, n))
     t = GetTickCount
     tree = foldr(p_insertNode, Empty, nodes)
@@ -587,9 +587,9 @@ End Sub
         p_getNode = make_funPointer(AddressOf getNode, firstParam, secondParam)
     End Function
 
-'C - å‹é”ã®å‹é”
+'C - —F’B‚Ì—F’B
 'http://abc016.contest.atcoder.jp/tasks/abc016_3
-'å‡ºåŠ›ä¾‹
+'o—Í—á
 Sub test_friendsFriend()
     Dim inArr As Variant
     inArr = VBA.Array(VBA.Array(3, 2), _
@@ -619,26 +619,26 @@ Sub test_friendsFriend()
     printM friendsFriend(inArr)   '  4  4  4  5  2  3  4  2
 End Sub
 
-    'å‹é”ã®å‹é”é–¢æ•°
+    '—F’B‚Ì—F’BŠÖ”
     Private Function friendsFriend(ByRef inArr As Variant)
         Dim fMatrix As Variant
-        'å‹é”ãƒãƒˆãƒªã‚¯ã‚¹(IDã¯1å§‹ã¾ã‚Šã ãŒé…åˆ—ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¨ã—ã¦0å§‹ã¾ã‚Šã«å¤‰æ›´)
+        '—F’Bƒ}ƒgƒŠƒNƒX(ID‚Í1n‚Ü‚è‚¾‚ª”z—ñƒCƒ“ƒfƒbƒNƒX‚Æ‚µ‚Ä0n‚Ü‚è‚É•ÏX)
         fMatrix = makeM(inArr(0)(0), inArr(0)(0), 0)
         Dim i As Long
         For i = LBound(inArr) + 1 To UBound(inArr) Step 1
             fMatrix(inArr(i)(0) - 1, inArr(i)(1) - 1) = 1
             fMatrix(inArr(i)(1) - 1, inArr(i)(0) - 1) = 1
         Next i
-        'å„ãƒ¦ãƒ¼ã‚¶ã®å‹é”é›†åˆ
+        'Šeƒ†[ƒU‚Ì—F’BW‡
         Dim myFriends As Variant
         myFriends = mapF(p_rowMax, mapF(p_filterR(fMatrix), zipR(fMatrix)))
-        'ç›´æ¥ã®å‹é”ã‚’é™¤å¤–
+        '’¼Ú‚Ì—F’B‚ğœŠO
         myFriends = zipWith(p_sumOfLess, zipR(fMatrix), myFriends)
-        'è‡ªåˆ†è‡ªèº«ã‚’é™¤å¤–
+        '©•ª©g‚ğœŠO
         friendsFriend = mapF(p_minus(, 1), myFriends)
     End Function
 
-    '2æ¬¡å…ƒè¡Œåˆ—ã®è¡Œæ–¹å‘ã®æœ€å¤§å€¤
+    '2ŸŒ³s—ñ‚Ìs•ûŒü‚ÌÅ‘å’l
     Private Function rowMax(ByRef matrix As Variant, ByRef dummy As Variant) As Variant
         rowMax = foldl1(p_max, matrix, 1)
     End Function
@@ -646,7 +646,7 @@ End Sub
             p_rowMax = make_funPointer(AddressOf rowMax, firstParam, secondParam)
         End Function
     
-    'ãµãŸã¤ã®1æ¬¡å…ƒè¡Œåˆ—a,bã®å„è¦ç´ ã«ã¤ã„ã¦(aã®å€¤ < bã®å€¤)ã®å€‹æ•°
+    '‚Ó‚½‚Â‚Ì1ŸŒ³s—ña,b‚ÌŠe—v‘f‚É‚Â‚¢‚Ä(a‚Ì’l < b‚Ì’l)‚ÌŒÂ”
     Private Function sumOfLess(ByRef a As Variant, ByRef b As Variant) As Variant
         sumOfLess = foldl1(p_plus, zipWith(p_less, a, b))
     End Function

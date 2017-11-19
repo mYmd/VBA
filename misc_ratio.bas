@@ -4,37 +4,37 @@ Attribute VB_Name = "misc_ratio"
 Option Explicit
 
 '**************************************************************
-'ã€€å¤šå€é•·æ•´æ•° bigInt
+'@‘½”{’·®” bigInt
 '--------------------------------------------------------------
-'   Function long2bigInt            Longã‹ã‚‰bigIntã‚’ç”Ÿæˆ
-'   Function bigInt2double          bigIntã‹ã‚‰Doubleã‚’ç”Ÿæˆï¼ˆã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼å¯¾ç­–ãªã—ï¼‰
-'   Function double2bigInt          Doubleã‹ã‚‰bigIntã‚’ç”Ÿæˆï¼ˆä¸æ­£ç¢ºï¼‰
-'   Function bigInt_log             bigIntã®å¯¾æ•°
-'   Function bigInt_sgn             bigIntã®ç¬¦å·
-'   Function bigInt_base            bigIntã®åŸºæ•°
-'   Function bigInt_abs             bigIntã®çµ¶å¯¾å€¤
-'   Function bigInt_plus            bigIntã®åŠ ç®—
-'   Function bigInt_minus           bigIntã®æ¸›ç®—
-'   Function bigInt_mult            bigIntã®ä¹—ç®—
-'   Function bigInt_divide_mod      bigIntã®é™¤ç®— (å•†ã¨Mod)
-'   Function bigInt_divide          bigIntã®é™¤ç®—
-'   Function bigInt_mod             bigIntã®Mod
-'   Function bigInt_pow             bigIntã®ãƒ™ã‚­ä¹—
-'   Function bigInt2str             bigIntã‹ã‚‰Stringã¸ã®å¤‰æ›ï¼ˆ10é€²è¡¨ç¤ºï¼‰
-'   Function str2bigInt             Stringã‹ã‚‰bigIntã¸ã®å¤‰æ›
-'   Function bigInt_equal           bigIntã®æ¯”è¼ƒ (a = b)
-'   Function bigInt_not_equal       bigIntã®æ¯”è¼ƒ (a <> b)
-'   Function bigInt_less            bigIntã®æ¯”è¼ƒ (a < b)
-'   Function bigInt_less_equal      bigIntã®æ¯”è¼ƒ (a <= b)
-'   Function bigInt_greater         bigIntã®æ¯”è¼ƒ (a > b)
-'   Function bigInt_greater_equal   bigIntã®æ¯”è¼ƒ (a >= b)
-'   Function bigInt_min             bigIntã®min
-'   Function bigInt_max             bigIntã®max
-'   Function bigInt_gcd             æœ€å¤§å…¬ç´„æ•°
+'   Function long2bigInt            Long‚©‚çbigInt‚ğ¶¬
+'   Function bigInt2double          bigInt‚©‚çDouble‚ğ¶¬iƒI[ƒo[ƒtƒ[‘Îô‚È‚µj
+'   Function double2bigInt          Double‚©‚çbigInt‚ğ¶¬i•s³Šmj
+'   Function bigInt_log             bigInt‚Ì‘Î”
+'   Function bigInt_sgn             bigInt‚Ì•„†
+'   Function bigInt_base            bigInt‚ÌŠî”
+'   Function bigInt_abs             bigInt‚Ìâ‘Î’l
+'   Function bigInt_plus            bigInt‚Ì‰ÁZ
+'   Function bigInt_minus           bigInt‚ÌŒ¸Z
+'   Function bigInt_mult            bigInt‚ÌæZ
+'   Function bigInt_divide_mod      bigInt‚ÌœZ (¤‚ÆMod)
+'   Function bigInt_divide          bigInt‚ÌœZ
+'   Function bigInt_mod             bigInt‚ÌMod
+'   Function bigInt_pow             bigInt‚ÌƒxƒLæ
+'   Function bigInt2str             bigInt‚©‚çString‚Ö‚Ì•ÏŠ·i10i•\¦j
+'   Function str2bigInt             String‚©‚çbigInt‚Ö‚Ì•ÏŠ·
+'   Function bigInt_equal           bigInt‚Ì”äŠr (a = b)
+'   Function bigInt_not_equal       bigInt‚Ì”äŠr (a <> b)
+'   Function bigInt_less            bigInt‚Ì”äŠr (a < b)
+'   Function bigInt_less_equal      bigInt‚Ì”äŠr (a <= b)
+'   Function bigInt_greater         bigInt‚Ì”äŠr (a > b)
+'   Function bigInt_greater_equal   bigInt‚Ì”äŠr (a >= b)
+'   Function bigInt_min             bigInt‚Ìmin
+'   Function bigInt_max             bigInt‚Ìmax
+'   Function bigInt_gcd             Å‘åŒö–ñ”
 '**************************************************************
 Private Const int_15 As Long = 2 ^ 15
 
-    ' bigIntã®æ­£è¦åŒ–
+    ' bigInt‚Ì³‹K‰»
     Private Function bigInt_normalize(ByRef bigInt As Variant, _
                             ByVal shorten As Boolean, _
                         ByVal baseN As Long) As Variant
@@ -58,7 +58,7 @@ Private Const int_15 As Long = 2 ^ 15
         swapVariant ret, bigInt_normalize
     End Function
 
-' Long ã‹ã‚‰ bigIntã‚’ç”Ÿæˆ
+' Long ‚©‚ç bigInt‚ğ¶¬
     Private Function long2bigInt_imple(ByVal num As Long, ByVal baseN As Long) As Variant
         Dim valN As Long:    valN = Abs(num)
         long2bigInt_imple = bigInt_normalize( _
@@ -72,7 +72,7 @@ End Function
         p_long2bigInt = make_funPointer(AddressOf long2bigInt, firstParam, secondParam)
     End Function
 
-' bigInt ã‹ã‚‰ Doubleã‚’ç”Ÿæˆï¼ˆã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼å¯¾ç­–ãªã—ï¼‰
+' bigInt ‚©‚ç Double‚ğ¶¬iƒI[ƒo[ƒtƒ[‘Îô‚È‚µj
 Function bigInt2double(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     Dim ret As Double, i As Long
     Dim baseN As Long:  baseN = bigInt_base(bigInt)
@@ -88,7 +88,7 @@ End Function
         p_bigInt2double = make_funPointer(AddressOf bigInt2double, firstParam, secondParam)
     End Function
 
-' Double ã‹ã‚‰ bigIntã‚’ç”Ÿæˆï¼ˆä¸æ­£ç¢ºï¼‰
+' Double ‚©‚ç bigInt‚ğ¶¬i•s³Šmj
 Function double2bigInt(ByRef dval As Variant, Optional ByRef dummy As Variant) As Variant
     If Abs(dval) < 1 Then
         double2bigInt = long2bigInt(0)
@@ -109,7 +109,7 @@ End Function
         p_double2bigInt = make_funPointer(AddressOf double2bigInt, firstParam, secondParam)
     End Function
 
-' bigIntã®å¯¾æ•°
+' bigInt‚Ì‘Î”
 Function bigInt_log(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     Dim baseN As Long:  baseN = bigInt_base(bigInt)
     Dim ret As Double
@@ -126,7 +126,7 @@ End Function
         p_bigInt_log = make_funPointer(AddressOf bigInt_log, firstParam, secondParam)
     End Function
 
-' bigIntã®ç¬¦å·
+' bigInt‚Ì•„†
 Function bigInt_sgn(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     bigInt_sgn = Sgn(bigInt(0))
 End Function
@@ -134,7 +134,7 @@ End Function
         p_bigInt_sgn = make_funPointer(AddressOf bigInt_sgn, firstParam, secondParam)
     End Function
 
-' bigIntã®åŸºæ•°
+' bigInt‚ÌŠî”
 Function bigInt_base(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     bigInt_base = Abs(bigInt(0))
 End Function
@@ -142,7 +142,7 @@ End Function
         p_bigInt_base = make_funPointer(AddressOf bigInt_base, firstParam, secondParam)
     End Function
 
-' bigIntã®çµ¶å¯¾å€¤
+' bigInt‚Ìâ‘Î’l
 Function bigInt_abs(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     Dim ret As Variant
     ret = bigInt
@@ -178,7 +178,7 @@ End Function
         End If
     End Function
         
-    ' bigIntã®ãƒ™ãƒ¼ã‚¹å¤‰æ›
+    ' bigInt‚Ìƒx[ƒX•ÏŠ·
     Private Function bigInt_base_change(ByRef bigInt As Variant, ByVal baseN As Long) As Variant
         Dim baseO As Long:  baseO = bigInt_base(bigInt)
         If baseO = baseN Then
@@ -282,7 +282,7 @@ End Function
         End If
     End Function
 
-' bigIntã®æ¸›ç®—
+' bigInt‚ÌŒ¸Z
 Function bigInt_minus(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
     Dim tmp2 As Variant
     If IsNumeric(bigInt2) Then
@@ -301,7 +301,7 @@ End Function
         p_bigInt_minus = make_funPointer(AddressOf bigInt_minus, firstParam, secondParam)
     End Function
 
-' bigIntã®ä¹—ç®—
+' bigInt‚ÌæZ
 Function bigInt_mult(ByRef bigInt1 As Variant, ByRef bigInt2 As Variant) As Variant
     If IsNumeric(bigInt1) Then
         If VarType(bigInt1) = vbDouble Then
@@ -350,7 +350,7 @@ End Function
     End Function
 
 
-    ' Logã®å€¤ ã‹ã‚‰ bigIntã®æœ€å¤§é …ã‚’ç”Ÿæˆ
+    ' Log‚Ì’l ‚©‚ç bigInt‚ÌÅ‘å€‚ğ¶¬
     Private Function log2bigInt(ByVal dval As Double, ByVal baseN As Long) As Variant
         Dim N As Long
         If dval < 0 Then
@@ -366,7 +366,7 @@ End Function
         End If
     End Function
     
-' bigIntã®é™¤ç®—ï¼ˆå•†ã¨Modï¼‰
+' bigInt‚ÌœZi¤‚ÆModj
 Function bigInt_divide_mod(ByRef bigIntT As Variant, ByRef bigIntB As Variant) As Variant
     If IsNumeric(bigIntT) Then
         If VarType(bigIntT) = vbDouble Then
@@ -422,7 +422,7 @@ End Function
         swapVariant bigInt_divide_mod_imple2, ret
     End Function
 
-' bigIntã®é™¤ç®—
+' bigInt‚ÌœZ
 Function bigInt_divide(ByRef bigIntT As Variant, ByRef bigIntB As Variant) As Variant
     bigInt_divide = bigInt_divide_mod(bigIntT, bigIntB)(0)
 End Function
@@ -430,7 +430,7 @@ End Function
         p_bigInt_divide = make_funPointer(AddressOf bigInt_divide, firstParam, secondParam)
     End Function
 
-' bigIntã®Mod
+' bigInt‚ÌMod
 Function bigInt_mod(ByRef bigIntT As Variant, ByRef bigIntB As Variant) As Variant
     bigInt_mod = bigInt_divide_mod(bigIntT, bigIntB)(1)
 End Function
@@ -438,7 +438,7 @@ End Function
         p_bigInt_mod = make_funPointer(AddressOf bigInt_mod, firstParam, secondParam)
     End Function
 
-' bigIntã®ãƒ™ã‚­ä¹—
+' bigInt‚ÌƒxƒLæ
 Function bigInt_pow(ByRef bigInt As Variant, ByRef nv As Variant) As Variant
     Dim xx As Variant
     If IsNumeric(bigInt) Then
@@ -463,10 +463,10 @@ End Function
         p_bigInt_pow = make_funPointer(AddressOf bigInt_pow, firstParam, secondParam)
     End Function
 
-' bigIntã‹ã‚‰Stringã¸ã®å¤‰æ›ï¼ˆ10é€²è¡¨ç¤ºï¼‰
+' bigInt‚©‚çString‚Ö‚Ì•ÏŠ·i10i•\¦j
 Function bigInt2str(ByRef bigInt As Variant, Optional ByRef dummy As Variant) As Variant
     If IsNumeric(bigInt) Then
-        bigInt2str = Str(bigInt)
+        bigInt2str = str(bigInt)
     ElseIf bigInt_base(bigInt) = 10000 Then
         Dim N As Long:  N = bigInt_end_pos(bigInt)
         Dim i As Long
@@ -489,7 +489,7 @@ End Function
         p_bigInt2str = make_funPointer(AddressOf bigInt2str, firstParam, secondParam)
     End Function
 
-' Stringã‹ã‚‰bigIntã¸ã®å¤‰æ›
+' String‚©‚çbigInt‚Ö‚Ì•ÏŠ·
 Function str2bigInt(ByRef bstr As Variant, Optional ByRef dummy As Variant) As Variant
     Dim sign As Long:   sign = 1
     Dim baseN As Long:  baseN = 10
@@ -527,7 +527,7 @@ End Function
         p_str2bigInt = make_funPointer(AddressOf str2bigInt, firstParam, secondParam)
     End Function
 
-' bigIntã®æ¯”è¼ƒ  (a = b)
+' bigInt‚Ì”äŠr  (a = b)
 Function bigInt_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_equal = IIf(bigInt_less(a, b) Or bigInt_less(b, a), 0, 1)
 End Function
@@ -535,7 +535,7 @@ End Function
         p_bigInt_equal = make_funPointer(AddressOf bigInt_equal, firstParam, secondParam)
     End Function
 
-' bigIntã®æ¯”è¼ƒ  (a <> b)
+' bigInt‚Ì”äŠr  (a <> b)
 Function bigInt_not_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_not_equal = IIf(bigInt_equal(a, b), 0, 1)
 End Function
@@ -543,7 +543,7 @@ End Function
         p_bigInt_not_equal = make_funPointer(AddressOf bigInt_not_equal, firstParam, secondParam)
     End Function
 
-' bigIntã®æ¯”è¼ƒ  (a < b)
+' bigInt‚Ì”äŠr  (a < b)
 Function bigInt_less(ByRef a As Variant, ByRef b As Variant) As Variant
     If IsNumeric(a) Then
         If IsNumeric(b) Then
@@ -587,7 +587,7 @@ End Function
         End If
     End Function
 
-' bigIntã®æ¯”è¼ƒ  (a <= b)
+' bigInt‚Ì”äŠr  (a <= b)
 Function bigInt_less_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_less_equal = IIf(bigInt_less(b, a), 0, 1)
 End Function
@@ -595,7 +595,7 @@ End Function
         p_bigInt_less_equal = make_funPointer(AddressOf bigInt_less_equal, firstParam, secondParam)
     End Function
 
-' bigIntã®æ¯”è¼ƒ  (a > b)
+' bigInt‚Ì”äŠr  (a > b)
 Function bigInt_greater(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_greater = bigInt_less(b, a)
 End Function
@@ -603,7 +603,7 @@ End Function
         p_bigInt_greater = make_funPointer(AddressOf bigInt_greater, firstParam, secondParam)
     End Function
 
-' bigIntã®æ¯”è¼ƒ  (a >= b)
+' bigInt‚Ì”äŠr  (a >= b)
 Function bigInt_greater_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_greater_equal = IIf(bigInt_less(a, b), 0, 1)
 End Function
@@ -611,7 +611,7 @@ End Function
         p_bigInt_greater_equal = make_funPointer(AddressOf bigInt_greater_equal, firstParam, secondParam)
     End Function
 
-' bigIntã®min
+' bigInt‚Ìmin
 Function bigInt_min(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_min = IIf(bigInt_less(a, b), a, b)
 End Function
@@ -619,7 +619,7 @@ End Function
         p_bigInt_min = make_funPointer(AddressOf bigInt_min, firstParam, secondParam)
     End Function
 
-' bigIntã®max
+' bigInt‚Ìmax
 Function bigInt_max(ByRef a As Variant, ByRef b As Variant) As Variant
     bigInt_max = IIf(bigInt_less(a, b), b, a)
 End Function
@@ -627,7 +627,7 @@ End Function
         p_bigInt_max = make_funPointer(AddressOf bigInt_max, firstParam, secondParam)
     End Function
 
-'æœ€å¤§å…¬ç´„æ•°
+'Å‘åŒö–ñ”
 Function bigInt_gcd(ByRef a As Variant, ByRef b As Variant) As Variant
     If IsNumeric(a) Then
         If VarType(a) = vbDouble Then
@@ -667,33 +667,33 @@ End Function
 
 
 '**************************************************************
-'ã€€æœ‰ç†æ•°ã®æ¼”ç®—
+'@—L—”‚Ì‰‰Z
 '--------------------------------------------------------------
-'ã€€æœ‰ç†æ•°ã®ãƒ‡ãƒ¼ã‚¿æ§‹é€ ã¯ã‚¯ãƒ©ã‚¹åŒ–ã›ãšæ¬¡ã®å˜ç´”ãªé…åˆ—ã¨ã™ã‚‹
-'  Array(åˆ†å­, åˆ†æ¯) ï¼š åˆ†å­ As Long, åˆ†æ¯ As Longï¼ˆéè² ï¼‰
-'  ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ã«ã¤ã„ã¦å¯¾ç­–ã¯ã—ã¦ã„ã‚‹ãŒã‚¬ãƒ¼ãƒ‰ãªã—
-'  ã‚¼ãƒ­é™¤ç®—ã«ã¤ã„ã¦ã¯ã‚¬ãƒ¼ãƒ‰ãªã—
+'@—L—”‚Ìƒf[ƒ^\‘¢‚ÍƒNƒ‰ƒX‰»‚¹‚¸Ÿ‚Ì’Pƒ‚È”z—ñ‚Æ‚·‚é
+'  Array(•ªq, •ª•ê) F •ªq As Long, •ª•ê As Longi”ñ•‰j
+'  ƒI[ƒo[ƒtƒ[‚É‚Â‚¢‚Ä‘Îô‚Í‚µ‚Ä‚¢‚é‚ªƒK[ƒh‚È‚µ
+'  ƒ[ƒœZ‚É‚Â‚¢‚Ä‚ÍƒK[ƒh‚È‚µ
 '--------------------------------------------------------------
-'   Function make_ratio         :   æœ‰ç†æ•°ã®ç”Ÿæˆ
-'   Function ratio2double       :   Doubleã«å¤‰æ›
-'   Function ratio2str          :   Stringã«å¤‰æ›
-'   Function ratio_plus         :   æœ‰ç†æ•°ã®åŠ ç®—
-'   Function ratio_negate       :   æœ‰ç†æ•°ã®ç¬¦å·å¤‰æ›´
-'   Function ratio_minus        :   æœ‰ç†æ•°ã®æ¸›ç®—
-'   Function ratio_mult         :   æœ‰ç†æ•°ã®ä¹—ç®—
-'   Function ratio_pow          :   æœ‰ç†æ•°ã®ãƒ™ã‚­ä¹—
-'   Function ratio_divide       :   æœ‰ç†æ•°ã®é™¤ç®—
-'   Function ratio_sgn          :   æœ‰ç†æ•°ã®ç¬¦å·
-'   Function ratio_abs          :   æœ‰ç†æ•°ã®çµ¶å¯¾å€¤
-'   Function ratio_equal        :   æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a = b)
-'   Function ratio_not_equal    :   æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a <> b)
-'   Function ratio_less         :   æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a < b)
-'   Function ratio_less_equal   :   æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a <= b)
-'   Function ratio_greater      :   æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a > b)
-'   Function ratio_greater_equal:   æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a >= b)
+'   Function make_ratio         :   —L—”‚Ì¶¬
+'   Function ratio2double       :   Double‚É•ÏŠ·
+'   Function ratio2str          :   String‚É•ÏŠ·
+'   Function ratio_plus         :   —L—”‚Ì‰ÁZ
+'   Function ratio_negate       :   —L—”‚Ì•„†•ÏX
+'   Function ratio_minus        :   —L—”‚ÌŒ¸Z
+'   Function ratio_mult         :   —L—”‚ÌæZ
+'   Function ratio_pow          :   —L—”‚ÌƒxƒLæ
+'   Function ratio_divide       :   —L—”‚ÌœZ
+'   Function ratio_sgn          :   —L—”‚Ì•„†
+'   Function ratio_abs          :   —L—”‚Ìâ‘Î’l
+'   Function ratio_equal        :   —L—”‚Ì”äŠr  (a = b)
+'   Function ratio_not_equal    :   —L—”‚Ì”äŠr  (a <> b)
+'   Function ratio_less         :   —L—”‚Ì”äŠr  (a < b)
+'   Function ratio_less_equal   :   —L—”‚Ì”äŠr  (a <= b)
+'   Function ratio_greater      :   —L—”‚Ì”äŠr  (a > b)
+'   Function ratio_greater_equal:   —L—”‚Ì”äŠr  (a >= b)
 '**************************************************************
 
-    'æœ€å¤§å…¬ç´„æ•°
+    'Å‘åŒö–ñ”
     Public Function getGcd(ByVal a As Long, ByVal b As Long) As Long
         If a = 0 Then
             getGcd = 1
@@ -704,7 +704,7 @@ End Function
         End If
     End Function
 
-'æœ‰ç†æ•°ã®ç”Ÿæˆ
+'—L—”‚Ì¶¬
 Function make_ratio(ByRef num As Variant, ByRef den As Variant) As Variant
     Dim gcd As Long:    gcd = getGcd(num, den)
     make_ratio = VBA.Array(Sgn(num * den) * (Abs(num) \ gcd), Abs(den) \ gcd)
@@ -713,7 +713,7 @@ End Function
         p_make_ratio = make_funPointer(AddressOf make_ratio, firstParam, secondParam)
     End Function
 
-'Doubleã«å¤‰æ›
+'Double‚É•ÏŠ·
 Function ratio2double(ByRef ratio As Variant, Optional ByRef secondParam As Variant) As Variant
     ratio2double = ratio(0) / ratio(1)
 End Function
@@ -721,7 +721,7 @@ End Function
         p_ratio2double = make_funPointer(AddressOf ratio2double, firstParam, secondParam)
     End Function
 
-'Stringã«å¤‰æ›
+'String‚É•ÏŠ·
 Function ratio2str(ByRef ratio As Variant, Optional ByRef secondParam As Variant) As Variant
     ratio2str = CStr(ratio(0)) & "/" & CStr(ratio(1))
 End Function
@@ -729,7 +729,7 @@ End Function
         p_ratio2str = make_funPointer(AddressOf ratio2str, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®åŠ ç®—
+'—L—”‚Ì‰ÁZ
 Function ratio_plus(ByRef ratio_1 As Variant, ByRef ratio_2 As Variant) As Variant
         Dim n1 As Long: n1 = ratio_1(0)
         Dim d1 As Long: d1 = ratio_1(1)
@@ -742,7 +742,7 @@ End Function
         p_ratio_plus = make_funPointer(AddressOf ratio_plus, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®ç¬¦å·å¤‰æ›´
+'—L—”‚Ì•„†•ÏX
 Function ratio_negate(ByRef ratio As Variant, Optional ByRef dummy As Variant) As Variant
     ratio_negate = make_ratio(-ratio(0), ratio(1))
 End Function
@@ -750,7 +750,7 @@ End Function
         p_ratio_negate = make_funPointer(AddressOf ratio_negate, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¸›ç®—
+'—L—”‚ÌŒ¸Z
 Function ratio_minus(ByRef ratio_1 As Variant, ByRef ratio_2 As Variant) As Variant
     ratio_minus = ratio_plus(ratio_1, ratio_negate(ratio_2))
 End Function
@@ -758,7 +758,7 @@ End Function
         p_ratio_minus = make_funPointer(AddressOf ratio_minus, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®ä¹—ç®—
+'—L—”‚ÌæZ
 Function ratio_mult(ByRef ratio_1 As Variant, ByRef ratio_2 As Variant) As Variant
         Dim n1 As Long: n1 = ratio_1(0)
         Dim d1 As Long: d1 = ratio_1(1)
@@ -772,7 +772,7 @@ End Function
         p_ratio_mult = make_funPointer(AddressOf ratio_mult, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®ãƒ™ã‚­ä¹—
+'—L—”‚ÌƒxƒLæ
 Function ratio_pow(ByRef ratio As Variant, ByRef N As Variant) As Variant
         Dim n1 As Long: n1 = ratio(0)
         Dim d1 As Long: d1 = ratio(1)
@@ -788,7 +788,7 @@ End Function
         p_ratio_pow = make_funPointer(AddressOf ratio_pow, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®é™¤ç®—
+'—L—”‚ÌœZ
 Function ratio_divide(ByRef ratio_1 As Variant, ByRef ratio_2 As Variant) As Variant
         Dim n2 As Long: n2 = ratio_2(0)
         Dim d2 As Long: d2 = ratio_2(1)
@@ -798,7 +798,7 @@ End Function
         p_ratio_divide = make_funPointer(AddressOf ratio_divide, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®ç¬¦å·
+'—L—”‚Ì•„†
 Function ratio_sgn(ByRef ratio As Variant, Optional ByRef dummy As Variant) As Variant
     ratio_sgn = Sgn(ratio(0))
 End Function
@@ -806,7 +806,7 @@ End Function
         p_ratio_sgn = make_funPointer(AddressOf ratio_sgn, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®çµ¶å¯¾å€¤
+'—L—”‚Ìâ‘Î’l
 Function ratio_abs(ByRef ratio As Variant, Optional ByRef dummy As Variant) As Variant
     ratio_abs = make_ratio(Abs(ratio(0)), ratio(1))
 End Function
@@ -814,7 +814,7 @@ End Function
         p_ratio_abs = make_funPointer(AddressOf ratio_abs, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a = b)
+'—L—”‚Ì”äŠr  (a = b)
 Function ratio_equal(ByRef a As Variant, ByRef b As Variant) As Variant
         Dim n1 As Long: n1 = a(0)
         Dim d1 As Long: d1 = a(1)
@@ -826,7 +826,7 @@ End Function
         p_ratio_equal = make_funPointer(AddressOf ratio_equal, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a <> b)
+'—L—”‚Ì”äŠr  (a <> b)
 Function ratio_not_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     ratio_not_equal = IIf(ratio_equal(a, b) = 1, 0, 1)
 End Function
@@ -834,7 +834,7 @@ End Function
         p_ratio_not_equal = make_funPointer(AddressOf ratio_not_equal, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a < b)
+'—L—”‚Ì”äŠr  (a < b)
 Function ratio_less(ByRef a As Variant, ByRef b As Variant) As Variant
     ratio_less = IIf(ratio2double(a) < ratio2double(b), 1, 0)
 End Function
@@ -842,7 +842,7 @@ End Function
         p_ratio_less = make_funPointer(AddressOf ratio_less, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a <= b)
+'—L—”‚Ì”äŠr  (a <= b)
 Function ratio_less_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     ratio_less_equal = IIf(ratio_less(b, a), 0, 1)
 End Function
@@ -850,7 +850,7 @@ End Function
         p_ratio_less_equal = make_funPointer(AddressOf ratio_less_equal, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a > b)
+'—L—”‚Ì”äŠr  (a > b)
 Function ratio_greater(ByRef a As Variant, ByRef b As Variant) As Variant
     ratio_greater = ratio_less(b, a)
 End Function
@@ -858,10 +858,12 @@ End Function
         p_ratio_greater = make_funPointer(AddressOf ratio_greater, firstParam, secondParam)
     End Function
 
-'æœ‰ç†æ•°ã®æ¯”è¼ƒ  (a >= b)
+'—L—”‚Ì”äŠr  (a >= b)
 Function ratio_greater_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     ratio_greater_equal = IIf(ratio_less(a, b), 0, 1)
 End Function
     Function p_ratio_greater_equal(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_ratio_greater_equal = make_funPointer(AddressOf ratio_greater_equal, firstParam, secondParam)
     End Function
+
+

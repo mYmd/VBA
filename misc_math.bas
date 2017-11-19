@@ -4,24 +4,24 @@ Attribute VB_Name = "misc_math"
 Option Explicit
 
 '********************************************************************
-'   æ•°å­¦é–¢æ•° (Haskell_2_stdFunã«ã‚‚ä¸€éƒ¨ã®æ•°å­¦çš„é–¢æ•°ãŒã‚ã‚‹)
+'   ”ŠwŠÖ” (Haskell_2_stdFun‚É‚àˆê•”‚Ì”Šw“IŠÖ”‚ª‚ ‚é)
 
-' Function  isPrimeNumber       ç´ æ•°åˆ¤å®š
-' Function  primeNumbers        ç´ æ•°ä¸€è¦§
+' Function  isPrimeNumber       ‘f””»’è
+' Function  primeNumbers        ‘f”ˆê——
 ' Function  sin_fun(p_sin)      Sin
 ' Function  cos_fun(p_con)      Cos
 ' Function  pow_fun(p_pow)      Pow
-' Function  make_polyCoef       å¤šé …å¼ã®å¾®åˆ†ã¾ãŸã¯ä¸å®šç©åˆ†ï¼ˆä¿‚æ•°ã®ç”Ÿæˆï¼‰
-' Function  newton_method       ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã«ã‚ˆã‚‹æ±‚æ ¹ï¼ˆã®1ã‚¹ãƒ†ãƒƒãƒ—ï¼‰
-' Function  integral_simpson    ã‚·ãƒ³ãƒ—ã‚½ãƒ³æ³•ã«ã‚ˆã‚‹æ•°å€¤ç©åˆ†
-' Function  make_complex        è¤‡ç´ æ•°ã®ç”Ÿæˆ
+' Function  make_polyCoef       ‘½€®‚Ì”÷•ª‚Ü‚½‚Í•s’èÏ•ªiŒW”‚Ì¶¬j
+' Function  newton_method       ƒjƒ…[ƒgƒ“–@‚É‚æ‚é‹ªi‚Ì1ƒXƒeƒbƒvj
+' Function  integral_simpson    ƒVƒ“ƒvƒ\ƒ“–@‚É‚æ‚é”’lÏ•ª
+' Function  make_complex        •¡‘f”‚Ì¶¬
 '********************************************************************
 
     Private primeNumbers_() As Long
     Private syntheticFlag_() As Boolean
     Private max_nval_ As Long
 
-' ç´ æ•°åˆ¤å®š
+' ‘f””»’è
 Public Function isPrimeNumber(ByVal val As Long) As Boolean
     If max_nval_ = 0 Then
         ReDim primeNumbers_(0 To 1)
@@ -41,7 +41,7 @@ Public Function isPrimeNumber(ByVal val As Long) As Boolean
     End If
 End Function
 
-' ç´ æ•°ä¸€è¦§
+' ‘f”ˆê——
 Public Function primeNumbers(Optional ByVal val As Long = -1) As Variant
     Call isPrimeNumber(val)
     primeNumbers = primeNumbers_
@@ -97,21 +97,21 @@ End Function
         p_pow = make_funPointer(AddressOf pow_fun, firstParam, secondParam)
     End Function
 
-' å¤šé …å¼ã®å¾®åˆ†ã¾ãŸã¯ä¸å®šç©åˆ†ï¼ˆä¿‚æ•°ã®ç”Ÿæˆï¼‰
-' å¤šé …å¼ãã®ã‚‚ã®ã¯ Haskell_2_stdFun::poly
+' ‘½€®‚Ì”÷•ª‚Ü‚½‚Í•s’èÏ•ªiŒW”‚Ì¶¬j
+' ‘½€®‚»‚Ì‚à‚Ì‚Í Haskell_2_stdFun::poly
 Function make_polyCoef(ByRef coef As Variant, Optional ByRef deriv_N As Variant) As Variant
     Dim i As Long, dimen As Long, derivN As Long
     dimen = sizeof(coef) - 1
     derivN = IIf(IsMissing(deriv_N), 0, min_fun(dimen + 1, CLng(deriv_N)))
     Dim coefMatrix As Variant
-    If 0 <= derivN Then     ' å¾®åˆ†
+    If 0 <= derivN Then     ' ”÷•ª
         coefMatrix = makeM(derivN + 1, dimen + 1, 0)
         Call fillRow(coefMatrix, 0, coef)
         For i = 1 To derivN Step 1
             Call fillRow(coefMatrix, i, iota(dimen - i + 1, 0))
         Next i
         make_polyCoef = headN(foldl1(p_mult, coefMatrix, 1), max_fun(1, dimen + 1 - derivN))
-    Else    ' ä¸å®šç©åˆ†
+    Else    ' •s’èÏ•ª
         coefMatrix = makeM(1 - derivN, dimen + 1, 0)
         Call fillRow(coefMatrix, 0, coef)
         For i = 1 To 0 - derivN Step 1
@@ -124,8 +124,8 @@ End Function
         p_make_polyCoef = make_funPointer(AddressOf make_polyCoef, firstParam, secondParam)
     End Function
 
-'ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ³æ³•ã«ã‚ˆã‚‹æ±‚æ ¹ï¼ˆã®1ã‚¹ãƒ†ãƒƒãƒ—ï¼‰ã€€ï¼šã€€x1 ã‹ã‚‰ x2 ã‚’å‡ºåŠ›ã™ã‚‹
-'ç¬¬1å¼•æ•° ï¼šã€€x ,  ç¬¬2å¼•æ•° (f, df/dx)
+'ƒjƒ…[ƒgƒ“–@‚É‚æ‚é‹ªi‚Ì1ƒXƒeƒbƒvj@F@x1 ‚©‚ç x2 ‚ğo—Í‚·‚é
+'‘æ1ˆø” F@x ,  ‘æ2ˆø” (f, df/dx)
 Function newton_method(ByRef x As Variant, ByRef f_df As Variant) As Variant
     newton_method = x - applyFun(x, f_df(LBound(f_df))) / applyFun(x, f_df(UBound(f_df)))
 End Function
@@ -133,24 +133,24 @@ End Function
         p_newton_method = make_funPointer(AddressOf newton_method, firstParam, secondParam)
     End Function
 
-' ã‚·ãƒ³ãƒ—ã‚½ãƒ³æ³•ã«ã‚ˆã‚‹æ•°å€¤ç©åˆ†
+' ƒVƒ“ƒvƒ\ƒ“–@‚É‚æ‚é”’lÏ•ª
 Function integral_simpson(ByRef fun As Variant, _
                           ByVal begin_ As Double, _
                           ByVal end_ As Double, _
-                          ByVal n As Long) As Double
+                          ByVal N As Long) As Double
     Dim xs As Variant, ys As Variant
-    xs = mapF(p_poly(, Array((end_ - begin_) / 2 / n, begin_)), iota(0, 2 * n))
+    xs = mapF(p_poly(, Array((end_ - begin_) / 2 / N, begin_)), iota(0, 2 * N))
     ys = mapF(fun, xs)
     Dim constants As Variant
-    constants = makeM(2 * n + 1)
+    constants = makeM(2 * N + 1)
     Call fillPattern(constants, Array(2, 4))
     constants(0) = 1
-    constants(2 * n) = 1
-    integral_simpson = foldl1(p_plus, zipWith(p_mult, constants, ys)) * (end_ - begin_) / n / 6
+    constants(2 * N) = 1
+    integral_simpson = foldl1(p_plus, zipWith(p_mult, constants, ys)) * (end_ - begin_) / N / 6
 End Function
 
 
-' è¤‡ç´ æ•°ã®ç”Ÿæˆ
+' •¡‘f”‚Ì¶¬
 Function make_complex(ByRef r As Variant, ByRef i As Variant) As Variant
     make_complex = VBA.Array(CDbl(r), CDbl(i))
 End Function
@@ -165,19 +165,19 @@ End Function
         p_make_complex_polar = make_funPointer(AddressOf make_complex_polar, firstParam, secondParam)
     End Function
     
-Function show_complex(ByRef c As Variant, Optional ByRef dummy As Variant) As Variant
-    If c(1) < 0# Then
-        show_complex = c(0) & c(1) & "i"
+Function show_complex(ByRef C As Variant, Optional ByRef dummy As Variant) As Variant
+    If C(1) < 0# Then
+        show_complex = C(0) & C(1) & "i"
     Else
-        show_complex = c(0) & "+" & c(1) & "i"
+        show_complex = C(0) & "+" & C(1) & "i"
     End If
 End Function
     Function p_show_complex(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_show_complex = make_funPointer(AddressOf show_complex, firstParam, secondParam)
     End Function
 
-Function show_complex_polar(ByRef c As Variant, Optional ByRef dummy As Variant) As Variant
-    show_complex_polar = "(" & complex_abs(c) & ", " & complex_arg(c) & ")"
+Function show_complex_polar(ByRef C As Variant, Optional ByRef dummy As Variant) As Variant
+    show_complex_polar = "(" & complex_abs(C) & ", " & complex_arg(C) & ")"
 End Function
     Function p_show_complex_polar(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_show_complex_polar = make_funPointer(AddressOf show_complex_polar, firstParam, secondParam)

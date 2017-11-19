@@ -4,15 +4,15 @@ Attribute VB_Name = "misc_random"
 Option Explicit
 
 '********************************************************************
-'   ç¢ºç‡åˆ†å¸ƒ
-' Function  seed_Engine         ä¹±æ•°ã‚·ãƒ¼ãƒ‰è¨­å®š
-' Function  uniform_int_dist    ä¸€æ§˜æ•´æ•°(Long)    (å€‹æ•°, from, to)
-' Function  uniform_real_dist   ä¸€æ§˜å®Ÿæ•°(Double)  (å€‹æ•°, from, to)
-' Function  normal_dist         æ­£è¦åˆ†å¸ƒ          (å€‹æ•°, å¹³å‡, æ¨™æº–åå·®)
-' Function  bernoulli_dist      Bernoulliåˆ†å¸ƒ     (å€‹æ•°, ç™ºç”Ÿç¢ºç‡)
-' Function  discrete_dist       é›¢æ•£åˆ†å¸ƒ          (å€‹æ•°, ç™ºç”Ÿæ¯”ç‡é…åˆ—)
-' Function  random_iota         iotaã®ãƒ©ãƒ³ãƒ€ãƒ ç‰ˆ
-' Function  random_shuffle      é…åˆ—ã®è¦ç´ ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«ä¸¦ã³æ›¿ãˆãŸé…åˆ—ã‚’å‡ºåŠ›
+'   Šm—¦•ª•z
+' Function  seed_Engine         —”ƒV[ƒhİ’è
+' Function  uniform_int_dist    ˆê—l®”(Long)    (ŒÂ”, from, to)
+' Function  uniform_real_dist   ˆê—lÀ”(Double)  (ŒÂ”, from, to)
+' Function  normal_dist         ³‹K•ª•z          (ŒÂ”, •½‹Ï, •W€•Î·)
+' Function  bernoulli_dist      Bernoulli•ª•z     (ŒÂ”, ”­¶Šm—¦)
+' Function  discrete_dist       —£U•ª•z          (ŒÂ”, ”­¶”ä—¦”z—ñ)
+' Function  random_iota         iota‚Ìƒ‰ƒ“ƒ_ƒ€”Å
+' Function  random_shuffle      ”z—ñ‚Ì—v‘f‚ğƒ‰ƒ“ƒ_ƒ€‚É•À‚Ñ‘Ö‚¦‚½”z—ñ‚ğo—Í
 '********************************************************************
 
 Declare PtrSafe Function seed_Engine Lib "mapM.dll" _
@@ -37,7 +37,7 @@ Declare PtrSafe Function bernoulli_dist Lib "mapM.dll" _
                                     (ByVal N As Long, _
                                 ByVal prob As Double) As Variant
 
-' ä¸€æ§˜æ•´æ•°(Long) : (å€‹æ•°N, [ç¯„å›²])
+' ˆê—l®”(Long) : (ŒÂ”N, [”ÍˆÍ])
     Private Function uniform_int_dist_(ByRef N As Variant, ByRef fromto As Variant) As Variant
         uniform_int_dist_ = uniform_int_dist(N, fromto(LBound(fromto)), fromto(UBound(fromto)))
     End Function
@@ -45,7 +45,7 @@ Function p_uniform_int_dist(Optional ByRef firstParam As Variant, Optional ByRef
     p_uniform_int_dist = make_funPointer(AddressOf uniform_int_dist_, firstParam, secondParam)
 End Function
 
-' ä¸€æ§˜å®Ÿæ•°(Double) : (å€‹æ•°N, [ç¯„å›²])
+' ˆê—lÀ”(Double) : (ŒÂ”N, [”ÍˆÍ])
     Private Function uniform_real_dist_(ByRef N As Variant, ByRef fromto As Variant) As Variant
         uniform_real_dist_ = uniform_real_dist(N, fromto(LBound(fromto)), fromto(UBound(fromto)))
     End Function
@@ -53,7 +53,7 @@ Function p_uniform_real_dist(Optional ByRef firstParam As Variant, Optional ByRe
     p_uniform_real_dist = make_funPointer(AddressOf uniform_real_dist_, firstParam, secondParam)
 End Function
 
-' æ­£è¦åˆ†å¸ƒ : (å€‹æ•°N, [å¹³å‡,æ¨™æº–åå·®])
+' ³‹K•ª•z : (ŒÂ”N, [•½‹Ï,•W€•Î·])
     Private Function normal_dist_(ByRef N As Variant, ByRef meandev As Variant) As Variant
         normal_dist_ = normal_dist(N, meandev(LBound(meandev)), meandev(UBound(meandev)))
     End Function
@@ -61,7 +61,7 @@ Function p_normal_dist(Optional ByRef firstParam As Variant, Optional ByRef seco
     p_normal_dist = make_funPointer(AddressOf normal_dist_, firstParam, secondParam)
 End Function
 
-' Bernoulliåˆ†å¸ƒ : (å€‹æ•°N, ç™ºç”Ÿç¢ºç‡)
+' Bernoulli•ª•z : (ŒÂ”N, ”­¶Šm—¦)
     Private Function bernoulli_dist_(ByRef N As Variant, ByRef prob As Variant) As Variant
         bernoulli_dist_ = bernoulli_dist(N, prob)
     End Function
@@ -69,10 +69,10 @@ Function p_bernoulli_dist(Optional ByRef firstParam As Variant, Optional ByRef s
     p_bernoulli_dist = make_funPointer(AddressOf bernoulli_dist_, firstParam, secondParam)
 End Function
 
-' é›¢æ•£åˆ†å¸ƒ : (å€‹æ•° N, ç™ºç”Ÿæ¯”ç‡é…åˆ— Pi)
-' ç™ºç”Ÿæ¯”ç‡ã¯éè² ã®å®Ÿæ•°ã€åˆè¨ˆãŒ 1 ã«ãªã‚‰ãªãã¦ã‚‚å¯
-' è¿”ã‚Šå€¤ã¯é•·ã• N ã®é…åˆ—ã§ã€å„è¦ç´ ã¯ 0ï½sizeof(ç™ºç”Ÿæ¯”ç‡é…åˆ—)-1 ã®æ•´æ•°
-' æ•´æ•°iã®ç™ºç”Ÿæ¯”ç‡ ï½ Pi ã¨ãªã‚‹åˆ†å¸ƒï¼ˆãŸã ã— LBound(Pi) = 0 ã¨ä»®å®šï¼‰
+' —£U•ª•z : (ŒÂ” N, ”­¶”ä—¦”z—ñ Pi)
+' ”­¶”ä—¦‚Í”ñ•‰‚ÌÀ”A‡Œv‚ª 1 ‚É‚È‚ç‚È‚­‚Ä‚à‰Â
+' •Ô‚è’l‚Í’·‚³ N ‚Ì”z—ñ‚ÅAŠe—v‘f‚Í 0`sizeof(”­¶”ä—¦”z—ñ)-1 ‚Ì®”
+' ®”i‚Ì”­¶”ä—¦ ` Pi ‚Æ‚È‚é•ª•zi‚½‚¾‚µ LBound(Pi) = 0 ‚Æ‰¼’èj
 Function discrete_dist(ByRef N As Variant, ByRef probs As Variant) As Variant
     Dim segments As Variant, distribution As Variant
     segments = scanl1(p_plus, probs)
@@ -87,7 +87,7 @@ End Function
         p_discrete_dist = make_funPointer(AddressOf discrete_dist, firstParam, secondParam)
     End Function
 
-' iotaã®ãƒ©ãƒ³ãƒ€ãƒ ç‰ˆï¼ˆfrom_iã‹ã‚‰to_iã¾ã§ã®è‡ªç„¶æ•°ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«ä¸¦ã¹ãŸãƒ™ã‚¯ãƒˆãƒ«ï¼‰
+' iota‚Ìƒ‰ƒ“ƒ_ƒ€”Åifrom_i‚©‚çto_i‚Ü‚Å‚Ì©‘R”‚ğƒ‰ƒ“ƒ_ƒ€‚É•À‚×‚½ƒxƒNƒgƒ‹j
 ' Fisher-Yates
 Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
     Dim ret As Variant, i As Long, j As Long, tmp As Long
@@ -99,10 +99,10 @@ Function random_iota(ByVal from_i As Long, ByVal to_i As Long) As Variant
     Call swapVariant(random_iota, ret)
 End Function
 
-' é…åˆ—ã®è¦ç´ ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«ä¸¦ã³æ›¿ãˆãŸé…åˆ—ã‚’å‡ºåŠ›
+' ”z—ñ‚Ì—v‘f‚ğƒ‰ƒ“ƒ_ƒ€‚É•À‚Ñ‘Ö‚¦‚½”z—ñ‚ğo—Í
 Function random_shuffle(ByRef vec As Variant, Optional ByRef dummy As Variant) As Variant
     random_shuffle = vec
-    permutate random_shuffle, random_iota(LBound(vec), UBound(vec))
+    Call permutate(random_shuffle, random_iota(LBound(vec), UBound(vec)))
 End Function
     Function p_random_shuffle(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_random_shuffle = make_funPointer(AddressOf random_shuffle, firstParam, secondParam)

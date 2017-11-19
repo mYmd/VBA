@@ -12,16 +12,16 @@ Option Explicit
 'Copyright (c) 2016 mmYYmmdd
 
 '*********************************************************************************
-'   ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³æ¼”ç®—å­ |>
-'   ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç›´æ¥Newã™ã‚‹ã®ã§ã¯ãªã
-'   ãƒ•ã‚¡ã‚¯ãƒˆãƒªé–¢æ•°misc_utility.pipeã¾ãŸã¯misc_utility.pipe_ã‚’ä½¿ç”¨ã—ã¦ç”Ÿæˆã™ã‚‹
+'   ƒpƒCƒvƒ‰ƒCƒ“‰‰Zq |>
+'   ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Í’¼ÚNew‚·‚é‚Ì‚Å‚Í‚È‚­
+'   ƒtƒ@ƒNƒgƒŠŠÖ”misc_utility.pipe‚Ü‚½‚Ímisc_utility.pipe_‚ğg—p‚µ‚Ä¶¬‚·‚é
 ' --------------------------------------------------------------------------------
-'   Function        x                   é–¢æ•°é©ç”¨ã—ã¦è‡ªåˆ†è‡ªèº«ã‚’è¿”ã™
-'   Function        â†’                  é–¢æ•°é©ç”¨ã—ã¦è‡ªåˆ†è‡ªèº«ã‚’è¿”ã™
-'   Property Get    val                 çµæœã‚’å–å¾—
-'   Property Get    pop                 çµæœã‚’å–å¾—(å€¤ã¯moveã•ã‚Œã‚‹ï¼‰
-'   Function        swap                vh_pipeã©ã†ã—ã®swap
-'   Function        clone               åŒã˜å€¤ã‚’æŒã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+'   Function        x                   ŠÖ”“K—p‚µ‚Ä©•ª©g‚ğ•Ô‚·
+'   Function        ¨                  ŠÖ”“K—p‚µ‚Ä©•ª©g‚ğ•Ô‚·
+'   Property Get    val                 Œ‹‰Ê‚ğæ“¾
+'   Property Get    pop                 Œ‹‰Ê‚ğæ“¾(’l‚Ímove‚³‚ê‚éj
+'   Function        swap                vh_pipe‚Ç‚¤‚µ‚Ìswap
+'   Function        clone               “¯‚¶’l‚ğ‚Á‚½ƒIƒuƒWƒFƒNƒg‚Ì¶¬
 '*********************************************************************************
     Private ret As Variant
 
@@ -34,9 +34,9 @@ Public Function x(ByRef fun As Variant) As vh_pipe
     Set x = Me
 End Function
 
-Public Function â†’(ByRef fun As Variant) As vh_pipe
+Public Function ¨(ByRef fun As Variant) As vh_pipe
     swapVariant ret, applyFun(ret, fun)
-    Set â†’ = Me
+    Set ¨ = Me
 End Function
 
 Public Property Get val() As Variant
@@ -54,5 +54,7 @@ End Function
 
 Public Function clone() As vh_pipe
     Set clone = New vh_pipe
-    clone.swap_val_ (ret)    'ã‚³ãƒ”ãƒ¼ã‚’æ¸¡ã™
+    clone.swap_val_ (ret)    'ƒRƒs[‚ğ“n‚·
 End Function
+
+

@@ -4,13 +4,13 @@ Attribute VB_Name = "Haskell_3_printM"
 Option Explicit
 
 '================================================================================
-'   Sub         printS          ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«é…åˆ—ã®ã‚µã‚¤ã‚ºã‚’è¡¨ç¤ºã™ã‚‹
-'   Sub         printM          ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ï¼’æ¬¡å…ƒé…åˆ—ã‚’è¡¨ç¤ºã™ã‚‹
-'   Function    dumpFun         ãƒã‚¹ãƒˆã—ãŸé–¢æ•°ã‚’æ–‡å­—åˆ—åŒ–
-'   Sub         printM_         ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«1æ¬¡å…ƒã‚¸ãƒ£ã‚°é…åˆ—ã‚’å±•é–‹ã—ã¦è¡¨ç¤ºã™ã‚‹
+'   Sub         printS          ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É”z—ñ‚ÌƒTƒCƒY‚ğ•\¦‚·‚é
+'   Sub         printM          ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É‚QŸŒ³”z—ñ‚ğ•\¦‚·‚é
+'   Function    dumpFun         ƒlƒXƒg‚µ‚½ŠÖ”‚ğ•¶š—ñ‰»
+'   Sub         printM_         ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É1ŸŒ³ƒWƒƒƒO”z—ñ‚ğ“WŠJ‚µ‚Ä•\¦‚·‚é
 '================================================================================
 
-'ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«é…åˆ—ã®ã‚µã‚¤ã‚ºã‚’è¡¨ç¤ºã™ã‚‹
+'ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É”z—ñ‚ÌƒTƒCƒY‚ğ•\¦‚·‚é
 Sub printS(ParamArray m() As Variant)
     Dim i As Long
     For i = LBound(m) To UBound(m) Step 1
@@ -36,8 +36,8 @@ End Sub
         Debug.Print expr
     End Sub
 
-'ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ï¼’æ¬¡å…ƒé…åˆ—ã‚’è¡¨ç¤ºã™ã‚‹
-Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As Variant)
+'ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É‚QŸŒ³”z—ñ‚ğ•\¦‚·‚é
+Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef C As Variant)
     If Dimension(m) = 0 Then
         If IsArray(m) Then
             Debug.Print "#Erased Array#":                       Exit Sub
@@ -54,7 +54,7 @@ Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As 
     Dim SR As Long, er As Long
     Dim SC As Long, EC As Long
     Call get_start_end(m, IIf(IsMissing(r), rowSize(m), r), 1, SR, er)
-    Call get_start_end(m, IIf(IsMissing(c), colSize(m), c), 2, SC, EC)
+    Call get_start_end(m, IIf(IsMissing(C), colSize(m), C), 2, SC, EC)
     If (er < SR) Or (EC < SC) Then
         Debug.Print "#Empty Matrix#"
         Exit Sub
@@ -97,7 +97,7 @@ Sub printM(ByRef m As Variant, Optional ByRef r As Variant, Optional ByRef c As 
     Next i
 End Sub
     
-    'ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¡¨ç¤ºã™ã‚‹
+    'ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚ÉƒxƒNƒgƒ‹‚ğ•\¦‚·‚é
     Private Sub printV(ByRef v As Variant, Optional ByRef r As Variant)
         If Dimension(v) = 0 Then Debug.Print v:                     Exit Sub
         If Dimension(v) = 2 Then printM v, r:                       Exit Sub
@@ -170,7 +170,7 @@ End Sub
         End If
     End Sub
 
-'ãƒã‚¹ãƒˆã—ãŸé–¢æ•°ã‚’æ–‡å­—åˆ—åŒ–
+'ƒlƒXƒg‚µ‚½ŠÖ”‚ğ•¶š—ñ‰»
 Function dumpFun(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As Variant
     If is_bindFun(x) Then
         dumpFun = "F" & (x(0) Mod 10000) & _
@@ -217,8 +217,8 @@ Function dumpFun(ByRef x As Variant, Optional ByVal OneTwo As Long = 0) As Varia
     End If
 End Function
 
-'ãƒ‡ãƒãƒƒã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«1æ¬¡å…ƒã‚¸ãƒ£ã‚°é…åˆ—ã‚’å±•é–‹ã—ã¦è¡¨ç¤ºã™ã‚‹
-Sub printM_(ByRef vec As Variant, Optional ByRef r As Variant, Optional ByRef c As Variant)
+'ƒfƒoƒbƒOƒEƒBƒ“ƒhƒE‚É1ŸŒ³ƒWƒƒƒO”z—ñ‚ğ“WŠJ‚µ‚Ä•\¦‚·‚é
+Sub printM_(ByRef vec As Variant, Optional ByRef r As Variant, Optional ByRef C As Variant)
     Select Case Dimension(vec)
     Case 0
         printM vec
@@ -238,7 +238,7 @@ Sub printM_(ByRef vec As Variant, Optional ByRef r As Variant, Optional ByRef c 
             begin_ = max_fun(LBound(vec), end_ + r + 1)
         End If
         Do While begin_ <= end_
-            printM vec(begin_), c
+            printM vec(begin_), C
             begin_ = begin_ + 1
         Loop
     End Select

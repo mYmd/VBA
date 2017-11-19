@@ -4,24 +4,24 @@ Attribute VB_Name = "Haskell_2_stdFun"
 Option Explicit
 
 '********************************************************************
-'   è¦ç´ ã‚¢ã‚¯ã‚»ã‚¹
-' Sub       assignVar       æ±ç”¨ã®å¤‰æ•°ã‚³ãƒ”ãƒ¼
-' Function  firstArg        1ç•ªç›®ã®å¼•æ•°
-' Function  secondArg       2ç•ªç›®ã®å¼•æ•°
-' Function  p_identity      å¼•æ•°è‡ªèº«
-' Function  getNth          Nç•ªç›®ã®é…åˆ—è¦ç´ å–å¾—ï¼ˆçµ¶å¯¾ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-' Function  getNth_b        Nç•ªç›®ã®é…åˆ—è¦ç´ å–å¾—ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-' Sub       setNth_b        Nç•ªç›®ã®é…åˆ—è¦ç´ è¨­å®šï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-' Function  setNth_move     Nç•ªç›®ã®é…åˆ—è¦ç´ è¨­å®šï¼ˆçµ¶å¯¾ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-' Function  setNth_b_move   Nç•ªç›®ã®é…åˆ—è¦ç´ è¨­å®šï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-' Function  move_many       è¤‡æ•°ï¼ˆå¯å¤‰é•·ï¼‰ã®å¤‰æ•°ã‚’moveã—ã¦ã²ã¨ã¤ã®ã‚¸ãƒ£ã‚°é…åˆ—ã«ã™ã‚‹
-' Sub       move_back       ã‚¸ãƒ£ã‚°é…åˆ—ã‹ã‚‰è¤‡æ•°ï¼ˆå¯å¤‰é•·ï¼‰ã®å¤‰æ•°ã«move back
-' Function  place_fill      é…åˆ—ã®æŒ‡å®šä½ç½®ã«é–¢æ•°ï¼å€¤ã‚’é©ç”¨ã™ã‚‹ï¼ˆå€¤ã‚’åŸ‹ã‚ã¦moveã—ã¦è¿”ã™ï¼‰
-'ã€€-----------------------------------------------------------------
-'     ãƒ•ã‚¡ãƒ³ã‚¯ã‚¿ç­‰ã€€ï½
+'   —v‘fƒAƒNƒZƒX
+' Sub       assignVar       ”Ä—p‚Ì•Ï”ƒRƒs[
+' Function  firstArg        1”Ô–Ú‚Ìˆø”
+' Function  secondArg       2”Ô–Ú‚Ìˆø”
+' Function  p_identity      ˆø”©g
+' Function  getNth          N”Ô–Ú‚Ì”z—ñ—v‘fæ“¾iâ‘ÎƒAƒhƒŒƒXj
+' Function  getNth_b        N”Ô–Ú‚Ì”z—ñ—v‘fæ“¾iƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+' Sub       setNth_b        N”Ô–Ú‚Ì”z—ñ—v‘fİ’èiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+' Function  setNth_move     N”Ô–Ú‚Ì”z—ñ—v‘fİ’èiâ‘ÎƒAƒhƒŒƒXj
+' Function  setNth_b_move   N”Ô–Ú‚Ì”z—ñ—v‘fİ’èiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+' Function  move_many       •¡”i‰Â•Ï’·j‚Ì•Ï”‚ğmove‚µ‚Ä‚Ğ‚Æ‚Â‚ÌƒWƒƒƒO”z—ñ‚É‚·‚é
+' Sub       move_back       ƒWƒƒƒO”z—ñ‚©‚ç•¡”i‰Â•Ï’·j‚Ì•Ï”‚Émove back
+' Function  place_fill      ”z—ñ‚Ìw’èˆÊ’u‚ÉŠÖ”^’l‚ğ“K—p‚·‚éi’l‚ğ–„‚ß‚Ämove‚µ‚Ä•Ô‚·j
+'@-----------------------------------------------------------------
+'     ƒtƒ@ƒ“ƒNƒ^“™@`
 '********************************************************************
 
-' æ±ç”¨ã®å¤‰æ•°ã‚³ãƒ”ãƒ¼
+' ”Ä—p‚Ì•Ï”ƒRƒs[
 Public Sub assignVar(ByRef Target As Variant, ByRef source As Variant)
     If IsObject(source) Then
         Set Target = source
@@ -30,7 +30,7 @@ Public Sub assignVar(ByRef Target As Variant, ByRef source As Variant)
     End If
 End Sub
 
-'1ç•ªç›®ã®å¼•æ•°
+'1”Ô–Ú‚Ìˆø”
 Function firstArg(ByRef a As Variant, ByRef b As Variant) As Variant
     Call assignVar(firstArg, a)
 End Function
@@ -38,7 +38,7 @@ End Function
         p_firstArg = make_funPointer(AddressOf firstArg, firstParam, secondParam)
     End Function
 
-'2ç•ªç›®ã®å¼•æ•°
+'2”Ô–Ú‚Ìˆø”
 Function secondArg(ByRef a As Variant, ByRef b As Variant) As Variant
     Call assignVar(secondArg, b)
 End Function
@@ -46,7 +46,7 @@ End Function
         p_secondArg = make_funPointer(AddressOf secondArg, firstParam, secondParam)
     End Function
 
-'å¼•æ•°ãã‚Œè‡ªèº«(p_firstArgã¨åŒç­‰)
+'ˆø”‚»‚ê©g(p_firstArg‚Æ“¯“™)
     Private Function identity__(ByRef a As Variant, _
                                 Optional ByRef dummy As Variant) As Variant
         Call assignVar(identity__, a)
@@ -55,7 +55,7 @@ Public Function p_identity(Optional ByRef firstParam As Variant, Optional ByRef 
         p_identity = make_funPointer(AddressOf identity__, firstParam, secondParam)
 End Function
 
-'Nç•ªç›®ã®é…åˆ—è¦ç´ å–å¾—ï¼ˆçµ¶å¯¾ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+'N”Ô–Ú‚Ì”z—ñ—v‘fæ“¾iâ‘ÎƒAƒhƒŒƒXj
 Function getNth(ByRef vec As Variant, ByRef index As Variant) As Variant
     Call assignVar(getNth, vec(index))
 End Function
@@ -63,8 +63,8 @@ End Function
         p_getNth = make_funPointer(AddressOf getNth, firstParam, secondParam)
     End Function
 
-'Nç•ªç›®ã®é…åˆ—è¦ç´ å–å¾—ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'index < 0 ã®å ´åˆã¯å¾Œã‚ã‹ã‚‰å–å¾—
+'N”Ô–Ú‚Ì”z—ñ—v‘fæ“¾iƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'index < 0 ‚Ìê‡‚ÍŒã‚ë‚©‚çæ“¾
 Function getNth_b(ByRef vec As Variant, ByRef index As Variant) As Variant
     If 0 <= index Then
         Call assignVar(getNth_b, vec(index + LBound(vec)))
@@ -76,8 +76,8 @@ End Function
         p_getNth_b = make_funPointer(AddressOf getNth_b, firstParam, secondParam)
     End Function
 
-'Nç•ªç›®ã®é…åˆ—è¦ç´ è¨­å®šï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
-'index < 0 ã®å ´åˆã¯å¾Œã‚ã«è¨­å®š
+'N”Ô–Ú‚Ì”z—ñ—v‘fİ’èiƒIƒtƒZƒbƒgƒAƒhƒŒƒXj
+'index < 0 ‚Ìê‡‚ÍŒã‚ë‚Éİ’è
 Sub setNth_b(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     If 0 <= index Then
         Call assignVar(vec(index + LBound(vec)), value)
@@ -86,7 +86,7 @@ Sub setNth_b(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     End If
 End Sub
 
-'Nç•ªç›®ã®é…åˆ—è¦ç´ è¨­å®šï¼ˆçµ¶å¯¾ã‚¢ãƒ‰ãƒ¬ã‚¹ï¼‰
+'N”Ô–Ú‚Ì”z—ñ—v‘fİ’èiâ‘ÎƒAƒhƒŒƒXj
 Function setNth_move(ByRef vec As Variant, ByVal index As Long, ByRef value As Variant)
     Call assignVar(vec(index), value)
     setNth_move = moveVariant(vec)
@@ -97,7 +97,7 @@ Function setNth_b_move(ByRef vec As Variant, ByVal index As Long, ByRef value As
     setNth_b_move = moveVariant(vec)
 End Function
 
-' è¤‡æ•°ã®å¤‰æ•°ã‚’moveã—ã¦ã²ã¨ã¤ã®ã‚¸ãƒ£ã‚°é…åˆ—ã«ã™ã‚‹
+' •¡”‚Ì•Ï”‚ğmove‚µ‚Ä‚Ğ‚Æ‚Â‚ÌƒWƒƒƒO”z—ñ‚É‚·‚é
 Function move_many(ParamArray m() As Variant) As Variant
     If LBound(m) <= UBound(m) Then
         Dim ret As Variant
@@ -111,7 +111,7 @@ Function move_many(ParamArray m() As Variant) As Variant
     swapVariant move_many, ret
 End Function
 
-' ã‚¸ãƒ£ã‚°é…åˆ—ã‹ã‚‰è¤‡æ•°ï¼ˆå¯å¤‰é•·ï¼‰ã®å¤‰æ•°ã«move back
+' ƒWƒƒƒO”z—ñ‚©‚ç•¡”i‰Â•Ï’·j‚Ì•Ï”‚Émove back
 Sub move_back(ByRef m As Variant, ParamArray ret() As Variant)
     Dim i As Long, k As Long: k = LBound(ret)
     For i = LBound(m) To UBound(m) Step 1
@@ -121,13 +121,13 @@ Sub move_back(ByRef m As Variant, ParamArray ret() As Variant)
     m = Empty
 End Sub
 
-' é…åˆ—vecã®æŒ‡å®šä½ç½®ã«é–¢æ•°ï¼å€¤ã‚’é©ç”¨ã™ã‚‹ï¼ˆå€¤ã‚’åŸ‹ã‚ã¦moveã—ã¦è¿”ã™ï¼‰
+' ”z—ñvec‚Ìw’èˆÊ’u‚ÉŠÖ”^’l‚ğ“K—p‚·‚éi’l‚ğ–„‚ß‚Ämove‚µ‚Ä•Ô‚·j
 Function place_fill(ByRef vec As Variant, _
                     ByRef fun As Variant, _
                     ByRef indice As Variant, _
                     Optional ByRef souce As Variant) As Variant
     Dim i As Long
-    ' souceã¾ãŸã¯indexï¼ˆsouce çœç•¥æ™‚ï¼‰ã‚’åŸ‹ã‚è¾¼ã‚€
+    ' souce‚Ü‚½‚Íindexisouce È—ªj‚ğ–„‚ß‚Ş
     If is_bindFun(fun) Then
         Dim tmp As Variant
         If IsMissing(souce) Then    ' = index
@@ -138,7 +138,7 @@ Function place_fill(ByRef vec As Variant, _
         For i = LBound(indice) To UBound(indice) Step 1
             Call swapVariant(vec(indice(i)), tmp(i))
         Next i
-    Else    ' å˜ä¸€ã®å€¤ã‚’åŸ‹ã‚è¾¼ã‚€
+    Else    ' ’Pˆê‚Ì’l‚ğ–„‚ß‚Ş
         For i = LBound(indice) To UBound(indice) Step 1
             Call assignVar(vec(indice(i)), fun)
         Next i
@@ -147,51 +147,51 @@ Function place_fill(ByRef vec As Variant, _
 End Function
 
 '********************************************************************
-'     ãƒ•ã‚¡ãƒ³ã‚¯ã‚¿ç­‰
-'   Function rowSize        é…åˆ—ã®è¡Œæ•°
-'   Function colSize        é…åˆ—ã®åˆ—æ•°
-'   Function sizeof         é…åˆ—ã®å…¨è¦ç´ æ•°ã¾ãŸã¯ç‰¹å®šã®è»¸ã®è¦ç´ æ•°
-'   Function p_constant     å®šæ•°é–¢æ•°
-'   Function p_true         å®šæ•°é–¢æ•°(true)
-'   Function p_false        å®šæ•°é–¢æ•°(false)
-' * Function if_else        if else é¸æŠ
-'   Function replaceNull    Nullã‚’ä»–ã®å€¤ã«ç½®æ›ã™ã‚‹
-'   Function replaceEmpty   Emptyã‚’ä»–ã®å€¤ã«ç½®æ›ã™ã‚‹
-'   Function maskVar        å€¤ã®ãƒã‚¹ã‚¯ï¼ˆmask=0 ã®æ™‚ã«EmptyåŒ–ï¼‰
-'   Function expN           æŒ‡æ•°é–¢æ•°
-'   Function logN           å¯¾æ•°é–¢æ•°
-'   Function absD           çµ¶å¯¾å€¤
-'   Function plus           åŠ ç®—
-'   Function minus          æ¸›ç®—
-'   Function mult           ä¹—ç®—
-'   Function divide         é™¤ç®—
-'   Function poly           å¤šé …å¼
+'     ƒtƒ@ƒ“ƒNƒ^“™
+'   Function rowSize        ”z—ñ‚Ìs”
+'   Function colSize        ”z—ñ‚Ì—ñ”
+'   Function sizeof         ”z—ñ‚Ì‘S—v‘f”‚Ü‚½‚Í“Á’è‚Ì²‚Ì—v‘f”
+'   Function p_constant     ’è”ŠÖ”
+'   Function p_true         ’è”ŠÖ”(true)
+'   Function p_false        ’è”ŠÖ”(false)
+' * Function if_else        if else ‘I‘ğ
+'   Function replaceNull    Null‚ğ‘¼‚Ì’l‚É’uŠ·‚·‚é
+'   Function replaceEmpty   Empty‚ğ‘¼‚Ì’l‚É’uŠ·‚·‚é
+'   Function maskVar        ’l‚Ìƒ}ƒXƒNimask=0 ‚Ì‚ÉEmpty‰»j
+'   Function expN           w”ŠÖ”
+'   Function logN           ‘Î”ŠÖ”
+'   Function absD           â‘Î’l
+'   Function plus           ‰ÁZ
+'   Function minus          Œ¸Z
+'   Function mult           æZ
+'   Function divide         œZ
+'   Function poly           ‘½€®
 '   Function min_fun        min
 '   Function max_fun        max
-'   Function CLng_          CLngï¼ˆæ•´æ•°åŒ–ï¼‰
-'   Function CDbl_          CDblï¼ˆå®Ÿæ•°åŒ–ï¼‰
-'   Function CStr_          CStrï¼ˆæ–‡å­—åˆ—åŒ–ï¼‰
+'   Function CLng_          CLngi®”‰»j
+'   Function CDbl_          CDbliÀ”‰»j
+'   Function CStr_          CStri•¶š—ñ‰»j
 '   Function str_len        Len
-'   Function str_left       Leftï¼ˆè² ã®å¼•æ•°ã‚‚å¯ï¼‰
-'   Function str_right      Rightï¼ˆè² ã®å¼•æ•°ã‚‚å¯ï¼‰
+'   Function str_left       Lefti•‰‚Ìˆø”‚à‰Âj
+'   Function str_right      Righti•‰‚Ìˆø”‚à‰Âj
 '   Function str_mid        Mid
-'   Function str_cat        æ–‡å­—åˆ—çµåˆ
+'   Function str_cat        •¶š—ñŒ‹‡
 '   Function splitFun       Split
 '   Function joinFun        Join
 '   Function gcm            gcm
 '   Function lcm            lcm
-'   Function equal          è¿°èª Equal
-'   Function notEqual       è¿°èª Not Equal
-'   Function less           è¿°èª less
-'   Function less_equal     è¿°èª less_equal
-'   Function greater        è¿°èª greater
-'   Function greater_equal  è¿°èª greater_equal
-'   Function is_null        è¿°èª is_null
-'   Function is_empty       è¿°èª is_empty
-'   Function is_valid       è¿°èª is_valid
+'   Function equal          qŒê Equal
+'   Function notEqual       qŒê Not Equal
+'   Function less           qŒê less
+'   Function less_equal     qŒê less_equal
+'   Function greater        qŒê greater
+'   Function greater_equal  qŒê greater_equal
+'   Function is_null        qŒê is_null
+'   Function is_empty       qŒê is_empty
+'   Function is_valid       qŒê is_valid
 '********************************************************************
 
-'é…åˆ—ã®è¡Œæ•°
+'”z—ñ‚Ìs”
 Public Function rowSize(ByRef data As Variant) As Long
     Select Case Dimension(data)
     Case 0
@@ -201,7 +201,7 @@ Public Function rowSize(ByRef data As Variant) As Long
     End Select
 End Function
 
-'é…åˆ—ã®åˆ—æ•°
+'”z—ñ‚Ì—ñ”
 Public Function colSize(ByRef data As Variant) As Long
     Select Case Dimension(data)
     Case 0, 1
@@ -211,7 +211,7 @@ Public Function colSize(ByRef data As Variant) As Long
     End Select
 End Function
 
-'é…åˆ—ã®å…¨è¦ç´ æ•°ã¾ãŸã¯ç‰¹å®šã®è»¸ã®è¦ç´ æ•°
+'”z—ñ‚Ì‘S—v‘f”‚Ü‚½‚Í“Á’è‚Ì²‚Ì—v‘f”
 Public Function sizeof(ByRef data As Variant, Optional ByVal axis As Long = 0) As Long
     Dim d As Long:  d = Dimension(data)
     Dim i As Long
@@ -238,22 +238,22 @@ End Function
         End If
     End Function
 
-'å®šæ•°é–¢æ•°
+'’è”ŠÖ”
 Function p_constant(ByRef x As Variant) As Variant
     p_constant = p_firstArg(x, 0)
 End Function
 
-'å®šæ•°é–¢æ•°(true)
+'’è”ŠÖ”(true)
 Function p_true() As Variant
     p_true = p_constant(1&)
 End Function
 
-'å®šæ•°é–¢æ•°(false)
+'’è”ŠÖ”(false)
 Function p_false() As Variant
     p_false = p_constant(0&)
 End Function
 
-'é¸æŠ   if_else(å€¤, [åˆ¤å®šå€¤(é–¢æ•°), çœŸã®æ™‚ã®å¤‰æ›å€¤(é–¢æ•°), å½ã®æ™‚ã®å¤‰æ›å€¤(é–¢æ•°)])
+'‘I‘ğ   if_else(’l, [”»’è’l(ŠÖ”), ^‚Ì‚Ì•ÏŠ·’l(ŠÖ”), ‹U‚Ì‚Ì•ÏŠ·’l(ŠÖ”)])
 Function if_else(ByRef val As Variant, ByRef trans As Variant) As Variant
     Dim lb As Long
     Dim check As Boolean
@@ -282,7 +282,7 @@ End Function
         p_if_else = make_funPointer(AddressOf if_else, firstParam, secondParam)
     End Function
 
-'Nullã‚’ä»–ã®å€¤ã«ç½®æ›ã™ã‚‹
+'Null‚ğ‘¼‚Ì’l‚É’uŠ·‚·‚é
 Function replaceNull(ByRef x As Variant, ByRef alt As Variant) As Variant
     If IsNull(x) Then
         Call assignVar(replaceNull, alt)
@@ -294,7 +294,7 @@ End Function
         p_replaceNull = make_funPointer(AddressOf replaceNull, firstParam, secondParam)
     End Function
 
-'Emptyã‚’ä»–ã®å€¤ã«ç½®æ›ã™ã‚‹
+'Empty‚ğ‘¼‚Ì’l‚É’uŠ·‚·‚é
 Function replaceEmpty(ByRef x As Variant, ByRef alt As Variant) As Variant
     If IsEmpty(x) Then
         Call assignVar(replaceEmpty, alt)
@@ -306,7 +306,7 @@ End Function
         p_replaceEmpty = make_funPointer(AddressOf replaceEmpty, firstParam, secondParam)
     End Function
 
-' å€¤ã®ãƒã‚¹ã‚¯ï¼ˆmask=0 ã®æ™‚ã«EmptyåŒ–ï¼‰
+' ’l‚Ìƒ}ƒXƒNimask=0 ‚Ì‚ÉEmpty‰»j
 Function maskVar(ByRef x As Variant, ByRef mask As Variant) As Variant
     If mask = 0 Then
         maskVar = Empty
@@ -318,7 +318,7 @@ End Function
         p_maskVar = make_funPointer(AddressOf maskVar, firstParam, secondParam)
     End Function
 
-'æŒ‡æ•°é–¢æ•°
+'w”ŠÖ”
 Function expN(ByRef a As Variant, ByRef dummy As Variant) As Variant
     expN = Exp(a)
 End Function
@@ -326,7 +326,7 @@ End Function
         p_exp = make_funPointer(AddressOf expN, firstParam, secondParam)
     End Function
 
-'å¯¾æ•°é–¢æ•°
+'‘Î”ŠÖ”
 Function logN(ByRef a As Variant, Optional ByRef base As Variant) As Variant
     If IsMissing(base) Then
         logN = Log(a)
@@ -338,7 +338,7 @@ End Function
         p_log = make_funPointer_with_2nd_Default(AddressOf logN, firstParam, secondParam)
     End Function
 
-'çµ¶å¯¾å€¤
+'â‘Î’l
 Function absD(ByRef val As Variant, Optional ByRef dummy As Variant) As Variant
     If IsMissing(dummy) Then dummy = 0
     absD = Abs(val - dummy)
@@ -347,7 +347,7 @@ End Function
         p_abs = make_funPointer_with_2nd_Default(AddressOf absD, firstParam, secondParam)
     End Function
 
-'åŠ ç®—
+'‰ÁZ
 Function plus(ByRef a As Variant, ByRef b As Variant) As Variant
     plus = a + b
 End Function
@@ -355,7 +355,7 @@ End Function
         p_plus = make_funPointer(AddressOf plus, firstParam, secondParam)
     End Function
 
-'æ¸›ç®—
+'Œ¸Z
 Function minus(ByRef a As Variant, ByRef b As Variant) As Variant
     minus = a - b
 End Function
@@ -363,7 +363,7 @@ End Function
         p_minus = make_funPointer(AddressOf minus, firstParam, secondParam)
     End Function
 
-'ä¹—ç®—
+'æZ
 Function mult(ByRef a As Variant, ByRef b As Variant) As Variant
     mult = a * b
 End Function
@@ -371,7 +371,7 @@ End Function
         p_mult = make_funPointer(AddressOf mult, firstParam, secondParam)
     End Function
 
-'é™¤ç®—
+'œZ
 Function divide(ByRef a As Variant, ByRef b As Variant) As Variant
     divide = a / b
 End Function
@@ -379,7 +379,7 @@ End Function
         p_divide = make_funPointer(AddressOf divide, firstParam, secondParam)
     End Function
     
-'å‰°ä½™
+'è—]
 Function modN(ByRef a As Variant, ByRef b As Variant) As Variant
     modN = a Mod b
 End Function
@@ -387,7 +387,7 @@ End Function
         p_mod = make_funPointer(AddressOf modN, firstParam, secondParam)
     End Function
 
-'å¤šé …å¼ã€€ï¼ˆä¿‚æ•°ã¯é«˜æ¬¡->ä½æ¬¡ï¼‰
+'‘½€®@iŒW”‚Í‚Ÿ->’áŸj
 Function poly(ByRef x As Variant, ByRef coef As Variant) As Variant
     poly = 0#
     Dim i As Long
@@ -453,24 +453,24 @@ End Function
         p_len = make_funPointer(AddressOf str_len, firstParam, secondParam)
     End Function
     
-'Leftï¼ˆè² ã®å¼•æ•°ã‚‚å¯ï¼‰
+'Lefti•‰‚Ìˆø”‚à‰Âj
 Function str_left(ByRef st As Variant, ByRef length As Variant) As Variant
     If 0 <= length Then
-        str_left = left(st, length)
+        str_left = Left(st, length)
     Else
-        str_left = left(st, max_fun(0, Len(st) + length))
+        str_left = Left(st, max_fun(0, Len(st) + length))
     End If
 End Function
     Function p_left(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_left = make_funPointer(AddressOf str_left, firstParam, secondParam)
     End Function
     
-'Rightï¼ˆè² ã®å¼•æ•°ã‚‚å¯ï¼‰
+'Righti•‰‚Ìˆø”‚à‰Âj
 Function str_right(ByRef st As Variant, ByRef length As Variant) As Variant
     If 0 <= length Then
-        str_right = right(st, length)
+        str_right = Right(st, length)
     Else
-        str_right = right(st, max_fun(0, Len(st) + length))
+        str_right = Right(st, max_fun(0, Len(st) + length))
     End If
 End Function
     Function p_right(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -479,13 +479,13 @@ End Function
     
 'Mid
 Function str_mid(ByRef st As Variant, ByRef begin_len As Variant) As Variant
-    str_mid = mid(st, begin_len(0), begin_len(1))
+    str_mid = Mid(st, begin_len(0), begin_len(1))
 End Function
     Function p_mid(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_mid = make_funPointer(AddressOf str_mid, firstParam, secondParam)
     End Function
 
-'æ–‡å­—åˆ—çµåˆ
+'•¶š—ñŒ‹‡
 Function str_cat(ByRef s1 As Variant, ByRef s2 As Variant) As Variant
     str_cat = CStr_(s1) & CStr_(s2)
 End Function
@@ -506,7 +506,7 @@ Function joinFun(ByRef m As Variant, ByRef delim As Variant) As Variant
     If IsEmpty(m) Or IsNull(m) Then
         joinFun = ""
     Else
-        joinFun = join(m, delim)
+        joinFun = Join(m, delim)
     End If
 End Function
     Function p_join(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
@@ -535,7 +535,7 @@ End Function
         p_lcm = make_funPointer(AddressOf lcm, firstParam, secondParam)
     End Function
     
-'è¿°èª equal
+'qŒê equal
 Function equal(ByRef a As Variant, ByRef b As Variant) As Variant
     If IsNull(a) Or IsNull(b) Then
         equal = IIf(IsNull(a) = IsNull(b), 1, 0)
@@ -547,7 +547,7 @@ End Function
         p_equal = make_funPointer(AddressOf equal, firstParam, secondParam)
     End Function
 
-'è¿°èª not equal
+'qŒê not equal
 Function notEqual(ByRef a As Variant, ByRef b As Variant) As Variant
     notEqual = IIf(equal(a, b), 0, 1)
 End Function
@@ -555,7 +555,7 @@ End Function
        p_notEqual = make_funPointer(AddressOf notEqual, firstParam, secondParam)
     End Function
 
-'è¿°èª less
+'qŒê less
 Function less(ByRef a As Variant, ByRef b As Variant) As Variant
     less = IIf(a < b, 1&, 0&)
 End Function
@@ -563,7 +563,7 @@ End Function
         p_less = make_funPointer(AddressOf less, firstParam, secondParam)
     End Function
 
-'è¿°èª less_equal
+'qŒê less_equal
 Function less_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     less_equal = IIf(a <= b, 1&, 0&)
 End Function
@@ -571,7 +571,7 @@ End Function
         p_less_equal = make_funPointer(AddressOf less_equal, firstParam, secondParam)
     End Function
 
-'è¿°èª greater
+'qŒê greater
 Function greater(ByRef a As Variant, ByRef b As Variant) As Variant
     greater = IIf(a > b, 1&, 0&)
 End Function
@@ -579,7 +579,7 @@ End Function
         p_greater = make_funPointer(AddressOf greater, firstParam, secondParam)
     End Function
 
-'è¿°èª greater_equal
+'qŒê greater_equal
 Function greater_equal(ByRef a As Variant, ByRef b As Variant) As Variant
     greater_equal = IIf(a >= b, 1&, 0&)
 End Function
@@ -587,7 +587,7 @@ End Function
         p_greater_equal = make_funPointer(AddressOf greater_equal, firstParam, secondParam)
     End Function
 
-'è¿°èª is_null
+'qŒê is_null
 Function is_null(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
     is_null = IIf(IsNull(a), 1&, 0&)
 End Function
@@ -595,7 +595,7 @@ End Function
         p_is_null = make_funPointer(AddressOf is_null, firstParam, secondParam)
     End Function
 
-'è¿°èª is_empty
+'qŒê is_empty
 Function is_empty(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
     is_empty = IIf(IsEmpty(a), 1&, 0&)
 End Function
@@ -603,7 +603,7 @@ End Function
         p_is_empty = make_funPointer(AddressOf is_empty, firstParam, secondParam)
     End Function
 
-'è¿°èª is_valid
+'qŒê is_valid
 Function is_valid(ByRef a As Variant, Optional ByRef dummy As Variant) As Variant
     is_valid = IIf(IsEmpty(a) Or IsNull(a), 0&, 1&)
 End Function
