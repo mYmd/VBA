@@ -27,6 +27,7 @@ https://github.com/mYmd/VBA/blob/master/bin/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A
  もしくは<br>
 http://home.b07.itscom.net/m-yamada/VBA/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9%83%A8%E5%85%A5%E3%82%8A.xlsm<br>
 <br>
+ここからzipダウンロードしたモジュールファイルをVBEに取り込んでも、文字コードの問題でうまくいかない場合があるため、「VBAHaskellほぼ全部入り.xlsm」を使用するほうが確実。<br><br>
 手動でやる方法<br>
 <br>
 ・C++ソースをdllとしてコンパイル＆ビルド<br>
@@ -48,7 +49,7 @@ vh_stdvec.cls<br>
 vh_pipe.cls（パイプライン演算子）<br>
 <br>
 declare.basにあるDeclare文の「Lib "mapM.dll"」部分はdllの保存フォルダに合わせてパスを補記するか<br>
-WindowsAPIのSetDefaultDllDirectoriesとAddDllDirectoryを用いてサーチパスに追加する。（VBAHaskellほぼ全部入り.xlsm 参照）<br>
+Windows8以降のOSであればWindowsAPIのSetDefaultDllDirectoriesとAddDllDirectoryを用いてサーチパスに追加する。（VBAHaskellほぼ全部入り.xlsm 参照）<br>
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、<br>
 Declare文についている 'PtrSafe'宣言をすべて削除すれば使用可能。<br>
 =============================================================<br>
