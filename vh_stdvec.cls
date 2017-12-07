@@ -93,6 +93,7 @@ End Function
 ' 配列部分を戻して自身は解放
 Public Function free() As Variant
     shrink
+    If pos_write < 0 Then vec_ = Empty
     swapVariant free, vec_
     ReDim vec_(0 To 0)
     pos_write = -1
@@ -172,7 +173,7 @@ Public Sub printM(Optional ByRef r As Variant)
 End Sub
 
 ' デバッグウィンドウにジャグ配列を展開して表示する
-Sub printM_(Optional ByRef r As Variant, Optional ByRef c As Variant)
+Sub printM_(Optional ByRef r As Variant, Optional ByRef C As Variant)
     Dim begin_ As Long, end_   As Long
     If IsMissing(r) Then
         begin_ = 0
@@ -184,7 +185,7 @@ Sub printM_(Optional ByRef r As Variant, Optional ByRef c As Variant)
         end_ = pos_write
         begin_ = max_fun(0, end_ + r + 1)
     End If
-    Haskell_3_printM.printM_ vec_, VBA.Array(begin_, end_), c
+    Haskell_3_printM.printM_ vec_, VBA.Array(begin_, end_), C
 End Sub
 
 ' 指定位置の 値 を取得する（1以上の第2引数を指定した場合はその長さ分配列で返す）
