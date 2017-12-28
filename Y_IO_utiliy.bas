@@ -13,7 +13,7 @@ Option Explicit
 '   Function    getTextFile         テキストファイルの配列読み込み
 '   Function    mapTextLine         テキストファイルの行単位での処理
 '   Function    mapTextLines        テキストファイルを複数行まとめて処理
-'   Sub         writeTextFile       配列のテキストファイル書き込み
+'   Function    writeTextFile       配列のテキストファイル書き込み
 '   Function    getURLText          URLで指定されたテキストの配列読み込み
 '   Function    urlEncode           URLエンコード
 '   Function    urlDecode           URLデコード
@@ -217,33 +217,34 @@ closeAdoStream:
 End Function
 
 ' 配列のテキストファイル書き込み
-Public Sub writeTextFile(ByRef data As Variant, _
-                        ByVal fileName As String, _
-                        ByVal Charset As String, _
-                        Optional ByVal line_end As String = vbCrLf)
-    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
-    On Error GoTo closeAdoStream
+Public Function writeTextFile(ByRef data As Variant, _
+                            ByVal fileName As String, _
+                            ByVal Charset As String, _
+                            Optional ByVal line_end As String = vbCrLf, _
+                            Optional ByVal feed_at_last As Boolean = False) As Long
     Dim i As Long
-    Dim lineS As String
-    With ado
+    writeTextFile = 0
+    If Dimension(data) <> 1 Or sizeof(data) = 0 Then Exit Function
+    With CreateObject("ADODB.Stream")
         .Open
         .Position = 0
         .Type = 2    'ADODB.Stream.adTypeText
         .Charset = Charset
         .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-        For i = LBound(data) To UBound(data) Step 1
+        For i = LBound(data) To UBound(data) - 1 Step 1
             .WriteText data(i), 1       ' adWriteLine
+            writeTextFile = writeTextFile + 1
         Next i
+        .WriteText data(i), IIf(feed_at_last, 1, 0)     ' adWriteLine/adWriteChar
+        writeTextFile = writeTextFile + 1
         .SaveToFile fileName, 2 ' adSaveCreateOverWrite
+        .Close
     End With
-closeAdoStream:
-    ado.Close
-    Set ado = Nothing
-End Sub
+End Function
 
 ' URLで指定されたテキストの配列読み込み
 ' head_n : 試し読み先頭行数指定
-Public Function getURLText(ByVal url As String, _
+Public Function getURLText(ByVal URL As String, _
                            ByVal line_end As String, _
                            Optional ByVal Charset As String = "_autodetect_all", _
                            Optional ByVal head_n As Long = -1, _
@@ -253,9 +254,9 @@ Public Function getURLText(ByVal url As String, _
     On Error GoTo closeObjects
     With http
         If 0 < Len(userName) And 0 < Len(passWord) Then
-            .Open "GET", url, False, userName, passWord
+                .Open "GET", URL, False, userName, passWord
         Else
-            .Open "GET", url, False
+            .Open "GET", URL, False
         End If
         .setRequestHeader "Pragma", "no-cache"
         .setRequestHeader "Cache-Control", "no-cache"
@@ -288,6 +289,62 @@ closeObjects:
     Set http = Nothing
     If 0 < Len(line_end) And VarType(getURLText) = vbString Then
         getURLText = Split(getURLText, line_end)
+    End If
+End Function
+
+Public Function getURLText_P(ByVal URL As String, _
+                           ByVal line_end As String, _
+                           Optional ByVal Charset As String = "_autodetect_all", _
+                           Optional ByVal head_n As Long = -1, _
+                           Optional ByVal userName As String = "", _
+                           Optional ByVal passWord As String = "") As Variant
+    Dim http As Object: Set http = CreateObject("MSXML2.XMLHTTP")
+    Dim ins As Long, param As String
+    param = ""
+    ins = InStr(URL, "?")
+    If 1 < ins And ins < Len(URL) Then
+        param = Right(URL, Len(URL) - ins)
+        URL = Left(URL, ins - 1)
+    End If
+    On Error GoTo closeObjects
+    With http
+        If 0 < Len(userName) And 0 < Len(passWord) Then
+            .Open "POST", URL, False, userName, passWord
+        Else
+            .Open "POST", URL, False
+        End If
+        .setRequestHeader "Content-Type", "text/csv"
+        '.setRequestHeader "Content-Type", "text/plain"
+        '.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+        .Send IIf(0 < Len(param), param, Empty)
+    End With
+    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
+    Dim i As Long
+    Dim lineS As String
+    With ado
+        .Open
+        .Position = 0
+        .Type = 1       'ADODB.Stream.adTypeBinary
+        .Write http.responseBody
+        .Position = 0
+        .Type = 2       'ADODB.Stream.adTypeText
+        .Charset = Charset
+        If 0 < head_n Then
+            .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
+            For i = 1 To head_n
+                lineS = .ReadText(-2)   'adReadLine
+                getURLText_P = getURLText_P & lineS & IIf(i = head_n, "", line_end)
+            Next i
+        Else
+            getURLText_P = .ReadText
+        End If
+    End With
+closeObjects:
+    If Not ado Is Nothing Then ado.Close
+    Set ado = Nothing
+    Set http = Nothing
+    If 0 < Len(line_end) And VarType(getURLText_P) = vbString Then
+        getURLText_P = Split(getURLText_P, line_end)
     End If
 End Function
 
@@ -525,7 +582,7 @@ Public Function downloadFiles(ByRef URLs As Variant, _
     Set fso = Nothing
 End Function
 
-    Private Function downloadFile_(ByVal url As String, _
+    Private Function downloadFile_(ByVal URL As String, _
                                    ByVal fileName As String, _
                                    ByVal userName As String, _
                                    ByVal passWord As String) As Boolean
@@ -535,9 +592,9 @@ End Function
         On Error GoTo closeFun
         With oo
             If 0 < Len(userName) And 0 < Len(passWord) Then
-                .Open "GET", url, False, userName, passWord
+                .Open "GET", URL, False, userName, passWord
             Else
-                .Open "GET", url, False
+                .Open "GET", URL, False
             End If
             .setRequestHeader "Pragma", "no-cache"
             .setRequestHeader "Cache-Control", "no-cache"
