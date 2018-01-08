@@ -39,6 +39,23 @@ VARIANT iVariant(VARTYPE const t) noexcept
     return ret;
 }
 
+BSTR getBSTR(VARIANT const& expr) noexcept
+{
+    if (expr.vt & VT_BYREF)
+        return ((expr.vt & VT_BSTR) && expr.pbstrVal) ? *expr.pbstrVal : nullptr;
+    else
+        return ((expr.vt & VT_BSTR) && expr.bstrVal) ? expr.bstrVal : nullptr;
+}
+
+VARIANT bstrVariant(std::wstring const& s) noexcept
+{
+    VARIANT ret = iVariant(VT_BSTR);
+    ret.bstrVal = ::SysAllocString(s.data());
+    return ret;
+}
+
+//===================================================================
+
 // SafeArray要素のアクセス
 safearrayRef::safearrayRef(VARIANT const& v) noexcept
     :psa{nullptr}, pvt{0}, dim{0}, elemsize{0}, it{nullptr}, size({ 1, 1, 1 })

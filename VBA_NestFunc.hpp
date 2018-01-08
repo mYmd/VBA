@@ -3,6 +3,7 @@
 #include "OAIdl.h"      //wtypes.h
 #include <memory>
 #include <array>
+#include <string>
 
 #if _MSC_VER < 1900
 #define noexcept throw()
@@ -21,8 +22,16 @@ __int32 __stdcall   is_placeholder(VARIANT const& v) noexcept;
 VARIANT __stdcall   unbind_invoke(VARIANT const& bfun, VARIANT& param1, VARIANT& param2) noexcept;
 
 //--------------------------------------------------------
+// VARIANT構造体の作成
 VARIANT iVariant(VARTYPE t = VT_EMPTY) noexcept;
 
+// VARIANT構造体からBSTRの取得
+BSTR getBSTR(VARIANT const& expr) noexcept;
+
+// BSTR型VARIANT構造体の作成
+VARIANT bstrVariant(std::wstring const&) noexcept;
+
+//--------------------------------------------------------
 // SafeArray要素のアクセス
 class safearrayRef {
     SAFEARRAY*      psa;
@@ -42,6 +51,54 @@ public:
     std::size_t getOriginalLBound(std::size_t i) const noexcept;
     VARIANT& operator()(std::size_t i, std::size_t j = 0, std::size_t k = 0) noexcept;
 };
+
+namespace 
+{
+    struct SafeArrayUnaccessor {
+        void operator()(SAFEARRAY* ptr) const  noexcept
+        { ::SafeArrayUnaccessData(ptr); }
+    };
+    using safearrayRAII = std::unique_ptr<SAFEARRAY, SafeArrayUnaccessor>;
+}
+
+// 右辺値コンテナからのVARIANT配列生成
+template <typename Container_t, typename F>
+VARIANT vec2VArray(Container_t&& cont, F&& trans) noexcept
+{
+    static_assert(!std::is_reference<Container_t>::value, "vec2VArray's parameter must be a rvalue reference !!");
+    SAFEARRAYBOUND rgb = { static_cast<ULONG>(cont.size()), 0 };
+    safearrayRAII pArray{::SafeArrayCreate(VT_VARIANT, 1, &rgb)};
+    char* it = nullptr;
+    ::SafeArrayAccessData(pArray.get(), reinterpret_cast<void**>(&it));
+    if (!it)            return iVariant();
+    auto const elemsize = ::SafeArrayGetElemsize(pArray.get());
+    std::size_t i{0};
+    try
+    {
+        for (auto p = cont.begin(); p != cont.end(); ++p, ++i)
+            std::swap(*reinterpret_cast<VARIANT*>(it + i * elemsize), std::forward<F>(trans)(*p));
+        auto ret = iVariant(VT_ARRAY | VT_VARIANT);
+        ret.parray = pArray.get();
+        try { cont.clear(); }
+        catch (...) {}
+        return ret;
+    }
+    catch (const std::exception&)
+    {
+        return iVariant();
+    }
+}
+
+// 右辺値コンテナ<VARIANT>からの VARIANT配列生成
+template <typename Container_t>
+VARIANT vec2VArray(Container_t&& cont) noexcept
+{
+    static_assert(!std::is_reference<Container_t>::value, "vec2VArray's parameter must be a rvalue reference !!");
+    auto trans = [](typename Container_t::reference x) -> typename Container_t::reference   {
+        return x;
+    };
+    return vec2VArray(std::move(cont), trans);
+}
 
 //--------------------------------------------------------
 //関数のインタフェース
