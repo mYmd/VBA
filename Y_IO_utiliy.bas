@@ -10,10 +10,11 @@ Option Explicit
 '   Sub         m2sheet             配列をExcelシートのセル範囲にペースト
 '   Function    getRangeMatrix      Excelシートのセル範囲からRangeオブジェクトの配列を取得
 '   Function    getInterior         オブジェクトのInteriorプロパティを取得
-'   Function    getTextFile         テキストファイルの配列読み込み
-'   Function    mapTextLine         テキストファイルの行単位での処理
-'   Function    mapTextLines        テキストファイルを複数行まとめて処理
-'   Function    writeTextFile       配列のテキストファイル書き込み
+'   Function    push_back_l         vh_stdVecに値をpush_backするファンクタ（左）
+'   Function    push_back_r         vh_stdVecに値をpush_backするファンクタ（右）
+'   Function    textFile2m          テキストファイルの配列読み込み
+'   Function    mapTextFile         テキストファイルの行単位での処理
+'   Function    m2textFile          配列のテキストファイル書き込み
 '   Function    getURLText          URLで指定されたテキストの配列読み込み
 '   Function    urlEncode           URLエンコード
 '   Function    urlDecode           URLデコード
@@ -28,6 +29,26 @@ Option Explicit
 '   Function    str2Base64          文字列をBase64エンコード
 '*********************************************************************************
 
+Public Declare PtrSafe Function textfile2array Lib "mapM.dll" _
+                                    (ByRef fileName As Variant, _
+                                ByVal codePage As Long, _
+                            Optional ByVal head_n As Long = -1, _
+                        Optional ByVal head_cut As Long = 0, _
+                    Optional ByVal toAarry As Boolean = True) As Variant
+
+Public Declare PtrSafe Function textfile_for_each Lib "mapM.dll" _
+                                    (ByRef fun As Variant, _
+                                ByRef fileName As Variant, _
+                            ByVal codePage As Long, _
+                        Optional ByVal head_n As Long = -1, _
+                    Optional ByVal head_cut As Long = 0) As Long
+
+Public Declare PtrSafe Function array2textfile Lib "mapM.dll" _
+                                        (ByRef m As Variant, _
+                                    ByRef fileName As Variant, _
+                                Optional ByVal utf8file As Boolean = True, _
+                            Optional ByVal feed_at_last As Boolean = False) As Long
+                                    
 ' Excelシートのセル範囲から配列を取得（値のみ）
 ' vec = True：1次元配列化
 ' vec = Fale：2次元配列（デフォルト）
@@ -89,157 +110,78 @@ End Function
         p_getInterior = make_funPointer(AddressOf getInterior, firstParam, secondParam)
     End Function
 
+' vh_stdVecに値をpush_backするファンクタ（左）
+Public Function push_back_l(ByRef v As Variant, ByRef x As Variant) As Variant
+    Set push_back_l = v.push_back(x)
+End Function
+    Function p_push_back_l(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_push_back_l = make_funPointer(AddressOf push_back_l, firstParam, secondParam)
+    End Function
+
+' vh_stdVecに値をpush_backするファンクタ（右）
+Public Function push_back_r(ByRef x As Variant, ByRef v As Variant) As Variant
+    Set push_back_r = v.push_back(x)
+End Function
+    Function p_push_back_r(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_push_back_r = make_funPointer(AddressOf push_back_r, firstParam, secondParam)
+    End Function
+
+'---------------------------------------------------------------
+        ' 文字変換用コードページ（Private的な関数）
+        Function getCodePage(ByVal cp As String) As Long
+            Select Case StrConv(cp, vbUpperCase + vbNarrow)
+            Case "UTF-8", "UTF8", "8":          getCodePage = 65001
+            Case "UTF-7", "UTF7", "7":          getCodePage = 65000
+            Case "ANSI":                        getCodePage = 0
+            Case "SJIS", "S-JIS", "SHIFT-JIS":  getCodePage = 932
+            Case "MAC":                         getCodePage = 2
+            Case "OEM":                         getCodePage = 1
+            Case "SYMBOL", "SYMBOL42":          getCodePage = 42
+            Case Else
+                If IsNumeric(cp) Then getCodePage = CLng(cp) Else getCodePage = 932
+            End Select
+        End Function
+'---------------------------------------------------------------
+
 ' テキストファイルの配列読み込み
-' line_end = "" の時はテキスト全体がひとつの文字列で返る
-' Charsetはshift-jisは明示的に指定しないとダメ
 ' head_n   : 試し読み先頭行数指定
-' head_cut : 先頭削除行数指定
-Public Function getTextFile(ByVal fileName As String, _
-                            ByVal line_end As String, _
-                            Optional ByVal Charset As String = "_autodetect_all", _
-                            Optional ByVal head_n As Long = -1, _
-                            Optional ByVal head_cut As Long = 0) As Variant
-    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
-    On Error GoTo closeAdoStream
-    Dim i As Long
-    Dim lineS As String
-    If head_n < 0 Then head_n = 2 ^ 30
-    With ado
-        .Open
-        .Position = 0
-        .Type = 2    'ADODB.Stream.adTypeText
-        .Charset = Charset
-        .LoadFromFile fileName
-        If 0 < Len(line_end) And (0 < head_n Or 0 < head_cut) Then
-            .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-            For i = 1 To head_cut Step 1
-                .SkipLine
-            Next i
-            Do While i <= head_n And Not .EOS
-                lineS = .ReadText(-2)   'adReadLine
-                getTextFile = getTextFile & lineS & IIf(i = head_n Or .EOS, "", line_end)
-                i = i + 1
-            Loop
-        Else
-            getTextFile = .ReadText
-        End If
-    End With
-closeAdoStream:
-    ado.Close
-    Set ado = Nothing
-    If 0 < Len(line_end) And VarType(getTextFile) = vbString Then
-        getTextFile = Split(getTextFile, line_end)
-    End If
+' head_cut : 先頭スキップ行数指定
+' to_Array = False の時はテキスト全体がひとつの文字列で返る
+Public Function textFile2m(ByVal fileName As String, _
+                        Optional ByVal codePage As String = "UTF-8", _
+                        Optional ByVal head_n As Long = -1, _
+                        Optional ByVal head_cut As Long = 0, _
+                        Optional ByVal to_Array As Boolean = True) As Variant
+    textFile2m = textfile2array(fileName, _
+                            getCodePage(codePage), _
+                        head_n, _
+                    head_cut, _
+                to_Array)
 End Function
 
 ' テキストファイルの行単位での処理
-' fn       : VBAHaskellの関数（0を返したときbreak）
-' Charsetはshift-jisは明示的に指定しないとダメ
+' fn       : VBAHaskellの関数
 ' head_n   : 先頭行数指定
-' head_cut : 先頭削除行数指定
+' head_cut : 先頭スキップ行数指定
 ' 戻り値   : 処理行数
-Public Function mapTextLine(ByRef fn As Variant, _
+Public Function mapTextFile(ByRef fn As Variant, _
                             ByVal fileName As String, _
-                            ByVal line_end As String, _
-                            Optional ByVal Charset As String = "_autodetect_all", _
+                            Optional ByVal codePage As String = "UTF-8", _
                             Optional ByVal head_n As Long = -1, _
                             Optional ByVal head_cut As Long = 0) As Long
-    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
-    On Error GoTo closeAdoStream
-    Dim i As Long
-    Dim lineS As Variant
-    If head_n < 0 Then head_n = 2 ^ 30
-    With ado
-        .Open
-        .Position = 0
-        .Type = 2    'ADODB.Stream.adTypeText
-        .Charset = Charset
-        .LoadFromFile fileName
-        .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-        For i = 1 To head_cut Step 1
-            .SkipLine
-        Next i
-        Do While i <= head_n And Not .EOS
-            lineS = .ReadText(-2)   'adReadLine
-            If 0 = applyFun(lineS, fn) Then Exit Do
-            mapTextLine = mapTextLine + 1
-            i = i + 1
-        Loop
-    End With
-closeAdoStream:
-    ado.Close
-    Set ado = Nothing
-End Function
-
-' テキストファイルを複数行まとめて処理
-' lineN : 処理単位行数
-Public Function mapTextLines(ByVal lineN As Long, _
-                             ByRef fn As Variant, _
-                             ByVal fileName As String, _
-                             ByVal line_end As String, _
-                             Optional ByVal Charset As String = "_autodetect_all", _
-                             Optional ByVal head_n As Long = -1, _
-                             Optional ByVal head_cut As Long = 0) As Long
-    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
-    On Error GoTo closeAdoStream
-    If lineN < 1 Then lineN = 1
-    If head_n < 0 Then head_n = 2 ^ 30
-    With ado
-        .Open
-        .Position = 0
-        .Type = 2    'ADODB.Stream.adTypeText
-        .Charset = Charset
-        .LoadFromFile fileName
-        .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-        Dim i As Long, k As Long: k = 0
-        For i = 1 To head_cut Step 1
-            .SkipLine
-        Next i
-        Dim buffer As Variant
-        buffer = makeM(lineN)
-        Do While i <= head_n And Not .EOS
-            buffer(k) = .ReadText(-2)   'adReadLine
-            k = k + 1
-            If k = lineN Then
-                If 0 = applyFun(buffer, fn) Then Exit Do
-                k = 0
-            End If
-            mapTextLines = mapTextLines + 1
-            i = i + 1
-        Loop
-        If 0 < k Then
-            Call applyFun(headN(buffer, k), fn)
-        End If
-    End With
-closeAdoStream:
-    ado.Close
-    Set ado = Nothing
+    mapTextFile = textfile_for_each(fn, _
+                                fileName, _
+                            getCodePage(codePage), _
+                        head_n, _
+                    head_cut)
 End Function
 
 ' 配列のテキストファイル書き込み
-Public Function writeTextFile(ByRef data As Variant, _
+Public Function m2textFile(ByRef data As Variant, _
                             ByVal fileName As String, _
-                            ByVal Charset As String, _
-                            Optional ByVal line_end As String = vbCrLf, _
+                            Optional utf8file As Boolean = True, _
                             Optional ByVal feed_at_last As Boolean = False) As Long
-    Dim i As Long
-    writeTextFile = 0
-    If Dimension(data) <> 1 Or sizeof(data) = 0 Then Exit Function
-    With CreateObject("ADODB.Stream")
-        .Open
-        .Position = 0
-        .Type = 2    'ADODB.Stream.adTypeText
-        .Charset = Charset
-        .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-        For i = LBound(data) To UBound(data) - 1 Step 1
-            .WriteText data(i), 1       ' adWriteLine
-            writeTextFile = writeTextFile + 1
-        Next i
-        .WriteText data(i), IIf(feed_at_last, 1, 0)     ' adWriteLine/adWriteChar
-        writeTextFile = writeTextFile + 1
-        .SaveToFile fileName, 2 ' adSaveCreateOverWrite
-        .Close
-    End With
+    m2textFile = array2textfile(data, fileName, utf8file, feed_at_last)
 End Function
 
 ' URLで指定されたテキストの配列読み込み
@@ -696,3 +638,4 @@ Function str2Base64(ByVal text As String, _
     Set ado = Nothing
     Set dom = Nothing
 End Function
+

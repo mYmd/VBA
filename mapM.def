@@ -34,3 +34,7 @@ EXPORTS
 	uniform_real_dist = uniform_real_dist
 	normal_dist = normal_dist
 	bernoulli_dist = bernoulli_dist
+
+	textfile2array = textfile2array
+	array2textfile = array2textfile
+	textfile_for_each = textfile_for_each
