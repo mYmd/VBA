@@ -44,7 +44,8 @@ Haskell_4_vector.bas（その他配列操作）<br>
 Haskell_5_sort.bas（ソートとlower_bound等）<br>
 misc_random.bas（乱数）<br>
 test_module.bas（サンプルプログラム：Sub vbaUnit）<br>
-misc_*.bas（test_moduleで使用）<br>
+misc_\*.bas（test_moduleで使用）<br>
+Y_IO_utiliy.bas（外部IO等）<br>
 vh_stdvec.cls<br>
 vh_pipe.cls（パイプライン演算子）<br>
 <br>
@@ -53,6 +54,10 @@ Windows8以降のOSであればWindowsAPIのSetDefaultDllDirectoriesとAddDllDir
 2010以前のOfficeでは、Haskell_1_Coreモジュールに2カ所ある LongPtr をLong に変更し、<br>
 Declare文についている 'PtrSafe'宣言をすべて削除すれば使用可能。<br>
 =============================================================<br>
+2018/01/08<br>
+VBA_NestFunc.hpp に getBSTR, bstrVariant, vec2VArray を追加<br>
+C++側にファイルfileUtil.cppを追加し、Y_IO_utiliy.basにおけるテキストファイルIOを高速化<br>
+<br>
 2017/10/01<br>
 C++APIにfind_best_imple、VBAにfind_best_predを追加<br>
 <br>
