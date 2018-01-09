@@ -87,7 +87,8 @@ textfile_for_each(VARIANT const& Fn, VARIANT const& fileName_, __int32 codepage_
 }
 
 //VBA配列をテキストファイルに書き出す
-__int32 array2textfile(VARIANT const& array, VARIANT const& fileName_, __int8 utf8, __int8 feed_at_last)
+__int32 __stdcall
+array2textfile(VARIANT const& array, VARIANT const& fileName_, __int8 utf8, __int8 feed_at_last)
 {
     auto const fileName = getBSTR(fileName_);
     if ( !fileName )    return 0;
@@ -98,7 +99,7 @@ __int32 array2textfile(VARIANT const& array, VARIANT const& fileName_, __int8 ut
     ofs.imbue(utf8 ?
               std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>) :   //C++17で非推奨
               std::locale("", LC_CTYPE)    );
-    auto dest = iVariant(VT_BSTR);
+    auto dest = iVariant();
     std::size_t i = 0; 
     for ( ; i < size; ++i )
     {
@@ -106,6 +107,7 @@ __int32 array2textfile(VARIANT const& array, VARIANT const& fileName_, __int8 ut
             ofs << getBSTR(dest);
         if ( feed_at_last || i < size - 1 )
             ofs << L'\n';
+        ::VariantClear(&dest);
     }
     return i;
 }
