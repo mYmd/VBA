@@ -103,7 +103,9 @@ array2textfile(VARIANT const& array, VARIANT const& fileName_, __int8 utf8, __in
     std::size_t i = 0; 
     for ( ; i < size; ++i )
     {
-        if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
+        if ( ref(i).vt == VT_BSTR )
+            ofs << getBSTR(ref(i));
+        else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
             ofs << getBSTR(dest);
         if ( feed_at_last || i < size - 1 )
             ofs << L'\n';
