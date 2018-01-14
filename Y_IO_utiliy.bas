@@ -31,23 +31,23 @@ Option Explicit
 
 Public Declare PtrSafe Function textfile2array Lib "mapM.dll" _
                                     (ByRef fileName As Variant, _
-                                ByVal codePage As Long, _
-                            Optional ByVal head_n As Long = -1, _
-                        Optional ByVal head_cut As Long = 0, _
-                    Optional ByVal toAarry As Boolean = True) As Variant
+                                ByVal codepage As Long, _
+                            ByVal head_n As Long, _
+                        ByVal head_cut As Long, _
+                    ByVal toAarry As Boolean) As Variant
 
 Public Declare PtrSafe Function textfile_for_each Lib "mapM.dll" _
                                     (ByRef fun As Variant, _
                                 ByRef fileName As Variant, _
-                            ByVal codePage As Long, _
-                        Optional ByVal head_n As Long = -1, _
-                    Optional ByVal head_cut As Long = 0) As Long
+                            ByVal codepage As Long, _
+                        ByVal head_n As Long, _
+                    ByVal head_cut As Long) As Long
 
 Public Declare PtrSafe Function array2textfile Lib "mapM.dll" _
                                         (ByRef m As Variant, _
                                     ByRef fileName As Variant, _
-                                Optional ByVal utf8file As Boolean = True, _
-                            Optional ByVal feed_at_last As Boolean = False) As Long
+                                ByVal codepage As Long, _
+                            ByVal feed_at_last As Boolean) As Long
                                     
 ' Excelシートのセル範囲から配列を取得（値のみ）
 ' vec = True：1次元配列化
@@ -130,9 +130,11 @@ End Function
         ' 文字変換用コードページ（Private的な関数）
         Function getCodePage(ByVal cp As String) As Long
             Select Case StrConv(cp, vbUpperCase + vbNarrow)
-            Case "UTF-8", "UTF8", "8":          getCodePage = 65001
-            Case "UTF-7", "UTF7", "7":          getCodePage = 65000
-            Case "ANSI":                        getCodePage = 0
+            Case "UTF-16", "UTF16", "UTF-16-LE", "UTF16-LE":
+                                                getCodePage = 1200
+            Case "UTF-8", "UTF8":               getCodePage = 65001
+            Case "UTF-7", "UTF7":               getCodePage = 65000
+            Case "ANSI":                        getCodePage = 1252  'ANSI(1252)
             Case "SJIS", "S-JIS", "SHIFT-JIS":  getCodePage = 932
             Case "MAC":                         getCodePage = 2
             Case "OEM":                         getCodePage = 1
@@ -144,44 +146,53 @@ End Function
 '---------------------------------------------------------------
 
 ' テキストファイルの配列読み込み
+' codepage : 符号化文字集合の名称
 ' head_n   : 試し読み先頭行数指定
 ' head_cut : 先頭スキップ行数指定
 ' to_Array = False の時はテキスト全体がひとつの文字列で返る
 Public Function textFile2m(ByVal fileName As String, _
-                        Optional ByVal codePage As String = "UTF-8", _
+                        Optional ByVal codepage As String = "SHIFT-JIS", _
                         Optional ByVal head_n As Long = -1, _
                         Optional ByVal head_cut As Long = 0, _
                         Optional ByVal to_Array As Boolean = True) As Variant
     textFile2m = textfile2array(fileName, _
-                            getCodePage(codePage), _
+                            getCodePage(codepage), _
                         head_n, _
                     head_cut, _
                 to_Array)
 End Function
 
 ' テキストファイルの行単位での処理
-' fn       : VBAHaskellの関数
+' fn       : VBAHaskellの関数（有効な関数でなければ行数だけ返す）
+' codepage : 符号化文字集合の名称
 ' head_n   : 先頭行数指定
 ' head_cut : 先頭スキップ行数指定
 ' 戻り値   : 処理行数
 Public Function mapTextFile(ByRef fn As Variant, _
                             ByVal fileName As String, _
-                            Optional ByVal codePage As String = "UTF-8", _
+                            Optional ByVal codepage As String = "SHIFT-JIS", _
                             Optional ByVal head_n As Long = -1, _
                             Optional ByVal head_cut As Long = 0) As Long
     mapTextFile = textfile_for_each(fn, _
                                 fileName, _
-                            getCodePage(codePage), _
+                            getCodePage(codepage), _
                         head_n, _
                     head_cut)
 End Function
 
 ' 配列のテキストファイル書き込み
 Public Function m2textFile(ByRef data As Variant, _
-                            ByVal fileName As String, _
-                            Optional utf8file As Boolean = True, _
-                            Optional ByVal feed_at_last As Boolean = False) As Long
-    m2textFile = array2textfile(data, fileName, utf8file, feed_at_last)
+                           ByVal fileName As String, _
+                           Optional ByVal codepage As String = "SHIFT-JIS", _
+                           Optional ByVal feed_at_last As Boolean = True) As Long
+    Dim codepage_ As Long
+    codepage_ = getCodePage(codepage)
+    Select Case codepage_
+    Case 1200, 65001, 1252, 932     ' UTF-16, UTF-8, ANSI(1252), SHIFT-JIS
+        m2textFile = array2textfile(data, fileName, codepage_, feed_at_last)
+    Case Else
+        m2textFile = 0
+    End Select
 End Function
 
 ' URLで指定されたテキストの配列読み込み
