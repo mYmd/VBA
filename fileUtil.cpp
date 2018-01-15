@@ -1,8 +1,6 @@
 //fileUtil.cpp
 //Copyright (c) 2018 mmYYmmdd
 #include "stdafx.h"
-#undef min
-#undef max
 #include <fstream>
 #include <codecvt>
 #include <vector>
@@ -212,7 +210,7 @@ namespace   {
                                fileName, 
                                (codepage==1200)?    L"wt, ccs=UTF-16LE":
                                (codepage==65001)?   L"wt, ccs=UTF-8":
-                               L"rt");     //ANSI(1252)
+                               L"wt");     //ANSI(1252)
         fileCloseRAII fc_tmp(err? nullptr: fp);
         if ( err || !fp )       return 0;
         auto size = ref.getSize(1);
