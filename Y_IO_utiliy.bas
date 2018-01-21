@@ -47,7 +47,7 @@ Public Declare PtrSafe Function array2textfile Lib "mapM.dll" _
                                         (ByRef m As Variant, _
                                     ByRef fileName As Variant, _
                                 ByVal codepage As Long, _
-                            ByVal feed_at_last As Boolean) As Long
+                            ByVal append As Boolean) As Long
                                     
 ' Excelシートのセル範囲から配列を取得（値のみ）
 ' vec = True：1次元配列化
@@ -151,7 +151,7 @@ End Function
 ' head_cut : 先頭スキップ行数指定
 ' to_Array = False の時はテキスト全体がひとつの文字列で返る
 Public Function textFile2m(ByVal fileName As String, _
-                        Optional ByVal codepage As String = "SHIFT-JIS", _
+                        ByVal codepage As String, _
                         Optional ByVal head_n As Long = -1, _
                         Optional ByVal head_cut As Long = 0, _
                         Optional ByVal to_Array As Boolean = True) As Variant
@@ -170,7 +170,7 @@ End Function
 ' 戻り値   : 処理行数
 Public Function mapTextFile(ByRef fn As Variant, _
                             ByVal fileName As String, _
-                            Optional ByVal codepage As String = "SHIFT-JIS", _
+                            ByVal codepage As String, _
                             Optional ByVal head_n As Long = -1, _
                             Optional ByVal head_cut As Long = 0) As Long
     mapTextFile = textfile_for_each(fn, _
@@ -183,13 +183,17 @@ End Function
 ' 配列のテキストファイル書き込み
 Public Function m2textFile(ByRef data As Variant, _
                            ByVal fileName As String, _
-                           Optional ByVal codepage As String = "SHIFT-JIS", _
-                           Optional ByVal feed_at_last As Boolean = True) As Long
+                           ByVal codepage As String, _
+                           Optional ByVal append As Boolean = False) As Long
     Dim codepage_ As Long
     codepage_ = getCodePage(codepage)
     Select Case codepage_
     Case 1200, 65001, 1252, 932     ' UTF-16, UTF-8, ANSI(1252), SHIFT-JIS
-        m2textFile = array2textfile(data, fileName, codepage_, feed_at_last)
+        If IsArray(data) Then
+            m2textFile = array2textfile(data, fileName, codepage_, append)
+        Else
+            m2textFile = array2textfile(Array(data), fileName, codepage_, append)
+        End If
     Case Else
         m2textFile = 0
     End Select

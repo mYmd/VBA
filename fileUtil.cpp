@@ -83,7 +83,7 @@ textfile_for_each(VARIANT const& Fn, VARIANT const& fileName_, __int32 codepage_
 
 //VBA配列をテキストファイルに書き出す(UTF-8, UTF-16, ANSI, S-JIS)
 __int32 __stdcall
-array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 codepage_, __int8 feed_at_last)
+array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 codepage_, __int8 append)
 {
     auto const fileName = getBSTR(fileName_);
     if ( !fileName )            return 0;
@@ -92,9 +92,9 @@ array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 codepage_
     auto codepage = static_cast<UINT>(codepage_);
     //               ANSI ,          UTF-16LE ,              UTF-8
     if ( codepage == 1252 || codepage == 1200 || codepage == 65001 )
-        return fputws_ex(ref, fileName, codepage, feed_at_last != 0);
+        return fputws_ex(ref, fileName, codepage, append != 0);
     else
-        return ofstream_ex(ref, fileName, codepage, feed_at_last != 0);
+        return ofstream_ex(ref, fileName, codepage, append != 0);
 }
 
 //**************************************************
@@ -203,14 +203,16 @@ namespace   {
 
     //---------------------------------------------------------
 
-    __int32 fputws_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool feed_at_last)
+    __int32 fputws_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool append)
     {
         FILE* fp = nullptr;
-        auto err = ::_wfopen_s(&fp,
-                               fileName, 
-                               (codepage==1200)?    L"wt, ccs=UTF-16LE":
-                               (codepage==65001)?   L"wt, ccs=UTF-8":
-                               L"wt");     //ANSI(1252)
+        auto openmode = append? 
+            ((codepage==1200)? L"a+t, ccs=UTF-16LE":
+            (codepage==65001)? L"a+t, ccs=UTF-8":   L"a+t"  )
+            :
+            ((codepage==1200)? L"wt, ccs=UTF-16LE":
+            (codepage==65001)? L"wt, ccs=UTF-8":    L"wt"   );
+        auto err = ::_wfopen_s(&fp, fileName,  openmode);
         fileCloseRAII fc_tmp(err? nullptr: fp);
         if ( err || !fp )       return 0;
         auto size = ref.getSize(1);
@@ -226,18 +228,20 @@ namespace   {
             {
                 if ( std::fputws(getBSTR(dest), fp) < 0 )      break;
             }
-            if ( ( i < size - 1 || feed_at_last ) && std::fputwc(L'\n', fp) < 0 )
+            if ( std::fputwc(L'\n', fp) < 0 )
                 break;
             ::VariantClear(&dest);
         }
         return static_cast<__int32>(i);
     }
 
-    __int32 ofstream_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool feed_at_last)
+    __int32 ofstream_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool append)
     {
         auto size = ref.getSize(1);
-        std::wofstream ofs{fileName, std::ios_base::out | std::ios_base::trunc};
-        ofs.imbue(std::locale("", LC_CTYPE));
+        std::wofstream ofs{fileName, 
+                            append? (std::ios_base::out | std::ios_base::app):
+                                    (std::ios_base::out | std::ios_base::trunc)};
+        ofs.imbue(std::locale("Japanese", LC_CTYPE));
         auto dest = iVariant();
         std::size_t i{0}; 
         for ( ; i < size; ++i )
@@ -246,8 +250,7 @@ namespace   {
                 ofs << getBSTR(ref(i));
             else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
                 ofs << getBSTR(dest);
-            if ( feed_at_last || i < size - 1 )
-                ofs << L'\n';
+            ofs << L'\n';
             ::VariantClear(&dest);
         }
         return static_cast<__int32>(i);
