@@ -220,16 +220,13 @@ namespace   {
         std::size_t i{0}; 
         for ( ; i < size; ++i )
         {
-            if ( ref(i).vt == VT_BSTR )
-            {
+            if ( ref(i).vt == VT_BSTR )     {
                 if ( std::fputws(getBSTR(ref(i)), fp) < 0 )    break;
             }
-            else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
-            {
+            else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) ) {
                 if ( std::fputws(getBSTR(dest), fp) < 0 )      break;
             }
-            if ( std::fputwc(L'\n', fp) < 0 )
-                break;
+            if ( std::fputwc(L'\n', fp) < 0 )       break;
             ::VariantClear(&dest);
         }
         return static_cast<__int32>(i);
@@ -246,12 +243,15 @@ namespace   {
         std::size_t i{0}; 
         for ( ; i < size; ++i )
         {
-            if ( ref(i).vt == VT_BSTR )
+            if ( ref(i).vt == VT_BSTR )     {
                 ofs << getBSTR(ref(i));
-            else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
+            }
+            else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) ) {
                 ofs << getBSTR(dest);
+                ::VariantClear(&dest);
+            }
+            if (ofs.fail())     break;
             ofs << L'\n';
-            ::VariantClear(&dest);
         }
         return static_cast<__int32>(i);
     }
