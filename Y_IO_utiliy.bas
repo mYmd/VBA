@@ -140,7 +140,7 @@ End Function
             Case "OEM":                         getCodePage = 1
             Case "SYMBOL", "SYMBOL42":          getCodePage = 42
             Case Else
-                If IsNumeric(cp) Then getCodePage = CLng(cp) Else getCodePage = 932
+                If IsNumeric(cp) Then getCodePage = CLng(cp) Else getCodePage = 65001
             End Select
         End Function
 '---------------------------------------------------------------
@@ -187,16 +187,11 @@ Public Function m2textFile(ByRef data As Variant, _
                            Optional ByVal append As Boolean = False) As Long
     Dim codepage_ As Long
     codepage_ = getCodePage(codepage)
-    Select Case codepage_
-    Case 1200, 65001, 1252, 932     ' UTF-16, UTF-8, ANSI(1252), SHIFT-JIS
-        If IsArray(data) Then
-            m2textFile = array2textfile(data, fileName, codepage_, append)
-        Else
-            m2textFile = array2textfile(Array(data), fileName, codepage_, append)
-        End If
-    Case Else
-        m2textFile = 0
-    End Select
+    If IsArray(data) Then
+        m2textFile = array2textfile(data, fileName, codepage_, append)
+    Else
+        m2textFile = array2textfile(Array(data), fileName, codepage_, append)
+    End If
 End Function
 
 ' URLで指定されたテキストの配列読み込み
