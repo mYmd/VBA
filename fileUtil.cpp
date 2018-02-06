@@ -13,7 +13,7 @@ namespace   {
     template <typename Fn>
     __int32 ifstream_ex(Fn&&, BSTR, UINT, __int32, __int32);
 
-    template <typename T>
+    template <typename T, bool with_bom>
     __int32 fputws_ex(safearrayRef&, BSTR, UINT, bool);
 
     __int32 ofstream_ex(safearrayRef&, BSTR, UINT, bool);
@@ -24,12 +24,12 @@ namespace   {
 
 //テキストファイルをVBA配列にする
 VARIANT __stdcall
-textfile2array(VARIANT const& fileName_, __int32 codepage_, __int32 head_n, __int32 head_cut, __int8 toArry)
+textfile2array(VARIANT const& fileName_, __int32 Code_Page, __int32 head_n, __int32 head_cut, __int8 toArry)
 {
     auto const fileName = getBSTR(fileName_);
     if ( !fileName )        return iVariant();
-    auto codepage = static_cast<UINT>(codepage_);
-    if ( head_n < 0 )       head_n = static_cast<__int32>((1u << 31) - 1);
+    auto codepage = static_cast<UINT>(0 <= Code_Page? Code_Page: -Code_Page);
+    if ( head_n < 0 )   head_n = (std::numeric_limits<int32_t>::max)();
     std::vector<std::wstring> wVec;
     auto callback = [&](std::wstring const& w) { wVec.push_back(w); };
     if ( codepage == 1200 || codepage == 65001 )        // UTF-16LE, UTF-8
@@ -61,14 +61,14 @@ ifstream::imbue に代入する方法はC++17で非推奨になる
 //テキストファイルの各行にVBAHaskell関数を適用する
 //返り値：適用した行数
 __int32 __stdcall
-textfile_for_each(VARIANT const& Fn, VARIANT const& fileName_, __int32 codepage_, __int32 head_n, __int32 head_cut)
+textfile_for_each(VARIANT const& Fn, VARIANT const& fileName_, __int32 Code_Page, __int32 head_n, __int32 head_cut)
 {
     auto const fileName = getBSTR(fileName_);
     if ( !fileName )                return 0;
     functionExpr vbaFunc{Fn};
     bool validFunc = vbaFunc.isValid();
-    auto codepage = static_cast<UINT>(codepage_);
-    if ( head_n < 0 )   head_n = static_cast<__int32>((1u << 31) - 1);
+    auto codepage = static_cast<UINT>(0 <= Code_Page? Code_Page : -Code_Page);
+    if ( head_n < 0 )   head_n = (std::numeric_limits<int32_t>::max)();
     auto callback = [&](std::wstring const& w) {
         if ( validFunc )
         {
@@ -86,17 +86,21 @@ textfile_for_each(VARIANT const& Fn, VARIANT const& fileName_, __int32 codepage_
 
 //VBA配列をテキストファイルに書き出す(UTF-8, UTF-16, ANSI, S-JIS, ...)
 __int32 __stdcall
-array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 codepage_, __int8 append)
+array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 Code_Page, __int8 append)
 {
     auto const fileName = getBSTR(fileName_);
     if ( !fileName )            return 0;
     safearrayRef ref{array};
     if ( ref.getDim() != 1 )    return 0;
-    auto codepage = static_cast<UINT>(codepage_);
+    if ( Code_Page == -65001 )      // UTF-8 Without BOM
+        return fputws_ex<char, false>(ref, fileName, static_cast<UINT>(-Code_Page), append != 0);
+    if ( Code_Page < 0 )
+        return 0;
+    auto codepage = static_cast<UINT>(Code_Page);
     if ( codepage == 1200 || codepage == 65001 )    // UTF-16LE, UTF-8
-        return fputws_ex<wchar_t>(ref, fileName, codepage, append != 0);
+        return fputws_ex<wchar_t, true>(ref, fileName, codepage, append != 0);
     else if ( codepage == 1252 || codepage == 932 ) // ANSI, SHIFT-JIS
-        return fputws_ex<char>(ref, fileName, codepage, append != 0);
+        return fputws_ex<char, true>(ref, fileName, codepage, append != 0);
     else
         return ofstream_ex(ref, fileName, codepage, append != 0);
 }
@@ -243,13 +247,13 @@ namespace   {
     int std_fputc(wchar_t c, FILE* Strm) noexcept
     {   return std::fputwc(c, Strm);   }
 
-    template <typename T>
+    template <typename T, bool with_bom>
     __int32 fputws_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool append)
     {
         FILE* fp = nullptr;
         auto openmode = std::wstring(append? L"a+t": L"wt");
-        if ( codepage==1200 )   openmode += L", ccs=UTF-16LE";
-        if ( codepage==65001 )  openmode += L", ccs=UTF-8";
+        if ( codepage==1200 )               openmode += L", ccs=UTF-16LE";
+        if ( with_bom && codepage==65001 )  openmode += L", ccs=UTF-8";
         auto err = ::_wfopen_s(&fp, fileName,  openmode.data());
         fileCloseRAII fc_tmp(err? nullptr: fp);
         if ( err || !fp )       return 0;

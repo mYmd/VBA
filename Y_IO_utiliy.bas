@@ -133,6 +133,7 @@ End Function
             Case "UTF-16", "UTF16", "UTF-16-LE", "UTF16-LE":
                                                 getCodePage = 1200
             Case "UTF-8", "UTF8":               getCodePage = 65001
+            Case "UTF-8N", "UTF8N":             getCodePage = -65001
             Case "UTF-7", "UTF7":               getCodePage = 65000
             Case "ANSI":                        getCodePage = 1252  'ANSI(1252)
             Case "SJIS", "S-JIS", "SHIFT-JIS":  getCodePage = 932
