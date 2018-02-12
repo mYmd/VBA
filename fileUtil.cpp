@@ -122,7 +122,8 @@ namespace   {
     {   return std::fgetws(Buffer, BufferCount, Strm);    }
 
     template <typename T>
-    std::basic_string<T> fgets_ex_line(FILE* fp, std::size_t n, bool& eof);
+    //std::basic_string<T> fgets_ex_line(FILE* fp, std::size_t n, bool& eof);
+    bool fgets_ex_line(FILE* fp, std::basic_string<T>& buf);
 
     std::wstring const& MultiByteToWideChar_if(std::wstring const& w, UINT)
     {   return w;   }
@@ -152,16 +153,12 @@ namespace   {
         __int32 count{0}, ret{0};
         while ( count < head_cut )
         {
-            auto eof = true;
-            str = fgets_ex_line<T>(fp, str.capacity(), eof);
-            if ( eof )      break;
+            if ( !fgets_ex_line<T>(fp, str) )   break;
             ++count;
         }
         while ( count < head_n )
         {
-            auto eof = true;
-            str = fgets_ex_line<T>(fp, str.capacity(), eof);
-            if ( eof )      break;
+            if ( !fgets_ex_line<T>(fp, str) )   break;
             std::forward<Fn>(func)(MultiByteToWideChar_if(str, codepage));
             ++count; ++ret;
         }
@@ -173,29 +170,36 @@ namespace   {
 
     //改行が出てくるまでバッファを伸ばす
     template <typename T>
-    std::basic_string<T> fgets_ex_line(FILE* fp, std::size_t n, bool& eof)
+    std::basic_string<T> fgets_ex_line_imple(FILE*, std::size_t);
+
+    template <typename T>
+    bool fgets_ex_line(FILE* fp, std::basic_string<T>& buf)
+    {
+        buf.resize(buf.capacity());
+        auto p = std_fgets(&buf[0], static_cast<int>(buf.size()+1), fp);
+        if ( !p )            return false;
+        auto const len = std::char_traits<T>::length(p);
+        if ( p[len-1] == T{'\n'} )
+            buf.resize(len-1);
+        else
+            buf += fgets_ex_line_imple<T>(fp, buf.size());
+        return true;
+    }
+
+    template <typename T>
+    std::basic_string<T> fgets_ex_line_imple(FILE* fp, std::size_t n)
     {
         std::basic_string<T> buf(n, T{'\0'});
         auto p = std_fgets(&buf[0], static_cast<int>(buf.size()+1), fp);
-        if ( p )
-        {
-            auto len = std::char_traits<T>::length(p);
-            if ( 0 < len )
-            {
-                eof = false;
-                if ( p[len-1] == L'\n' )
-                {
-                    buf.resize(len-1);
-                    return  buf;
-                }
-                else    // len == n のはず
-                {
-                    buf.resize(len);
-                    return  buf += fgets_ex_line<T>(fp, n*2, eof);
-                }
-            }
+        if ( !p )   {
+            buf.clear();
+        } else {
+            auto const len = std::char_traits<T>::length(p);
+            if ( p[len-1] == T{'\n'} )
+                buf.resize(len-1);
+            else
+                buf += fgets_ex_line_imple<T>(fp, 2 * buf.size());
         }
-        buf.clear();
         return buf;
     }
 
