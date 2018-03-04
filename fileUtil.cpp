@@ -13,11 +13,10 @@ namespace   {
     template <typename Fn>
     __int32 ifstream_ex(Fn&&, BSTR, UINT, __int32, __int32);
 
-    template <typename T, bool with_bom>
-    __int32 fputws_ex(safearrayRef&, BSTR, UINT, bool);
+    template <typename PUTS, typename PUTC>
+    __int32 fputws_ex(safearrayRef&, BSTR, wchar_t const*, PUTS&&, PUTC&&, char const*);
 
-    __int32 ofstream_ex(safearrayRef&, BSTR, UINT, bool);
-
+    char const* WideCharToMultiByte_b(BSTR, std::string&, UINT); 
 }
 
 //**************************************************
@@ -86,23 +85,39 @@ textfile_for_each(VARIANT const& Fn, VARIANT const& fileName_, __int32 Code_Page
 
 //VBA配列をテキストファイルに書き出す(UTF-8, UTF-16, ANSI, S-JIS, ...)
 __int32 __stdcall
-array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 Code_Page, __int8 append)
+array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 Code_Page, __int8 append, __int8 CrLf)
 {
     auto const fileName = getBSTR(fileName_);
     if ( !fileName )            return 0;
     safearrayRef ref{array};
     if ( ref.getDim() != 1 )    return 0;
-    if ( Code_Page == -65001 )      // UTF-8 Without BOM
-        return fputws_ex<char, false>(ref, fileName, static_cast<UINT>(-Code_Page), append != 0);
-    if ( Code_Page < 0 )
-        return 0;
-    auto codepage = static_cast<UINT>(Code_Page);
-    if ( codepage == 1200 || codepage == 65001 )    // UTF-16LE, UTF-8
-        return fputws_ex<wchar_t, true>(ref, fileName, codepage, append != 0);
-    else if ( codepage == 1252 || codepage == 932 ) // ANSI, SHIFT-JIS
-        return fputws_ex<char, true>(ref, fileName, codepage, append != 0);
+    auto codepage = static_cast<UINT>((0 < Code_Page)? Code_Page: -Code_Page);
+    //      UTF-16LE
+    if ( codepage == 1200 )
+    {
+        auto openmode = append? L"a+t, ccs=UTF-16LE": L"wt, ccs=UTF-16LE";
+        auto puts = [](BSTR pp, FILE* fp) { return std::fputws(pp, fp); };
+        auto putc = [](FILE* fp) { return std::fputwc(L'\n', fp); };
+        return fputws_ex(ref, fileName, openmode, puts, putc, nullptr);
+    }
+    //              UTF-8       ,           ANSI    ,       SHIFT-JIS
+    else if ( codepage == 65001 || codepage == 1252 || codepage == 932 )
+    {
+        auto openmode = append? L"a+b": L"wb";
+        char bom[] = {char(0xEF), char(0xBB), char(0xBF), '\0' };
+        char const* BOM = (Code_Page==65001)? bom: nullptr;
+        std::string buf;
+        auto puts = [codepage, &buf](BSTR pp, FILE* fp) {
+            return std::fputs(WideCharToMultiByte_b(pp, buf, codepage), fp);
+        };
+        auto putc = [CrLf](FILE* fp) {
+            int ret = (CrLf==0)? 0: std::fputc('\r', fp);
+            return (ret < 0)? ret: std::fputc('\n', fp);
+        };
+        return fputws_ex(ref, fileName, openmode, puts, putc, BOM);
+    }
     else
-        return ofstream_ex(ref, fileName, codepage, append != 0);
+        return 0;
 }
 
 //**************************************************
@@ -233,38 +248,17 @@ namespace   {
     }
 
     //---------------------------------------------------------
-
-    BSTR WideCharToMultiByte_if(BSTR str, std::wstring&, UINT)
-    {   return str;    }
-
-    char const* WideCharToMultiByte_if(BSTR, std::string&, UINT); 
-
-    int std_fputs(char const* buffer, FILE* Strm) noexcept
-    {   return std::fputs(buffer, Strm);   }
-
-    int std_fputc(int c, FILE* Strm) noexcept
-    {   return std::fputc(c, Strm);   }
-
-    int std_fputs(wchar_t const* buffer, FILE* Strm) noexcept
-    {   return std::fputws(buffer, Strm);    }
-
-    int std_fputc(wchar_t c, FILE* Strm) noexcept
-    {   return std::fputwc(c, Strm);   }
-
-    template <typename T, bool with_bom>
-    __int32 fputws_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool append)
+    template <typename PUTS, typename PUTC>
+    __int32 fputws_ex(safearrayRef& ref, BSTR fileName, wchar_t const* openmode, PUTS&& putS, PUTC&& putC, char const* BOM)
     {
         FILE* fp = nullptr;
-        auto openmode = std::wstring(append? L"a+t": L"wt");
-        if ( codepage==1200 )               openmode += L", ccs=UTF-16LE";
-        if ( with_bom && codepage==65001 )  openmode += L", ccs=UTF-8";
-        auto err = ::_wfopen_s(&fp, fileName,  openmode.data());
+        auto err = ::_wfopen_s(&fp, fileName,  openmode);
         fileCloseRAII fc_tmp(err? nullptr: fp);
         if ( err || !fp )       return 0;
         auto size = ref.getSize(1);
         auto dest = iVariant();
         std::size_t i{0}; 
-        std::basic_string<T> buf;
+        if ( BOM )  std::fputs(BOM, fp);
         for ( ; i < size; ++i )
         {
             BSTR pp{nullptr};
@@ -273,39 +267,14 @@ namespace   {
             else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
                 pp = getBSTR(dest);
             //
-            if ( pp && std_fputs(WideCharToMultiByte_if(pp, buf, codepage), fp) < 0 )  break;
-            if ( std_fputc(T{'\n'}, fp) < 0 )       break;
+            if ( pp && std::forward<PUTS>(putS)(pp, fp) < 0 )   break;
+            if ( std::forward<PUTC>(putC)(fp) < 0 )             break;
             ::VariantClear(&dest);
         }
         return static_cast<__int32>(i);
     }
 
-    __int32 ofstream_ex(safearrayRef& ref, BSTR fileName, UINT codepage, bool append)
-    {
-        auto size = ref.getSize(1);
-        std::ofstream ofs{fileName, 
-                append? (std::ios_base::out | std::ios_base::app):
-                (std::ios_base::out | std::ios_base::trunc)};
-        auto dest = iVariant();
-        std::size_t i{0};
-        std::string buf;
-        for ( ; i < size; ++i )
-        {
-            BSTR p{nullptr};
-            if ( ref(i).vt == VT_BSTR )
-                p = getBSTR(ref(i));
-            else if ( S_OK == ::VariantChangeType(&dest, &ref(i), 0, VT_BSTR) )
-                p = getBSTR(dest);
-            if ( p )
-                ofs << WideCharToMultiByte_if(p, buf, codepage);
-            ::VariantClear(&dest);
-            if (ofs.fail())     break;
-            ofs << L'\n';
-        }
-        return static_cast<__int32>(i);
-    }
-
-    char const* WideCharToMultiByte_if(BSTR p, std::string& buf, UINT codepage) 
+    char const* WideCharToMultiByte_b(BSTR p, std::string& buf, UINT codepage) 
     {
         auto b = ::WideCharToMultiByte(codepage, 0, p, -1, nullptr, 0, nullptr, nullptr);
         buf.resize(b);

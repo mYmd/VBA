@@ -47,7 +47,8 @@ Public Declare PtrSafe Function array2textfile Lib "mapM.dll" _
                                         (ByRef m As Variant, _
                                     ByRef fileName As Variant, _
                                 ByVal codepage As Long, _
-                            ByVal append As Boolean) As Long
+                            ByVal append As Boolean, _
+                        ByVal CrLf As Boolean) As Long
                                     
 ' Excelシートのセル範囲から配列を取得（値のみ）
 ' vec = True：1次元配列化
@@ -185,13 +186,14 @@ End Function
 Public Function m2textFile(ByRef data As Variant, _
                            ByVal fileName As String, _
                            ByVal codepage As String, _
-                           Optional ByVal append As Boolean = False) As Long
+                           Optional ByVal append As Boolean = False, _
+                           Optional ByVal CrLf As Boolean = True) As Long
     Dim codepage_ As Long
     codepage_ = getCodePage(codepage)
     If IsArray(data) Then
-        m2textFile = array2textfile(data, fileName, codepage_, append)
+        m2textFile = array2textfile(data, fileName, codepage_, append, CrLf)
     Else
-        m2textFile = array2textfile(Array(data), fileName, codepage_, append)
+        m2textFile = array2textfile(Array(data), fileName, codepage_, append, CrLf)
     End If
 End Function
 
@@ -515,7 +517,7 @@ Public Function downloadFiles(ByRef URLs As Variant, _
                               Optional ByVal passWord As String = "") As Long
     downloadFiles = 0
     Dim fso As Object:      Set fso = CreateObject("Scripting.FileSystemObject")
-    If Not fso.FolderExists(pathName) Then
+    If Not fso.folderExists(pathName) Then
         Set fso = Nothing
         Exit Function
     End If
@@ -571,7 +573,7 @@ closeFun:
 Function encodeBase64(ByVal fromFile As String, ByVal toFile As String) As Boolean
     With CreateObject("Scripting.FileSystemObject")
         If Not .FileExists(fromFile) Then Exit Function
-        If Not .FolderExists(.GetParentFolderName(toFile)) Then Exit Function
+        If Not .folderExists(.GetParentFolderName(toFile)) Then Exit Function
     End With
     Dim elm As Object
     On Error Resume Next
@@ -600,7 +602,7 @@ End Function
 Function decodeBase64(ByVal fromFile As String, ByVal toFile As String) As Boolean
     With CreateObject("Scripting.FileSystemObject")
         If Not .FileExists(fromFile) Then Exit Function
-        If Not .FolderExists(.GetParentFolderName(toFile)) Then Exit Function
+        If Not .folderExists(.GetParentFolderName(toFile)) Then Exit Function
     End With
     Dim elm As Object
     Dim sss As String
@@ -649,4 +651,6 @@ Function str2Base64(ByVal text As String, _
     Set ado = Nothing
     Set dom = Nothing
 End Function
+
+
 
