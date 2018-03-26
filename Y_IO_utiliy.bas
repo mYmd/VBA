@@ -247,62 +247,6 @@ closeObjects:
     End If
 End Function
 
-Public Function getURLText_P(ByVal URL As String, _
-                           ByVal line_end As String, _
-                           Optional ByVal Charset As String = "_autodetect_all", _
-                           Optional ByVal head_n As Long = -1, _
-                           Optional ByVal userName As String = "", _
-                           Optional ByVal passWord As String = "") As Variant
-    Dim http As Object: Set http = CreateObject("MSXML2.XMLHTTP")
-    Dim ins As Long, param As String
-    param = ""
-    ins = InStr(URL, "?")
-    If 1 < ins And ins < Len(URL) Then
-        param = Right(URL, Len(URL) - ins)
-        URL = Left(URL, ins - 1)
-    End If
-    On Error GoTo closeObjects
-    With http
-        If 0 < Len(userName) And 0 < Len(passWord) Then
-            .Open "POST", URL, False, userName, passWord
-        Else
-            .Open "POST", URL, False
-        End If
-        .setRequestHeader "Content-Type", "text/csv"
-        '.setRequestHeader "Content-Type", "text/plain"
-        '.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-        .Send IIf(0 < Len(param), param, Empty)
-    End With
-    Dim ado As Object:  Set ado = CreateObject("ADODB.Stream")
-    Dim i As Long
-    Dim lineS As String
-    With ado
-        .Open
-        .Position = 0
-        .Type = 1       'ADODB.Stream.adTypeBinary
-        .Write http.responseBody
-        .Position = 0
-        .Type = 2       'ADODB.Stream.adTypeText
-        .Charset = Charset
-        If 0 < head_n Then
-            .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-            For i = 1 To head_n
-                lineS = .ReadText(-2)   'adReadLine
-                getURLText_P = getURLText_P & lineS & IIf(i = head_n, "", line_end)
-            Next i
-        Else
-            getURLText_P = .ReadText
-        End If
-    End With
-closeObjects:
-    If Not ado Is Nothing Then ado.Close
-    Set ado = Nothing
-    Set http = Nothing
-    If 0 < Len(line_end) And VarType(getURLText_P) = vbString Then
-        getURLText_P = Split(getURLText_P, line_end)
-    End If
-End Function
-
 ' URLエンコード（参考実装）
 Public Function urlEncode(ByVal s As String) As String
     Dim ado As Object
@@ -414,14 +358,13 @@ Public Sub m2Clip(ByRef data As Variant)
         tmp = mapF(p_join(, vbTab), tmp)
         s = Join(tmp, vbCrLf) & vbCrLf
     End Select
-    Dim dOb As Object
-    'Set dOb = New MSFORMS.DataObject
-    Set dOb = CreateObject("new:{1C3B4210-F441-11CE-B9EA-00AA006B1A69}")
-    With dOb
-        .SetText s
-        .PutInClipboard
+    With CreateObject("Forms.TextBox.1")
+        .MultiLine = True
+        .text = s
+        .SelStart = 0
+        .SelLength = .TextLength
+        .Copy
     End With
-    Set dOb = Nothing
 End Sub
 
 ' HTMLテキストからのHTMLDocumentオブジェクト
@@ -651,6 +594,3 @@ Function str2Base64(ByVal text As String, _
     Set ado = Nothing
     Set dom = Nothing
 End Function
-
-
-
