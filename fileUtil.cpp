@@ -2,7 +2,6 @@
 //Copyright (c) 2018 mmYYmmdd
 #include "stdafx.h"
 #include <fstream>
-#include <codecvt>
 #include <vector>
 #include "VBA_NestFunc.hpp"
 
