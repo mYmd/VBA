@@ -9,11 +9,17 @@ Option Explicit
     ' Sub       permutate           1次元配列の並べ換え
     ' Sub       permutate_back      permutate で並べ換えられた1次元配列を元の順列に戻す
     ' Function  lower_bound         ソート済み配列からのキーの検索（std::lower_boundと同じ）
+    ' Function  lower_bound_        複数対象のlower_bound
     ' Function  lower_bound_pred    ソート済み配列からのキーの検索（std::lower_boundと同じ）
+    ' Function  lower_bound_pred_   複数対象のlower_bound_pred
     ' Function  upper_bound         ソート済み配列からのキーの検索（std::upper_boundと同じ）
+    ' Function  upper_bound_        複数対象のupper_bound
     ' Function  upper_bound_pred    ソート済み配列からのキーの検索（std::upper_boundと同じ）
+    ' Function  upper_bound_pred_   複数対象のupper_bound_pred
     ' Function  equal_range         ソート済み配列からのキーの検索（std::equal_rangeと同じ）
+    ' Function  equal_range_        複数対象のequal_range
     ' Function  equal_range_pred    ソート済み配列からのキーの検索（std::equal_rangeと同じ）
+    ' Function  equal_range_pred_   複数対象のequal_range_pred
     ' Function  partition_points    ソート済み配列から条件によって区分化されている位置の一覧を得る
     ' Function  partition_points_pred
     ' Function  less_dic            述語 辞書式less
@@ -119,82 +125,82 @@ End Sub
 
 'ソート済み配列から指定された要素以上の値が現れる最初の位置を取得
 Function lower_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
-    lower_bound = lower_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
+    lower_bound = lower_bound_pred(matrix, val, p_less)
 End Function
-    Public Function p_lower_bound(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_lower_bound = make_funPointer(AddressOf lower_bound, firstParam, secondParam)
-    End Function
-
+    
+'複数対象のlower_bound
+Function lower_bound_(ByRef matrix As Variant, ByRef values As Variant) As Variant
+    lower_bound_ = lower_bound_pred_(matrix, values, p_less)
+End Function
+    
 'ソート済み配列から指定された要素以上の値が現れる最初の位置を取得（比較関数使用）
 Function lower_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
-    lower_bound_pred = lower_bound_imple(matrix, _
-                                         val, _
-                                         pred, _
-                                         LBound(matrix, 1), 1 + UBound(matrix, 1))
+    lower_bound_pred = lower_bound_imple(matrix, val, pred, LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
-    ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
-    ' mapF_swap(p_lower_bound_pred(comp), matrix, values) という使用方法を想定
-    Function p_lower_bound_pred(ByRef comp As Variant) As Variant
-        p_lower_bound_pred = make_funPointer( _
-                    AddressOf lower_bound_pred_zzz, _
-                    Empty, _
-                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
-    End Function
-    Private Function lower_bound_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
-        lower_bound_pred_zzz = lower_bound_pred(matrix, val_comp(0), val_comp(1))
-    End Function
+
+'複数対象のlower_bound_pred
+Function lower_bound_pred_(ByRef matrix As Variant, ByRef values As Variant, ByRef pred As Variant) As Variant
+    Dim ret As Variant, i As Long, k As Long: k = 0
+    ret = makeM(sizeof(values))
+    For i = LBound(values, 1) To UBound(values, 1) Step 1
+        ret(k) = lower_bound_imple(matrix, values(i), pred, LBound(matrix, 1), 1 + UBound(matrix, 1))
+        k = k + 1
+    Next i
+    Call swapVariant(lower_bound_pred_, ret)
+End Function
 
 'ソート済み配列から指定された要素より大きい値が現れる最初の位置を取得
 Function upper_bound(ByRef matrix As Variant, ByRef val As Variant) As Variant
-    upper_bound = upper_bound_imple(matrix, val, p_less, LBound(matrix, 1), 1 + UBound(matrix, 1))
+    upper_bound = upper_bound_pred(matrix, val, p_less)
 End Function
-    Public Function p_upper_bound(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_upper_bound = make_funPointer(AddressOf upper_bound, firstParam, secondParam)
-    End Function
+    
+'複数対象のupper_bound
+Function upper_bound_(ByRef matrix As Variant, ByRef values As Variant) As Variant
+    upper_bound_ = upper_bound_pred_(matrix, values, p_less)
+End Function
 
 'ソート済み配列から指定された要素より大きい値が現れる最初の位置を取得（比較関数使用）
 Function upper_bound_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
-    upper_bound_pred = upper_bound_imple(matrix, _
-                                         val, _
-                                         pred, _
-                                         LBound(matrix, 1), 1 + UBound(matrix, 1))
+    upper_bound_pred = upper_bound_imple(matrix, val, pred, LBound(matrix, 1), 1 + UBound(matrix, 1))
 End Function
-    ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
-    ' mapF_swap(p_upper_bound_pred(comp), matrix, values) という使用方法を想定
-    Function p_upper_bound_pred(ByRef comp As Variant) As Variant
-        p_upper_bound_pred = make_funPointer( _
-                    AddressOf upper_bound_pred_zzz, _
-                    Empty, _
-                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
-    End Function
-    Private Function upper_bound_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
-        upper_bound_pred_zzz = upper_bound_pred(matrix, val_comp(0), val_comp(1))
-    End Function
+
+'複数対象のupper_bound_pred
+Function upper_bound_pred_(ByRef matrix As Variant, ByRef values As Variant, ByRef pred As Variant) As Variant
+    Dim ret As Variant, i As Long, k As Long: k = 0
+    ret = makeM(sizeof(values))
+    For i = LBound(values, 1) To UBound(values, 1) Step 1
+        ret(k) = upper_bound_pred(matrix, values(i), pred)
+        k = k + 1
+    Next i
+    Call swapVariant(upper_bound_pred_, ret)
+End Function
 
 'lower_boundとupper_boundの組
 Function equal_range(ByRef matrix As Variant, ByRef val As Variant) As Variant
-    equal_range = VBA.Array(lower_bound(matrix, val), upper_bound(matrix, val))
+    equal_range = equal_range_pred(matrix, val, p_less)
 End Function
-    Public Function p_equal_range(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_equal_range = make_funPointer(AddressOf equal_range, firstParam, secondParam)
-    End Function
+    
+'複数対象のequal_range
+Function equal_range_(ByRef matrix As Variant, ByRef values As Variant) As Variant
+    equal_range_ = equal_range_pred_(matrix, values, p_less)
+End Function
 
 'lower_boundとupper_boundの組（比較関数使用）
 Function equal_range_pred(ByRef matrix As Variant, ByRef val As Variant, ByRef pred As Variant) As Variant
     equal_range_pred = VBA.Array(lower_bound_pred(matrix, val, pred), upper_bound_pred(matrix, val, pred))
 End Function
-    ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
-    ' mapF_swap(p_equal_range_pred(comp), matrix, values) という使用方法を想定
-    Function p_equal_range_pred(ByRef comp As Variant) As Variant
-        p_equal_range_pred = make_funPointer( _
-                    AddressOf equal_range_pred_zzz, _
-                    Empty, _
-                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
-    End Function
-    Private Function equal_range_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
-        equal_range_pred_zzz = equal_range_pred(matrix, val_comp(0), val_comp(1))
-    End Function
-
+    
+'複数対象のequal_range_pred
+Function equal_range_pred_(ByRef matrix As Variant, ByRef values As Variant, ByRef pred As Variant) As Variant
+    Dim ret As Variant, i As Long, k As Long: k = 0
+    ret = makeM(sizeof(values))
+    For i = LBound(values, 1) To UBound(values, 1) Step 1
+        ret(k) = equal_range_pred(matrix, values(i), pred)
+        k = k + 1
+    Next i
+    Call swapVariant(equal_range_pred_, ret)
+End Function
+    
 'ソート済み配列から条件によって区分化されている位置の一覧を得る
 Function partition_points(ByRef vec As Variant) As Variant
     partition_points = partition_points_pred(vec, p_less)
@@ -368,3 +374,62 @@ End Function
     Function p_text_less_dic(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_text_less_dic = make_funPointer(AddressOf text_less_dic, firstParam, secondParam)
     End Function
+
+    
+'####################
+'   [[deprecated]]
+'####################
+    ' [[deprecated]]
+    Public Function p_lower_bound(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_lower_bound = make_funPointer(AddressOf lower_bound, firstParam, secondParam)
+    End Function
+
+    '[[deprecated]]
+    ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
+    ' mapF_swap(p_lower_bound_pred(comp), matrix, values) という使用方法を想定
+    Function p_lower_bound_pred(ByRef comp As Variant) As Variant
+        p_lower_bound_pred = make_funPointer( _
+                    AddressOf lower_bound_pred_zzz, _
+                    Empty, _
+                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
+    End Function
+    Private Function lower_bound_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
+        lower_bound_pred_zzz = lower_bound_pred(matrix, val_comp(0), val_comp(1))
+    End Function
+
+    '[[deprecated]]
+    Public Function p_upper_bound(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_upper_bound = make_funPointer(AddressOf upper_bound, firstParam, secondParam)
+    End Function
+    '[[deprecated]]
+    ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
+    ' mapF_swap(p_upper_bound_pred(comp), matrix, values) という使用方法を想定
+    Function p_upper_bound_pred(ByRef comp As Variant) As Variant
+        p_upper_bound_pred = make_funPointer( _
+                    AddressOf upper_bound_pred_zzz, _
+                    Empty, _
+                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
+    End Function
+    Private Function upper_bound_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
+        upper_bound_pred_zzz = upper_bound_pred(matrix, val_comp(0), val_comp(1))
+    End Function
+
+    '[[deprecated]]
+    Public Function p_equal_range(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
+        p_equal_range = make_funPointer(AddressOf equal_range, firstParam, secondParam)
+    End Function
+
+        '[[deprecated]]
+    ' これは通常の関数オブジェクトとは異なる（比較関数のみを引数に取る）
+    ' mapF_swap(p_equal_range_pred(comp), matrix, values) という使用方法を想定
+    Function p_equal_range_pred(ByRef comp As Variant) As Variant
+        p_equal_range_pred = make_funPointer( _
+                    AddressOf equal_range_pred_zzz, _
+                    Empty, _
+                    make_funPointer(AddressOf makePair, yield_0, comp, 2))
+    End Function
+    Private Function equal_range_pred_zzz(ByRef matrix As Variant, ByRef val_comp As Variant) As Variant
+        equal_range_pred_zzz = equal_range_pred(matrix, val_comp(0), val_comp(1))
+    End Function
+
+
