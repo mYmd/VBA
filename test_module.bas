@@ -24,7 +24,8 @@ Public Sub vbaUnit()
     Call matrixMult_test:   Debug.Print vbCrLf
     Call primeNumber_test:  Debug.Print vbCrLf
     Call newton_test:       Debug.Print vbCrLf
-    Call find_test
+    Call find_test:         Debug.Print vbCrLf
+    Call find_best_test
 End Sub
 
 Public Sub vbaUnit2()
@@ -180,6 +181,15 @@ End Sub
         If UBound(points) < m Then Debug.Print "なし" Else Debug.Print points(m) & " (index=" & m & ")"
     End Sub
 
+    Private Sub find_best_test()
+        Dim points As Variant, m As Variant
+        Debug.Print "------- 条件によるFind Best ------------"
+        Debug.Print "乱数列 ( [0.0～100.0] * 10000個 ) から 最大値の位置を探す"
+        points = uniform_real_dist(10000, 0#, 100#)
+        m = find_best_pred(p_greater, points)
+        Debug.Print points(m) & " (index=" & m & ")"
+    End Sub
+
     ' ========== vbaUnit2 のテスト=================
     Private Sub flatten_test()
         Dim m As Variant, z As Variant
@@ -249,13 +259,13 @@ End Sub
     End Sub
 
     Private Sub equal_range_test()
-        Debug.Print "==== equal_rangeのテスト ===="
+        Debug.Print "==== equal_range_ のテスト ===="
         Dim m As Variant, erange As Variant
         m = uniform_int_dist(20, 1, 7)
         permutate m, sortIndex(m)
         printM catR(a_rows(m), m)
         printM "  ------------------------"
-        erange = unzip(mapF_swap(p_equal_range, m, iota(1, 7)))
+        erange = unzip(equal_range_(m, iota(1, 7)))
         Dim n As Long:  n = rowSize(erange(0))
         Dim tmp As Variant
         tmp = move_many(iota(1, n), repeat(":", n), repeat("[", n), erange(0), repeat("～", n), erange(1), repeat(")", n))
@@ -435,18 +445,18 @@ End Sub
 
     '整数を各桁の数字の合計で比較する
     Private Function compareSS(ByRef a As Variant, ByRef b As Variant) As Variant
-        Dim i As Long, aa As Long, bb As Long, aaa As Long, bbb As Long
+        Dim i As Long, aa As Long, bb As Long, aAA As Long, bbb As Long
         aa = Abs(CLng(a))
         bb = Abs(CLng(b))
         Do While 0 < aa
-            aaa = aaa + (aa Mod 10)
+            aAA = aAA + (aa Mod 10)
             aa = aa \ 10
         Loop
         Do While 0 < bb
             bbb = bbb + (bb Mod 10)
             bb = bb \ 10
         Loop
-        compareSS = IIf(aaa < bbb, 1, 0)
+        compareSS = IIf(aAA < bbb, 1, 0)
     End Function
     Private Function p_compareSS(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
         p_compareSS = make_funPointer(AddressOf compareSS, firstParam, secondParam)
@@ -519,7 +529,7 @@ Sub treeTest()
     For i = UBound(nodes) To LBound(nodes) Step -1
         DIC.Item(nodes(i)(0)) = nodes(i)(1)
     Next i
-    Debug.Print GetTickCount - t & "ms  " & DIC.count & "_Items"
+    Debug.Print GetTickCount - t & "ms  " & DIC.Count & "_Items"
     For i = 0 To 10 Step 1
         Debug.Print DIC.Item(i);
     Next i

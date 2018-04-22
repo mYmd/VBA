@@ -672,9 +672,9 @@ Function A_overlap_B(ByRef a As Variant, ByRef b As Variant, Optional ByRef comp
         Dim a2B As Variant, b2A As Variant
         ppA = partition_points_pred(a, comp)
         ppB = partition_points_pred(b, comp)
-        a2B = mapF_swap(p_equal_range_pred(comp), b, subV(a, headN(ppA, -1)))
+        a2B = equal_range_pred_(b, subV(a, headN(ppA, -1)), comp)
         a2B = mapF(p_less(p__n(0), p__n(1)), a2B)
-        b2A = mapF_swap(p_equal_range_pred(comp), a, subV(b, headN(ppB, -1)))
+        b2A = equal_range_pred_(a, subV(b, headN(ppB, -1)), comp)
         b2A = mapF(p_less(p__n(0), p__n(1)), b2A)
         A_overlap_B = VBA.Array( _
             foldl1(p_catV, zipWith(p_repeat, a2B, adjacent_op(p_minus(ph_2, ph_1), ppA))) _
