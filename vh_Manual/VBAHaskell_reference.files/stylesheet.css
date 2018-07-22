@@ -1240,3 +1240,14 @@ td
 	mso-diagonal-up:.5pt solid windowtext;
 	background:#BFBFBF;
 	mso-pattern:black none;}
+.xl175
+	{mso-style-parent:style16;
+	color:blue;
+	text-decoration:underline;
+	text-underline-style:single;
+	border-top:none;
+	border-right:.5pt solid windowtext;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:#BFBFBF;
+	mso-pattern:black none;}
