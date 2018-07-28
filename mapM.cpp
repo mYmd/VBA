@@ -1,6 +1,7 @@
 //mapM.cpp
 //Copyright (c) 2015 mmYYmmdd
 #include "stdafx.h"
+#include <vector>
 #include <list>
 #include "VBA_NestFunc.hpp"
 
@@ -284,7 +285,7 @@ scanr1(VARIANT const& bfun, VARIANT& matrix, __int32 const axis) noexcept
 //**************************************************************************
 //述語による1次元配列からの検索
 __int32  __stdcall
-find_imple(VARIANT const& bfun, VARIANT& matrix, __int32 const def) noexcept
+find_imple(VARIANT const& bfun, VARIANT const& matrix, __int32 const def) noexcept
 {
     safearrayRef arIn{matrix};
     if (arIn.getDim() != 1)                       return def;
@@ -293,9 +294,8 @@ find_imple(VARIANT const& bfun, VARIANT& matrix, __int32 const def) noexcept
     for (std::size_t i = 0; i <arIn.getSize(1); ++i)
     {
         auto& elem = arIn(i);
-        auto ret = iVariant();
-        ::VariantChangeType(&ret, &func.eval(elem, elem), 0, VT_I4);
-        if (ret.lVal != 0)
+        auto ret = func.eval(elem, elem);
+        if (S_OK == ::VariantChangeType(&ret, &func.eval(elem, elem), 0, VT_I4) && ret.lVal != 0)
         {
             ::VariantClear(&ret);
             return static_cast<__int32>(i + arIn.getOriginalLBound(1));
@@ -303,6 +303,36 @@ find_imple(VARIANT const& bfun, VARIANT& matrix, __int32 const def) noexcept
         ::VariantClear(&ret);
     }
     return      def;
+}
+
+//述語による1次元配列(child_set)から1次元配列(parent_set)への検索
+VARIANT  __stdcall
+find_pred_Vv(VARIANT const& bfun, VARIANT const& parent_set, VARIANT const& child_set) noexcept
+{
+    functionExpr func{ bfun };
+    if (!func.isValid())                                return iVariant();
+    safearrayRef arrP{ parent_set };
+    safearrayRef arrC{ child_set };
+    if (arrP.getDim() != 1 || arrC.getDim() != 1)     return iVariant();
+    std::vector<VARIANT> ret(arrC.getSize(1));
+    auto outofbounds = iVariant(VT_I4);
+    outofbounds.lVal = static_cast<__int32>(arrP.getSize(1) + arrP.getOriginalLBound(1));
+    for (std::size_t c_idx = 0; c_idx < arrC.getSize(1); ++c_idx)
+    {
+        ret[c_idx] = outofbounds;
+        for (std::size_t p_idx = 0; p_idx < arrP.getSize(1); ++p_idx)
+        {
+            auto check = func.eval(arrP(p_idx), arrC(c_idx));
+            if (S_OK == ::VariantChangeType(&check, &check, 0, VT_I4) && check.lVal != 0)
+            {
+                ret[c_idx].lVal = static_cast<__int32>(p_idx);
+                ::VariantClear(&check);
+                break;
+            }
+            ::VariantClear(&check);
+        }
+    }
+    return  vec2VArray(std::move(ret));
 }
 
 //述語による1次元配列からの最良値検索
@@ -318,9 +348,9 @@ find_best_imple(VARIANT const& bfun, VARIANT& matrix, __int32 const def) noexcep
     {
         auto& elem = arIn(i);
         auto& elem_b = arIn_b(best_i);
-        auto ret = iVariant();
-        ::VariantChangeType(&ret, &func.eval(elem, elem_b), 0, VT_I4);
-        if (ret.lVal != 0)      best_i = i;
+        auto ret = func.eval(elem, elem_b);
+        if (::VariantChangeType(&ret, &func.eval(elem, elem_b), 0, VT_I4)==S_OK && ret.lVal != 0)
+            best_i = i;
         ::VariantClear(&ret);
     }
     return static_cast<__int32>(best_i + arIn.getOriginalLBound(1));

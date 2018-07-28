@@ -21,6 +21,7 @@ Option Explicit
 '   Function scanr1             配列に対する特定の軸に沿った右scan（末尾要素を初期値とする）
 '   Function stdsort            1次元配列のソートインデックス出力
 '   Function find_imple         述語による検索
+'   Function find_pred_Vv       述語による配列(child_set)から配列(parent_set)への検索
 '   Function find_best_imple    述語による最良値位置検索
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
 '   Function swapVariant        VARIANT変数どうしのスワップ
@@ -36,7 +37,7 @@ Option Explicit
 Declare PtrSafe Function Dimension Lib "mapM.dll" (ByRef v As Variant) As Long
 
 'プレースホルダ・オブジェクトの生成
-Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal N As Long = 0) As Variant
+Declare PtrSafe Function placeholder Lib "mapM.dll" (Optional ByVal n As Long = 0) As Variant
 
 'プレースホルダ・オブジェクト判定
 Declare PtrSafe Function is_placeholder Lib "mapM.dll" (ByRef v As Variant) As Long
@@ -120,6 +121,12 @@ Declare PtrSafe Function find_imple Lib "mapM.dll" ( _
                 ByRef pCallback As Variant, _
             ByRef matrix As Variant, _
         ByVal def As Long) As Long
+
+'述語による1次元配列(child_set)から1次元配列(parent_set)への検索
+Declare PtrSafe Function find_pred_Vv Lib "mapM.dll" ( _
+                ByRef pCallback As Variant, _
+            ByRef parent_set As Variant, _
+        ByRef child_set As Variant) As Variant
 
 ' 述語による最良値位置検索
 Declare PtrSafe Function find_best_imple Lib "mapM.dll" ( _

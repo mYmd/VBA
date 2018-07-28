@@ -21,6 +21,7 @@ EXPORTS
 	scanr1 = scanr1
 	stdsort = stdsort
 	find_imple = find_imple
+	find_pred_Vv = find_pred_Vv
 	find_best_imple = find_best_imple
 	repeat_imple = repeat_imple
 	self_zipWith = self_zipWith
