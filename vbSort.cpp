@@ -11,7 +11,7 @@ class compareByVBAfunc   {
 public:
     compareByVBAfunc(VARIANT* pA, functionExpr& f) noexcept : begin(pA), comp(f)    {    }
     compareByVBAfunc(compareByVBAfunc const&) = default;
-    compareByVBAfunc(compareByVBAfunc&&) = delete;
+    compareByVBAfunc(compareByVBAfunc&&) = default;
     ~compareByVBAfunc() = default;
     bool operator ()(__int32 i, __int32 j) const noexcept
     {
@@ -25,7 +25,7 @@ class compFunctor  {
 public:
     explicit compFunctor(VARIANT* pA) noexcept : begin(pA) { }
     compFunctor(compFunctor const&) = default;
-    compFunctor(compFunctor&&) = delete;
+    compFunctor(compFunctor&&) = default;
     ~compFunctor() = default;
     bool operator ()(__int32 i, __int32 j) const noexcept
     {
@@ -40,7 +40,7 @@ class compDictionaryFunctor  {
 public:
     explicit compDictionaryFunctor(VARIANT* pA) noexcept : begin(pA) { }
     compDictionaryFunctor(compDictionaryFunctor const&) = default;
-    compDictionaryFunctor(compDictionaryFunctor&&) = delete;
+    compDictionaryFunctor(compDictionaryFunctor&&) = default;
     ~compDictionaryFunctor() = default;
     bool operator ()(__int32 i, __int32 j) const noexcept
     {
