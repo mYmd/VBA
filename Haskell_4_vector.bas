@@ -1062,6 +1062,8 @@ End Function
 
 '２次元配列の各行ベクトルをcross_zip
 Public Function zipR(ByRef m As Variant, Optional ByRef target As Variant) As Variant
+    zipR = VBA.Array()
+    If Dimension(m) <> 2 Then Exit Function
     If IsMissing(target) Then
         If LBound(m, 2) <= UBound(m, 2) Then
             Dim ret As Variant, i As Long
@@ -1080,6 +1082,8 @@ End Function
 
 '２次元配列の各列ベクトルをcross_zip
 Public Function zipC(ByRef m As Variant, Optional ByRef target As Variant) As Variant
+    zipC = VBA.Array()
+    If Dimension(m) <> 2 Then Exit Function
     If IsMissing(target) Then
         If LBound(m, 1) <= UBound(m, 1) Then
             Dim ret As Variant, i As Long
