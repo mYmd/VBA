@@ -42,9 +42,9 @@ VARIANT iVariant(VARTYPE const t) noexcept
 BSTR getBSTR(VARIANT const& expr) noexcept
 {
     if (expr.vt & VT_BYREF)
-        return ((expr.vt & VT_BSTR) && expr.pbstrVal) ? *expr.pbstrVal : nullptr;
+        return (VT_BSTR == (expr.vt & VT_TYPEMASK) && expr.pbstrVal) ? *expr.pbstrVal : nullptr;
     else
-        return ((expr.vt & VT_BSTR) && expr.bstrVal) ? expr.bstrVal : nullptr;
+        return (VT_BSTR == (expr.vt & VT_TYPEMASK) && expr.bstrVal) ? expr.bstrVal : nullptr;
 }
 
 VARIANT bstrVariant(std::wstring const& s) noexcept
