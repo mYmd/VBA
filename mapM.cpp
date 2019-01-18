@@ -208,7 +208,7 @@ foldl1(VARIANT const& bfun, VARIANT& matrix, __int32 axis) noexcept
     functionExpr func{bfun};
     if (!func.isValid())                            return ret;
     if (0 == (VT_ARRAY & matrix.vt))                return matrix;
-    fold_imple(func, iVariant(), false, matrix, axis, ret, true);
+    fold_imple(func, matrix, false, matrix, axis, ret, true);
     return      ret;
 }
 
@@ -220,7 +220,7 @@ foldr1(VARIANT const& bfun, VARIANT& matrix, __int32 axis) noexcept
     functionExpr func{bfun};
     if (!func.isValid())                return ret;
     if (0 == (VT_ARRAY & matrix.vt))    return matrix;
-    fold_imple(func, iVariant(), false, matrix, axis, ret, false);
+    fold_imple(func, matrix, false, matrix, axis, ret, false);
     return      ret;
 }
 
@@ -266,7 +266,7 @@ scanl1(VARIANT const& bfun, VARIANT& matrix, __int32 const axis) noexcept
     functionExpr func{bfun};
     if (!func.isValid())                    return ret;
     if (0 == (VT_ARRAY & matrix.vt))        return matrix;
-    scan_imple(func, iVariant(), false, matrix, axis, ret, true);
+    scan_imple(func, matrix, false, matrix, axis, ret, true);
     return      ret;
 }
 
@@ -278,7 +278,7 @@ scanr1(VARIANT const& bfun, VARIANT& matrix, __int32 const axis) noexcept
     functionExpr func{bfun};
     if (!func.isValid())                        return ret;
     if (0 == (VT_ARRAY & matrix.vt))            return matrix;
-    scan_imple(func, iVariant(), false, matrix, axis, ret, false);
+    scan_imple(func, matrix, false, matrix, axis, ret, false);
     return      ret;
 }
 

@@ -59,6 +59,11 @@ namespace
         { ::SafeArrayUnaccessData(ptr); }
     };
     using safearrayRAII = std::unique_ptr<SAFEARRAY, SafeArrayUnaccessor>;
+
+    struct swap_v_t {
+        void operator ()(VARIANT& a, VARIANT& b) const noexcept { std::swap(a, b); }
+        void operator ()(VARIANT& a, VARIANT&& b) const noexcept { std::swap(a, b); }
+    };
 }
 
 // 右辺値コンテナからのVARIANT配列生成
@@ -73,10 +78,11 @@ VARIANT vec2VArray(Container_t&& cont, F&& trans) noexcept
     if (!it)            return iVariant();
     auto const elemsize = ::SafeArrayGetElemsize(pArray.get());
     std::size_t i{0};
+    swap_v_t swap_v;
     try
     {
         for (auto p = cont.begin(); p != cont.end(); ++p, ++i)
-            std::swap(*reinterpret_cast<VARIANT*>(it + i * elemsize), std::forward<F>(trans)(*p));
+            swap_v(*reinterpret_cast<VARIANT*>(it + i * elemsize), std::forward<F>(trans)(*p));
         auto ret = iVariant(VT_ARRAY | VT_VARIANT);
         ret.parray = pArray.get();
         try { cont.clear(); }
