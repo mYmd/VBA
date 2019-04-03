@@ -105,6 +105,11 @@ array2textfile(VARIANT const& array, VARIANT const& fileName_, __int32 Code_Page
         auto openmode = append? L"a+b": L"wb";
         char bom[] = {char(0xEF), char(0xBB), char(0xBF), '\0' };
         char const* BOM = (Code_Page==65001)? bom: nullptr;
+        if (append && BOM)
+        {
+            std::wifstream ifs{ fileName };
+            if (ifs.is_open())  BOM = nullptr;
+        }
         std::string buf;
         auto puts = [codepage, &buf](BSTR pp, FILE* fp) {
             return std::fputs(WideCharToMultiByte_b(pp, buf, codepage), fp);
