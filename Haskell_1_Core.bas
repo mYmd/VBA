@@ -370,32 +370,32 @@ End Function
 Function repeat_while(ByRef val As Variant, _
                       ByRef pred As Variant, _
                       ByRef fun As Variant, _
-                      Optional ByVal N As Long = -1) As Variant
-    repeat_while = repeat_imple(val, pred, fun, N, 0, 0)
+                      Optional ByVal n As Long = -1) As Variant
+    repeat_while = repeat_imple(val, pred, fun, n, 0, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用
 Function repeat_while_not(ByRef val As Variant, _
                           ByRef pred As Variant, _
                           ByRef fun As Variant, _
-                          Optional ByVal N As Long = -1) As Variant
-    repeat_while_not = repeat_imple(val, pred, fun, N, 0, 1)
+                          Optional ByVal n As Long = -1) As Variant
+    repeat_while_not = repeat_imple(val, pred, fun, n, 0, 1)
 End Function
 
 ' 述語による条件が満たされる間繰り返し関数適用の履歴を生成
 Function generate_while(ByVal val As Variant, _
                         ByRef pred As Variant, _
                         ByRef fun As Variant, _
-                        Optional ByVal N As Long = -1) As Variant
-    generate_while = repeat_imple(val, pred, fun, N, 1, 0)
+                        Optional ByVal n As Long = -1) As Variant
+    generate_while = repeat_imple(val, pred, fun, n, 1, 0)
 End Function
 
 ' 述語による条件が満たされない間繰り返し関数適用の履歴を生成
 Function generate_while_not(ByVal val As Variant, _
                             ByRef pred As Variant, _
                             ByRef fun As Variant, _
-                            Optional ByVal N As Long = -1) As Variant
-    generate_while_not = repeat_imple(val, pred, fun, N, 1, 1)
+                            Optional ByVal n As Long = -1) As Variant
+    generate_while_not = repeat_imple(val, pred, fun, n, 1, 1)
 End Function
 
 ' 1次元配列限定の foldl (p_foldl のみPublic)
@@ -484,10 +484,10 @@ End Function
 
 ' zipWithをfoldlする
 Function foldl_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
-    If LBound(vec) <= UBound(vec) Then
-        foldl_zipWith = zipWith(fun, init, vec(LBound(vec)))
+    foldl_zipWith = init
+    If 0 < sizeof(vec) Then
         Dim i As Long
-        For i = LBound(vec) + 1 To UBound(vec) Step 1
+        For i = LBound(vec) To UBound(vec) Step 1
             foldl_zipWith = zipWith(fun, foldl_zipWith, vec(i))
         Next i
     End If
@@ -495,10 +495,10 @@ End Function
 
 ' zipWithをfoldrする
 Function foldr_zipWith(ByRef fun As Variant, ByRef init As Variant, ByRef vec As Variant) As Variant
-    If LBound(vec) <= UBound(vec) Then
-        foldr_zipWith = zipWith(fun, vec(UBound(vec)), init)
+    foldr_zipWith = init
+    If 0 < sizeof(vec) Then
         Dim i As Long
-        For i = UBound(vec) - 1 To LBound(vec) Step -1
+        For i = UBound(vec) To LBound(vec) Step -1
             foldr_zipWith = zipWith(fun, vec(i), foldr_zipWith)
         Next i
     End If
@@ -506,10 +506,10 @@ End Function
 
 ' zipWithをfoldl1する
 Function foldl1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
-    If LBound(vec) < UBound(vec) Then
-        foldl1_zipWith = zipWith(fun, vec(LBound(vec)), vec(LBound(vec) + 1))
+    If 0 < sizeof(vec) Then
+        foldl1_zipWith = vec(LBound(vec))
         Dim i As Long
-        For i = LBound(vec) + 2 To UBound(vec) Step 1
+        For i = LBound(vec) + 1 To UBound(vec) Step 1
             foldl1_zipWith = zipWith(fun, foldl1_zipWith, vec(i))
         Next i
     End If
@@ -517,10 +517,10 @@ End Function
 
 ' zipWithをfoldr1する
 Function foldr1_zipWith(ByRef fun As Variant, ByRef vec As Variant) As Variant
-    If LBound(vec) < UBound(vec) Then
-        foldr1_zipWith = zipWith(fun, vec(UBound(vec) - 1), vec(UBound(vec)))
+    If 0 < sizeof(vec) Then
+        foldr1_zipWith = vec(UBound(vec))
         Dim i As Long
-        For i = UBound(vec) - 2 To LBound(vec) Step -1
+        For i = UBound(vec) - 1 To LBound(vec) Step -1
             foldr1_zipWith = zipWith(fun, vec(i), foldr1_zipWith)
         Next i
     End If
