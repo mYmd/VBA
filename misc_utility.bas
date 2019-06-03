@@ -73,15 +73,15 @@ Public Function p_try(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)))
+            p_try = p_if_else(, VBA.Array(pred, ph_1, ph_1))
         Else
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole, 0)), f2)
+            p_try = p_if_else(, VBA.Array(pred, ph_1, f2))
         End If
     Else
         If IsMissing(f2) Then
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)))
+            p_try = p_if_else(, VBA.Array(pred, f1, ph_1))
         Else
-            p_try = p_replace_0(p_if_else(, VBA.Array(pred, p_makeSole(f1), 0)), f2)
+            p_try = p_if_else(, VBA.Array(pred, f1, f2))
         End If
     End If
 End Function
@@ -91,30 +91,19 @@ Public Function p_try_not(ByRef pred As Variant, _
                         Optional ByRef f1 As Variant, Optional ByRef f2 As Variant) As Variant
     If IsMissing(f1) Then
         If IsMissing(f2) Then
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)))
+            p_try_not = p_if_else(, VBA.Array(pred, ph_1, ph_1))
         Else
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole)), f2)
+            p_try_not = p_if_else(, VBA.Array(pred, f2, ph_1))
         End If
     Else
         If IsMissing(f2) Then
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))))
+            p_try_not = p_if_else(, VBA.Array(pred, ph_1, f1))
         Else
-            p_try_not = p_replace_0(p_if_else(, VBA.Array(pred, 0, p_makeSole(f1))), f2)
+            p_try_not = p_if_else(, VBA.Array(pred, f2, f1))
         End If
     End If
 End Function
     
-    Private Function replace_0(ByRef x As Variant, ByRef alt As Variant) As Variant
-        If IsNumeric(x) Then
-            Call assignVar(replace_0, alt)
-        Else
-            Call assignVar(replace_0, x(0))
-        End If
-    End Function
-    Private Function p_replace_0(Optional ByRef firstParam As Variant, Optional ByRef secondParam As Variant) As Variant
-        p_replace_0 = make_funPointer(AddressOf replace_0, firstParam, secondParam)
-    End Function
-
 ' p_try(p_less(p__n(0), p__n(1)), p__n(0), Null) の構文糖
 ' equal_range の値を subV_if に代入するとき等に便利
 Public Function p_try_less()
@@ -559,16 +548,18 @@ End Function
 
 '******************************************************************************
 ' partition_points によるGROUP-BY
-' matrix    : 対象配列（2次元配列またはジャグ配列）
-' pp        : partition_points （集計する行範囲を区切る行番号の集合）
-' strFuns   : 列ごとの集計関数を表す文字列
-' my_str2Fun: 文字列から集計関数へのマッピング関数（str2SummaryFunがデフォルト）
+' matrix        : 対象配列（2次元配列またはジャグ配列）
+' pp            : partition_points （集計する行範囲を区切る行番号の集合）
+' strFuns       : 列ごとの集計関数を表す文字列
+' my_str2Fun    : 文字列から集計関数へのマッピング関数（str2SummaryFunがデフォルト）
+' unzip_to_2dim : 結果を2次元配列に展開する(True)／しない(False)
 ' 例）group_by_partition_points(matrix, pp, "%t%c%s%a%min%max")
 '******************************************************************************
 Public Function group_by_partition_points(ByRef matrix As Variant, _
                                           ByRef pp As Variant, _
                                           ByRef strFuns As String, _
-                                 Optional ByVal my_str2Fun As Variant) As Variant
+                                 Optional ByVal my_str2Fun As Variant, _
+                                 Optional ByVal unzip_to_2dim As Boolean = True) As Variant
     If IsMissing(my_str2Fun) Then my_str2Fun = p_str2SummaryFun(, "-")    'デフォルトの
     Dim funs As Variant
     funs = splitStr2Funs(strFuns, my_str2Fun, "%")
@@ -576,12 +567,16 @@ Public Function group_by_partition_points(ByRef matrix As Variant, _
     intervals = adjacent_op(p_a__o, pp)
     Dim ranges As Variant
     ranges = mapF_swap(p_subM_R, matrix, intervals)
-    group_by_partition_points = unzip(mapF_swap(p_summaryUnit, , funs, ranges), 2)
+    If unzip_to_2dim Then
+        group_by_partition_points = unzipC(mapF(p_summaryUnit(, funs), ranges))
+    Else
+        group_by_partition_points = mapF(p_summaryUnit(, funs), ranges)
+    End If
 End Function
     ' 個々の集計行範囲の処理
     Private Function summaryUnit(ByRef matrix As Variant, ByRef funs As Variant) As Variant
         Select Case Dimension(matrix)
-            Case 1: summaryUnit = zipWith(p_applyFun, unzip(matrix, 1), funs)
+            Case 1: summaryUnit = zipWith(p_applyFun, cross_zip(matrix), funs)
             Case 2: summaryUnit = zipWith(p_applyFun, zipR(matrix), funs)
         End Select
     End Function
