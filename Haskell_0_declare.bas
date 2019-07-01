@@ -26,6 +26,7 @@ Option Explicit
 '   Function repeat_imple       関数適用のループ（+ 終了条件）
 '   Function swapVariant        VARIANT変数どうしのスワップ
 '   Sub      changeLBound       VBA配列のLBound変更
+'   Sub      changeLBound_      VBA配列の再帰的なLBound変更
 '   Function self_zipWith       1次元配列の離れた要素間で2項操作を適用する
 '======================================================
 ' Callbackとして使える関数のシグネチャは
@@ -148,6 +149,9 @@ Declare PtrSafe Function swapVariant Lib "mapM.dll" (ByRef a As Variant, ByRef b
 
 ' VBA配列のLBound変更
 Declare PtrSafe Sub changeLBound Lib "mapM.dll" (ByRef v As Variant, ByVal lbound_v As Long)
+
+' VBA配列の再帰的なLBound変更
+Declare PtrSafe Sub changeLBound_ Lib "mapM.dll" (ByRef v As Variant, ByVal lbound_v As Long)
 
 ' 1次元配列の離れた要素間で2項操作を適用する
 Declare PtrSafe Function self_zipWith Lib "mapM.dll" ( _

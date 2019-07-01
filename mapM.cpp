@@ -79,6 +79,38 @@ void __stdcall changeLBound(VARIANT& v, __int32 const b) noexcept
         psa->rgsabound[i].lLbound = b;
 }
 
+//SafeArrayのLBoundを再帰的に変更
+void __stdcall changeLBound_(VARIANT& v, __int32 const b) noexcept
+{
+    if (0 == (VT_ARRAY & v.vt))             return;
+    auto psa = (0 == (VT_BYREF & v.vt)) ? v.parray : *v.pparray;
+    if (!psa)                               return;
+    auto const dim = ::SafeArrayGetDim(psa);
+    std::size_t size{ 1 };
+    for (UINT i = 0; i < dim; ++i)
+    {
+        LONG ub{ 0 }, lb{ 0 };
+        ::SafeArrayGetLBound(psa, static_cast<UINT>(i + 1), &lb);
+        ::SafeArrayGetUBound(psa, static_cast<UINT>(i + 1), &ub);
+        size *= ub - lb + 1;
+        psa->rgsabound[i].lLbound = b;
+    }
+    VARTYPE pvt;
+    ::SafeArrayGetVartype(psa, &pvt);
+    if (VT_VARIANT == pvt)
+    {
+        auto const elemsize = ::SafeArrayGetElemsize(psa);
+        char* it{ nullptr };
+        ::SafeArrayAccessData(psa, reinterpret_cast<void**>(&it));
+        for (std::size_t i = 0; i < size; ++i)
+        {
+            changeLBound_(*reinterpret_cast<VARIANT*>(it), b);
+            it += elemsize;
+        }
+    }
+    ::SafeArrayUnaccessData(psa);
+}
+
 ////************************************************************************************
 
 //配列matrixの各要素にVBA関数を適用する

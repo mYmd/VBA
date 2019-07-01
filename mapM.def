@@ -27,6 +27,7 @@ EXPORTS
 	self_zipWith = self_zipWith
 	swapVariant = swapVariant
 	changeLBound = changeLBound
+	changeLBound_ = changeLBound_
 	copy_valueMember = copy_valueMember
 	copy_objectMember = copy_objectMember
 
