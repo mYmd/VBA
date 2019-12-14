@@ -25,7 +25,7 @@ http://home.b07.itscom.net/m-yamada/vh_Manual/VBAHaskell_reference.htm<br>
 基本的にはここのbinフォルダにある「VBAHaskellほぼ全部入り.xlsm」に記載している通り。<br>
 https://github.com/mYmd/VBA/blob/master/bin/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9%83%A8%E5%85%A5%E3%82%8A.xlsm<br>
  もしくは<br>
-http://home.b07.itscom.net/m-yamada/VBA/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9%83%A8%E5%85%A5%E3%82%8A.xlsm<br>
+http://home.b07.itscom.net/m-yamada/VBAHaskell/VBAHaskell%E3%81%BB%E3%81%BC%E5%85%A8%E9%83%A8%E5%85%A5%E3%82%8A.xlsm<br>
 <br>
 ここからzipダウンロードしたモジュールファイルをVBEに取り込んでも、文字コードの問題でうまくいかない場合があるため、「VBAHaskellほぼ全部入り.xlsm」を使用するほうが確実。<br><br>
 手動でやる方法<br>
