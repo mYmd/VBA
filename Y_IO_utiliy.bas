@@ -32,16 +32,16 @@ Option Explicit
 Public Declare PtrSafe Function textfile2array Lib "mapM.dll" _
                                     (ByRef fileName As Variant, _
                                 ByVal codepage As Long, _
-                            ByVal head_n As Long, _
-                        ByVal head_cut As Long, _
+                            ByVal Head_N As Long, _
+                        ByVal Head_Cut As Long, _
                     ByVal toAarry As Boolean) As Variant
 
 Public Declare PtrSafe Function textfile_for_each Lib "mapM.dll" _
                                     (ByRef fun As Variant, _
                                 ByRef fileName As Variant, _
                             ByVal codepage As Long, _
-                        ByVal head_n As Long, _
-                    ByVal head_cut As Long) As Long
+                        ByVal Head_N As Long, _
+                    ByVal Head_Cut As Long) As Long
 
 Public Declare PtrSafe Function array2textfile Lib "mapM.dll" _
                                         (ByRef m As Variant, _
@@ -55,8 +55,8 @@ Public Declare PtrSafe Function array2textfile Lib "mapM.dll" _
 ' vec = Fale：2次元配列（デフォルト）
 ' LBound = 0 の配列となる
 Public Function sheet2m(ByVal r As Object, Optional ByVal vec As Boolean = False) As Variant
-    If StrConv(Application.name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" Then
-        If r.cells.Count = 1 Then
+    If StrConv(Application.Name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" Then
+        If r.Cells.count = 1 Then
             sheet2m = makeM(1, 1, r.value)
         Else
             sheet2m = r.value
@@ -71,7 +71,10 @@ End Function
 Public Sub m2sheet(ByRef matrix As Variant, _
                    ByVal r As Object, _
                    Optional ByVal vertical As Boolean = False)
-    If StrConv(Application.name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" And 0 < sizeof(matrix) Then
+    If StrConv(Application.Name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" And 0 < sizeof(matrix) Then
+        Dim Application_TransitionNavigKeys As Boolean
+        Application_TransitionNavigKeys = Application.TransitionNavigKeys
+        Application.TransitionNavigKeys = False     '←ここ
         Select Case Dimension(matrix)
         Case 0:
             r.value = matrix
@@ -84,18 +87,19 @@ Public Sub m2sheet(ByRef matrix As Variant, _
         Case 2:
             r.Resize(rowSize(matrix), colSize(matrix)).value = matrix
         End Select
+        Application.TransitionNavigKeys = Application_TransitionNavigKeys
     End If
 End Sub
 
 ' Excelシートのセル範囲からRangeオブジェクトの配列を取得
 Public Function getRangeMatrix(ByVal r As Object) As Variant
-    If StrConv(Application.name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" Then
+    If StrConv(Application.Name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" Then
         Dim i As Long, j As Long, ret As Variant
         With r
-            ret = makeM(.rows.Count, .Columns.Count)
+            ret = makeM(.rows.count, .Columns.count)
             For i = 0 To rowSize(ret) - 1 Step 1
                 For j = 0 To colSize(ret) - 1 Step 1
-                    Set ret(i, j) = .cells(i + 1, j + 1)
+                    Set ret(i, j) = .Cells(i + 1, j + 1)
                 Next j
             Next i
         End With
@@ -154,13 +158,13 @@ End Function
 ' to_Array = False の時はテキスト全体がひとつの文字列で返る
 Public Function textFile2m(ByVal fileName As String, _
                         ByVal codepage As String, _
-                        Optional ByVal head_n As Long = -1, _
-                        Optional ByVal head_cut As Long = 0, _
+                        Optional ByVal Head_N As Long = -1, _
+                        Optional ByVal Head_Cut As Long = 0, _
                         Optional ByVal to_Array As Boolean = True) As Variant
     textFile2m = textfile2array(fileName, _
                             getCodePage(codepage), _
-                        head_n, _
-                    head_cut, _
+                        Head_N, _
+                    Head_Cut, _
                 to_Array)
 End Function
 
@@ -173,13 +177,13 @@ End Function
 Public Function mapTextFile(ByRef fn As Variant, _
                             ByVal fileName As String, _
                             ByVal codepage As String, _
-                            Optional ByVal head_n As Long = -1, _
-                            Optional ByVal head_cut As Long = 0) As Long
+                            Optional ByVal Head_N As Long = -1, _
+                            Optional ByVal Head_Cut As Long = 0) As Long
     mapTextFile = textfile_for_each(fn, _
                                 fileName, _
                             getCodePage(codepage), _
-                        head_n, _
-                    head_cut)
+                        Head_N, _
+                    Head_Cut)
 End Function
 
 ' 配列のテキストファイル書き込み
@@ -199,19 +203,20 @@ End Function
 
 ' URLで指定されたテキストの配列読み込み
 ' head_n : 試し読み先頭行数指定
-Public Function getURLText(ByVal URL As String, _
+Public Function getURLText(ByVal url As String, _
                            ByVal line_end As String, _
                            Optional ByVal Charset As String = "_autodetect_all", _
-                           Optional ByVal head_n As Long = -1, _
+                           Optional ByVal Head_N As Long = -1, _
                            Optional ByVal userName As String = "", _
                            Optional ByVal passWord As String = "") As Variant
+    
     Dim http As Object: Set http = CreateObject("MSXML2.XMLHTTP")
     On Error GoTo closeObjects
     With http
         If 0 < Len(userName) And 0 < Len(passWord) Then
-                .Open "GET", URL, False, userName, passWord
+            .Open "GET", url, False, userName, passWord
         Else
-            .Open "GET", URL, False
+            .Open "GET", url, False
         End If
         .setRequestHeader "Pragma", "no-cache"
         .setRequestHeader "Cache-Control", "no-cache"
@@ -228,11 +233,11 @@ Public Function getURLText(ByVal URL As String, _
         .Position = 0
         .Type = 2       'ADODB.Stream.adTypeText
         .Charset = Charset
-        If 0 < head_n Then
+        If 0 < Head_N Then
             .LineSeparator = IIf(line_end = vbCr, Asc(vbCr), IIf(line_end = vbLf, Asc(vbLf), -1))
-            For i = 1 To head_n
+            For i = 1 To Head_N
                 lineS = .ReadText(-2)   'adReadLine
-                getURLText = getURLText & lineS & IIf(i = head_n, "", line_end)
+                getURLText = getURLText & lineS & IIf(i = Head_N, "", line_end)
             Next i
         Else
             getURLText = .ReadText
@@ -430,13 +435,13 @@ End Function
     
 ' Wordのテーブルから配列を取得
 Public Function wTable2m(ByVal t As Object, Optional ByVal cutHeader As Boolean = False) As Variant
-    If StrConv(Application.name, vbLowerCase) Like "*word*" And TypeName(t) = "Table" Then
+    If StrConv(Application.Name, vbLowerCase) Like "*word*" And TypeName(t) = "Table" Then
         Dim ret As Variant, tmp As String
         With t
-            ret = makeM(.rows.Count, .Columns.Count)
+            ret = makeM(.rows.count, .Columns.count)
             Dim i As Long, j As Long
-            For i = 1 To .rows.Count Step 1
-                For j = 1 To .Columns.Count Step 1
+            For i = 1 To .rows.count Step 1
+                For j = 1 To .Columns.count Step 1
                     tmp = .Cell(i, j).Range.text
                     ret(i - 1, j - 1) = Left(tmp, Len(tmp) - 2)
                 Next j
@@ -480,7 +485,7 @@ Public Function downloadFiles(ByRef URLs As Variant, _
     Set fso = Nothing
 End Function
 
-    Private Function downloadFile_(ByVal URL As String, _
+    Private Function downloadFile_(ByVal url As String, _
                                    ByVal fileName As String, _
                                    ByVal userName As String, _
                                    ByVal passWord As String) As Boolean
@@ -490,9 +495,9 @@ End Function
         On Error GoTo closeFun
         With oo
             If 0 < Len(userName) And 0 < Len(passWord) Then
-                .Open "GET", URL, False, userName, passWord
+                .Open "GET", url, False, userName, passWord
             Else
-                .Open "GET", URL, False
+                .Open "GET", url, False
             End If
             .setRequestHeader "Pragma", "no-cache"
             .setRequestHeader "Cache-Control", "no-cache"
