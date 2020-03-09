@@ -72,9 +72,9 @@ Public Sub m2sheet(ByRef matrix As Variant, _
                    ByVal r As Object, _
                    Optional ByVal vertical As Boolean = False)
     If StrConv(Application.Name, vbLowerCase) Like "*excel*" And TypeName(r) = "Range" And 0 < sizeof(matrix) Then
-        Dim Application_TransitionNavigKeys As Boolean
-        Application_TransitionNavigKeys = Application.TransitionNavigKeys
-        Application.TransitionNavigKeys = False     '©‚±‚±
+        Dim Lotus123Key As Boolean
+        Lotus123Key = Application.TransitionNavigKeys
+        If Lotus123Key Then Application.TransitionNavigKeys = False     '©‚±‚±
         Select Case Dimension(matrix)
         Case 0:
             r.value = matrix
@@ -87,7 +87,7 @@ Public Sub m2sheet(ByRef matrix As Variant, _
         Case 2:
             r.Resize(rowSize(matrix), colSize(matrix)).value = matrix
         End Select
-        Application.TransitionNavigKeys = Application_TransitionNavigKeys
+        If Lotus123Key Then Application.TransitionNavigKeys = True
     End If
 End Sub
 
